@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Room to... – Onze missie & visie. Passende en innovatieve oplossingen voor zorgaanbieders.">
+  <title>Missie &amp; Visie | Room to...</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            rt: {
+              teal:      '#2d7d5a',
+              'teal-lt': '#4aaa7d',
+              'teal-dk': '#1a4d35',
+              'teal-dp': '#0a1f15',
+              maroon:    '#8b2535',
+              sage:      '#e8f4ef',
+              cream:     '#fafaf8',
+            }
+          },
+          fontFamily: {
+            display: ['Poppins', 'sans-serif'],
+            body:    ['DM Sans', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+
+  <link rel="stylesheet" href="/roomto.css">
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     NAVIGATION
+═══════════════════════════════════════════ -->
+<nav id="navbar" class="fixed top-0 left-0 right-0 z-50"
+     style="background: var(--teal-dp);">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8 h-[66px] flex items-center justify-between gap-6">
+
+    <!-- Logo -->
+    <a href="/" class="flex-shrink-0">
+      <img src="/brand_assets/logo1.png" alt="Room to..." class="h-9 w-auto">
+    </a>
+
+    <!-- Desktop nav -->
+    <ul class="hidden lg:flex items-center gap-7">
+      <li><a href="/" class="nav-link">Home</a></li>
+      <li><a href="/profiel.html" class="nav-link active">Missie &amp; visie</a></li>
+
+      <li><a href="/ons-werk/onze_aanpak.html" class="nav-link">Onze aanpak</a></li>
+      <li><a href="/ons-werk/projecten.html" class="nav-link">Projecten</a></li>
+
+      <li><a href="/team.html" class="nav-link">Het team</a></li>
+
+      <li><a href="/vacatures/projectleider_in_de_zorg.html" class="nav-link">Werken bij</a></li>
+
+      <li><a href="/contact.html" class="nav-link">Contact</a></li>
+    </ul>
+
+    <div class="flex items-center gap-3">
+      <a href="/contact.html" class="btn-primary hidden lg:inline-flex" style="padding: 9px 18px; font-size: 0.85rem;">
+        Neem contact op
+      </a>
+      <button id="menu-btn" class="lg:hidden flex flex-col gap-[5px] p-2 rounded"
+              aria-label="Navigatiemenu" aria-expanded="false" aria-controls="mobile-nav">
+        <span class="ham-bar"></span>
+        <span class="ham-bar"></span>
+        <span class="ham-bar"></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile menu -->
+  <div id="mobile-nav" class="lg:hidden hidden"
+       style="background: var(--teal-dk); border-top: 1px solid rgba(255,255,255,0.07);">
+    <div class="max-w-7xl mx-auto px-5 py-4 flex flex-col gap-0.5">
+      <a href="/" class="nav-link py-3 border-b border-white/5 block">Home</a>
+      <a href="/profiel.html" class="nav-link py-3 border-b border-white/5 block">Missie &amp; visie</a>
+      <a href="/ons-werk/onze_aanpak.html" class="nav-link py-3 border-b border-white/5 block">Onze aanpak</a>
+      <a href="/ons-werk/projecten.html" class="nav-link py-3 border-b border-white/5 block">Projecten</a>
+      <a href="/team.html" class="nav-link py-3 border-b border-white/5 block">Het team</a>
+      <a href="/vacatures/projectleider_in_de_zorg.html" class="nav-link py-3 border-b border-white/5 block">Werken bij</a>
+      <a href="/contact.html" class="nav-link py-3 border-b border-white/5 block">Contact</a>
+      <a href="/contact.html" class="btn-primary mt-3" style="justify-content:center;">Neem contact op</a>
+    </div>
+  </div>
+</nav>
+
+
+<!-- ═══════════════════════════════════════════
+     SUB-HERO
+═══════════════════════════════════════════ -->
+<header class="sub-hero hero-bg grain-layer">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8 w-full" style="position:relative;z-index:2;">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span>Missie &amp; visie</span>
+    </nav>
+    <span class="sec-label" style="color:#c07070;display:block;margin-bottom:14px;">Wie we zijn</span>
+    <h1 class="font-display font-extrabold text-white"
+        style="font-size: clamp(2rem, 4.5vw, 3.4rem); letter-spacing: -0.034em; line-height: 1.1; max-width: 640px;">
+      Onze missie &amp; visie
+    </h1>
+    <p style="font-size:1.0625rem;color:rgba(255,255,255,0.62);margin-top:16px;max-width:520px;line-height:1.72;">
+      Room to... verbindt strategisch advies met praktische implementatie. Wij geloven in blijvende verandering in de zorg.
+    </p>
+  </div>
+  <!-- Wave bottom -->
+  <div class="absolute bottom-0 left-0 right-0" style="line-height:0;z-index:3;">
+    <svg viewBox="0 0 1440 56" preserveAspectRatio="none" style="width:100%;height:56px;display:block;">
+      <path d="M0,56 L0,18 Q360,56 720,28 Q1080,0 1440,36 L1440,56 Z" fill="#fafaf8"/>
+    </svg>
+  </div>
+</header>
+
+
+<!-- ═══════════════════════════════════════════
+     MISSIE — split section
+═══════════════════════════════════════════ -->
+<section style="background: var(--cream); padding: 96px 0 88px;">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20 items-center">
+
+      <!-- Left: mission text -->
+      <div class="reveal">
+        <span class="sec-label" style="margin-bottom:16px;display:block;">Onze missie</span>
+        <h2 class="font-display font-bold"
+            style="font-size: clamp(1.6rem, 3.2vw, 2.5rem); letter-spacing: -0.03em; color: var(--teal-dp); line-height: 1.15; margin-bottom: 24px;">
+          De zorg constant verbeteren
+        </h2>
+        <div style="position:relative;padding-left:28px;border-left:3px solid rgba(139,37,53,0.22);margin-bottom:28px;">
+          <span style="position:absolute;left:-2px;top:-10px;font-size:72px;line-height:1;color:var(--maroon);opacity:0.15;font-family:'Poppins';font-weight:800;">&ldquo;</span>
+          <p style="font-size:1.125rem;color:rgba(10,31,21,0.7);line-height:1.78;font-style:italic;">
+            Room to... verbindt strategisch advies met praktische implementatie. We zoeken naar passende en innovatieve oplossingen voor zorgaanbieders en implementeren ze van begin tot eind — tot ze daadwerkelijk werken in de praktijk.
+          </p>
+        </div>
+        <p style="font-size:0.9375rem;color:rgba(10,31,21,0.58);line-height:1.76;margin-bottom:32px;">
+          Wij zijn ervan overtuigd dat duurzame zorgverbetering alleen mogelijk is wanneer strategisch denken hand in hand gaat met concrete implementatie. Niet als twee afzonderlijke trajecten, maar als één geïntegreerde aanpak — van analyse tot adoptie.
+        </p>
+        <a href="/ons-werk/onze_aanpak.html" class="btn-primary">
+          Bekijk onze aanpak
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+            <path d="M2.5 7.5H12.5M8.5 3.5L12.5 7.5L8.5 11.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+
+      <!-- Right: image -->
+      <div class="img-frame reveal d1" style="height: 440px;">
+        <img src="https://placehold.co/720x480/1a4d35/e8f4ef?text=Room+to..." alt="Room to... missie" style="width:100%;height:100%;object-fit:cover;">
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     QUADRUPLE AIM — vier pijlers
+═══════════════════════════════════════════ -->
+<section style="background: var(--sage); padding: 96px 0 100px; position:relative;">
+  <!-- Wave top -->
+  <div style="position:absolute;top:-1px;left:0;right:0;line-height:0;">
+    <svg viewBox="0 0 1440 56" preserveAspectRatio="none" style="width:100%;height:56px;display:block;transform:scaleY(-1);">
+      <path d="M0,56 L0,18 Q360,56 720,28 Q1080,0 1440,36 L1440,56 Z" fill="#fafaf8"/>
+    </svg>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-5 lg:px-8">
+    <div class="text-center reveal" style="margin-bottom:56px;">
+      <span class="sec-label" style="margin-bottom:12px;display:block;">Quadruple Aim</span>
+      <h2 class="font-display font-bold"
+          style="font-size: clamp(1.6rem, 3.2vw, 2.5rem); letter-spacing: -0.03em; color: var(--teal-dp); line-height: 1.15;">
+        Vier pijlers van duurzame zorgverbetering
+      </h2>
+      <p style="font-size:1rem;color:rgba(10,31,21,0.52);margin-top:14px;max-width:520px;margin-left:auto;margin-right:auto;line-height:1.72;">
+        Onze aanpak is geworteld in het Quadruple Aim-framework: vier samenhangende doelen die samen leiden tot betere, duurzamere zorg.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+      <!-- Pillar 1 -->
+      <div class="service-card reveal d1">
+        <div style="width:38px;height:38px;color:var(--teal);margin-bottom:16px;">
+          <svg viewBox="0 0 38 38" fill="none">
+            <circle cx="19" cy="15" r="6" stroke="currentColor" stroke-width="1.7"/>
+            <path d="M6 32c0-7.18 5.82-13 13-13s13 5.82 13 13" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3 class="font-display font-bold" style="font-size:1rem;color:var(--teal-dp);margin-bottom:10px;letter-spacing:-0.01em;">
+          Patiënt &amp; Volksgezondheid
+        </h3>
+        <p style="font-size:0.875rem;color:rgba(10,31,21,0.56);line-height:1.72;">
+          Betere gezondheidsuitkomsten voor individuele patiënten én de bredere bevolking. Preventie, vroege interventie en populatiemanagement staan centraal in elk project dat we uitvoeren.
+        </p>
+      </div>
+
+      <!-- Pillar 2 -->
+      <div class="service-card reveal d2">
+        <div style="width:38px;height:38px;color:var(--teal);margin-bottom:16px;">
+          <svg viewBox="0 0 38 38" fill="none">
+            <path d="M19 7l2.4 6.4 6.6.6-5 4.6 1.6 6.6L19 22l-5.6 3.2 1.6-6.6-5-4.6 6.6-.6L19 7z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h3 class="font-display font-bold" style="font-size:1rem;color:var(--teal-dp);margin-bottom:10px;letter-spacing:-0.01em;">
+          Patiëntervaring
+        </h3>
+        <p style="font-size:0.875rem;color:rgba(10,31,21,0.56);line-height:1.72;">
+          Zorg die aansluit bij de behoeften, wensen en waarden van patiënten. We helpen zorgorganisaties processen te herontwerpen vanuit het perspectief van de patiënt — voor meer mensgerichte, respectvolle zorg.
+        </p>
+      </div>
+
+      <!-- Pillar 3 -->
+      <div class="service-card reveal d3">
+        <div style="width:38px;height:38px;color:var(--teal);margin-bottom:16px;">
+          <svg viewBox="0 0 38 38" fill="none">
+            <rect x="6" y="10" width="26" height="18" rx="3" stroke="currentColor" stroke-width="1.7"/>
+            <path d="M13 19h12M19 14v10" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3 class="font-display font-bold" style="font-size:1rem;color:var(--teal-dp);margin-bottom:10px;letter-spacing:-0.01em;">
+          Betaalbare Zorg
+        </h3>
+        <p style="font-size:0.875rem;color:rgba(10,31,21,0.56);line-height:1.72;">
+          Kostenreductie zonder concessies aan kwaliteit. Door slimme processen, datagestuurd sturen en gerichte innovatie helpen wij zorgorganisaties efficiënter te werken — voor hetzelfde of beter resultaat.
+        </p>
+      </div>
+
+      <!-- Pillar 4 -->
+      <div class="service-card reveal d4">
+        <div style="width:38px;height:38px;color:var(--teal);margin-bottom:16px;">
+          <svg viewBox="0 0 38 38" fill="none">
+            <circle cx="13" cy="16" r="5" stroke="currentColor" stroke-width="1.7"/>
+            <circle cx="25" cy="16" r="5" stroke="currentColor" stroke-width="1.7"/>
+            <path d="M4 31c0-5 4-8 9-8M25 23c5 0 9 3 9 8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3 class="font-display font-bold" style="font-size:1rem;color:var(--teal-dp);margin-bottom:10px;letter-spacing:-0.01em;">
+          Medewerkerstevredenheid
+        </h3>
+        <p style="font-size:0.875rem;color:rgba(10,31,21,0.56);line-height:1.72;">
+          Zorgprofessionals die met plezier en energie werken, leveren betere zorg. We betrekken medewerkers actief bij verandertrajecten en zorgen voor draagvlak, zodat verbetering van binnenuit gedragen wordt.
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Wave bottom -->
+  <div style="position:absolute;bottom:-1px;left:0;right:0;line-height:0;">
+    <svg viewBox="0 0 1440 56" preserveAspectRatio="none" style="width:100%;height:56px;display:block;">
+      <path d="M0,56 L0,36 Q360,8 720,36 Q1080,64 1440,24 L1440,56 Z" fill="#fafaf8"/>
+    </svg>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     HOE WIJ WERKEN
+═══════════════════════════════════════════ -->
+<section style="background: var(--cream); padding: 96px 0 104px;">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+
+      <div class="reveal">
+        <span class="sec-label" style="margin-bottom:16px;display:block;">Hoe wij werken</span>
+        <h2 class="font-display font-bold"
+            style="font-size: clamp(1.6rem, 3.2vw, 2.5rem); letter-spacing: -0.03em; color: var(--teal-dp); line-height: 1.15; margin-bottom: 22px;">
+          Passende oplossingen voor blijvende verandering
+        </h2>
+        <p style="font-size:0.9375rem;color:rgba(10,31,21,0.58);line-height:1.78;margin-bottom:18px;">
+          Wij werken altijd samen met de mensen die het betreft. Geen kant-en-klare oplossingen, maar aanpakken die passen bij de cultuur, de context en de uitdagingen van uw organisatie.
+        </p>
+        <p style="font-size:0.9375rem;color:rgba(10,31,21,0.58);line-height:1.78;margin-bottom:32px;">
+          Van de eerste analyse tot de uiteindelijke implementatie: Room to... is er op elke stap. We borgen dat veranderingen niet alleen starten, maar ook daadwerkelijk landen en beklijven in de dagelijkse praktijk.
+        </p>
+        <div class="flex flex-wrap gap-4">
+          <a href="/ons-werk/onze_aanpak.html" class="btn-primary">
+            Bekijk ons werk
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+              <path d="M2.5 7.5H12.5M8.5 3.5L12.5 7.5L8.5 11.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+          <a href="/contact.html" class="btn-outline-teal">Neem contact op</a>
+        </div>
+      </div>
+
+      <!-- Right: three bullet stats -->
+      <div class="flex flex-col gap-6 reveal d1">
+        <div class="service-card" style="display:flex;gap:20px;align-items:flex-start;padding:24px 22px;">
+          <div style="flex-shrink:0;width:42px;height:42px;border-radius:50%;background:rgba(45,125,90,0.1);display:flex;align-items:center;justify-content:center;color:var(--teal);">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M3 10l5 5 9-9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div>
+            <h3 class="font-display font-bold" style="font-size:0.9375rem;color:var(--teal-dp);margin-bottom:6px;">Strategisch advies én praktische implementatie</h3>
+            <p style="font-size:0.875rem;color:rgba(10,31,21,0.54);line-height:1.68;">Van visie tot uitvoering — wij begeleiden het volledige traject, zodat niets verloren gaat in de vertaalslag.</p>
+          </div>
+        </div>
+        <div class="service-card" style="display:flex;gap:20px;align-items:flex-start;padding:24px 22px;">
+          <div style="flex-shrink:0;width:42px;height:42px;border-radius:50%;background:rgba(45,125,90,0.1);display:flex;align-items:center;justify-content:center;color:var(--teal);">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <circle cx="10" cy="10" r="7.5" stroke="currentColor" stroke-width="1.7"/>
+              <path d="M10 6v4l3 2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div>
+            <h3 class="font-display font-bold" style="font-size:0.9375rem;color:var(--teal-dp);margin-bottom:6px;">Bewezen methodologieën</h3>
+            <p style="font-size:0.875rem;color:rgba(10,31,21,0.54);line-height:1.68;">Design Thinking, SenTens, Prince2 en Agile — ingezet waar en wanneer ze het meest effectief zijn.</p>
+          </div>
+        </div>
+        <div class="service-card" style="display:flex;gap:20px;align-items:flex-start;padding:24px 22px;">
+          <div style="flex-shrink:0;width:42px;height:42px;border-radius:50%;background:rgba(45,125,90,0.1);display:flex;align-items:center;justify-content:center;color:var(--teal);">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M10 2l2.2 5.8 6 .5-4.5 4.2 1.4 5.9L10 15.4 4.9 18.4l1.4-5.9L1.8 8.3l6-.5L10 2z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div>
+            <h3 class="font-display font-bold" style="font-size:0.9375rem;color:var(--teal-dp);margin-bottom:6px;">Brede expertise in de zorg</h3>
+            <p style="font-size:0.875rem;color:rgba(10,31,21,0.54);line-height:1.68;">Gezondheidswetenschappen, bedrijfskunde, technische geneeskunde en verandermanagement — gecombineerd in één team.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════ -->
+<footer style="background: var(--teal-dp); border-top: 1px solid rgba(255,255,255,0.07); padding: 28px 0;">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-5">
+      <a href="/">
+        <img src="/brand_assets/logo1.png" alt="Room to..." style="height: 30px; width: auto; opacity: 0.82;">
+      </a>
+      <nav style="display:flex;flex-wrap:wrap;gap:4px 18px;justify-content:center;">
+        <a href="/" class="foot-link">Home</a>
+        <a href="/profiel.html" class="foot-link">Missie &amp; visie</a>
+        <a href="/ons-werk/onze_aanpak.html" class="foot-link">Ons werk</a>
+        <a href="/team.html" class="foot-link">Het team</a>
+        <a href="/contact.html" class="foot-link">Contact</a>
+        <a href="https://room-to.nl/assets/documents/Privacyverklaring.pdf" target="_blank" class="foot-link">Privacyverklaring</a>
+      </nav>
+      <p style="font-family:'DM Sans';font-size:0.75rem;color:rgba(255,255,255,0.22);flex-shrink:0;">
+        &copy; 2026 Room to...
+      </p>
+    </div>
+  </div>
+</footer>
+
+
+<!-- ═══════════════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════════════ -->
+<script>
+  const navbar  = document.getElementById('navbar');
+  const onScroll = () => navbar.classList.toggle('scrolled', window.scrollY > 50);
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  const menuBtn   = document.getElementById('menu-btn');
+  const mobileNav = document.getElementById('mobile-nav');
+  menuBtn.addEventListener('click', () => {
+    const isOpen = !mobileNav.classList.contains('hidden');
+    mobileNav.classList.toggle('hidden', isOpen);
+    menuBtn.classList.toggle('open', !isOpen);
+    menuBtn.setAttribute('aria-expanded', String(!isOpen));
+  });
+  document.querySelectorAll('#mobile-nav a').forEach(a => {
+    a.addEventListener('click', () => {
+      mobileNav.classList.add('hidden');
+      menuBtn.classList.remove('open');
+      menuBtn.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>

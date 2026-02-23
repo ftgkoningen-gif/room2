@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Room to... – Onze aanpak: denken én doen. Ontdek hoe wij structurele zorgverbetering realiseren.">
+  <title>Onze aanpak | Room to...</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            rt: {
+              teal:      '#2d7d5a',
+              'teal-lt': '#4aaa7d',
+              'teal-dk': '#1a4d35',
+              'teal-dp': '#0a1f15',
+              maroon:    '#8b2535',
+              sage:      '#e8f4ef',
+              cream:     '#fafaf8',
+            }
+          },
+          fontFamily: {
+            display: ['Poppins', 'sans-serif'],
+            body:    ['DM Sans', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+
+  <link rel="stylesheet" href="/roomto.css">
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     NAVIGATION
+═══════════════════════════════════════════ -->
+<nav id="navbar" class="fixed top-0 left-0 right-0 z-50"
+     style="background: var(--teal-dp);">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8 h-[66px] flex items-center justify-between gap-6">
+    <a href="/" class="flex-shrink-0">
+      <img src="/brand_assets/logo1.png" alt="Room to..." class="h-9 w-auto">
+    </a>
+    <ul class="hidden lg:flex items-center gap-7">
+      <li><a href="/" class="nav-link">Home</a></li>
+      <li><a href="/profiel.html" class="nav-link">Missie &amp; visie</a></li>
+      <li><a href="/ons-werk/onze_aanpak.html" class="nav-link active">Onze aanpak</a></li>
+      <li><a href="/ons-werk/projecten.html" class="nav-link">Projecten</a></li>
+      <li><a href="/team.html" class="nav-link">Het team</a></li>
+      <li><a href="/vacatures/projectleider_in_de_zorg.html" class="nav-link">Werken bij</a></li>
+      <li><a href="/contact.html" class="nav-link">Contact</a></li>
+    </ul>
+    <div class="flex items-center gap-3">
+      <a href="/contact.html" class="btn-primary hidden lg:inline-flex" style="padding: 9px 18px; font-size: 0.85rem;">
+        Neem contact op
+      </a>
+      <button id="menu-btn" class="lg:hidden flex flex-col gap-[5px] p-2 rounded"
+              aria-label="Navigatiemenu" aria-expanded="false" aria-controls="mobile-nav">
+        <span class="ham-bar"></span>
+        <span class="ham-bar"></span>
+        <span class="ham-bar"></span>
+      </button>
+    </div>
+  </div>
+  <div id="mobile-nav" class="lg:hidden hidden"
+       style="background: var(--teal-dk); border-top: 1px solid rgba(255,255,255,0.07);">
+    <div class="max-w-7xl mx-auto px-5 py-4 flex flex-col gap-0.5">
+      <a href="/" class="nav-link py-3 border-b border-white/5 block">Home</a>
+      <a href="/profiel.html" class="nav-link py-3 border-b border-white/5 block">Missie &amp; visie</a>
+      <a href="/ons-werk/onze_aanpak.html" class="nav-link py-3 border-b border-white/5 block">Onze aanpak</a>
+      <a href="/ons-werk/projecten.html" class="nav-link py-3 border-b border-white/5 block">Projecten</a>
+      <a href="/team.html" class="nav-link py-3 border-b border-white/5 block">Het team</a>
+      <a href="/vacatures/projectleider_in_de_zorg.html" class="nav-link py-3 border-b border-white/5 block">Werken bij</a>
+      <a href="/contact.html" class="nav-link py-3 border-b border-white/5 block">Contact</a>
+      <a href="/contact.html" class="btn-primary mt-3" style="justify-content:center;">Neem contact op</a>
+    </div>
+  </div>
+</nav>
+
+
+<!-- ═══════════════════════════════════════════
+     SUB-HERO
+═══════════════════════════════════════════ -->
+<header class="sub-hero hero-bg grain-layer">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8 w-full" style="position:relative;z-index:2;">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <a href="/ons-werk/onze_aanpak.html">Ons werk</a>
+      <span>Onze aanpak</span>
+    </nav>
+    <span class="sec-label" style="color:#c07070;display:block;margin-bottom:14px;">Ons werk</span>
+    <h1 class="font-display font-extrabold text-white"
+        style="font-size: clamp(2rem, 4.5vw, 3.4rem); letter-spacing: -0.034em; line-height: 1.1; max-width: 680px;">
+      Onze aanpak — denken én doen
+    </h1>
+    <p style="font-size:1.0625rem;color:rgba(255,255,255,0.62);margin-top:16px;max-width:540px;line-height:1.72;">
+      Wij combineren strategisch denken met praktische implementatie. Geen rapporten die in de la verdwijnen, maar veranderingen die daadwerkelijk landen.
+    </p>
+  </div>
+  <div class="absolute bottom-0 left-0 right-0" style="line-height:0;z-index:3;">
+    <svg viewBox="0 0 1440 56" preserveAspectRatio="none" style="width:100%;height:56px;display:block;">
+      <path d="M0,56 L0,18 Q360,56 720,28 Q1080,0 1440,36 L1440,56 Z" fill="#fafaf8"/>
+    </svg>
+  </div>
+</header>
+
+
+<!-- ═══════════════════════════════════════════
+     FILOSOFIE — split section
+═══════════════════════════════════════════ -->
+<section style="background: var(--cream); padding: 96px 0 88px;">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20 items-center">
+      <div class="reveal">
+        <span class="sec-label" style="margin-bottom:16px;display:block;">Onze filosofie</span>
+        <h2 class="font-display font-bold"
+            style="font-size: clamp(1.6rem, 3.2vw, 2.5rem); letter-spacing: -0.03em; color: var(--teal-dp); line-height: 1.15; margin-bottom: 22px;">
+          Denken én doen
+        </h2>
+        <p style="font-size:0.9375rem;color:rgba(10,31,21,0.6);line-height:1.78;margin-bottom:18px;">
+          Bij Room to... geloven we dat de scheidslijn tussen strategie en uitvoering kunstmatig is — en schadelijk voor echte verandering. Advies zonder implementatie is onvolledig. Implementatie zonder fundament is willekeur.
+        </p>
+        <p style="font-size:0.9375rem;color:rgba(10,31,21,0.6);line-height:1.78;margin-bottom:18px;">
+          Onze consultants integreren naadloos in uw team. We leren uw organisatie kennen van binnenuit: de processen, de cultuur, de mensen die het verschil maken. Pas dan ontwerpen we een aanpak die past — en die werkt.
+        </p>
+        <p style="font-size:0.9375rem;color:rgba(10,31,21,0.6);line-height:1.78;">
+          Van de eerste diagnose tot borging in de dagelijkse praktijk: Room to... is er. We stoppen pas als de verandering daadwerkelijk leeft in uw organisatie.
+        </p>
+      </div>
+      <div class="img-frame reveal d1" style="height: 420px;">
+        <img src="https://placehold.co/720x480/2d7d5a/e8f4ef?text=Denken+%26+Doen" alt="Onze aanpak" style="width:100%;height:100%;object-fit:cover;">
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     VIER PIJLERS
+═══════════════════════════════════════════ -->
+<section style="background: var(--sage); padding: 96px 0 100px; position:relative;">
+  <div style="position:absolute;top:-1px;left:0;right:0;line-height:0;">
+    <svg viewBox="0 0 1440 56" preserveAspectRatio="none" style="width:100%;height:56px;display:block;transform:scaleY(-1);">
+      <path d="M0,56 L0,18 Q360,56 720,28 Q1080,0 1440,36 L1440,56 Z" fill="#fafaf8"/>
+    </svg>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-5 lg:px-8">
+    <div class="text-center reveal" style="margin-bottom:56px;">
+      <span class="sec-label" style="margin-bottom:12px;display:block;">Onze aanpak</span>
+      <h2 class="font-display font-bold"
+          style="font-size: clamp(1.6rem, 3.2vw, 2.5rem); letter-spacing: -0.03em; color: var(--teal-dp); line-height: 1.15;">
+        Samenwerken aan structurele verandering
+      </h2>
+      <p style="font-size:1rem;color:rgba(10,31,21,0.52);margin-top:14px;max-width:520px;margin-left:auto;margin-right:auto;line-height:1.72;">
+        Vier kenmerken bepalen hoe wij werken — en waarom onze veranderingen beklijven.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+
+      <div class="service-card reveal d1">
+        <div style="width:42px;height:42px;color:var(--teal);margin-bottom:18px;">
+          <svg viewBox="0 0 42 42" fill="none">
+            <circle cx="21" cy="18" r="7" stroke="currentColor" stroke-width="1.7"/>
+            <path d="M7 38c0-7.7 6.3-14 14-14s14 6.3 14 14" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3 class="font-display font-bold" style="font-size:1.0625rem;color:var(--teal-dp);margin-bottom:12px;letter-spacing:-0.01em;">
+          Werken samen met jou
+        </h3>
+        <p style="font-size:0.9rem;color:rgba(10,31,21,0.56);line-height:1.76;margin-bottom:16px;">
+          We integreren in uw team als volwaardige samenwerkingspartners, niet als externe adviseurs op afstand. We leren uw organisatie van binnenuit kennen, bouwen relaties met alle stakeholders en creëren samen oplossingen die aansluiten bij de werkelijkheid op de werkvloer.
+        </p>
+        <p style="font-size:0.9rem;color:rgba(10,31,21,0.56);line-height:1.76;">
+          Draagvlak is geen bijproduct — het is een doelbewust onderdeel van onze aanpak. We nemen mensen mee in elke stap van het veranderproces.
+        </p>
+      </div>
+
+      <div class="service-card reveal d2">
+        <div style="width:42px;height:42px;color:var(--teal);margin-bottom:18px;">
+          <svg viewBox="0 0 42 42" fill="none">
+            <rect x="8" y="12" width="26" height="18" rx="3" stroke="currentColor" stroke-width="1.7"/>
+            <path d="M15 21h12M21 16v10" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3 class="font-display font-bold" style="font-size:1.0625rem;color:var(--teal-dp);margin-bottom:12px;letter-spacing:-0.01em;">
+          Creëren structuur
+        </h3>
+        <p style="font-size:0.9rem;color:rgba(10,31,21,0.56);line-height:1.76;margin-bottom:16px;">
+          Wij brengen structuur in complexe vraagstukken. Via bewezen methodologieën — Design Thinking voor innovatie, SenTens voor veranderkundige verankering, Prince2 voor projectbeheersing en Agile voor iteratieve verbetering — bieden we een helder raamwerk.
+        </p>
+        <p style="font-size:0.9rem;color:rgba(10,31,21,0.56);line-height:1.76;">
+          We kiezen nooit blindelings voor één methode. We passen de aanpak aan op de aard van het vraagstuk en de fase van de organisatie.
+        </p>
+      </div>
+
+      <div class="service-card reveal d3">
+        <div style="width:42px;height:42px;color:var(--teal);margin-bottom:18px;">
+          <svg viewBox="0 0 42 42" fill="none">
+            <path d="M21 8l3 8 8 1-6 5.5 2 8.5L21 27l-7 4 2-8.5L10 17l8-1 3-8z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h3 class="font-display font-bold" style="font-size:1.0625rem;color:var(--teal-dp);margin-bottom:12px;letter-spacing:-0.01em;">
+          Brede expertise
+        </h3>
+        <p style="font-size:0.9rem;color:rgba(10,31,21,0.56);line-height:1.76;margin-bottom:16px;">
+          Ons team combineert achtergronden in gezondheidswetenschappen, bedrijfskunde, technische geneeskunde en verandermanagement. Die diversiteit is geen toeval — het is onze kracht.
+        </p>
+        <p style="font-size:0.9rem;color:rgba(10,31,21,0.56);line-height:1.76;">
+          Zorgvraagstukken zijn zelden eendimensionaal. Wij benaderen ze vanuit meerdere perspectieven tegelijk en komen zo tot oplossingen die echt werken.
+        </p>
+      </div>
+
+      <div class="service-card reveal d4">
+        <div style="width:42px;height:42px;color:var(--teal);margin-bottom:18px;">
+          <svg viewBox="0 0 42 42" fill="none">
+            <path d="M8 34V18M16 34V10M24 34V22M32 34V14" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3 class="font-display font-bold" style="font-size:1.0625rem;color:var(--teal-dp);margin-bottom:12px;letter-spacing:-0.01em;">
+          Verandering concreet
+        </h3>
+        <p style="font-size:0.9rem;color:rgba(10,31,21,0.56);line-height:1.76;margin-bottom:16px;">
+          Van strategische roadmap tot daadwerkelijke implementatie in de dagelijkse praktijk — wij begeleiden het complete traject. We leveren niet alleen plannen; we zorgen dat die plannen ook uitgevoerd worden.
+        </p>
+        <p style="font-size:0.9rem;color:rgba(10,31,21,0.56);line-height:1.76;">
+          Na afronding borgen we de verandering zodat organisaties ook na onze betrokkenheid blijven verbeteren.
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+  <div style="position:absolute;bottom:-1px;left:0;right:0;line-height:0;">
+    <svg viewBox="0 0 1440 56" preserveAspectRatio="none" style="width:100%;height:56px;display:block;">
+      <path d="M0,56 L0,36 Q360,8 720,36 Q1080,64 1440,24 L1440,56 Z" fill="#fafaf8"/>
+    </svg>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     METHODOLOGIEËN
+═══════════════════════════════════════════ -->
+<section style="background: var(--cream); padding: 96px 0 104px;">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8">
+    <div class="text-center reveal" style="margin-bottom:52px;">
+      <span class="sec-label" style="margin-bottom:12px;display:block;">Onze toolbox</span>
+      <h2 class="font-display font-bold"
+          style="font-size: clamp(1.5rem, 3vw, 2.2rem); letter-spacing: -0.03em; color: var(--teal-dp); line-height: 1.15;">
+        Bewezen methodologieën
+      </h2>
+      <p style="font-size:1rem;color:rgba(10,31,21,0.52);margin-top:14px;max-width:480px;margin-left:auto;margin-right:auto;line-height:1.72;">
+        We kiezen altijd de methode die het beste past bij uw situatie — nooit een van tevoren vastgesteld recept.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+
+      <div class="method-card reveal d1">
+        <div style="font-size:2rem;margin-bottom:12px;">💡</div>
+        <h3 class="font-display font-bold" style="font-size:1rem;color:var(--teal-dp);margin-bottom:8px;">Design Thinking</h3>
+        <p style="font-size:0.875rem;color:rgba(10,31,21,0.54);line-height:1.7;">
+          Mensgericht probleemoplossen. We starten altijd bij de behoeften van patiënten en zorgprofessionals, prototyperen snel en leren iteratief.
+        </p>
+      </div>
+
+      <div class="method-card reveal d2">
+        <div style="font-size:2rem;margin-bottom:12px;">🔄</div>
+        <h3 class="font-display font-bold" style="font-size:1rem;color:var(--teal-dp);margin-bottom:8px;">SenTens</h3>
+        <p style="font-size:0.875rem;color:rgba(10,31,21,0.54);line-height:1.7;">
+          Veranderkundige verankering in de organisatie. SenTens helpt ons om veranderingen duurzaam in te bedden in de cultuur en werkwijze van zorgteams.
+        </p>
+      </div>
+
+      <div class="method-card reveal d3">
+        <div style="font-size:2rem;margin-bottom:12px;">📐</div>
+        <h3 class="font-display font-bold" style="font-size:1rem;color:var(--teal-dp);margin-bottom:8px;">Prince2</h3>
+        <p style="font-size:0.875rem;color:rgba(10,31,21,0.54);line-height:1.7;">
+          Gestructureerd projectmanagement. Duidelijke rollen, fasen en beslismomenten geven houvast bij complexe, langdurige implementatietrajecten.
+        </p>
+      </div>
+
+      <div class="method-card reveal d4">
+        <div style="font-size:2rem;margin-bottom:12px;">⚡</div>
+        <h3 class="font-display font-bold" style="font-size:1rem;color:var(--teal-dp);margin-bottom:8px;">Agile</h3>
+        <p style="font-size:0.875rem;color:rgba(10,31,21,0.54);line-height:1.7;">
+          Flexibel en iteratief werken. In snel veranderende zorgomgevingen helpt Agile ons om snel waarde te leveren en op basis van feedback bij te sturen.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     CTA
+═══════════════════════════════════════════ -->
+<section class="hero-bg grain-layer" style="padding: 72px 0 80px; position:relative;">
+  <div style="position:absolute;top:-1px;left:0;right:0;line-height:0;">
+    <svg viewBox="0 0 1440 56" preserveAspectRatio="none" style="width:100%;height:56px;display:block;transform:scaleY(-1);">
+      <path d="M0,56 L0,36 Q360,8 720,36 Q1080,64 1440,24 L1440,56 Z" fill="#fafaf8"/>
+    </svg>
+  </div>
+  <div class="max-w-3xl mx-auto px-5 lg:px-8 text-center reveal" style="position:relative;z-index:2;">
+    <h2 class="font-display font-bold text-white"
+        style="font-size: clamp(1.5rem, 3vw, 2.2rem); letter-spacing: -0.03em; line-height: 1.15; margin-bottom: 16px;">
+      Klaar om samen te werken?
+    </h2>
+    <p style="font-size:1rem;color:rgba(255,255,255,0.58);line-height:1.76;margin-bottom:30px;max-width:420px;margin-left:auto;margin-right:auto;">
+      Neem contact op voor een vrijblijvend gesprek. Wij luisteren graag naar uw uitdagingen en denken mee over de mogelijkheden.
+    </p>
+    <div class="flex flex-wrap gap-4 justify-center">
+      <a href="/contact.html" class="btn-primary">
+        Neem contact op
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+          <path d="M2.5 7.5H12.5M8.5 3.5L12.5 7.5L8.5 11.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+      <a href="/ons-werk/projecten.html" class="btn-secondary">Bekijk projecten</a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════ -->
+<footer style="background: var(--teal-dp); border-top: 1px solid rgba(255,255,255,0.07); padding: 28px 0;">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-5">
+      <a href="/">
+        <img src="/brand_assets/logo1.png" alt="Room to..." style="height: 30px; width: auto; opacity: 0.82;">
+      </a>
+      <nav style="display:flex;flex-wrap:wrap;gap:4px 18px;justify-content:center;">
+        <a href="/" class="foot-link">Home</a>
+        <a href="/profiel.html" class="foot-link">Missie &amp; visie</a>
+        <a href="/ons-werk/onze_aanpak.html" class="foot-link">Ons werk</a>
+        <a href="/team.html" class="foot-link">Het team</a>
+        <a href="/contact.html" class="foot-link">Contact</a>
+        <a href="https://room-to.nl/assets/documents/Privacyverklaring.pdf" target="_blank" class="foot-link">Privacyverklaring</a>
+      </nav>
+      <p style="font-family:'DM Sans';font-size:0.75rem;color:rgba(255,255,255,0.22);flex-shrink:0;">
+        &copy; 2026 Room to...
+      </p>
+    </div>
+  </div>
+</footer>
+
+
+<script>
+  const navbar  = document.getElementById('navbar');
+  const onScroll = () => navbar.classList.toggle('scrolled', window.scrollY > 50);
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  const menuBtn   = document.getElementById('menu-btn');
+  const mobileNav = document.getElementById('mobile-nav');
+  menuBtn.addEventListener('click', () => {
+    const isOpen = !mobileNav.classList.contains('hidden');
+    mobileNav.classList.toggle('hidden', isOpen);
+    menuBtn.classList.toggle('open', !isOpen);
+    menuBtn.setAttribute('aria-expanded', String(!isOpen));
+  });
+  document.querySelectorAll('#mobile-nav a').forEach(a => {
+    a.addEventListener('click', () => {
+      mobileNav.classList.add('hidden');
+      menuBtn.classList.remove('open');
+      menuBtn.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>

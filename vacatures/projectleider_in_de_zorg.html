@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Room to... – Vacature: Projectleider in de zorg. Werk mee aan structurele zorgverbetering.">
+  <title>Projectleider in de zorg | Room to...</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            rt: {
+              teal:      '#2d7d5a',
+              'teal-lt': '#4aaa7d',
+              'teal-dk': '#1a4d35',
+              'teal-dp': '#0a1f15',
+              maroon:    '#8b2535',
+              sage:      '#e8f4ef',
+              cream:     '#fafaf8',
+            }
+          },
+          fontFamily: {
+            display: ['Poppins', 'sans-serif'],
+            body:    ['DM Sans', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+
+  <link rel="stylesheet" href="/roomto.css">
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     NAVIGATION
+═══════════════════════════════════════════ -->
+<nav id="navbar" class="fixed top-0 left-0 right-0 z-50"
+     style="background: var(--teal-dp);">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8 h-[66px] flex items-center justify-between gap-6">
+    <a href="/" class="flex-shrink-0">
+      <img src="/brand_assets/logo1.png" alt="Room to..." class="h-9 w-auto">
+    </a>
+    <ul class="hidden lg:flex items-center gap-7">
+      <li><a href="/" class="nav-link">Home</a></li>
+      <li><a href="/profiel.html" class="nav-link">Missie &amp; visie</a></li>
+      <li><a href="/ons-werk/onze_aanpak.html" class="nav-link">Onze aanpak</a></li>
+      <li><a href="/ons-werk/projecten.html" class="nav-link">Projecten</a></li>
+      <li><a href="/team.html" class="nav-link">Het team</a></li>
+      <li><a href="/vacatures/projectleider_in_de_zorg.html" class="nav-link active">Werken bij</a></li>
+      <li><a href="/contact.html" class="nav-link">Contact</a></li>
+    </ul>
+    <div class="flex items-center gap-3">
+      <a href="/contact.html" class="btn-primary hidden lg:inline-flex" style="padding: 9px 18px; font-size: 0.85rem;">
+        Neem contact op
+      </a>
+      <button id="menu-btn" class="lg:hidden flex flex-col gap-[5px] p-2 rounded"
+              aria-label="Navigatiemenu" aria-expanded="false" aria-controls="mobile-nav">
+        <span class="ham-bar"></span>
+        <span class="ham-bar"></span>
+        <span class="ham-bar"></span>
+      </button>
+    </div>
+  </div>
+  <div id="mobile-nav" class="lg:hidden hidden"
+       style="background: var(--teal-dk); border-top: 1px solid rgba(255,255,255,0.07);">
+    <div class="max-w-7xl mx-auto px-5 py-4 flex flex-col gap-0.5">
+      <a href="/" class="nav-link py-3 border-b border-white/5 block">Home</a>
+      <a href="/profiel.html" class="nav-link py-3 border-b border-white/5 block">Missie &amp; visie</a>
+      <a href="/ons-werk/onze_aanpak.html" class="nav-link py-3 border-b border-white/5 block">Onze aanpak</a>
+      <a href="/ons-werk/projecten.html" class="nav-link py-3 border-b border-white/5 block">Projecten</a>
+      <a href="/team.html" class="nav-link py-3 border-b border-white/5 block">Het team</a>
+      <a href="/vacatures/projectleider_in_de_zorg.html" class="nav-link py-3 border-b border-white/5 block">Werken bij</a>
+      <a href="/contact.html" class="nav-link py-3 border-b border-white/5 block">Contact</a>
+      <a href="/contact.html" class="btn-primary mt-3" style="justify-content:center;">Neem contact op</a>
+    </div>
+  </div>
+</nav>
+
+
+<!-- ═══════════════════════════════════════════
+     SUB-HERO
+═══════════════════════════════════════════ -->
+<header class="sub-hero hero-bg grain-layer">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8 w-full" style="position:relative;z-index:2;">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span>Werken bij</span>
+    </nav>
+    <span class="sec-label" style="color:#c07070;display:block;margin-bottom:14px;">Werken bij Room to...</span>
+    <h1 class="font-display font-extrabold text-white"
+        style="font-size: clamp(2rem, 4.5vw, 3.4rem); letter-spacing: -0.034em; line-height: 1.1; max-width: 680px;">
+      Projectleider in de zorg
+    </h1>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:20px;">
+      <span style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.18);border-radius:99px;padding:5px 14px;font-family:'DM Sans';font-size:0.8125rem;color:rgba(255,255,255,0.78);">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.5"/><path d="M6 3.5v2.5l1.5 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Fulltime / Parttime
+      </span>
+      <span style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.18);border-radius:99px;padding:5px 14px;font-family:'DM Sans';font-size:0.8125rem;color:rgba(255,255,255,0.78);">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 6a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" stroke="currentColor" stroke-width="1.5"/><path d="M6 1c-2.76 0-5 2.24-5 5 0 3.5 5 7 5 7s5-3.5 5-7c0-2.76-2.24-5-5-5Z" stroke="currentColor" stroke-width="1.5"/></svg>
+        De Meern / Hybride
+      </span>
+      <span style="display:inline-flex;align-items:center;gap:6px;background:rgba(139,37,53,0.35);border:1px solid rgba(139,37,53,0.5);border-radius:99px;padding:5px 14px;font-family:'DM Sans';font-size:0.8125rem;color:rgba(255,255,255,0.88);font-weight:600;">
+        Open vacature
+      </span>
+    </div>
+  </div>
+  <div class="absolute bottom-0 left-0 right-0" style="line-height:0;z-index:3;">
+    <svg viewBox="0 0 1440 56" preserveAspectRatio="none" style="width:100%;height:56px;display:block;">
+      <path d="M0,56 L0,18 Q360,56 720,28 Q1080,0 1440,36 L1440,56 Z" fill="#fafaf8"/>
+    </svg>
+  </div>
+</header>
+
+
+<!-- ═══════════════════════════════════════════
+     VACATURE — main content
+═══════════════════════════════════════════ -->
+<section style="background: var(--cream); padding: 96px 0 104px;">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+
+      <!-- Main content (2/3 width) -->
+      <div class="lg:col-span-2">
+
+        <!-- Over de functie -->
+        <div class="reveal" style="margin-bottom: 56px;">
+          <span class="sec-label" style="margin-bottom:14px;display:block;">Over de functie</span>
+          <h2 class="font-display font-bold"
+              style="font-size: clamp(1.4rem, 2.8vw, 2rem); letter-spacing: -0.03em; color: var(--teal-dp); line-height: 1.15; margin-bottom: 20px;">
+            Projectleider in de zorg
+          </h2>
+          <p style="font-size:0.9375rem;color:rgba(10,31,21,0.6);line-height:1.78;margin-bottom:16px;">
+            Als projectleider bij Room to... ben jij de verbindende schakel tussen strategie en uitvoering. Je werkt samen met zorgorganisaties aan complexe implementatietrajecten en zorgt dat veranderingen daadwerkelijk landen in de dagelijkse praktijk.
+          </p>
+          <p style="font-size:0.9375rem;color:rgba(10,31,21,0.6);line-height:1.78;">
+            Je draait mee in multidisciplinaire teams, bouwt relaties op alle niveaus van de organisatie en bewaakt tegelijkertijd de voortgang, de kwaliteit en het proces. Je bent analytisch én mensgericht — en je begrijpt dat de beste oplossingen samen tot stand komen.
+          </p>
+        </div>
+
+        <!-- Wat ga je doen -->
+        <div class="reveal" style="margin-bottom: 56px;">
+          <span class="sec-label" style="margin-bottom:14px;display:block;">Wat ga je doen</span>
+          <h2 class="font-display font-bold"
+              style="font-size: clamp(1.25rem, 2.4vw, 1.75rem); letter-spacing: -0.03em; color: var(--teal-dp); line-height: 1.15; margin-bottom: 24px;">
+            Jouw rol
+          </h2>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div class="vac-item">
+              <div class="vac-bullet"></div>
+              <p style="font-size:0.9375rem;color:rgba(10,31,21,0.62);line-height:1.72;">Leiden van complexe implementatieprojecten bij zorgorganisaties in Nederland</p>
+            </div>
+            <div class="vac-item">
+              <div class="vac-bullet"></div>
+              <p style="font-size:0.9375rem;color:rgba(10,31,21,0.62);line-height:1.72;">Opbouwen en onderhouden van relaties met opdrachtgevers, stakeholders en projectteamleden</p>
+            </div>
+            <div class="vac-item">
+              <div class="vac-bullet"></div>
+              <p style="font-size:0.9375rem;color:rgba(10,31,21,0.62);line-height:1.72;">Vertalen van strategische doelstellingen naar concrete projectplannen en actieplannen</p>
+            </div>
+            <div class="vac-item">
+              <div class="vac-bullet"></div>
+              <p style="font-size:0.9375rem;color:rgba(10,31,21,0.62);line-height:1.72;">Begeleiden van veranderprocessen, inclusief weerstandsmanagement en draagvlakcreatie</p>
+            </div>
+            <div class="vac-item">
+              <div class="vac-bullet"></div>
+              <p style="font-size:0.9375rem;color:rgba(10,31,21,0.62);line-height:1.72;">Monitoren van projectvoortgang en tijdig bijsturen op scope, planning en kwaliteit</p>
+            </div>
+            <div class="vac-item">
+              <div class="vac-bullet"></div>
+              <p style="font-size:0.9375rem;color:rgba(10,31,21,0.62);line-height:1.72;">Bijdragen aan de groei en ontwikkeling van Room to... als organisatie en als team</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Wat breng jij mee -->
+        <div class="reveal" style="margin-bottom: 56px;">
+          <span class="sec-label" style="margin-bottom:14px;display:block;">Wat breng jij mee</span>
+          <h2 class="font-display font-bold"
+              style="font-size: clamp(1.25rem, 2.4vw, 1.75rem); letter-spacing: -0.03em; color: var(--teal-dp); line-height: 1.15; margin-bottom: 24px;">
+            Jouw profiel
+          </h2>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div class="vac-item">
+              <div class="vac-bullet"></div>
+              <p style="font-size:0.9375rem;color:rgba(10,31,21,0.62);line-height:1.72;">Afgeronde HBO of WO-opleiding, bij voorkeur in gezondheidswetenschappen, bedrijfskunde of een vergelijkbare richting</p>
+            </div>
+            <div class="vac-item">
+              <div class="vac-bullet"></div>
+              <p style="font-size:0.9375rem;color:rgba(10,31,21,0.62);line-height:1.72;">Minimaal 3 jaar ervaring als projectleider, consultant of vergelijkbare rol — bij voorkeur in de zorgsector</p>
+            </div>
+            <div class="vac-item">
+              <div class="vac-bullet"></div>
+              <p style="font-size:0.9375rem;color:rgba(10,31,21,0.62);line-height:1.72;">Aantoonbare ervaring met het begeleiden van verandertrajecten in complexe organisaties</p>
+            </div>
+            <div class="vac-item">
+              <div class="vac-bullet"></div>
+              <p style="font-size:0.9375rem;color:rgba(10,31,21,0.62);line-height:1.72;">Kennis van of affiniteit met projectmethodologieën als Prince2, Agile of Design Thinking</p>
+            </div>
+            <div class="vac-item">
+              <div class="vac-bullet"></div>
+              <p style="font-size:0.9375rem;color:rgba(10,31,21,0.62);line-height:1.72;">Uitstekende communicatieve vaardigheden in Nederlands, zowel mondeling als schriftelijk</p>
+            </div>
+            <div class="vac-item">
+              <div class="vac-bullet"></div>
+              <p style="font-size:0.9375rem;color:rgba(10,31,21,0.62);line-height:1.72;">Proactieve, resultaatgerichte houding gecombineerd met empathie en geduld bij veranderprocessen</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Wat bieden wij -->
+        <div class="reveal">
+          <span class="sec-label" style="margin-bottom:14px;display:block;">Wat bieden wij</span>
+          <h2 class="font-display font-bold"
+              style="font-size: clamp(1.25rem, 2.4vw, 1.75rem); letter-spacing: -0.03em; color: var(--teal-dp); line-height: 1.15; margin-bottom: 24px;">
+            Ons aanbod
+          </h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="service-card" style="padding: 22px 20px;">
+              <h3 class="font-display font-bold" style="font-size:0.9375rem;color:var(--teal-dp);margin-bottom:7px;">Betekenisvol werk</h3>
+              <p style="font-size:0.875rem;color:rgba(10,31,21,0.54);line-height:1.68;">Elke dag bijdragen aan betere zorg voor patiënten en betere werkomstandigheden voor zorgprofessionals.</p>
+            </div>
+            <div class="service-card" style="padding: 22px 20px;">
+              <h3 class="font-display font-bold" style="font-size:0.9375rem;color:var(--teal-dp);margin-bottom:7px;">Hecht team</h3>
+              <p style="font-size:0.875rem;color:rgba(10,31,21,0.54);line-height:1.68;">Je werkt samen met gedreven collega's die constant van elkaar leren en jou helpen groeien.</p>
+            </div>
+            <div class="service-card" style="padding: 22px 20px;">
+              <h3 class="font-display font-bold" style="font-size:0.9375rem;color:var(--teal-dp);margin-bottom:7px;">Persoonlijke ontwikkeling</h3>
+              <p style="font-size:0.875rem;color:rgba(10,31,21,0.54);line-height:1.68;">Budget en tijd voor opleidingen, certificeringen en het bijhouden van de nieuwste inzichten in de zorg.</p>
+            </div>
+            <div class="service-card" style="padding: 22px 20px;">
+              <h3 class="font-display font-bold" style="font-size:0.9375rem;color:var(--teal-dp);margin-bottom:7px;">Goede arbeidsvoorwaarden</h3>
+              <p style="font-size:0.875rem;color:rgba(10,31,21,0.54);line-height:1.68;">Marktconform salaris, flexibele werktijden, hybride werken en goede pensioenregeling.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Sidebar (1/3 width) -->
+      <div class="lg:col-span-1 reveal d1">
+        <div style="position: sticky; top: 90px; display:flex; flex-direction:column; gap:20px;">
+
+          <!-- Apply CTA card -->
+          <div style="background: var(--teal-dp); border-radius: 8px; padding: 28px 24px; color:#fff;">
+            <h3 class="font-display font-bold" style="font-size:1.125rem;margin-bottom:10px;color:#fff;">Interesse?</h3>
+            <p style="font-size:0.875rem;color:rgba(255,255,255,0.62);line-height:1.68;margin-bottom:20px;">
+              Stuur je CV en een korte motivatie naar info@room-to.nl of gebruik het contactformulier.
+            </p>
+            <a href="/contact.html" class="btn-primary" style="width:100%;justify-content:center;">
+              Solliciteer nu
+              <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+                <path d="M2.5 7.5H12.5M8.5 3.5L12.5 7.5L8.5 11.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          </div>
+
+          <!-- Job details -->
+          <div style="background: var(--sage); border-radius: 8px; padding: 24px 22px;">
+            <h3 class="font-display font-bold" style="font-size:0.9375rem;color:var(--teal-dp);margin-bottom:16px;">Functiedetails</h3>
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <div>
+                <p style="font-size:0.6875rem;text-transform:uppercase;letter-spacing:0.08em;color:rgba(10,31,21,0.38);font-weight:600;margin-bottom:3px;">Locatie</p>
+                <p style="font-size:0.9rem;color:var(--teal-dp);font-weight:500;">De Meern + bij klanten</p>
+              </div>
+              <div>
+                <p style="font-size:0.6875rem;text-transform:uppercase;letter-spacing:0.08em;color:rgba(10,31,21,0.38);font-weight:600;margin-bottom:3px;">Dienstverband</p>
+                <p style="font-size:0.9rem;color:var(--teal-dp);font-weight:500;">Fulltime / Parttime</p>
+              </div>
+              <div>
+                <p style="font-size:0.6875rem;text-transform:uppercase;letter-spacing:0.08em;color:rgba(10,31,21,0.38);font-weight:600;margin-bottom:3px;">Sector</p>
+                <p style="font-size:0.9rem;color:var(--teal-dp);font-weight:500;">Gezondheidszorg</p>
+              </div>
+              <div>
+                <p style="font-size:0.6875rem;text-transform:uppercase;letter-spacing:0.08em;color:rgba(10,31,21,0.38);font-weight:600;margin-bottom:3px;">Niveau</p>
+                <p style="font-size:0.9rem;color:var(--teal-dp);font-weight:500;">Medior / Senior</p>
+              </div>
+              <div>
+                <p style="font-size:0.6875rem;text-transform:uppercase;letter-spacing:0.08em;color:rgba(10,31,21,0.38);font-weight:600;margin-bottom:3px;">Contact</p>
+                <a href="mailto:info@room-to.nl" style="font-size:0.9rem;color:var(--teal);font-weight:500;text-decoration:none;">info@room-to.nl</a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════ -->
+<footer style="background: var(--teal-dp); border-top: 1px solid rgba(255,255,255,0.07); padding: 28px 0;">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-5">
+      <a href="/">
+        <img src="/brand_assets/logo1.png" alt="Room to..." style="height: 30px; width: auto; opacity: 0.82;">
+      </a>
+      <nav style="display:flex;flex-wrap:wrap;gap:4px 18px;justify-content:center;">
+        <a href="/" class="foot-link">Home</a>
+        <a href="/profiel.html" class="foot-link">Missie &amp; visie</a>
+        <a href="/ons-werk/onze_aanpak.html" class="foot-link">Ons werk</a>
+        <a href="/team.html" class="foot-link">Het team</a>
+        <a href="/contact.html" class="foot-link">Contact</a>
+        <a href="https://room-to.nl/assets/documents/Privacyverklaring.pdf" target="_blank" class="foot-link">Privacyverklaring</a>
+      </nav>
+      <p style="font-family:'DM Sans';font-size:0.75rem;color:rgba(255,255,255,0.22);flex-shrink:0;">
+        &copy; 2026 Room to...
+      </p>
+    </div>
+  </div>
+</footer>
+
+
+<script>
+  const navbar  = document.getElementById('navbar');
+  const onScroll = () => navbar.classList.toggle('scrolled', window.scrollY > 50);
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  const menuBtn   = document.getElementById('menu-btn');
+  const mobileNav = document.getElementById('mobile-nav');
+  menuBtn.addEventListener('click', () => {
+    const isOpen = !mobileNav.classList.contains('hidden');
+    mobileNav.classList.toggle('hidden', isOpen);
+    menuBtn.classList.toggle('open', !isOpen);
+    menuBtn.setAttribute('aria-expanded', String(!isOpen));
+  });
+  document.querySelectorAll('#mobile-nav a').forEach(a => {
+    a.addEventListener('click', () => {
+      mobileNav.classList.add('hidden');
+      menuBtn.classList.remove('open');
+      menuBtn.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>

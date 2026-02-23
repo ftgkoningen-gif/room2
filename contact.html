@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Room to... – Neem contact met ons op. Bel, mail of schrijf ons voor een vrijblijvend gesprek.">
+  <title>Contact | Room to...</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            rt: {
+              teal:      '#2d7d5a',
+              'teal-lt': '#4aaa7d',
+              'teal-dk': '#1a4d35',
+              'teal-dp': '#0a1f15',
+              maroon:    '#8b2535',
+              sage:      '#e8f4ef',
+              cream:     '#fafaf8',
+            }
+          },
+          fontFamily: {
+            display: ['Poppins', 'sans-serif'],
+            body:    ['DM Sans', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+
+  <link rel="stylesheet" href="/roomto.css">
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     NAVIGATION
+═══════════════════════════════════════════ -->
+<nav id="navbar" class="fixed top-0 left-0 right-0 z-50"
+     style="background: var(--teal-dp);">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8 h-[66px] flex items-center justify-between gap-6">
+    <a href="/" class="flex-shrink-0">
+      <img src="/brand_assets/logo1.png" alt="Room to..." class="h-9 w-auto">
+    </a>
+    <ul class="hidden lg:flex items-center gap-7">
+      <li><a href="/" class="nav-link">Home</a></li>
+      <li><a href="/profiel.html" class="nav-link">Missie &amp; visie</a></li>
+      <li><a href="/ons-werk/onze_aanpak.html" class="nav-link">Onze aanpak</a></li>
+      <li><a href="/ons-werk/projecten.html" class="nav-link">Projecten</a></li>
+      <li><a href="/team.html" class="nav-link">Het team</a></li>
+      <li><a href="/vacatures/projectleider_in_de_zorg.html" class="nav-link">Werken bij</a></li>
+      <li><a href="/contact.html" class="nav-link active">Contact</a></li>
+    </ul>
+    <div class="flex items-center gap-3">
+      <a href="/contact.html" class="btn-primary hidden lg:inline-flex" style="padding: 9px 18px; font-size: 0.85rem;">
+        Neem contact op
+      </a>
+      <button id="menu-btn" class="lg:hidden flex flex-col gap-[5px] p-2 rounded"
+              aria-label="Navigatiemenu" aria-expanded="false" aria-controls="mobile-nav">
+        <span class="ham-bar"></span>
+        <span class="ham-bar"></span>
+        <span class="ham-bar"></span>
+      </button>
+    </div>
+  </div>
+  <div id="mobile-nav" class="lg:hidden hidden"
+       style="background: var(--teal-dk); border-top: 1px solid rgba(255,255,255,0.07);">
+    <div class="max-w-7xl mx-auto px-5 py-4 flex flex-col gap-0.5">
+      <a href="/" class="nav-link py-3 border-b border-white/5 block">Home</a>
+      <a href="/profiel.html" class="nav-link py-3 border-b border-white/5 block">Missie &amp; visie</a>
+      <a href="/ons-werk/onze_aanpak.html" class="nav-link py-3 border-b border-white/5 block">Onze aanpak</a>
+      <a href="/ons-werk/projecten.html" class="nav-link py-3 border-b border-white/5 block">Projecten</a>
+      <a href="/team.html" class="nav-link py-3 border-b border-white/5 block">Het team</a>
+      <a href="/vacatures/projectleider_in_de_zorg.html" class="nav-link py-3 border-b border-white/5 block">Werken bij</a>
+      <a href="/contact.html" class="nav-link py-3 border-b border-white/5 block">Contact</a>
+      <a href="/contact.html" class="btn-primary mt-3" style="justify-content:center;">Neem contact op</a>
+    </div>
+  </div>
+</nav>
+
+
+<!-- ═══════════════════════════════════════════
+     SUB-HERO
+═══════════════════════════════════════════ -->
+<header class="sub-hero hero-bg grain-layer">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8 w-full" style="position:relative;z-index:2;">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span>Contact</span>
+    </nav>
+    <span class="sec-label" style="color:#c07070;display:block;margin-bottom:14px;">Laten we praten</span>
+    <h1 class="font-display font-extrabold text-white"
+        style="font-size: clamp(2rem, 4.5vw, 3.4rem); letter-spacing: -0.034em; line-height: 1.1; max-width: 640px;">
+      Neem contact met ons op
+    </h1>
+    <p style="font-size:1.0625rem;color:rgba(255,255,255,0.62);margin-top:16px;max-width:520px;line-height:1.72;">
+      Benieuwd wat Room to... voor uw organisatie kan betekenen? We luisteren graag en denken vrijblijvend mee.
+    </p>
+  </div>
+  <div class="absolute bottom-0 left-0 right-0" style="line-height:0;z-index:3;">
+    <svg viewBox="0 0 1440 56" preserveAspectRatio="none" style="width:100%;height:56px;display:block;">
+      <path d="M0,56 L0,18 Q360,56 720,28 Q1080,0 1440,36 L1440,56 Z" fill="#fafaf8"/>
+    </svg>
+  </div>
+</header>
+
+
+<!-- ═══════════════════════════════════════════
+     CONTACT — form + details
+═══════════════════════════════════════════ -->
+<section style="background: var(--cream); padding: 96px 0 112px;">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20">
+
+      <!-- Left: form -->
+      <div class="reveal">
+        <span class="sec-label" style="margin-bottom:14px;display:block;">Stuur een bericht</span>
+        <h2 class="font-display font-bold"
+            style="font-size: clamp(1.5rem, 3vw, 2.1rem); letter-spacing: -0.03em; color: var(--teal-dp); margin-bottom: 28px; line-height: 1.2;">
+          Schrijf ons
+        </h2>
+
+        <form action="mailto:info@room-to.nl" method="post" enctype="text/plain"
+              style="display:flex;flex-direction:column;gap:18px;">
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="form-label">Naam</label>
+              <input type="text" name="naam" placeholder="Uw volledige naam" class="form-field-light" required>
+            </div>
+            <div>
+              <label class="form-label">Organisatie</label>
+              <input type="text" name="organisatie" placeholder="Naam van uw organisatie" class="form-field-light">
+            </div>
+          </div>
+
+          <div>
+            <label class="form-label">E-mailadres</label>
+            <input type="email" name="email" placeholder="u@organisatie.nl" class="form-field-light" required>
+          </div>
+
+          <div>
+            <label class="form-label">Telefoonnummer</label>
+            <input type="tel" name="telefoon" placeholder="+31 6 ..." class="form-field-light">
+          </div>
+
+          <div>
+            <label class="form-label">Uw bericht</label>
+            <textarea name="bericht" rows="5" placeholder="Vertel ons over uw uitdaging of vraag..." class="form-field-light" required
+                      style="resize:vertical;min-height:130px;"></textarea>
+          </div>
+
+          <div>
+            <button type="submit" class="btn-primary" style="width:100%;justify-content:center;">
+              Verstuur bericht
+              <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+                <path d="M1.5 7.5h12M8.5 3.5L12.5 7.5L8.5 11.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+
+        </form>
+      </div>
+
+      <!-- Right: contact details -->
+      <div class="reveal d1">
+        <span class="sec-label" style="margin-bottom:14px;display:block;">Directe contactgegevens</span>
+        <h2 class="font-display font-bold"
+            style="font-size: clamp(1.5rem, 3vw, 2.1rem); letter-spacing: -0.03em; color: var(--teal-dp); margin-bottom: 36px; line-height: 1.2;">
+          Of bereik ons direct
+        </h2>
+
+        <div style="display:flex;flex-direction:column;gap:28px;">
+
+          <a href="tel:+31648507870" style="text-decoration:none;" class="contact-row" style="background: #fff; border-radius: 8px; padding: 22px; box-shadow: var(--shadow-card);">
+            <div class="ci-icon">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                <path d="M3.5 3h3l1.5 3.5-2 2c1 2 3 4 5 5l2-2 3.5 1.5v3C10 18.5 1 9.5 3.5 3Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div>
+              <p style="font-size:0.6875rem;text-transform:uppercase;letter-spacing:0.1em;color:rgba(10,31,21,0.35);margin-bottom:4px;font-weight:600;">Telefoon</p>
+              <p class="font-display font-semibold" style="font-size:1.125rem;color:var(--teal-dp);">+31 6 485 078 70</p>
+              <p style="font-size:0.8125rem;color:rgba(10,31,21,0.45);margin-top:3px;">Bereikbaar op werkdagen</p>
+            </div>
+          </a>
+
+          <a href="mailto:info@room-to.nl" style="text-decoration:none;" class="contact-row" style="background: #fff; border-radius: 8px; padding: 22px; box-shadow: var(--shadow-card);">
+            <div class="ci-icon">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                <rect x="1.5" y="4" width="15" height="10.5" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M1.5 7L9 11.5L16.5 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div>
+              <p style="font-size:0.6875rem;text-transform:uppercase;letter-spacing:0.1em;color:rgba(10,31,21,0.35);margin-bottom:4px;font-weight:600;">E-mail</p>
+              <p class="font-display font-semibold" style="font-size:1.125rem;color:var(--teal-dp);">info@room-to.nl</p>
+              <p style="font-size:0.8125rem;color:rgba(10,31,21,0.45);margin-top:3px;">We reageren binnen 2 werkdagen</p>
+            </div>
+          </a>
+
+          <div class="contact-row" style="background: #fff; border-radius: 8px; padding: 22px; box-shadow: var(--shadow-card);">
+            <div class="ci-icon">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                <path d="M9 9.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M9 1.5c-3.6 0-6.5 2.9-6.5 6.5 0 4.5 6.5 8.5 6.5 8.5S15.5 12.5 15.5 8c0-3.6-2.9-6.5-6.5-6.5Z" stroke="currentColor" stroke-width="1.5"/>
+              </svg>
+            </div>
+            <div>
+              <p style="font-size:0.6875rem;text-transform:uppercase;letter-spacing:0.1em;color:rgba(10,31,21,0.35);margin-bottom:4px;font-weight:600;">Adres</p>
+              <p class="font-display font-semibold" style="font-size:1.0625rem;color:var(--teal-dp);line-height:1.5;">De Dompelaar 1G<br>3454XZ De Meern</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════ -->
+<footer style="background: var(--teal-dp); border-top: 1px solid rgba(255,255,255,0.07); padding: 28px 0;">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-5">
+      <a href="/">
+        <img src="/brand_assets/logo1.png" alt="Room to..." style="height: 30px; width: auto; opacity: 0.82;">
+      </a>
+      <nav style="display:flex;flex-wrap:wrap;gap:4px 18px;justify-content:center;">
+        <a href="/" class="foot-link">Home</a>
+        <a href="/profiel.html" class="foot-link">Missie &amp; visie</a>
+        <a href="/ons-werk/onze_aanpak.html" class="foot-link">Ons werk</a>
+        <a href="/team.html" class="foot-link">Het team</a>
+        <a href="/contact.html" class="foot-link">Contact</a>
+        <a href="https://room-to.nl/assets/documents/Privacyverklaring.pdf" target="_blank" class="foot-link">Privacyverklaring</a>
+      </nav>
+      <p style="font-family:'DM Sans';font-size:0.75rem;color:rgba(255,255,255,0.22);flex-shrink:0;">
+        &copy; 2026 Room to...
+      </p>
+    </div>
+  </div>
+</footer>
+
+
+<script>
+  const navbar  = document.getElementById('navbar');
+  const onScroll = () => navbar.classList.toggle('scrolled', window.scrollY > 50);
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  const menuBtn   = document.getElementById('menu-btn');
+  const mobileNav = document.getElementById('mobile-nav');
+  menuBtn.addEventListener('click', () => {
+    const isOpen = !mobileNav.classList.contains('hidden');
+    mobileNav.classList.toggle('hidden', isOpen);
+    menuBtn.classList.toggle('open', !isOpen);
+    menuBtn.setAttribute('aria-expanded', String(!isOpen));
+  });
+  document.querySelectorAll('#mobile-nav a').forEach(a => {
+    a.addEventListener('click', () => {
+      mobileNav.classList.add('hidden');
+      menuBtn.classList.remove('open');
+      menuBtn.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
