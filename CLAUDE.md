@@ -38,3 +38,11 @@
 - Do not "improve" unless user explicitly asks.
 - Do not use default Tailwind primary colors (indigo/blue).
 - Stop only when comparisons show near-perfect match or user approves.
+
+## Git & Deployment – Local-first regel
+
+1. Alle voorgestelde wijzigingen eerst lokaal maken + tonen (code diff + localhost screenshot)
+2. Pas na mijn expliciete zin zoals "push" / "akkoord" mag je:
+   - commit maken
+   - pushen naar GitHub
+3. Nooit zelf pushen zonder duidelijke goedkeuring
