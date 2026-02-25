@@ -419,38 +419,68 @@
   }, { threshold: 0.1 });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-  // Touch: tap to flip (for mobile where hover doesn't work)
-  document.querySelectorAll('.flip-avatar').forEach(avatar => {
-    avatar.addEventListener('click', () => avatar.classList.toggle('flipped'));
-  });
+  // Flip + bio popup — unified click system (desktop & mobile)
+  const popup = document.createElement('div');
+  popup.className = 'team-bio-tooltip';
+  document.body.appendChild(popup);
 
-  // Bio tooltip
-  const tooltip = document.createElement('div');
-  tooltip.className = 'team-bio-tooltip';
-  document.body.appendChild(tooltip);
+  let activeAvatar = null;
 
-  function positionTooltip(e) {
-    const pad = 18;
-    const tw = tooltip.offsetWidth;
-    const th = tooltip.offsetHeight;
-    let x = e.clientX + pad;
-    let y = e.clientY - th / 2;
-    if (x + tw > window.innerWidth - 8) x = e.clientX - tw - pad;
-    if (y < 8) y = 8;
-    if (y + th > window.innerHeight - 8) y = window.innerHeight - th - 8;
-    tooltip.style.left = x + 'px';
-    tooltip.style.top  = y + 'px';
+  function positionPopup(avatar) {
+    const r = avatar.getBoundingClientRect();
+    const pw = popup.offsetWidth;
+    const pad = 14;
+    let x, y;
+
+    // Try right of the avatar
+    if (r.right + pad + pw <= window.innerWidth - 8) {
+      x = r.right + pad;
+      y = r.top + (r.height / 2) - (popup.offsetHeight / 2);
+    }
+    // Try left of the avatar
+    else if (r.left - pad - pw >= 8) {
+      x = r.left - pad - pw;
+      y = r.top + (r.height / 2) - (popup.offsetHeight / 2);
+    }
+    // Fall back: below the avatar, centered
+    else {
+      x = Math.max(8, r.left + (r.width / 2) - pw / 2);
+      y = r.bottom + pad;
+    }
+
+    // Clamp vertically
+    const ph = popup.offsetHeight;
+    y = Math.max(8, Math.min(y, window.innerHeight - ph - 8));
+    // Clamp horizontally
+    x = Math.max(8, Math.min(x, window.innerWidth - pw - 8));
+
+    popup.style.left = x + 'px';
+    popup.style.top  = y + 'px';
+  }
+
+  function closePopup() {
+    if (activeAvatar) {
+      activeAvatar.classList.remove('flipped');
+      activeAvatar = null;
+    }
+    popup.classList.remove('visible');
   }
 
   document.querySelectorAll('.flip-avatar[data-bio]').forEach(avatar => {
-    avatar.addEventListener('mouseenter', e => {
-      tooltip.textContent = avatar.dataset.bio;
-      tooltip.classList.add('visible');
-      positionTooltip(e);
+    avatar.addEventListener('click', e => {
+      e.stopPropagation();
+      if (activeAvatar === avatar) { closePopup(); return; }
+      if (activeAvatar) activeAvatar.classList.remove('flipped');
+      activeAvatar = avatar;
+      avatar.classList.add('flipped');
+      popup.textContent = avatar.dataset.bio;
+      popup.classList.add('visible');
+      // Position after browser has rendered the text
+      requestAnimationFrame(() => positionPopup(avatar));
     });
-    avatar.addEventListener('mousemove', positionTooltip);
-    avatar.addEventListener('mouseleave', () => tooltip.classList.remove('visible'));
   });
+
+  document.addEventListener('click', closePopup);
 </script>
 
 </body>

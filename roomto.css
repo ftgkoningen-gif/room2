@@ -213,15 +213,14 @@ img { max-width: 100%; display: block; }
 }
 
 /* ─── Team ───────────────────────────────────────── */
-.team-card { text-align: center; transition: transform 0.3s cubic-bezier(0.25,0.1,0.25,1); }
-.team-card:hover { transform: translateY(-4px); }
+.team-card { text-align: center; }
 
 /* Flip avatar */
 .flip-avatar {
   width: 120px; height: 120px;
   perspective: 700px;
   margin: 0 auto 14px;
-  cursor: default;
+  cursor: pointer;
 }
 .flip-inner {
   width: 100%; height: 100%;
@@ -230,7 +229,6 @@ img { max-width: 100%; display: block; }
   transition: transform 0.62s cubic-bezier(0.4, 0.2, 0.2, 1);
   border-radius: 50%;
 }
-.team-card:hover .flip-inner,
 .flip-avatar.flipped .flip-inner { transform: rotateY(180deg); }
 .flip-front, .flip-back {
   position: absolute; inset: 0;
@@ -240,8 +238,8 @@ img { max-width: 100%; display: block; }
   border: 3px solid rgba(45,125,90,0.18);
   transition: border-color 0.25s ease;
 }
-.team-card:hover .flip-front,
-.team-card:hover .flip-back { border-color: rgba(45,125,90,0.5); }
+.flip-avatar.flipped .flip-front,
+.flip-avatar.flipped .flip-back { border-color: rgba(45,125,90,0.5); }
 .flip-back { transform: rotateY(180deg); }
 .flip-front img, .flip-back img {
   width: 100%; height: 100%;
@@ -251,28 +249,28 @@ img { max-width: 100%; display: block; }
   border: none; margin: 0;
 }
 
-/* ─── Team bio tooltip ───────────────────────────── */
+/* ─── Team bio popup ─────────────────────────────── */
 .team-bio-tooltip {
   position: fixed;
   z-index: 999;
-  max-width: 220px;
+  width: 230px;
   background: var(--teal-dp);
-  color: rgba(255,255,255,0.82);
+  color: rgba(255,255,255,0.88);
   font-family: 'DM Sans', sans-serif;
-  font-size: 0.8125rem;
-  line-height: 1.68;
-  padding: 13px 16px;
-  border-radius: 10px;
-  border: 1px solid rgba(74,170,125,0.22);
-  box-shadow: 0 10px 36px rgba(10,31,21,0.28), 0 2px 8px rgba(10,31,21,0.18);
+  font-size: 0.875rem;
+  line-height: 1.7;
+  padding: 14px 18px;
+  border-radius: 12px;
+  border: 1px solid rgba(74,170,125,0.25);
+  box-shadow: 0 12px 40px rgba(10,31,21,0.32), 0 2px 8px rgba(10,31,21,0.18);
   pointer-events: none;
   opacity: 0;
-  transform: translateY(6px);
-  transition: opacity 0.18s ease, transform 0.18s ease;
+  transform: scale(0.95);
+  transition: opacity 0.2s ease, transform 0.2s ease;
 }
 .team-bio-tooltip.visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: scale(1);
 }
 
 /* ─── Contact ────────────────────────────────────── */
