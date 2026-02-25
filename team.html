@@ -419,68 +419,73 @@
   }, { threshold: 0.1 });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-  // Flip + bio popup — unified click system (desktop & mobile)
+  // Flip + bio popup
   const popup = document.createElement('div');
   popup.className = 'team-bio-tooltip';
   document.body.appendChild(popup);
-
-  let activeAvatar = null;
 
   function positionPopup(avatar) {
     const r = avatar.getBoundingClientRect();
     const pw = popup.offsetWidth;
     const pad = 14;
     let x, y;
-
-    // Try right of the avatar
     if (r.right + pad + pw <= window.innerWidth - 8) {
       x = r.right + pad;
       y = r.top + (r.height / 2) - (popup.offsetHeight / 2);
-    }
-    // Try left of the avatar
-    else if (r.left - pad - pw >= 8) {
+    } else if (r.left - pad - pw >= 8) {
       x = r.left - pad - pw;
       y = r.top + (r.height / 2) - (popup.offsetHeight / 2);
-    }
-    // Fall back: below the avatar, centered
-    else {
+    } else {
       x = Math.max(8, r.left + (r.width / 2) - pw / 2);
       y = r.bottom + pad;
     }
-
-    // Clamp vertically
     const ph = popup.offsetHeight;
     y = Math.max(8, Math.min(y, window.innerHeight - ph - 8));
-    // Clamp horizontally
     x = Math.max(8, Math.min(x, window.innerWidth - pw - 8));
-
     popup.style.left = x + 'px';
     popup.style.top  = y + 'px';
   }
 
-  function closePopup() {
-    if (activeAvatar) {
-      activeAvatar.classList.remove('flipped');
-      activeAvatar = null;
-    }
-    popup.classList.remove('visible');
-  }
+  const isHoverDevice = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
-  document.querySelectorAll('.flip-avatar[data-bio]').forEach(avatar => {
-    avatar.addEventListener('click', e => {
-      e.stopPropagation();
-      if (activeAvatar === avatar) { closePopup(); return; }
-      if (activeAvatar) activeAvatar.classList.remove('flipped');
-      activeAvatar = avatar;
-      avatar.classList.add('flipped');
-      popup.textContent = avatar.dataset.bio;
-      popup.classList.add('visible');
-      // Position after browser has rendered the text
-      requestAnimationFrame(() => positionPopup(avatar));
+  if (isHoverDevice) {
+    // Desktop: hover in/out
+    document.querySelectorAll('.flip-avatar[data-bio]').forEach(avatar => {
+      avatar.addEventListener('mouseenter', () => {
+        avatar.classList.add('flipped');
+        popup.textContent = avatar.dataset.bio;
+        popup.classList.add('visible');
+        requestAnimationFrame(() => positionPopup(avatar));
+      });
+      avatar.addEventListener('mouseleave', () => {
+        avatar.classList.remove('flipped');
+        popup.classList.remove('visible');
+      });
     });
-  });
+  } else {
+    // Mobile: click/tap
+    let activeAvatar = null;
 
-  document.addEventListener('click', closePopup);
+    function closePopup() {
+      if (activeAvatar) { activeAvatar.classList.remove('flipped'); activeAvatar = null; }
+      popup.classList.remove('visible');
+    }
+
+    document.querySelectorAll('.flip-avatar[data-bio]').forEach(avatar => {
+      avatar.addEventListener('click', e => {
+        e.stopPropagation();
+        if (activeAvatar === avatar) { closePopup(); return; }
+        if (activeAvatar) activeAvatar.classList.remove('flipped');
+        activeAvatar = avatar;
+        avatar.classList.add('flipped');
+        popup.textContent = avatar.dataset.bio;
+        popup.classList.add('visible');
+        requestAnimationFrame(() => positionPopup(avatar));
+      });
+    });
+
+    document.addEventListener('click', closePopup);
+  }
 </script>
 
 </body>
