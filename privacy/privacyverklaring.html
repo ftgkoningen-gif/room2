@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Room to... – Privacyverklaring. Lees hoe wij omgaan met uw persoonsgegevens.">
+  <title>Privacyverklaring | Room to...</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            rt: {
+              teal:      '#2d7d5a',
+              'teal-lt': '#4aaa7d',
+              'teal-dk': '#1a4d35',
+              'teal-dp': '#0a1f15',
+              maroon:    '#8b2535',
+              sage:      '#e8f4ef',
+              cream:     '#fafaf8',
+            }
+          },
+          fontFamily: {
+            display: ['Poppins', 'sans-serif'],
+            body:    ['DM Sans', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+
+  <link rel="stylesheet" href="/roomto.css">
+
+  <style>
+    .privacy-content h2 {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      font-size: 1.125rem;
+      color: var(--teal-dp);
+      margin-top: 2.5rem;
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.015em;
+    }
+    .privacy-content p {
+      font-size: 0.9375rem;
+      color: rgba(10,31,21,0.72);
+      line-height: 1.78;
+      margin-bottom: 1rem;
+    }
+    .privacy-content ul {
+      margin: 0.5rem 0 1rem 1.25rem;
+      list-style: disc;
+    }
+    .privacy-content ul li {
+      font-size: 0.9375rem;
+      color: rgba(10,31,21,0.72);
+      line-height: 1.78;
+      margin-bottom: 0.25rem;
+    }
+    .privacy-content a {
+      color: var(--teal);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .privacy-content a:hover {
+      color: var(--teal-lt);
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     NAVIGATION
+═══════════════════════════════════════════ -->
+<nav id="navbar" class="fixed top-0 left-0 right-0 z-50"
+     style="background: var(--teal-dp);">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8 h-[66px] flex items-center justify-between gap-6">
+    <a href="/" class="flex-shrink-0">
+      <img src="/brand_assets/logo1.png" alt="Room to..." class="h-9 w-auto">
+    </a>
+    <ul class="hidden lg:flex items-center gap-7">
+      <li><a href="/" class="nav-link">Home</a></li>
+      <li><a href="/profiel.html" class="nav-link">Missie &amp; visie</a></li>
+      <li><a href="/ons-werk/onze_aanpak.html" class="nav-link">Onze aanpak</a></li>
+      <li><a href="/ons-werk/projecten.html" class="nav-link">Projecten</a></li>
+      <li><a href="/team.html" class="nav-link">Het team</a></li>
+      <li><a href="/vacatures/projectleider_in_de_zorg.html" class="nav-link">Werken bij</a></li>
+      <li><a href="/contact.html" class="nav-link">Contact</a></li>
+    </ul>
+    <div class="flex items-center gap-3">
+      <a href="/contact.html" class="btn-primary hidden lg:inline-flex" style="padding: 9px 18px; font-size: 0.85rem;">
+        Neem contact op
+      </a>
+      <button id="menu-btn" class="lg:hidden flex flex-col gap-[5px] p-2 rounded"
+              aria-label="Navigatiemenu" aria-expanded="false" aria-controls="mobile-nav">
+        <span class="ham-bar"></span>
+        <span class="ham-bar"></span>
+        <span class="ham-bar"></span>
+      </button>
+    </div>
+  </div>
+  <div id="mobile-nav" class="lg:hidden hidden"
+       style="background: var(--teal-dk); border-top: 1px solid rgba(255,255,255,0.07);">
+    <div class="max-w-7xl mx-auto px-5 py-4 flex flex-col gap-0.5">
+      <a href="/" class="nav-link py-3 border-b border-white/5 block">Home</a>
+      <a href="/profiel.html" class="nav-link py-3 border-b border-white/5 block">Missie &amp; visie</a>
+      <a href="/ons-werk/onze_aanpak.html" class="nav-link py-3 border-b border-white/5 block">Onze aanpak</a>
+      <a href="/ons-werk/projecten.html" class="nav-link py-3 border-b border-white/5 block">Projecten</a>
+      <a href="/team.html" class="nav-link py-3 border-b border-white/5 block">Het team</a>
+      <a href="/vacatures/projectleider_in_de_zorg.html" class="nav-link py-3 border-b border-white/5 block">Werken bij</a>
+      <a href="/contact.html" class="nav-link py-3 border-b border-white/5 block">Contact</a>
+      <a href="/contact.html" class="btn-primary mt-3" style="justify-content:center;">Neem contact op</a>
+    </div>
+  </div>
+</nav>
+
+
+<!-- ═══════════════════════════════════════════
+     SUB-HERO
+═══════════════════════════════════════════ -->
+<header class="sub-hero hero-bg grain-layer">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8 w-full" style="position:relative;z-index:2;">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span>Privacyverklaring</span>
+    </nav>
+    <span class="sec-label" style="color:#c07070;display:block;margin-bottom:14px;">Juridisch</span>
+    <h1 class="font-display font-extrabold text-white"
+        style="font-size: clamp(2rem, 4.5vw, 3.4rem); letter-spacing: -0.034em; line-height: 1.1; max-width: 640px;">
+      Privacyverklaring
+    </h1>
+    <p style="font-size:1.0625rem;color:rgba(255,255,255,0.62);margin-top:16px;max-width:520px;line-height:1.72;">
+      Hoe Room to...B.V. omgaat met uw persoonsgegevens.
+    </p>
+  </div>
+  <div class="absolute bottom-0 left-0 right-0" style="line-height:0;z-index:3;">
+    <svg viewBox="0 0 1440 56" preserveAspectRatio="none" style="width:100%;height:56px;display:block;">
+      <path d="M0,56 L0,18 Q360,56 720,28 Q1080,0 1440,36 L1440,56 Z" fill="#fafaf8"/>
+    </svg>
+  </div>
+</header>
+
+
+<!-- ═══════════════════════════════════════════
+     PRIVACY CONTENT
+═══════════════════════════════════════════ -->
+<section style="background: var(--cream); padding: 72px 0 96px;">
+  <div class="max-w-3xl mx-auto px-5 lg:px-8 reveal privacy-content">
+
+    <p>
+      Room to...B.V., gevestigd aan Dompelaar 1g, 3454 XZ De Meern, is verantwoordelijk voor de verwerking van persoonsgegevens zoals weergegeven in deze privacyverklaring.
+    </p>
+
+    <p>
+      <strong>Contactgegevens</strong><br>
+      Adres: Dompelaar 1g, 3454 XZ De Meern<br>
+      Telefoon: <a href="tel:+31648507870">+31 6 485 078 70</a>
+    </p>
+
+    <h2>Persoonsgegevens die wij verwerken</h2>
+    <p>
+      Room to...B.V. verwerkt uw persoonsgegevens doordat u gebruik maakt van onze diensten en/of omdat u deze zelf aan ons verstrekt. Hieronder vindt u een overzicht van de persoonsgegevens die wij verwerken:
+    </p>
+    <ul>
+      <li>Voor- en achternaam contactpersonen</li>
+      <li>Adresgegevens</li>
+      <li>Factuurgegevens</li>
+      <li>Locatiegegevens</li>
+      <li>Gegevens over uw activiteiten op onze website</li>
+    </ul>
+    <p>
+      Room to...B.V. is geïnteresseerd in gegevens die iets zeggen over het gebruik van deze website. De organisatie is benieuwd in hoeverre belangstelling bestaat voor bepaalde pagina's. Het gaat hier om aantallen bezoekers en om de tijdstippen waarop de site wordt bezocht; het betreft derhalve geanonimiseerde, niet tot een persoon herleidbare gegevens.
+    </p>
+
+    <h2>Bijzondere en/of gevoelige persoonsgegevens die wij verwerken</h2>
+    <p>
+      Onze website en/of dienst heeft niet de intentie gegevens te verzamelen over websitebezoekers die jonger zijn dan 16 jaar, tenzij ze toestemming hebben van ouders of voogd. We kunnen echter niet controleren of een bezoeker ouder dan 16 is. Wij raden ouders dan ook aan betrokken te zijn bij de onlineactiviteiten van hun kinderen, om zo te voorkomen dat er gegevens over kinderen verzameld worden zonder ouderlijke toestemming. Als u ervan overtuigd bent dat wij zonder die toestemming persoonlijke gegevens hebben verzameld over een minderjarige, neem dan contact met ons op via <a href="mailto:info@room-to.nl">info@room-to.nl</a>, dan verwijderen wij deze informatie.
+    </p>
+
+    <h2>Met welk doel en op basis van welke grondslag wij persoonsgegevens verwerken</h2>
+    <p>Room to...B.V. verwerkt uw persoonsgegevens voor de volgende doelen:</p>
+    <ul>
+      <li>Het afhandelen van uw betaling</li>
+      <li>Om diensten bij u af te leveren</li>
+      <li>Room to...B.V. analyseert uw gedrag op de website om daarmee de website te verbeteren en het aanbod van producten en diensten af te stemmen op uw voorkeuren.</li>
+      <li>Room to...B.V. verwerkt ook persoonsgegevens als wij hier wettelijk toe verplicht zijn, zoals gegevens die wij nodig hebben voor onze belastingaangifte.</li>
+    </ul>
+
+    <h2>Hoe lang we persoonsgegevens bewaren</h2>
+    <p>
+      Room to...B.V. bewaart uw persoonsgegevens niet langer dan strikt nodig is om de doelen te realiseren waarvoor uw gegevens worden verzameld. Wij hanteren de volgende bewaartermijnen voor de volgende categorieën van persoonsgegevens:
+    </p>
+    <ul>
+      <li>Factuurgegevens (voornaam, achternaam, adresgegevens): 7 jaar</li>
+    </ul>
+
+    <h2>Delen van persoonsgegevens met derden</h2>
+    <p>
+      Room to...B.V. verstrekt uitsluitend gegevens aan derden en alleen als dit nodig is voor de uitvoering van onze overeenkomst met u of om te voldoen aan een wettelijke verplichting.
+    </p>
+
+    <h2>Cookies, of vergelijkbare technieken, die wij gebruiken</h2>
+    <p>
+      Room to...B.V. gebruikt alleen technische en functionele cookies, en analytische cookies die geen inbreuk maken op uw privacy. Een cookie is een klein tekstbestand dat bij het eerste bezoek aan deze website wordt opgeslagen op uw computer, tablet of smartphone. De cookies die wij gebruiken zijn noodzakelijk voor de technische werking van de website en uw gebruiksgemak. Ze zorgen ervoor dat de website naar behoren werkt en onthouden bijvoorbeeld uw voorkeursinstellingen. Ook kunnen wij hiermee onze website optimaliseren. U kunt zich afmelden voor cookies door uw internetbrowser zo in te stellen dat deze geen cookies meer opslaat. Daarnaast kunt u ook alle informatie die eerder is opgeslagen via de instellingen van uw browser verwijderen.
+    </p>
+
+    <h2>Gegevens inzien, aanpassen of verwijderen</h2>
+    <p>
+      U heeft het recht om uw persoonsgegevens in te zien, te corrigeren of te verwijderen. Daarnaast heeft u het recht om uw eventuele toestemming voor de gegevensverwerking in te trekken of bezwaar te maken tegen de verwerking van uw persoonsgegevens door Room to...B.V. en heeft u het recht op gegevensoverdraagbaarheid. Dat betekent dat u bij ons een verzoek kunt indienen om de persoonsgegevens die wij van u beschikken in een computerbestand naar u of een ander, door u genoemde organisatie, te sturen.
+    </p>
+    <p>
+      U kunt een verzoek tot inzage, correctie, verwijdering, gegevensoverdracht van uw persoonsgegevens of een verzoek tot intrekking van uw toestemming of bezwaar op de verwerking van uw persoonsgegevens sturen naar <a href="mailto:info@room-to.nl">info@room-to.nl</a>.
+    </p>
+    <p>
+      We reageren zo snel mogelijk, maar binnen vier weken, op uw verzoek.
+    </p>
+
+    <h2>Hoe wij persoonsgegevens beveiligen</h2>
+    <p>
+      Room to...B.V. neemt de bescherming van uw gegevens serieus en neemt passende maatregelen om misbruik, verlies, onbevoegde toegang, ongewenste openbaarmaking en ongeoorloofde wijziging tegen te gaan. Als u de indruk heeft dat uw gegevens niet goed beveiligd zijn of er aanwijzingen zijn van misbruik, neem dan contact op via <a href="mailto:info@room-to.nl">info@room-to.nl</a>.
+    </p>
+    <p>
+      Room to...B.V. wil u er tevens op wijzen dat u de mogelijkheid heeft om een klacht in te dienen bij de nationale toezichthouder, de Autoriteit Persoonsgegevens. Dat kan via de volgende link:
+      <a href="https://autoriteitpersoonsgegevens.nl/nl/contact-met-de-autoriteit-persoonsgegevens/tip-ons" target="_blank" rel="noopener">autoriteitpersoonsgegevens.nl</a>.
+    </p>
+
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════ -->
+<footer style="background: var(--teal-dp); border-top: 1px solid rgba(255,255,255,0.07); padding: 28px 0;">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-5">
+      <a href="/">
+        <img src="/brand_assets/logo1.png" alt="Room to..." style="height: 30px; width: auto; opacity: 0.82;">
+      </a>
+      <nav style="display:flex;flex-wrap:wrap;gap:4px 18px;justify-content:center;">
+        <a href="/" class="foot-link">Home</a>
+        <a href="/profiel.html" class="foot-link">Missie &amp; visie</a>
+        <a href="/ons-werk/onze_aanpak.html" class="foot-link">Ons werk</a>
+        <a href="/team.html" class="foot-link">Het team</a>
+        <a href="/contact.html" class="foot-link">Contact</a>
+        <a href="/privacy/privacyverklaring.html" class="foot-link">Privacyverklaring</a>
+      </nav>
+      <p style="font-family:'DM Sans';font-size:0.75rem;color:rgba(255,255,255,0.22);flex-shrink:0;">
+        &copy; 2026 Room to...
+      </p>
+    </div>
+  </div>
+</footer>
+
+
+<script>
+  const navbar  = document.getElementById('navbar');
+  const onScroll = () => navbar.classList.toggle('scrolled', window.scrollY > 50);
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  const menuBtn   = document.getElementById('menu-btn');
+  const mobileNav = document.getElementById('mobile-nav');
+  menuBtn.addEventListener('click', () => {
+    const isOpen = !mobileNav.classList.contains('hidden');
+    mobileNav.classList.toggle('hidden', isOpen);
+    menuBtn.classList.toggle('open', !isOpen);
+    menuBtn.setAttribute('aria-expanded', String(!isOpen));
+  });
+  document.querySelectorAll('#mobile-nav a').forEach(a => {
+    a.addEventListener('click', () => {
+      mobileNav.classList.add('hidden');
+      menuBtn.classList.remove('open');
+      menuBtn.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
