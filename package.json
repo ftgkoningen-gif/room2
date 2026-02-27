@@ -2,6 +2,7 @@
   "name": "@websites/root",
   "version": "1.0.0",
   "private": true,
+  "packageManager": "pnpm@10.30.3",
   "scripts": {
     "dev": "turbo dev",
     "build": "turbo build",
