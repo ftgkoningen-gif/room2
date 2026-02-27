@@ -406,3 +406,11 @@ textarea.form-field-light { resize: vertical; min-height: 130px; }
   width: 6px; height: 6px; border-radius: 50%;
   background: var(--teal); margin-top: 9px;
 }
+
+/* ─── Wave transitions — responsive height ───────── */
+@media (max-width: 1024px) {
+  svg[preserveAspectRatio="none"] { height: 44px !important; }
+}
+@media (max-width: 640px) {
+  svg[preserveAspectRatio="none"] { height: 32px !important; }
+}
