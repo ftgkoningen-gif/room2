@@ -1,0 +1,9 @@
+{
+  "name": "@websites/roomto",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "node ../../serve.mjs . 3000",
+    "build": "echo 'Statische site — geen build stap nodig'"
+  }
+}

@@ -2,3 +2,4 @@ node_modules/
 screenshots/
 .claude/
 package-lock.json
+.turbo/

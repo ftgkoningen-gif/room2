@@ -1,4 +1,17 @@
 {
+  "name": "@websites/root",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "dev:roomto": "pnpm --filter @websites/roomto dev",
+    "dev:premium-liften": "pnpm --filter @websites/premium-liften dev",
+    "screenshot": "node screenshot.mjs"
+  },
+  "devDependencies": {
+    "turbo": "latest"
+  },
   "dependencies": {
     "pngjs": "^7.0.0",
     "puppeteer-core": "^24.37.5"
