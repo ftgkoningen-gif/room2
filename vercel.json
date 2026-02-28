@@ -1,0 +1,4 @@
+{
+  "outputDirectory": "apps/roomto",
+  "buildCommand": "turbo build"
+}
