@@ -16,11 +16,19 @@
     "dirk": { "query": "zonnatura hazelnoot" }
   },
   {
-    "name": "Starbucks Nespresso cups",
+    "name": "Starbucks Colombia Nespresso",
     "brand": "starbucks",
-    "titleContains": ["nespresso|capsule|cup|koffiecup"],
-    "ah": { "query": "starbucks nespresso capsules" },
-    "jumbo": { "query": "starbucks nespresso" },
-    "dirk": { "query": "starbucks nespresso" }
+    "titleContains": ["colombia", "nespresso|capsule|cup|koffiecup"],
+    "ah": { "query": "starbucks colombia nespresso" },
+    "jumbo": { "query": "starbucks colombia nespresso" },
+    "dirk": { "query": "starbucks colombia nespresso" }
+  },
+  {
+    "name": "Starbucks Blonde Espresso Roast Decaf Nespresso",
+    "brand": "starbucks",
+    "titleContains": ["blonde", "decaf", "nespresso|capsule|cup|koffiecup"],
+    "ah": { "query": "starbucks blonde espresso decaf nespresso" },
+    "jumbo": { "query": "starbucks blonde decaf nespresso" },
+    "dirk": { "query": "starbucks blonde decaf nespresso" }
   }
 ]
