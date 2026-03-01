@@ -1,0 +1,202 @@
+/* Price Hunter — Custom Styles */
+
+:root {
+  --ph-orange: #FF7300;
+  --ph-orange-light: #FFF3E8;
+  --ph-orange-mid: #FFD9B3;
+  --ph-green: #2E7D32;
+  --ph-green-light: #E8F5E9;
+  --ph-red: #C62828;
+  --ph-gray-50: #FAFAFA;
+  --ph-gray-100: #F5F5F5;
+  --ph-gray-200: #EEEEEE;
+  --ph-gray-300: #E0E0E0;
+  --ph-gray-400: #BDBDBD;
+  --ph-gray-500: #9E9E9E;
+  --ph-gray-600: #757575;
+  --ph-gray-700: #616161;
+  --ph-gray-800: #424242;
+  --ph-gray-900: #212121;
+  --ph-shadow-sm: 0 1px 2px rgba(0,0,0,0.04), 0 1px 3px rgba(0,0,0,0.06);
+  --ph-shadow-md: 0 2px 4px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.06);
+  --ph-shadow-lg: 0 4px 8px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.08);
+  --ph-radius: 12px;
+}
+
+/* Base */
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--ph-gray-50);
+  color: var(--ph-gray-800);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Header */
+.ph-header {
+  background: white;
+  border-bottom: 1px solid var(--ph-gray-200);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(12px);
+  background: rgba(255,255,255,0.92);
+}
+
+.ph-logo {
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  color: var(--ph-orange);
+  letter-spacing: -0.02em;
+}
+
+/* Week badge */
+.ph-week-badge {
+  background: var(--ph-orange-light);
+  color: var(--ph-orange);
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  font-size: 0.8rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  letter-spacing: 0.02em;
+}
+
+/* Product cards */
+.ph-card {
+  background: white;
+  border-radius: var(--ph-radius);
+  box-shadow: var(--ph-shadow-sm);
+  border: 1px solid var(--ph-gray-200);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  overflow: hidden;
+}
+
+.ph-card:hover {
+  box-shadow: var(--ph-shadow-md);
+  transform: translateY(-1px);
+}
+
+/* Cheapest highlight */
+.ph-cheapest {
+  background: var(--ph-green-light);
+  border-left: 4px solid var(--ph-green);
+  border-radius: 0 8px 8px 0;
+  padding: 12px 16px;
+}
+
+/* Price table */
+.ph-price-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--ph-gray-100);
+}
+
+.ph-price-row:last-child {
+  border-bottom: none;
+}
+
+.ph-supermarket-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+
+.ph-dot-ah { background: #00A0E2; }
+.ph-dot-jumbo { background: #FFD700; }
+.ph-dot-dirk { background: #E53935; }
+
+.ph-price {
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.ph-sale-tag {
+  display: inline-block;
+  background: var(--ph-orange-light);
+  color: var(--ph-orange);
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 10px;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+/* Chart containers */
+.ph-chart-container {
+  position: relative;
+  height: 220px;
+  width: 100%;
+}
+
+/* Loading states */
+.ph-skeleton {
+  background: linear-gradient(90deg, var(--ph-gray-100) 25%, var(--ph-gray-200) 50%, var(--ph-gray-100) 75%);
+  background-size: 200% 100%;
+  animation: ph-shimmer 1.5s ease-in-out infinite;
+  border-radius: 8px;
+}
+
+@keyframes ph-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Fade in animation */
+.ph-fade-in {
+  animation: ph-fadeIn 0.4s ease-out forwards;
+  opacity: 0;
+}
+
+@keyframes ph-fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Section headers */
+.ph-section-title {
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--ph-gray-900);
+}
+
+/* Empty / error states */
+.ph-empty {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--ph-gray-500);
+}
+
+/* Supermarket link */
+a.ph-supermarket-link {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px dashed var(--ph-gray-400);
+  transition: border-color 0.15s ease;
+}
+
+a.ph-supermarket-link:hover {
+  border-color: var(--ph-orange);
+  color: var(--ph-orange);
+}
+
+/* Last updated */
+.ph-timestamp {
+  font-size: 0.75rem;
+  color: var(--ph-gray-500);
+  font-family: 'Space Mono', monospace;
+}
+
+/* Responsive chart grid */
+@media (max-width: 768px) {
+  .ph-chart-container {
+    height: 180px;
+  }
+}

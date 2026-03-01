@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Zonnatura Amandeldrink ongezoet",
+    "brand": "zonnatura",
+    "titleContains": ["amandel", "drink"],
+    "ah": { "query": "zonnatura amandeldrink ongezoet" },
+    "jumbo": { "query": "zonnatura amandel drink" },
+    "dirk": { "query": "zonnatura amandeldrink" }
+  },
+  {
+    "name": "Zonnatura Hazelnoot rijst drink",
+    "brand": "zonnatura",
+    "titleContains": ["hazelnoot", "drink"],
+    "ah": { "query": "zonnatura hazelnoot drink" },
+    "jumbo": { "query": "zonnatura hazelnoot" },
+    "dirk": { "query": "zonnatura hazelnoot" }
+  },
+  {
+    "name": "Starbucks Nespresso cups",
+    "brand": "starbucks",
+    "titleContains": ["nespresso|capsule|cup|koffiecup"],
+    "ah": { "query": "starbucks nespresso capsules" },
+    "jumbo": { "query": "starbucks nespresso" },
+    "dirk": { "query": "starbucks nespresso" }
+  }
+]

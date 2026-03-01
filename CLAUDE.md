@@ -14,6 +14,10 @@
 - For screenshots: Manually take one of http://localhost:3000 (or describe if automated not set up) and share for comparison.
 - Avoid hardcoded Puppeteer paths or user-specific temp folders. If debugging Puppeteer issues, ask me first.
 - Save screenshots to ./screenshots/ or temporary folder if script exists; otherwise note expected visual outcome.
+- **Always end every response with the local link** when changes are made to a project:
+  - roomto → http://localhost:3000
+  - premium-liften → http://localhost:3001
+  - pricehunter → http://localhost:3002
 
 ## Output Defaults
 - Prefer single `index.html` with inline styles unless specified otherwise.

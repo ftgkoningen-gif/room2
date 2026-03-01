@@ -3,3 +3,5 @@ screenshots/
 .claude/
 package-lock.json
 .turbo/
+.trigger/
+.env

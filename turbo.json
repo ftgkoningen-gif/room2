@@ -7,6 +7,10 @@
     },
     "build": {
       "outputs": ["dist/**"]
+    },
+    "dev:trigger": {
+      "cache": false,
+      "persistent": true
     }
   }
 }
