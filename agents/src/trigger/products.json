@@ -18,10 +18,11 @@
   {
     "name": "Starbucks Colombia Nespresso",
     "brand": "starbucks",
-    "titleContains": ["colombia", "nespresso|capsule|cup|koffiecup"],
+    "titleContains": ["colombia", "nespresso|capsule|cup|koffiecup|10st|10/"],
     "ah": { "query": "starbucks colombia nespresso" },
     "jumbo": { "query": "starbucks colombia nespresso" },
-    "dirk": { "query": "starbucks colombia nespresso" }
+    "dirk": { "query": "starbucks colombia nespresso" },
+    "vomar": { "query": "starbucks nespresso" }
   },
   {
     "name": "Starbucks Blonde Espresso Roast Decaf Nespresso",
@@ -38,6 +39,22 @@
     "ah": { "query": "biologische volle yoghurt" },
     "jumbo": { "query": "biologische volle yoghurt" },
     "dirk": { "query": "biologische volle yoghurt" },
-    "aldi": { "category": "zuivel-eieren-boter/verse-zuivel" }
+    "aldi": { "category": "zuivel-eieren-boter/verse-zuivel" },
+    "vomar": { "query": "biologische volle yoghurt" }
+  },
+  {
+    "name": "Amaizin Biologische linzen",
+    "brand": "amaizin",
+    "titleContains": ["linzen"],
+    "ah": { "query": "amaizin biologische linzen" }
+  },
+  {
+    "name": "Neutral Wasmiddel Colour",
+    "brand": "neutral",
+    "titleContains": ["wasmiddel|wasm", "colour|kleur|color"],
+    "ah": { "query": "neutral wasmiddel colour" },
+    "jumbo": { "query": "neutral wasmiddel" },
+    "dirk": { "query": "neutral wasmiddel kleur" },
+    "vomar": { "query": "neutral wasmiddel kleur" }
   }
 ]

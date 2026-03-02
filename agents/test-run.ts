@@ -258,6 +258,39 @@ async function searchDirk(query: string): Promise<Offer[]> {
   });
 }
 
+// --- Vomar REST API ---
+
+async function searchVomar(query: string): Promise<Offer[]> {
+  const res = await fetch(`https://api.vomar.nl/api/v1/article/search?searchString=${encodeURIComponent(query)}`, {
+    headers: {
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+      "Accept": "application/json",
+    },
+    signal: AbortSignal.timeout(15000),
+  });
+  if (!res.ok) throw new Error(`Vomar fetch failed: ${res.status}`);
+  const data = await res.json();
+
+  return (data || []).map((p: any) => {
+    const price = p.price || 0;
+    const defaultPrice = p.priceDefaultAmount || price;
+    const isOnSale = p.discountDeal === true || (defaultPrice > price && price > 0);
+    const discountLabel = isOnSale ? "Aanbieding" : null;
+
+    return {
+      productName: p.detailedDescription || p.description || "",
+      supermarket: "Vomar",
+      currentPrice: defaultPrice,
+      originalPrice: isOnSale ? defaultPrice : null,
+      effectivePrice: price,
+      discountLabel,
+      discountPeriod: null,
+      isOnSale,
+      productUrl: `https://www.vomar.nl/assortiment?q=${encodeURIComponent(query)}`,
+    };
+  });
+}
+
 // --- Aldi categorie API ---
 
 async function searchAldi(category: string): Promise<Offer[]> {
@@ -366,6 +399,20 @@ async function main() {
       } catch (e) {
         const m = e instanceof Error ? e.message : String(e);
         console.log(`  Aldi FOUT: ${m}`);
+        errors.push(m);
+      }
+    }
+
+    // Vomar
+    if ((product as any).vomar) {
+      try {
+        const vomar = await searchVomar((product as any).vomar.query);
+        const filtered = filterOffers(vomar, product.brand, product.titleContains);
+        console.log(`  Vomar: ${vomar.length} resultaten → ${filtered.length} na filter`);
+        allOffers.push(...filtered);
+      } catch (e) {
+        const m = e instanceof Error ? e.message : String(e);
+        console.log(`  Vomar FOUT: ${m}`);
         errors.push(m);
       }
     }
@@ -501,7 +548,7 @@ function buildEmailHtml(results: ProductResult[]): string {
   }
 
   html += `<p style="font-size:11px;color:#aaa;margin-top:30px;border-top:1px solid #eee;padding-top:10px;">
-    Bronnen: Albert Heijn API, Jumbo API, Dirk API<br/>
+    Bronnen: Albert Heijn API, Jumbo API, Dirk API, Aldi API, Vomar API<br/>
     Bij 1+1 / 2e gratis: effectieve prijs = gemiddelde stuksprijs<br/>
     Automatisch verstuurd door Price Hunter via Trigger.dev</p></div>`;
   return html;
