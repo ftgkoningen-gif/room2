@@ -219,7 +219,7 @@ async function searchDirk(query: string): Promise<Offer[]> {
     method: "POST",
     headers: { "Content-Type": "application/json", "x-api-key": DIRK_KEY },
     body: JSON.stringify({
-      query: `{ searchProducts(search: "${safeQuery}", limit: 10) { products { product { productId brand headerText packaging } } } }`,
+      query: `{ searchProducts(search: "${safeQuery}", limit: 10) { products { product { productId brand headerText packaging department webgroup } } } }`,
     }),
   });
   if (!searchRes.ok) throw new Error(`Dirk search failed: ${searchRes.status}`);
@@ -228,6 +228,8 @@ async function searchDirk(query: string): Promise<Offer[]> {
   if (found.length === 0) return [];
 
   const ids = found.map((p: any) => p.product.productId);
+  const slugify = (s: string) => s.toLowerCase().replace(/[&]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+  const productMeta = new Map(found.map((p: any) => [p.product.productId, p.product]));
 
   // Stap 2: haal prijzen op
   const priceRes = await fetch(DIRK_API, {
@@ -241,7 +243,7 @@ async function searchDirk(query: string): Promise<Offer[]> {
   const priceData = await priceRes.json();
   const { from, to } = getOfferDateRange();
 
-  return (priceData?.data?.products || []).map((p: any) => {
+  return (priceData?.data?.products || []).filter((p: any) => p && p.productInformation).map((p: any) => {
     const info = p.productInformation;
     const normalPrice = p.normalPrice || 0;
     const offerPrice = p.offerPrice || 0;
@@ -269,9 +271,55 @@ async function searchDirk(query: string): Promise<Offer[]> {
       discountLabel,
       discountPeriod,
       isOnSale,
-      productUrl: `https://www.dirk.nl/boodschappen?q=${encodeURIComponent(query)}`,
+      productUrl: (() => {
+        const meta = productMeta.get(p.productId);
+        if (meta?.department && meta?.webgroup) {
+          return `https://www.dirk.nl/boodschappen/${slugify(meta.department)}/${slugify(meta.webgroup)}/${encodeURIComponent(info.headerText.toLowerCase())}/${p.productId}`;
+        }
+        return `https://www.dirk.nl/boodschappen?q=${encodeURIComponent(query)}`;
+      })(),
     };
   });
+}
+
+// --- Aldi categorie API ---
+
+async function searchAldi(category: string): Promise<Offer[]> {
+  const res = await fetch(`https://webservice.aldi.nl/api/v1/products/${category}.json`, {
+    headers: {
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+      "Accept": "application/json",
+    },
+    signal: AbortSignal.timeout(15000),
+  });
+  if (!res.ok) throw new Error(`Aldi fetch failed: ${res.status}`);
+  const data = await res.json();
+
+  const offers: Offer[] = [];
+  for (const group of (data.articleGroups || [])) {
+    for (const a of (group.articles || [])) {
+      if (!a.price || a.showPrice === false) continue;
+      const price = parseFloat(a.price);
+      if (isNaN(price) || price <= 0) continue;
+
+      const oldPrice = a.oldPrice ? parseFloat(a.oldPrice) : null;
+      const isOnSale = oldPrice !== null && oldPrice > price;
+      const discountLabel = isOnSale ? (a.priceReduction || "Aanbieding") : null;
+
+      offers.push({
+        productName: a.productName || a.title || "",
+        supermarket: "Aldi",
+        currentPrice: oldPrice && isOnSale ? oldPrice : price,
+        originalPrice: isOnSale ? oldPrice : null,
+        effectivePrice: price,
+        discountLabel,
+        discountPeriod: null,
+        isOnSale,
+        productUrl: a.url ? `https://www.aldi.nl${a.url}` : "https://www.aldi.nl/sortiment.html",
+      });
+    }
+  }
+  return offers;
 }
 
 // --- Combine sources ---
@@ -309,6 +357,16 @@ async function checkProduct(
       allOffers.push(...filterOffers(offers, product.brand, product.titleContains));
     } catch (err) {
       errors.push(`Dirk: ${err instanceof Error ? err.message : String(err)}`);
+    }
+  }
+
+  // Aldi
+  if ((product as any).aldi) {
+    try {
+      const offers = await searchAldi((product as any).aldi.category);
+      allOffers.push(...filterOffers(offers, product.brand, product.titleContains));
+    } catch (err) {
+      errors.push(`Aldi: ${err instanceof Error ? err.message : String(err)}`);
     }
   }
 
