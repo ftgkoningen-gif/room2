@@ -1,6 +1,7 @@
 [
   {
     "name": "Zonnatura Amandeldrink ongezoet",
+    "category": "houdbaar",
     "brand": "zonnatura",
     "titleContains": ["amandel", "drink"],
     "ah": { "query": "zonnatura amandeldrink ongezoet" },
@@ -9,6 +10,7 @@
   },
   {
     "name": "Zonnatura Hazelnoot rijst drink",
+    "category": "houdbaar",
     "brand": "zonnatura",
     "titleContains": ["hazelnoot", "drink"],
     "ah": { "query": "zonnatura hazelnoot drink" },
@@ -17,6 +19,7 @@
   },
   {
     "name": "Starbucks Colombia Nespresso",
+    "category": "houdbaar",
     "brand": "starbucks",
     "titleContains": ["colombia", "nespresso|capsule|cup|koffiecup|10st|10/"],
     "ah": { "query": "starbucks colombia nespresso" },
@@ -26,6 +29,7 @@
   },
   {
     "name": "Starbucks Blonde Espresso Roast Decaf Nespresso",
+    "category": "houdbaar",
     "brand": "starbucks",
     "titleContains": ["blonde", "decaf", "nespresso|capsule|cup|koffiecup"],
     "ah": { "query": "starbucks blonde espresso decaf nespresso" },
@@ -34,6 +38,7 @@
   },
   {
     "name": "Biologische volle yoghurt",
+    "category": "niet-houdbaar",
     "brand": "",
     "titleContains": ["biologisch|bio+", "volle|vol", "yoghurt"],
     "ah": { "query": "biologische volle yoghurt" },
@@ -43,13 +48,27 @@
     "vomar": { "query": "biologische volle yoghurt" }
   },
   {
+    "name": "Biologische volle melk",
+    "category": "niet-houdbaar",
+    "brand": "",
+    "titleContains": ["biologisch|bio+", "volle|vol", "melk"],
+    "titleExcludes": ["karnemelk|chocolade|cacao|koffie|vanille|aardbei|poeder|baby|groei"],
+    "ah": { "query": "biologische volle melk" },
+    "jumbo": { "query": "biologische volle melk" },
+    "dirk": { "query": "biologische volle melk" },
+    "aldi": { "category": "zuivel-eieren-boter/verse-zuivel" },
+    "vomar": { "query": "biologische volle melk" }
+  },
+  {
     "name": "Amaizin Biologische linzen",
+    "category": "houdbaar",
     "brand": "amaizin",
     "titleContains": ["linzen"],
     "ah": { "query": "amaizin biologische linzen" }
   },
   {
     "name": "Neutral Wasmiddel Colour",
+    "category": "houdbaar",
     "brand": "neutral",
     "titleContains": ["wasmiddel|wasm", "colour|kleur|color"],
     "ah": { "query": "neutral wasmiddel colour" },
@@ -59,6 +78,7 @@
   },
   {
     "name": "Zonnatura Cranberrysap",
+    "category": "houdbaar",
     "brand": "zonnatura",
     "titleContains": ["cranberry", "sap|juice|drink"],
     "ah": { "query": "zonnatura cranberrysap" },
@@ -66,5 +86,167 @@
     "dirk": { "query": "zonnatura cranberry" },
     "vomar": { "query": "zonnatura cranberry" },
     "aldi": { "category": "dranken/sap-frisdrank" }
+  },
+
+  {
+    "name": "Bio broccoli (heel)",
+    "category": "bio-groenten-heel",
+    "brand": "",
+    "titleContains": ["biologisch|bio", "broccoli"],
+    "titleExcludes": ["roosjes|gesneden|baby|hapje|maaltijd|menu|ella|bonbébé|bonbebe|potje|stamp|soep|saus|blokjes"],
+    "ah": { "query": "biologisch broccoli" },
+    "jumbo": { "query": "biologische broccoli" },
+    "dirk": { "query": "biologische broccoli" }
+  },
+  {
+    "name": "Bio komkommer",
+    "category": "bio-groenten-heel",
+    "brand": "",
+    "titleContains": ["biologisch|bio", "komkommer"],
+    "titleExcludes": ["gesneden|baby|hapje|maaltijd|potje|snack"],
+    "ah": { "query": "biologisch komkommer" },
+    "jumbo": { "query": "biologische komkommer" },
+    "dirk": { "query": "biologische komkommer" }
+  },
+  {
+    "name": "Bio trostomaten",
+    "category": "bio-groenten-heel",
+    "brand": "",
+    "titleContains": ["biologisch|bio", "trostomaat|trostomaten|tomaat|tomaten"],
+    "titleExcludes": ["gesneden|baby|hapje|maaltijd|potje|snack|blokjes|gepeld|passata|puree|saus|ketchup|blik|conserv|gedroogd|zongedroogd|bambix|knijp|soep|cherry"],
+    "ah": { "query": "biologisch trostomaten" },
+    "jumbo": { "query": "biologische trostomaten" },
+    "dirk": { "query": "biologische trostomaten" }
+  },
+  {
+    "name": "Bio rode paprika",
+    "category": "bio-groenten-heel",
+    "brand": "",
+    "titleContains": ["biologisch|bio", "paprika"],
+    "titleExcludes": ["gesneden|reepjes|baby|hapje|maaltijd|potje|snack|chips|poeder|kruid|wafels|wafel|bambix|knijp|cracker|gevuld|rijst|kip|vis|menu|bonbébé|bonbebe|ella|125g|250g|190g"],
+    "ah": { "query": "biologisch paprika rood" },
+    "jumbo": { "query": "biologische rode paprika" },
+    "dirk": { "query": "biologische paprika" }
+  },
+  {
+    "name": "Bio winterpeen",
+    "category": "bio-groenten-heel",
+    "brand": "",
+    "titleContains": ["biologisch|bio", "winterpeen"],
+    "titleExcludes": ["gesneden|julienne|reepjes|baby|hapje|maaltijd|potje|snack|sap|juice|soep|pasta|spelt|knijp|mango|bambix|blokjes|rijst|kip|vis|menu|bonbébé|bonbebe|ella|125g|190g"],
+    "ah": { "query": "biologisch winterpeen" },
+    "jumbo": { "query": "biologische winterpeen" },
+    "dirk": { "query": "biologische winterpeen" }
+  },
+  {
+    "name": "Bio wortelen",
+    "category": "bio-groenten-heel",
+    "brand": "",
+    "titleContains": ["biologisch|bio", "wortel|wortelen|bospeen"],
+    "titleExcludes": ["winterpeen|gesneden|julienne|reepjes|baby|hapje|maaltijd|potje|snack|sap|juice|soep|pasta|spelt|knijp|mango|bambix|blokjes|rijst|kip|vis|menu|bonbébé|bonbebe|ella|125g|190g"],
+    "ah": { "query": "biologische wortelen" },
+    "jumbo": { "query": "biologische wortelen" },
+    "dirk": { "query": "biologische wortelen" }
+  },
+  {
+    "name": "Bio courgette",
+    "category": "bio-groenten-heel",
+    "brand": "",
+    "titleContains": ["biologisch|bio", "courgette"],
+    "titleExcludes": ["gesneden|plakjes|baby|hapje|maaltijd|potje|snack|soep"],
+    "ah": { "query": "biologisch courgette" },
+    "jumbo": { "query": "biologisch courgette" },
+    "dirk": { "query": "biologische courgette" }
+  },
+  {
+    "name": "Bio uien",
+    "category": "bio-groenten-heel",
+    "brand": "",
+    "titleContains": ["biologisch|bio", "ui|uien"],
+    "titleExcludes": ["rode|rood|gesneden|gesnipperd|baby|hapje|maaltijd|potje|snack|soep|saus|ring|chips|kruiden|poeder"],
+    "ah": { "query": "biologisch uien" },
+    "jumbo": { "query": "biologische uien" },
+    "dirk": { "query": "biologische uien" }
+  },
+  {
+    "name": "Bio avocado",
+    "category": "bio-groenten-heel",
+    "brand": "",
+    "titleContains": ["biologisch|bio", "avocado"],
+    "titleExcludes": ["gesneden|spread|guacamole|baby|hapje|maaltijd|potje|snack|olie|dip"],
+    "ah": { "query": "biologisch avocado" },
+    "jumbo": { "query": "biologische avocado" },
+    "dirk": { "query": "biologische avocado" }
+  },
+
+  {
+    "name": "Bio broccoliroosjes",
+    "category": "bio-diepvries",
+    "brand": "",
+    "titleContains": ["biologisch|bio", "broccoli", "roosjes|gesneden"],
+    "titleExcludes": ["baby|hapje|maaltijd|potje|snack|soep"],
+    "ah": { "query": "biologisch broccoliroosjes" },
+    "jumbo": { "query": "biologische broccoliroosjes" },
+    "dirk": { "query": "biologische broccoliroosjes" }
+  },
+  {
+    "name": "Bio bladspinazie",
+    "category": "bio-diepvries",
+    "brand": "",
+    "titleContains": ["biologisch|bio", "spinazie|bladspinazie"],
+    "titleExcludes": ["baby|hapje|maaltijd|potje|snack|bonbébé|bonbebe|ella|bambix|knijp"],
+    "ah": { "query": "biologisch bladspinazie" },
+    "jumbo": { "query": "biologisch bladspinazie" },
+    "dirk": { "query": "biologische spinazie" }
+  },
+  {
+    "name": "Bio bloemkoolroosjes",
+    "category": "bio-diepvries",
+    "brand": "",
+    "titleContains": ["biologisch|bio", "bloemkool", "roosjes|gesneden"],
+    "titleExcludes": ["baby|hapje|maaltijd|potje|snack|soep|saus|puree|stamp|bonbébé|bonbebe|ella|bambix|knijp"],
+    "ah": { "query": "biologisch bloemkool" },
+    "jumbo": { "query": "biologische bloemkool" },
+    "dirk": { "query": "biologische bloemkool" }
+  },
+  {
+    "name": "Bio sperziebonen",
+    "category": "bio-diepvries",
+    "brand": "",
+    "titleContains": ["biologisch|bio", "sperzieboon|sperziebonen|sperzie"],
+    "titleExcludes": ["baby|hapje|maaltijd|potje|snack|soep|saus|bonbébé|bonbebe|ella|bambix|knijp"],
+    "ah": { "query": "biologisch sperziebonen" },
+    "jumbo": { "query": "biologische sperziebonen" },
+    "dirk": { "query": "biologische sperziebonen" }
+  },
+  {
+    "name": "Bio kastanjechampignons",
+    "category": "bio-paddestoelen",
+    "brand": "",
+    "titleContains": ["biologisch|bio", "kastanjechampignon|kastanje champignon"],
+    "titleExcludes": ["baby|hapje|maaltijd|potje|snack|soep|saus|gesneden"],
+    "ah": { "query": "biologisch kastanjechampignons" },
+    "jumbo": { "query": "biologisch kastanjechampignons" },
+    "dirk": { "query": "biologische kastanje champignons" }
+  },
+  {
+    "name": "Bio shiitake",
+    "category": "bio-paddestoelen",
+    "brand": "",
+    "titleContains": ["biologisch|bio", "shiitake|shii-take"],
+    "titleExcludes": ["baby|hapje|maaltijd|potje|snack|soep|saus|gedroogd"],
+    "ah": { "query": "biologisch gesneden shiitake" },
+    "jumbo": { "query": "biologisch shiitake" },
+    "dirk": { "query": "biologische shiitake" }
+  },
+  {
+    "name": "Bio oesterzwam",
+    "category": "bio-paddestoelen",
+    "brand": "",
+    "titleContains": ["biologisch|bio", "oesterzwam|oesterzwammen"],
+    "titleExcludes": ["baby|hapje|maaltijd|potje|snack|soep|saus|gedroogd"],
+    "ah": { "query": "biologisch oesterzwam" },
+    "jumbo": { "query": "biologisch oesterzwam" },
+    "dirk": { "query": "biologische oesterzwam" }
   }
 ]

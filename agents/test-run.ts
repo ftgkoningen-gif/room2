@@ -23,6 +23,8 @@ interface Offer {
   discountPeriod: string | null;
   isOnSale: boolean;
   productUrl: string | null;
+  weightGrams: number | null;
+  pricePerKg: number | null;
 }
 
 interface ProductResult {
@@ -61,15 +63,48 @@ function formatDate(dateStr: string): string {
   return new Date(dateStr).toLocaleDateString("nl-NL", { weekday: "short", day: "2-digit", month: "2-digit" });
 }
 
+// --- Gewicht parsing ---
+
+function parseWeightGrams(productName: string): number | null {
+  const name = productName.toLowerCase();
+  const kgMatch = name.match(/(\d+[.,]?\d*)\s*(kg|kilo)/);
+  if (kgMatch) return Math.round(parseFloat(kgMatch[1].replace(",", ".")) * 1000);
+  const gMatch = name.match(/(\d+)\s*(g|gr|gram)\b/);
+  if (gMatch) return parseInt(gMatch[1]);
+  const lMatch = name.match(/(\d+[.,]?\d*)\s*(l|liter|lt)\b/);
+  if (lMatch) return Math.round(parseFloat(lMatch[1].replace(",", ".")) * 1000);
+  const mlMatch = name.match(/(\d+)\s*(ml|cl)\b/);
+  if (mlMatch) {
+    const val = parseInt(mlMatch[1]);
+    return mlMatch[2] === "cl" ? val * 10 : val;
+  }
+  return null;
+}
+
+function enrichWithWeight(offer: Offer): Offer {
+  const w = parseWeightGrams(offer.productName);
+  return {
+    ...offer,
+    weightGrams: w,
+    pricePerKg: w && w > 0 ? Math.round((offer.effectivePrice / w) * 1000 * 100) / 100 : null,
+  };
+}
+
 // --- Filter & helpers ---
 
-function filterOffers(offers: Offer[], brand: string, titleContains: string[]): Offer[] {
+function filterOffers(offers: Offer[], brand: string, titleContains: string[], titleExcludes?: string[]): Offer[] {
   return offers.filter((o) => {
     const title = o.productName.toLowerCase();
     if (!title.includes(brand.toLowerCase())) return false;
     for (const tc of titleContains) {
       const alternatives = tc.toLowerCase().split("|");
       if (!alternatives.some((alt) => title.includes(alt))) return false;
+    }
+    if (titleExcludes) {
+      for (const te of titleExcludes) {
+        const alternatives = te.toLowerCase().split("|");
+        if (alternatives.some((alt) => title.includes(alt))) return false;
+      }
     }
     return true;
   });
@@ -112,7 +147,8 @@ async function searchAh(query: string, token: string): Promise<Offer[]> {
     const price = p.priceBeforeBonus || 0;
     const slug = (p.title || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
     const productUrl = p.webshopId ? `https://www.ah.nl/producten/product/wi${p.webshopId}/${slug}` : null;
-    return { productName: p.title, supermarket: "Albert Heijn", currentPrice: price, originalPrice: isOnSale ? price : null, effectivePrice: isOnSale ? calcEffectivePrice(price, discountLabel) : price, discountLabel, discountPeriod, isOnSale, productUrl };
+    const productName = p.salesUnitSize && !p.title.toLowerCase().includes(p.salesUnitSize.toLowerCase().replace(/\s/g, "")) ? `${p.title} ${p.salesUnitSize}` : p.title;
+    return { productName, supermarket: "Albert Heijn", currentPrice: price, originalPrice: isOnSale ? price : null, effectivePrice: isOnSale ? calcEffectivePrice(price, discountLabel) : price, discountLabel, discountPeriod, isOnSale, productUrl };
   });
 }
 
@@ -353,7 +389,7 @@ async function main() {
     // AH
     try {
       const ah = await searchAh(product.ah.query, ahToken);
-      const filtered = filterOffers(ah, product.brand, product.titleContains);
+      const filtered = filterOffers(ah, product.brand, product.titleContains, product.titleExcludes);
       console.log(`  AH: ${ah.length} resultaten → ${filtered.length} na filter`);
       allOffers.push(...filtered);
     } catch (e) {
@@ -367,7 +403,7 @@ async function main() {
       await delay(1500);
       try {
         const jumbo = await searchJumbo(product.jumbo.query);
-        const filtered = filterOffers(jumbo, product.brand, product.titleContains);
+        const filtered = filterOffers(jumbo, product.brand, product.titleContains, product.titleExcludes);
         console.log(`  Jumbo: ${jumbo.length} resultaten → ${filtered.length} na filter`);
         allOffers.push(...filtered);
       } catch (e) {
@@ -381,7 +417,7 @@ async function main() {
     if (product.dirk) {
       try {
         const dirk = await searchDirk(product.dirk.query);
-        const filtered = filterOffers(dirk, product.brand, product.titleContains);
+        const filtered = filterOffers(dirk, product.brand, product.titleContains, product.titleExcludes);
         console.log(`  Dirk: ${dirk.length} resultaten → ${filtered.length} na filter`);
         allOffers.push(...filtered);
       } catch (e) {
@@ -395,7 +431,7 @@ async function main() {
     if ((product as any).aldi) {
       try {
         const aldi = await searchAldi((product as any).aldi.category);
-        const filtered = filterOffers(aldi, product.brand, product.titleContains);
+        const filtered = filterOffers(aldi, product.brand, product.titleContains, product.titleExcludes);
         console.log(`  Aldi: ${aldi.length} resultaten → ${filtered.length} na filter`);
         allOffers.push(...filtered);
       } catch (e) {
@@ -409,7 +445,7 @@ async function main() {
     if ((product as any).vomar) {
       try {
         const vomar = await searchVomar((product as any).vomar.query);
-        const filtered = filterOffers(vomar, product.brand, product.titleContains);
+        const filtered = filterOffers(vomar, product.brand, product.titleContains, product.titleExcludes);
         console.log(`  Vomar: ${vomar.length} resultaten → ${filtered.length} na filter`);
         allOffers.push(...filtered);
       } catch (e) {
@@ -419,12 +455,16 @@ async function main() {
       }
     }
 
+    // Enrich with weight data
+    allOffers = allOffers.map(enrichWithWeight);
+
     // Resultaten per supermarkt
     const best = bestPerSupermarket(allOffers);
     if (best.length > 0) {
       console.log(`\n  Beste prijs per supermarkt:`);
       for (const o of best.sort((a, b) => a.effectivePrice - b.effectivePrice)) {
-        console.log(`    ${o.supermarket} — €${o.effectivePrice.toFixed(2)}/stuk${o.isOnSale ? ` (${o.discountLabel})` : " (regulier)"}${o.discountPeriod ? ` | ${o.discountPeriod}` : ""}${o.productUrl ? `\n      → ${o.productUrl}` : ""}`);
+        const perKg = o.pricePerKg ? ` (€${o.pricePerKg.toFixed(2)}/kg, ${o.weightGrams}g)` : "";
+        console.log(`    ${o.supermarket} — €${o.effectivePrice.toFixed(2)}/stuk${perKg}${o.isOnSale ? ` (${o.discountLabel})` : " (regulier)"}${o.discountPeriod ? ` | ${o.discountPeriod}` : ""}${o.productUrl ? `\n      → ${o.productUrl}` : ""}`);
       }
       const cheapest = best.reduce((a, b) => a.effectivePrice < b.effectivePrice ? a : b);
       console.log(`\n  >>> GOEDKOOPST: ${cheapest.supermarket} — €${cheapest.effectivePrice.toFixed(2)}/stuk`);
@@ -455,6 +495,7 @@ async function main() {
           effective_price: offer.effectivePrice, discount_label: offer.discountLabel,
           discount_period: offer.discountPeriod, is_on_sale: offer.isOnSale,
           product_url: offer.productUrl,
+          weight_grams: offer.weightGrams, price_per_kg: offer.pricePerKg,
         });
       }
     }

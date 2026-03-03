@@ -18,6 +18,8 @@ interface Offer {
   discountPeriod: string | null;
   isOnSale: boolean;
   productUrl: string | null;
+  weightGrams: number | null;
+  pricePerKg: number | null;
 }
 
 interface ProductResult {
@@ -64,15 +66,51 @@ function formatDate(dateStr: string): string {
   });
 }
 
+// --- Gewicht parsing ---
+
+function parseWeightGrams(productName: string): number | null {
+  const name = productName.toLowerCase();
+  // Match patterns like "500 g", "300g", "1 kg", "1.5kg", "750 gr", "250 gram"
+  const kgMatch = name.match(/(\d+[.,]?\d*)\s*(kg|kilo)/);
+  if (kgMatch) return Math.round(parseFloat(kgMatch[1].replace(",", ".")) * 1000);
+  const gMatch = name.match(/(\d+)\s*(g|gr|gram)\b/);
+  if (gMatch) return parseInt(gMatch[1]);
+  // Match "1 l" or "1l" for liquids (treat 1L as 1000g approx)
+  const lMatch = name.match(/(\d+[.,]?\d*)\s*(l|liter|lt)\b/);
+  if (lMatch) return Math.round(parseFloat(lMatch[1].replace(",", ".")) * 1000);
+  // Match "cl" and "ml"
+  const mlMatch = name.match(/(\d+)\s*(ml|cl)\b/);
+  if (mlMatch) {
+    const val = parseInt(mlMatch[1]);
+    return mlMatch[2] === "cl" ? val * 10 : val;
+  }
+  return null;
+}
+
+function enrichWithWeight(offer: Offer): Offer {
+  const w = parseWeightGrams(offer.productName);
+  return {
+    ...offer,
+    weightGrams: w,
+    pricePerKg: w && w > 0 ? Math.round((offer.effectivePrice / w) * 1000 * 100) / 100 : null,
+  };
+}
+
 // --- Filter & helpers ---
 
-function filterOffers(offers: Offer[], brand: string, titleContains: string[]): Offer[] {
+function filterOffers(offers: Offer[], brand: string, titleContains: string[], titleExcludes?: string[]): Offer[] {
   return offers.filter((o) => {
     const title = o.productName.toLowerCase();
     if (!title.includes(brand.toLowerCase())) return false;
     for (const tc of titleContains) {
       const alternatives = tc.toLowerCase().split("|");
       if (!alternatives.some((alt) => title.includes(alt))) return false;
+    }
+    if (titleExcludes) {
+      for (const te of titleExcludes) {
+        const alternatives = te.toLowerCase().split("|");
+        if (alternatives.some((alt) => title.includes(alt))) return false;
+      }
     }
     return true;
   });
@@ -122,8 +160,9 @@ async function searchAh(query: string, token: string): Promise<Offer[]> {
     const slug = (p.title || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
     const productUrl = p.webshopId ? `https://www.ah.nl/producten/product/wi${p.webshopId}/${slug}` : null;
 
+    const productName = p.salesUnitSize && !p.title.toLowerCase().includes(p.salesUnitSize.toLowerCase().replace(/\s/g, "")) ? `${p.title} ${p.salesUnitSize}` : p.title;
     return {
-      productName: p.title,
+      productName,
       supermarket: "Albert Heijn",
       currentPrice: price,
       originalPrice: isOnSale ? price : null,
@@ -367,7 +406,7 @@ async function checkProduct(
   // Albert Heijn
   try {
     const offers = await searchAh(product.ah.query, ahToken);
-    allOffers.push(...filterOffers(offers, product.brand, product.titleContains));
+    allOffers.push(...filterOffers(offers, product.brand, product.titleContains, (product as any).titleExcludes));
   } catch (err) {
     errors.push(`AH: ${err instanceof Error ? err.message : String(err)}`);
   }
@@ -377,7 +416,7 @@ async function checkProduct(
     await delay(1500);
     try {
       const offers = await searchJumbo(product.jumbo.query);
-      allOffers.push(...filterOffers(offers, product.brand, product.titleContains));
+      allOffers.push(...filterOffers(offers, product.brand, product.titleContains, (product as any).titleExcludes));
     } catch (err) {
       errors.push(`Jumbo: ${err instanceof Error ? err.message : String(err)}`);
     }
@@ -387,7 +426,7 @@ async function checkProduct(
   if (product.dirk) {
     try {
       const offers = await searchDirk(product.dirk.query);
-      allOffers.push(...filterOffers(offers, product.brand, product.titleContains));
+      allOffers.push(...filterOffers(offers, product.brand, product.titleContains, (product as any).titleExcludes));
     } catch (err) {
       errors.push(`Dirk: ${err instanceof Error ? err.message : String(err)}`);
     }
@@ -397,7 +436,7 @@ async function checkProduct(
   if ((product as any).aldi) {
     try {
       const offers = await searchAldi((product as any).aldi.category);
-      allOffers.push(...filterOffers(offers, product.brand, product.titleContains));
+      allOffers.push(...filterOffers(offers, product.brand, product.titleContains, (product as any).titleExcludes));
     } catch (err) {
       errors.push(`Aldi: ${err instanceof Error ? err.message : String(err)}`);
     }
@@ -407,11 +446,14 @@ async function checkProduct(
   if ((product as any).vomar) {
     try {
       const offers = await searchVomar((product as any).vomar.query);
-      allOffers.push(...filterOffers(offers, product.brand, product.titleContains));
+      allOffers.push(...filterOffers(offers, product.brand, product.titleContains, (product as any).titleExcludes));
     } catch (err) {
       errors.push(`Vomar: ${err instanceof Error ? err.message : String(err)}`);
     }
   }
+
+  // Enrich all offers with weight and per-kg price
+  allOffers = allOffers.map(enrichWithWeight);
 
   return { name: product.name, offers: allOffers, errors };
 }
@@ -529,6 +571,8 @@ async function saveToSupabase(results: ProductResult[], weekNumber: number, year
         discount_period: offer.discountPeriod,
         is_on_sale: offer.isOnSale,
         product_url: offer.productUrl,
+        weight_grams: offer.weightGrams,
+        price_per_kg: offer.pricePerKg,
       });
     }
   }
