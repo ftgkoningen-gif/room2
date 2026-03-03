@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Categorie — YouTube Monitor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Satoshi:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <link rel="stylesheet" href="youtube-monitor.css">
+</head>
+<body>
+  <div class="container">
+
+    <!-- Header -->
+    <header class="header">
+      <div class="header-inner">
+        <a href="index.html" class="back-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+          Terug naar overzicht
+        </a>
+        <div class="header-meta" id="video-count">Laden…</div>
+      </div>
+    </header>
+
+    <!-- Page title -->
+    <div class="page-header" id="page-header">
+      <span class="page-emoji" id="page-emoji"></span>
+      <h1 class="page-title" id="page-title">Laden…</h1>
+    </div>
+    <p class="page-subtitle" id="page-subtitle"></p>
+
+    <!-- Channel pills -->
+    <div class="channel-pills" id="channel-pills"></div>
+
+    <!-- Video feed -->
+    <div class="video-feed" id="video-feed">
+      <div class="skeleton" style="height: 200px;"></div>
+      <div class="skeleton" style="height: 200px;"></div>
+      <div class="skeleton" style="height: 200px;"></div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      Samenvattingen door Claude AI · Data via YouTube API<br>
+      Automatisch bijgewerkt door YouTube Monitor
+    </footer>
+
+  </div>
+
+  <script>
+    const SUPABASE_URL = 'https://mvwsloxbrzzjeamakfzg.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im12d3Nsb3hicnp6amVhbWFrZnpnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzOTQxNjAsImV4cCI6MjA4Nzk3MDE2MH0.98WKwNtkUsjBncuoPtsWTINOHh1KYvjkKY33zrf5MZc';
+    const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    const CATEGORIES = [
+      { name: 'Gezondheid', emoji: '💪', channels: ['Andrew Huberman', 'Bryan Johnson'] },
+      { name: 'Podcasts', emoji: '🎙️', channels: ['The Diary Of A CEO', 'Triggernometry'] },
+      { name: 'Nieuws', emoji: '📰', channels: ['De Nieuwe Wereld'] },
+      { name: 'Economie', emoji: '📊', channels: ['Garys Economics', 'Current Ratio'] },
+      { name: 'Crypto', emoji: '₿', channels: ['BNR Nieuwsradio'] },
+      { name: 'Tech & AI', emoji: '🤖', channels: ['Nate Herk', 'Cole Medin', 'IndyDevDan', 'Greg Isenberg', 'Matthew Berman', 'All About AI'] },
+    ];
+
+    function timeAgo(dateStr) {
+      const now = new Date();
+      const date = new Date(dateStr);
+      const diff = Math.floor((now - date) / 1000);
+      if (diff < 3600) return `${Math.floor(diff / 60)} min geleden`;
+      if (diff < 86400) return `${Math.floor(diff / 3600)} uur geleden`;
+      if (diff < 604800) return `${Math.floor(diff / 86400)} dagen geleden`;
+      return date.toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' });
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    function formatSummary(summary) {
+      // Convert bullet points to HTML paragraphs
+      return summary
+        .split('\n')
+        .filter(line => line.trim())
+        .map(line => `<p>${escapeHtml(line)}</p>`)
+        .join('');
+    }
+
+    async function loadCategory() {
+      const params = new URLSearchParams(window.location.search);
+      const catName = params.get('cat');
+
+      if (!catName) {
+        window.location.href = 'index.html';
+        return;
+      }
+
+      const cat = CATEGORIES.find(c => c.name === catName);
+      document.title = `${cat ? cat.emoji + ' ' : ''}${catName} — YouTube Monitor`;
+
+      // Set header
+      document.getElementById('page-emoji').textContent = cat ? cat.emoji : '';
+      document.getElementById('page-title').textContent = catName;
+
+      // Channel pills
+      if (cat) {
+        const pillsContainer = document.getElementById('channel-pills');
+        for (const ch of cat.channels) {
+          const pill = document.createElement('span');
+          pill.className = 'channel-pill';
+          pill.textContent = ch;
+          pillsContainer.appendChild(pill);
+        }
+      }
+
+      // Fetch videos
+      const { data: videos, error } = await db
+        .from('youtube_videos')
+        .select('*')
+        .eq('category', catName)
+        .order('published_at', { ascending: false })
+        .limit(50);
+
+      if (error || !videos) {
+        console.error('Supabase error:', error);
+        document.getElementById('video-feed').innerHTML =
+          '<p style="color: var(--yt-text-dim);">Kon video\'s niet laden.</p>';
+        return;
+      }
+
+      // Subtitle + count
+      document.getElementById('page-subtitle').textContent =
+        `${videos.length} video's van ${cat ? cat.channels.length : '?'} kanalen`;
+      document.getElementById('video-count').textContent =
+        `${videos.length} video's`;
+
+      // Render video feed
+      const feed = document.getElementById('video-feed');
+      feed.innerHTML = '';
+
+      if (videos.length === 0) {
+        feed.innerHTML = '<p style="color: var(--yt-text-dim); text-align: center; padding: 48px 0;">Nog geen video\'s in deze categorie.</p>';
+        return;
+      }
+
+      for (const video of videos) {
+        const card = document.createElement('div');
+        card.className = 'video-card fade-up';
+
+        card.innerHTML = `
+          <div class="video-card-top">
+            <a href="${video.video_url}" target="_blank" rel="noopener" class="video-thumb-link">
+              <img class="video-thumb" src="${video.thumbnail_url}" alt="" loading="lazy">
+            </a>
+            <div class="video-info">
+              <div class="video-title">
+                <a href="${video.video_url}" target="_blank" rel="noopener">${escapeHtml(video.video_title)}</a>
+              </div>
+              <div class="video-meta">
+                ${escapeHtml(video.channel_name)} · ${timeAgo(video.published_at)}
+                ${video.transcript_available ? '' : ' · <em>Geen transcript</em>'}
+              </div>
+            </div>
+          </div>
+          ${video.summary
+            ? `<div class="video-summary">
+                <div class="video-summary-content">${formatSummary(video.summary)}</div>
+              </div>`
+            : `<div class="video-no-summary">Geen samenvatting beschikbaar</div>`
+          }
+        `;
+
+        feed.appendChild(card);
+      }
+
+      // Stagger animations
+      feed.querySelectorAll('.fade-up').forEach((el, i) => {
+        el.style.animationDelay = `${i * 0.06}s`;
+      });
+    }
+
+    loadCategory();
+  </script>
+</body>
+</html>

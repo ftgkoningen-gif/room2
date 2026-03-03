@@ -1,0 +1,110 @@
+{
+  "categories": [
+    {
+      "name": "Gezondheid",
+      "emoji": "💪",
+      "channels": [
+        {
+          "name": "Andrew Huberman",
+          "channelId": "UC2D2CMWXMOVWx7giW1n3LIg",
+          "uploadsPlaylistId": "UU2D2CMWXMOVWx7giW1n3LIg"
+        },
+        {
+          "name": "Bryan Johnson",
+          "channelId": "UCnRVL1-HJnXWB_Xi2dAoTcg",
+          "uploadsPlaylistId": "UUnRVL1-HJnXWB_Xi2dAoTcg"
+        }
+      ]
+    },
+    {
+      "name": "Podcasts",
+      "emoji": "🎙️",
+      "channels": [
+        {
+          "name": "The Diary Of A CEO",
+          "channelId": "UCGq-a57w-aPwyi3pW7XLiHw",
+          "uploadsPlaylistId": "UUGq-a57w-aPwyi3pW7XLiHw"
+        },
+        {
+          "name": "Triggernometry",
+          "channelId": "UC7oPkqeHTwuOZ5CZ-R9f-6w",
+          "uploadsPlaylistId": "UU7oPkqeHTwuOZ5CZ-R9f-6w"
+        }
+      ]
+    },
+    {
+      "name": "Nieuws",
+      "emoji": "📰",
+      "channels": [
+        {
+          "name": "De Nieuwe Wereld",
+          "channelId": "UC2LdCiAsuXTM5KxqScV_V8g",
+          "uploadsPlaylistId": "UU2LdCiAsuXTM5KxqScV_V8g"
+        }
+      ]
+    },
+    {
+      "name": "Economie",
+      "emoji": "📊",
+      "channels": [
+        {
+          "name": "Garys Economics",
+          "channelId": "UC5Ghe5TBQGYIOANuiNW4hDQ",
+          "uploadsPlaylistId": "UU5Ghe5TBQGYIOANuiNW4hDQ"
+        },
+        {
+          "name": "Current Ratio",
+          "channelId": "UCCo19WHoDlzGzbCnUrBvCqg",
+          "uploadsPlaylistId": "UUCo19WHoDlzGzbCnUrBvCqg"
+        }
+      ]
+    },
+    {
+      "name": "Crypto",
+      "emoji": "₿",
+      "channels": [
+        {
+          "name": "BNR Nieuwsradio",
+          "channelId": "UCWALr0VavEm8SgPXGafhFDQ",
+          "uploadsPlaylistId": "UUWALr0VavEm8SgPXGafhFDQ"
+        }
+      ]
+    },
+    {
+      "name": "Tech & AI",
+      "emoji": "🤖",
+      "channels": [
+        {
+          "name": "Nate Herk",
+          "channelId": "UC2ojq-nuP8ceeHqiroeKhBA",
+          "uploadsPlaylistId": "UU2ojq-nuP8ceeHqiroeKhBA"
+        },
+        {
+          "name": "Cole Medin",
+          "channelId": "UCMwVTLZIRRUyyVrkjDpn4pA",
+          "uploadsPlaylistId": "UUMwVTLZIRRUyyVrkjDpn4pA"
+        },
+        {
+          "name": "IndyDevDan",
+          "channelId": "UC_x36zCEGilGpB1m-V4gmjg",
+          "uploadsPlaylistId": "UU_x36zCEGilGpB1m-V4gmjg"
+        },
+        {
+          "name": "Greg Isenberg",
+          "channelId": "UCPjNBjflYl0-HQtUvOx0Ibw",
+          "uploadsPlaylistId": "UUPjNBjflYl0-HQtUvOx0Ibw"
+        },
+        {
+          "name": "Matthew Berman",
+          "channelId": "UCawZsQWqfGSbCI5yjkdVkTA",
+          "uploadsPlaylistId": "UUawZsQWqfGSbCI5yjkdVkTA"
+        },
+        {
+          "name": "All About AI",
+          "channelId": "UCR9j1jqqB5Rse69wjUnbYwA",
+          "uploadsPlaylistId": "UUR9j1jqqB5Rse69wjUnbYwA"
+        }
+      ]
+    }
+  ]
+}

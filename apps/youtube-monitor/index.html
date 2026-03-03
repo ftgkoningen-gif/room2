@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YouTube Monitor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Satoshi:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <link rel="stylesheet" href="youtube-monitor.css">
+</head>
+<body>
+  <div class="container">
+
+    <!-- Header -->
+    <header class="header">
+      <div class="header-inner">
+        <h1 class="header-title">YouTube <span>Monitor</span></h1>
+        <div class="header-meta" id="last-updated">Laden…</div>
+      </div>
+    </header>
+
+    <!-- Stats -->
+    <div class="stats-bar" id="stats-bar">
+      <div class="stat">
+        <div class="stat-value" id="stat-videos">—</div>
+        <div class="stat-label">Video's</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value" id="stat-channels">—</div>
+        <div class="stat-label">Kanalen</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value" id="stat-categories">—</div>
+        <div class="stat-label">Categorieën</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value" id="stat-summaries">—</div>
+        <div class="stat-label">Samenvattingen</div>
+      </div>
+    </div>
+
+    <!-- Categorieën -->
+    <h2 class="section-title">Categorieën</h2>
+    <div class="category-grid" id="category-grid">
+      <!-- Skeleton loaders -->
+      <div class="skeleton" style="height: 180px;"></div>
+      <div class="skeleton" style="height: 180px;"></div>
+      <div class="skeleton" style="height: 180px;"></div>
+      <div class="skeleton" style="height: 180px;"></div>
+      <div class="skeleton" style="height: 180px;"></div>
+      <div class="skeleton" style="height: 180px;"></div>
+    </div>
+
+    <!-- Top 10 deze week per categorie -->
+    <h2 class="section-title">Top 10 deze week</h2>
+    <div class="ranking-tabs" id="ranking-tabs"></div>
+    <div class="ranking-list" id="ranking-list">
+      <div class="skeleton" style="height: 60px;"></div>
+      <div class="skeleton" style="height: 60px;"></div>
+      <div class="skeleton" style="height: 60px;"></div>
+    </div>
+
+    <!-- Recente video's -->
+    <h2 class="section-title">Recente video's</h2>
+    <div class="recent-list" id="recent-list">
+      <div class="skeleton" style="height: 80px;"></div>
+      <div class="skeleton" style="height: 80px;"></div>
+      <div class="skeleton" style="height: 80px;"></div>
+      <div class="skeleton" style="height: 80px;"></div>
+      <div class="skeleton" style="height: 80px;"></div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      Samenvattingen door Claude AI · Data via YouTube API<br>
+      Automatisch bijgewerkt door YouTube Monitor
+    </footer>
+
+  </div>
+
+  <script>
+    const SUPABASE_URL = 'https://mvwsloxbrzzjeamakfzg.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im12d3Nsb3hicnp6amVhbWFrZnpnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzOTQxNjAsImV4cCI6MjA4Nzk3MDE2MH0.98WKwNtkUsjBncuoPtsWTINOHh1KYvjkKY33zrf5MZc';
+    const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    // Categorie config (mirrored from channels.json)
+    const CATEGORIES = [
+      { name: 'Gezondheid', emoji: '💪', channels: ['Andrew Huberman', 'Bryan Johnson'] },
+      { name: 'Podcasts', emoji: '🎙️', channels: ['The Diary Of A CEO', 'Triggernometry'] },
+      { name: 'Nieuws', emoji: '📰', channels: ['De Nieuwe Wereld'] },
+      { name: 'Economie', emoji: '📊', channels: ['Garys Economics', 'Current Ratio'] },
+      { name: 'Crypto', emoji: '₿', channels: ['BNR Nieuwsradio'] },
+      { name: 'Tech & AI', emoji: '🤖', channels: ['Nate Herk', 'Cole Medin', 'IndyDevDan', 'Greg Isenberg', 'Matthew Berman', 'All About AI'] },
+    ];
+
+    function timeAgo(dateStr) {
+      const now = new Date();
+      const date = new Date(dateStr);
+      const diff = Math.floor((now - date) / 1000);
+      if (diff < 3600) return `${Math.floor(diff / 60)} min geleden`;
+      if (diff < 86400) return `${Math.floor(diff / 3600)} uur geleden`;
+      if (diff < 604800) return `${Math.floor(diff / 86400)} dagen geleden`;
+      return date.toLocaleDateString('nl-NL', { day: 'numeric', month: 'short' });
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    function formatViews(n) {
+      if (!n || n === 0) return '—';
+      if (n >= 1_000_000) return (n / 1_000_000).toFixed(1).replace('.0', '') + 'M';
+      if (n >= 1_000) return (n / 1_000).toFixed(1).replace('.0', '') + 'K';
+      return n.toString();
+    }
+
+    async function loadData() {
+      const { data: videos, error } = await db
+        .from('youtube_videos')
+        .select('*')
+        .order('published_at', { ascending: false });
+
+      if (error || !videos) {
+        console.error('Supabase error:', error);
+        document.getElementById('category-grid').innerHTML =
+          '<p style="color: var(--yt-text-dim); grid-column: 1/-1;">Kon data niet laden.</p>';
+        return;
+      }
+
+      // Stats
+      const uniqueChannels = new Set(videos.map(v => v.channel_name));
+      const uniqueCategories = new Set(videos.map(v => v.category));
+      const summaryCount = videos.filter(v => v.summary).length;
+
+      document.getElementById('stat-videos').textContent = videos.length;
+      document.getElementById('stat-channels').textContent = uniqueChannels.size;
+      document.getElementById('stat-categories').textContent = uniqueCategories.size;
+      document.getElementById('stat-summaries').textContent = summaryCount;
+
+      // Last updated
+      if (videos.length > 0) {
+        const latest = videos[0].checked_at || videos[0].published_at;
+        document.getElementById('last-updated').textContent =
+          `Laatste update: ${new Date(latest).toLocaleDateString('nl-NL', { weekday: 'long', day: 'numeric', month: 'long' })}`;
+      }
+
+      // Group by category
+      const byCategory = {};
+      for (const v of videos) {
+        if (!byCategory[v.category]) byCategory[v.category] = [];
+        byCategory[v.category].push(v);
+      }
+
+      // Render category cards
+      const grid = document.getElementById('category-grid');
+      grid.innerHTML = '';
+
+      for (const cat of CATEGORIES) {
+        const catVideos = byCategory[cat.name] || [];
+        const latest = catVideos[0];
+
+        const card = document.createElement('a');
+        card.href = `categorie.html?cat=${encodeURIComponent(cat.name)}`;
+        card.className = 'category-card fade-up';
+
+        card.innerHTML = `
+          <div class="category-card-header">
+            <span class="category-emoji">${cat.emoji}</span>
+            <span class="category-count">${catVideos.length} video's</span>
+          </div>
+          <div class="category-name">${escapeHtml(cat.name)}</div>
+          <div class="category-channels">${cat.channels.join(' · ')}</div>
+          ${latest ? `
+            <div class="category-latest">
+              <div class="category-latest-title">${escapeHtml(latest.video_title)}</div>
+              <div class="category-latest-meta">${escapeHtml(latest.channel_name)} · ${timeAgo(latest.published_at)}</div>
+            </div>
+          ` : ''}
+        `;
+
+        grid.appendChild(card);
+      }
+
+      // Stagger animation
+      grid.querySelectorAll('.fade-up').forEach((el, i) => {
+        el.style.animationDelay = `${i * 0.06}s`;
+      });
+
+      // --- Top 10 per categorie ---
+      const weekAgo = new Date();
+      weekAgo.setDate(weekAgo.getDate() - 7);
+      const weekVideos = videos.filter(v => new Date(v.published_at) >= weekAgo);
+
+      const weekByCategory = {};
+      for (const v of weekVideos) {
+        if (!weekByCategory[v.category]) weekByCategory[v.category] = [];
+        weekByCategory[v.category].push(v);
+      }
+      // Sort each category by view_count desc
+      for (const cat in weekByCategory) {
+        weekByCategory[cat].sort((a, b) => (b.view_count || 0) - (a.view_count || 0));
+      }
+
+      // Also build "Alles" combined list
+      const allWeekSorted = [...weekVideos].sort((a, b) => (b.view_count || 0) - (a.view_count || 0));
+
+      const tabs = document.getElementById('ranking-tabs');
+      const list = document.getElementById('ranking-list');
+      let activeTab = 'Alles';
+
+      function renderRanking(catName) {
+        activeTab = catName;
+        const items = catName === 'Alles' ? allWeekSorted : (weekByCategory[catName] || []);
+        const top10 = items.slice(0, 10);
+
+        // Update active tab
+        tabs.querySelectorAll('.ranking-tab').forEach(t => {
+          t.classList.toggle('active', t.dataset.cat === catName);
+        });
+
+        list.innerHTML = '';
+        if (top10.length === 0) {
+          list.innerHTML = '<p style="color: var(--yt-text-dim); padding: 24px 0; text-align: center;">Geen video\'s deze week.</p>';
+          return;
+        }
+
+        for (let i = 0; i < top10.length; i++) {
+          const video = top10[i];
+          const cat = CATEGORIES.find(c => c.name === video.category);
+          const rank = i + 1;
+
+          const item = document.createElement('a');
+          item.href = video.video_url;
+          item.target = '_blank';
+          item.rel = 'noopener';
+          item.className = 'ranking-item fade-up';
+          item.style.animationDelay = `${i * 0.04}s`;
+
+          item.innerHTML = `
+            <span class="ranking-pos${rank <= 3 ? ' top-three' : ''}">${rank}</span>
+            <img class="ranking-thumb" src="${video.thumbnail_url}" alt="" loading="lazy">
+            <div class="ranking-info">
+              <div class="ranking-title">${escapeHtml(video.video_title)}</div>
+              <div class="ranking-meta">${escapeHtml(video.channel_name)} · ${timeAgo(video.published_at)}</div>
+            </div>
+            <div class="ranking-views">
+              <div class="ranking-views-value">${formatViews(video.view_count)}</div>
+              <div class="ranking-views-label">views</div>
+            </div>
+          `;
+
+          list.appendChild(item);
+        }
+      }
+
+      // Build tabs
+      tabs.innerHTML = '';
+      const allTab = document.createElement('button');
+      allTab.className = 'ranking-tab active';
+      allTab.dataset.cat = 'Alles';
+      allTab.textContent = 'Alles';
+      allTab.onclick = () => renderRanking('Alles');
+      tabs.appendChild(allTab);
+
+      for (const cat of CATEGORIES) {
+        if (!weekByCategory[cat.name] || weekByCategory[cat.name].length === 0) continue;
+        const tab = document.createElement('button');
+        tab.className = 'ranking-tab';
+        tab.dataset.cat = cat.name;
+        tab.textContent = `${cat.emoji} ${cat.name}`;
+        tab.onclick = () => renderRanking(cat.name);
+        tabs.appendChild(tab);
+      }
+
+      renderRanking('Alles');
+
+      // Recent videos (last 8)
+      const recentList = document.getElementById('recent-list');
+      recentList.innerHTML = '';
+
+      const recent = videos.slice(0, 8);
+      for (const video of recent) {
+        const cat = CATEGORIES.find(c => c.name === video.category);
+
+        const item = document.createElement('a');
+        item.href = video.video_url;
+        item.target = '_blank';
+        item.rel = 'noopener';
+        item.className = 'recent-item fade-up';
+
+        item.innerHTML = `
+          <img class="recent-thumb" src="${video.thumbnail_url}" alt="" loading="lazy">
+          <div class="recent-info">
+            <div class="recent-title">${escapeHtml(video.video_title)}</div>
+            <div class="recent-meta">${escapeHtml(video.channel_name)} · ${timeAgo(video.published_at)}</div>
+            <span class="recent-category-badge">${cat ? cat.emoji + ' ' : ''}${escapeHtml(video.category)}</span>
+          </div>
+        `;
+
+        recentList.appendChild(item);
+      }
+
+      // Stagger recent items
+      recentList.querySelectorAll('.fade-up').forEach((el, i) => {
+        el.style.animationDelay = `${0.3 + i * 0.05}s`;
+      });
+    }
+
+    loadData();
+  </script>
+</body>
+</html>

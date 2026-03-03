@@ -9,6 +9,7 @@
     "dev:roomto": "pnpm --filter @websites/roomto dev",
     "dev:premium-liften": "pnpm --filter @websites/premium-liften dev",
     "dev:pricehunter": "pnpm --filter @websites/pricehunter dev",
+    "dev:youtube-monitor": "pnpm --filter @websites/youtube-monitor dev",
     "dev:agents": "pnpm --filter @websites/ai-agents dev:trigger",
     "screenshot": "node screenshot.mjs"
   },

@@ -1,6 +1,8 @@
 /**
- * Test script - draait price-checker logica direct
- * Usage: node --env-file=.env --import tsx test-run.ts
+ * Test script - draait price-checker of youtube-monitor logica direct
+ * Usage:
+ *   node --env-file=.env --import tsx test-run.ts              (price checker)
+ *   node --env-file=.env --import tsx test-run.ts --youtube     (youtube monitor)
  */
 import { Resend } from "resend";
 import { createClient } from "@supabase/supabase-js";
@@ -554,4 +556,222 @@ function buildEmailHtml(results: ProductResult[]): string {
   return html;
 }
 
-main();
+// --- YouTube Monitor ---
+
+import Anthropic from "@anthropic-ai/sdk";
+import ytTranscript from "@danielxceron/youtube-transcript";
+const { YoutubeTranscript } = ytTranscript;
+import channelsConfig from "./src/trigger/channels.json";
+
+interface YTChannelConfig {
+  name: string;
+  channelId: string;
+  uploadsPlaylistId: string;
+}
+interface YTCategoryConfig {
+  name: string;
+  emoji: string;
+  channels: YTChannelConfig[];
+}
+interface YTVideoInfo {
+  videoId: string;
+  title: string;
+  channelName: string;
+  channelId: string;
+  category: string;
+  publishedAt: string;
+  thumbnailUrl: string;
+  videoUrl: string;
+}
+interface YTVideoWithSummary extends YTVideoInfo {
+  summary: string | null;
+  transcriptAvailable: boolean;
+}
+
+async function youtubeMain() {
+  console.log("=== YouTube Monitor Test Run ===\n");
+
+  const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY;
+  const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
+
+  if (!YOUTUBE_API_KEY) {
+    console.error("YOUTUBE_API_KEY niet gevonden in .env");
+    process.exit(1);
+  }
+
+  const anthropic = new Anthropic({ apiKey: ANTHROPIC_API_KEY });
+
+  // Laatste 7 dagen
+  const since = new Date();
+  since.setDate(since.getDate() - 7);
+  console.log(`Checken op video's na: ${since.toISOString()}\n`);
+
+  const categories = channelsConfig.categories as YTCategoryConfig[];
+  const videosByCategory = new Map<string, YTVideoWithSummary[]>();
+  let totalNew = 0;
+
+  for (const category of categories) {
+    console.log(`━━━ ${category.emoji} ${category.name} ━━━`);
+    const categoryVideos: YTVideoInfo[] = [];
+
+    for (const channel of category.channels) {
+      try {
+        const url = new URL("https://www.googleapis.com/youtube/v3/playlistItems");
+        url.searchParams.set("part", "snippet,contentDetails");
+        url.searchParams.set("playlistId", channel.uploadsPlaylistId);
+        url.searchParams.set("maxResults", "10");
+        url.searchParams.set("key", YOUTUBE_API_KEY);
+
+        const res = await fetch(url.toString());
+        if (!res.ok) {
+          const body = await res.text();
+          throw new Error(`YouTube API ${res.status}: ${body.slice(0, 200)}`);
+        }
+
+        const data = await res.json();
+        let newCount = 0;
+        for (const item of data.items || []) {
+          const publishedAt = item.snippet.publishedAt;
+          if (new Date(publishedAt) <= since) continue;
+          categoryVideos.push({
+            videoId: item.contentDetails.videoId,
+            title: item.snippet.title,
+            channelName: channel.name,
+            channelId: channel.channelId,
+            category: category.name,
+            publishedAt,
+            thumbnailUrl: item.snippet.thumbnails?.high?.url || "",
+            videoUrl: `https://www.youtube.com/watch?v=${item.contentDetails.videoId}`,
+          });
+          newCount++;
+        }
+        console.log(`  ${channel.name}: ${newCount} nieuwe video's`);
+        await delay(200);
+      } catch (err) {
+        console.error(`  ${channel.name} FOUT: ${err instanceof Error ? err.message : String(err)}`);
+      }
+    }
+
+    // Transcripts + samenvattingen
+    const withSummaries: YTVideoWithSummary[] = [];
+    for (const video of categoryVideos) {
+      console.log(`\n  Video: "${video.title}"`);
+      console.log(`    URL: ${video.videoUrl}`);
+      console.log(`    Gepubliceerd: ${new Date(video.publishedAt).toLocaleString("nl-NL")}`);
+
+      let transcript: string | null = null;
+      const transcriptAttempts = [
+        () => YoutubeTranscript.fetchTranscript(video.videoId),
+        () => YoutubeTranscript.fetchTranscript(video.videoId, { lang: "nl" }),
+        () => YoutubeTranscript.fetchTranscript(video.videoId, { lang: "en" }),
+      ];
+      for (const attempt of transcriptAttempts) {
+        try {
+          const t = await attempt();
+          if (t && t.length > 0) {
+            transcript = t.map((s: any) => s.text).join(" ");
+            if (transcript.length > 15000) transcript = transcript.substring(0, 15000) + "...";
+            if (transcript.length > 0) break;
+          }
+        } catch { continue; }
+      }
+
+      const transcriptAvailable = transcript !== null;
+      console.log(`    Transcript: ${transcriptAvailable ? `ja (${transcript!.length} chars)` : "niet beschikbaar"}`);
+
+      let summary: string | null = null;
+      if (transcript && ANTHROPIC_API_KEY) {
+        try {
+          const msg = await anthropic.messages.create({
+            model: "claude-haiku-4-5-20251001",
+            max_tokens: 512,
+            messages: [
+              {
+                role: "user",
+                content: `Vat de volgende YouTube-video samen in 3-5 beknopte bullet points in het Nederlands. Focus op de belangrijkste inzichten en takeaways. Gebruik het formaat "• punt".\n\nVideo: "${video.title}" van ${video.channelName}\n\nTranscript:\n${transcript}`,
+              },
+            ],
+          });
+          const textBlock = msg.content.find((b) => b.type === "text");
+          summary = textBlock ? (textBlock as { type: "text"; text: string }).text : null;
+          console.log(`    Samenvatting:\n${summary?.split("\n").map((l) => `      ${l}`).join("\n")}`);
+          await delay(500);
+        } catch (err) {
+          console.error(`    Samenvatting FOUT: ${err instanceof Error ? err.message : String(err)}`);
+        }
+      }
+
+      withSummaries.push({ ...video, summary, transcriptAvailable });
+    }
+
+    videosByCategory.set(category.name, withSummaries);
+    totalNew += withSummaries.length;
+    console.log();
+  }
+
+  console.log(`\n=== Totaal: ${totalNew} nieuwe video('s) ===\n`);
+
+  // View counts ophalen
+  const allVideos = Array.from(videosByCategory.values()).flat();
+  if (allVideos.length > 0) {
+    console.log("\n--- View counts ophalen ---");
+    const videoIds = allVideos.map((v) => v.videoId);
+    const viewCounts = new Map<string, number>();
+    for (let i = 0; i < videoIds.length; i += 50) {
+      const batch = videoIds.slice(i, i + 50);
+      const vcUrl = new URL("https://www.googleapis.com/youtube/v3/videos");
+      vcUrl.searchParams.set("part", "statistics");
+      vcUrl.searchParams.set("id", batch.join(","));
+      vcUrl.searchParams.set("key", YOUTUBE_API_KEY);
+      const vcRes = await fetch(vcUrl.toString());
+      if (vcRes.ok) {
+        const vcData = await vcRes.json();
+        for (const item of vcData.items || []) {
+          viewCounts.set(item.id, parseInt(item.statistics.viewCount || "0", 10));
+        }
+      }
+    }
+    for (const v of allVideos) {
+      const vc = viewCounts.get(v.videoId) || 0;
+      console.log(`  ${v.title.slice(0, 50)}... → ${vc.toLocaleString()} views`);
+    }
+
+    // Supabase opslag
+    if (supabase) {
+      console.log("\n--- Opslaan in Supabase ---");
+      const rows = allVideos.map((v) => ({
+        channel_name: v.channelName,
+        channel_id: v.channelId,
+        category: v.category,
+        video_id: v.videoId,
+        video_title: v.title,
+        video_url: v.videoUrl,
+        published_at: v.publishedAt,
+        thumbnail_url: v.thumbnailUrl,
+        transcript_available: v.transcriptAvailable,
+        summary: v.summary,
+        view_count: viewCounts.get(v.videoId) || 0,
+        checked_at: new Date().toISOString(),
+      }));
+
+      const { error: sbErr } = await supabase
+        .from("youtube_videos")
+        .upsert(rows, { onConflict: "video_id" });
+      if (sbErr) console.error("Supabase FOUT:", sbErr);
+      else console.log(`${rows.length} video's opgeslagen in Supabase`);
+    }
+  } else {
+    console.log("\nGeen video's om op te slaan");
+  }
+
+  console.log(`\nKlaar! ${totalNew} video('s) verwerkt (e-mail uitgeschakeld).`);
+}
+
+// --- CLI routing ---
+
+const args = process.argv.slice(2);
+if (args.includes("--youtube") || args.includes("--yt")) {
+  youtubeMain();
+} else {
+  main();
+}

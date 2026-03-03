@@ -56,5 +56,15 @@
     "jumbo": { "query": "neutral wasmiddel" },
     "dirk": { "query": "neutral wasmiddel kleur" },
     "vomar": { "query": "neutral wasmiddel kleur" }
+  },
+  {
+    "name": "Zonnatura Cranberrysap",
+    "brand": "zonnatura",
+    "titleContains": ["cranberry", "sap|juice|drink"],
+    "ah": { "query": "zonnatura cranberrysap" },
+    "jumbo": { "query": "zonnatura biologische cranberrysap" },
+    "dirk": { "query": "zonnatura cranberry" },
+    "vomar": { "query": "zonnatura cranberry" },
+    "aldi": { "category": "dranken/sap-frisdrank" }
   }
 ]
