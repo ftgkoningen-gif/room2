@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Categorie — YouTube Monitor</title>
+  <title>Categorie — My YouTube Monitor</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Satoshi:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -47,7 +47,7 @@
     <!-- Footer -->
     <footer class="footer">
       Samenvattingen door Claude AI · Data via YouTube API<br>
-      Automatisch bijgewerkt door YouTube Monitor
+      Automatisch bijgewerkt door My YouTube Monitor
     </footer>
 
   </div>
@@ -62,7 +62,7 @@
       { name: 'Podcasts', emoji: '🎙️', channels: ['The Diary Of A CEO', 'Triggernometry'] },
       { name: 'Nieuws', emoji: '📰', channels: ['De Nieuwe Wereld'] },
       { name: 'Economie', emoji: '📊', channels: ['Garys Economics', 'Current Ratio'] },
-      { name: 'Crypto', emoji: '₿', channels: ['BNR Nieuwsradio'] },
+      { name: 'Crypto', emoji: '₿', channels: ['BNR Cryptocast'] },
       { name: 'Tech & AI', emoji: '🤖', channels: ['Nate Herk', 'Cole Medin', 'IndyDevDan', 'Greg Isenberg', 'Matthew Berman', 'All About AI'] },
     ];
 
@@ -101,7 +101,7 @@
       }
 
       const cat = CATEGORIES.find(c => c.name === catName);
-      document.title = `${cat ? cat.emoji + ' ' : ''}${catName} — YouTube Monitor`;
+      document.title = `${cat ? cat.emoji + ' ' : ''}${catName} — My YouTube Monitor`;
 
       // Set header
       document.getElementById('page-emoji').textContent = cat ? cat.emoji : '';
