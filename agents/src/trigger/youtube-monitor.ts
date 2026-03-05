@@ -1,8 +1,7 @@
 import { schedules } from "@trigger.dev/sdk";
 import { createClient } from "@supabase/supabase-js";
 import Anthropic from "@anthropic-ai/sdk";
-import ytTranscript from "@danielxceron/youtube-transcript";
-const { YoutubeTranscript } = ytTranscript;
+import { YoutubeTranscript } from "youtube-transcript-plus";
 import channelsConfig from "./channels.json";
 
 const supabase =
@@ -143,18 +142,19 @@ async function fetchTranscript(videoId: string): Promise<string | null> {
 async function summarizeVideo(
   title: string,
   channelName: string,
-  transcript: string
+  transcript: string,
+  category: string = ""
 ): Promise<string | null> {
   try {
+    const isEnglish = category === "Crypto";
+    const prompt = isEnglish
+      ? `Summarize the following YouTube video in 3-5 concise bullet points in English. Focus on the key insights and takeaways. Use the format "• point".\n\nVideo: "${title}" by ${channelName}\n\nTranscript:\n${transcript}`
+      : `Vat de volgende YouTube-video samen in 3-5 beknopte bullet points in het Nederlands. Focus op de belangrijkste inzichten en takeaways. Gebruik het formaat "• punt".\n\nVideo: "${title}" van ${channelName}\n\nTranscript:\n${transcript}`;
+
     const message = await anthropic.messages.create({
       model: "claude-haiku-4-5-20251001",
       max_tokens: 512,
-      messages: [
-        {
-          role: "user",
-          content: `Vat de volgende YouTube-video samen in 3-5 beknopte bullet points in het Nederlands. Focus op de belangrijkste inzichten en takeaways. Gebruik het formaat "• punt".\n\nVideo: "${title}" van ${channelName}\n\nTranscript:\n${transcript}`,
-        },
-      ],
+      messages: [{ role: "user", content: prompt }],
     });
 
     const textBlock = message.content.find((b) => b.type === "text");
@@ -222,6 +222,124 @@ async function updateRecentViewCounts(): Promise<number> {
 
   console.log(`View counts bijgewerkt voor ${updated}/${videoIds.length} recente video's`);
   return updated;
+}
+
+// --- Crypto Briefing ---
+
+const BRIEFING_PROMPT = (videoSummaries: string) => `You are a crypto market analyst. Below are summaries of recent crypto podcasts from the past week.
+
+Analyze all summaries and create a structured briefing. Identify the 3-7 most important topics discussed across multiple podcasts or that are particularly relevant.
+
+For each topic:
+1. Give a short, catchy title (max 10 words)
+2. Write a clear paragraph (3-5 sentences) explaining what's going on
+3. Indicate which podcasts discussed this topic (use the exact video_id's from the data)
+4. Add context from your own knowledge: is what the podcasters say accurate? Are they missing something? Are there counterarguments?
+5. Give a sentiment indicator: "bullish", "bearish", or "neutral"
+
+Also write an overarching "market mood" paragraph of 2-3 sentences summarizing the general tone.
+
+IMPORTANT: Respond ONLY with valid JSON in exactly this format:
+{
+  "overview": "Overarching market mood paragraph here...",
+  "topics": [
+    {
+      "topic": "Short catchy title",
+      "summary": "Clear paragraph about what's going on...",
+      "sentiment": "bullish",
+      "source_video_ids": ["video_id_1", "video_id_2"],
+      "news_context": "What your own knowledge adds: verification, nuance, missing context..."
+    }
+  ]
+}
+
+--- PODCAST SUMMARIES ---
+
+${videoSummaries}`;
+
+async function generateCryptoBriefing(): Promise<void> {
+  if (!supabase) return;
+
+  // Haal laatste 7 dagen crypto-samenvattingen op
+  const weekAgo = new Date();
+  weekAgo.setDate(weekAgo.getDate() - 7);
+
+  const { data: recentCryptoVideos } = await supabase
+    .from("youtube_videos")
+    .select("video_id, video_title, video_url, channel_name, summary, published_at")
+    .eq("category", "Crypto")
+    .eq("transcript_available", true)
+    .not("summary", "is", null)
+    .gte("published_at", weekAgo.toISOString())
+    .order("published_at", { ascending: false });
+
+  if (!recentCryptoVideos || recentCryptoVideos.length === 0) {
+    console.log("Geen crypto-samenvattingen gevonden voor briefing");
+    return;
+  }
+
+  console.log(`Crypto briefing genereren op basis van ${recentCryptoVideos.length} video's...`);
+
+  // Bouw input voor synthese-prompt
+  const videoSummaries = recentCryptoVideos
+    .map((v: any) => `[${v.channel_name}] "${v.video_title}" (video_id: ${v.video_id})\n${v.summary}`)
+    .join("\n\n---\n\n");
+
+  // Claude Sonnet voor synthese
+  const briefingResponse = await anthropic.messages.create({
+    model: "claude-sonnet-4-20250514",
+    max_tokens: 2048,
+    messages: [{ role: "user", content: BRIEFING_PROMPT(videoSummaries) }],
+  });
+
+  const textBlock = briefingResponse.content.find((b) => b.type === "text");
+  if (!textBlock || textBlock.type !== "text") {
+    console.error("Geen tekst in briefing response");
+    return;
+  }
+
+  // Parse JSON response
+  let briefing: any;
+  try {
+    briefing = JSON.parse(textBlock.text);
+  } catch {
+    console.error("Briefing JSON parse mislukt:", textBlock.text.slice(0, 200));
+    return;
+  }
+
+  // Verrijk source_video_ids met volledige video-info
+  const videoMap = new Map(recentCryptoVideos.map((v: any) => [v.video_id, v]));
+  for (const topic of briefing.topics) {
+    topic.sources = (topic.source_video_ids || [])
+      .map((id: string) => videoMap.get(id))
+      .filter(Boolean)
+      .map((v: any) => ({
+        video_id: v.video_id,
+        video_title: v.video_title,
+        channel_name: v.channel_name,
+        video_url: v.video_url,
+      }));
+    delete topic.source_video_ids;
+  }
+
+  // Opslaan in Supabase
+  const today = new Date().toISOString().slice(0, 10);
+  const { error } = await supabase.from("crypto_briefings").upsert(
+    {
+      briefing_date: today,
+      overview: briefing.overview,
+      topics: briefing.topics,
+      videos_used: recentCryptoVideos.length,
+      channels_used: [...new Set(recentCryptoVideos.map((v: any) => v.channel_name))],
+    },
+    { onConflict: "briefing_date" }
+  );
+
+  if (error) {
+    console.error("Crypto briefing opslaan mislukt:", error);
+  } else {
+    console.log(`Crypto briefing opgeslagen (${briefing.topics.length} onderwerpen)`);
+  }
 }
 
 // --- Supabase opslag ---
@@ -306,7 +424,7 @@ export const youtubeMonitor = schedules.task({
         let summary: string | null = null;
         if (transcript) {
           console.log(`  Samenvatting genereren...`);
-          summary = await summarizeVideo(video.title, video.channelName, transcript);
+          summary = await summarizeVideo(video.title, video.channelName, transcript, video.category);
           await delay(500);
         }
 
@@ -331,6 +449,16 @@ export const youtubeMonitor = schedules.task({
 
     // View counts updaten voor alle video's van afgelopen week
     const viewsUpdated = await updateRecentViewCounts();
+
+    // Crypto briefing genereren
+    const cryptoVideos = videosByCategory.get("Crypto") || [];
+    if (cryptoVideos.length > 0) {
+      try {
+        await generateCryptoBriefing();
+      } catch (err) {
+        console.error("Crypto briefing mislukt:", err instanceof Error ? err.message : err);
+      }
+    }
 
     console.log(`${totalNewVideos} nieuwe video('s) opgeslagen, ${viewsUpdated} view counts bijgewerkt`);
 

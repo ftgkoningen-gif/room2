@@ -62,7 +62,7 @@
       { name: 'Podcasts', emoji: '🎙️', channels: ['The Diary Of A CEO', 'Triggernometry'] },
       { name: 'Nieuws', emoji: '📰', channels: ['De Nieuwe Wereld'] },
       { name: 'Economie', emoji: '📊', channels: ['Garys Economics', 'Current Ratio'] },
-      { name: 'Crypto', emoji: '₿', channels: ['BNR Cryptocast'] },
+      { name: 'Crypto', emoji: '₿', channels: ['BNR Cryptocast', 'Empire (Blockworks)', 'Unchained', 'The Pomp Podcast', 'Bankless', 'What Bitcoin Did'] },
       { name: 'Tech & AI', emoji: '🤖', channels: ['Nate Herk', 'Cole Medin', 'IndyDevDan', 'Greg Isenberg', 'Matthew Berman', 'All About AI'] },
     ];
 
@@ -89,6 +89,59 @@
         .filter(line => line.trim())
         .map(line => `<p>${escapeHtml(line)}</p>`)
         .join('');
+    }
+
+    async function loadBriefing(catName) {
+      if (catName !== 'Crypto') return;
+
+      const { data: briefing, error } = await db
+        .from('crypto_briefings')
+        .select('*')
+        .order('briefing_date', { ascending: false })
+        .limit(1)
+        .single();
+
+      if (error || !briefing) return;
+
+      const briefingEl = document.createElement('div');
+      briefingEl.className = 'briefing-section fade-up';
+
+      const dateStr = new Date(briefing.briefing_date + 'T00:00:00')
+        .toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' });
+
+      let topicsHtml = '';
+      for (const topic of (briefing.topics || [])) {
+        const sourcesHtml = (topic.sources || [])
+          .map(s => `<a href="${s.video_url}" target="_blank" rel="noopener">${escapeHtml(s.channel_name)}</a>`)
+          .join(' · ');
+
+        topicsHtml += `
+          <div class="briefing-topic">
+            <div class="briefing-topic-header">
+              <span class="briefing-sentiment ${topic.sentiment || 'neutral'}"></span>
+              <span class="briefing-topic-title">${escapeHtml(topic.topic)}</span>
+            </div>
+            <div class="briefing-topic-summary">${escapeHtml(topic.summary)}</div>
+            ${topic.news_context ? `<div class="briefing-news-context">${escapeHtml(topic.news_context)}</div>` : ''}
+            ${sourcesHtml ? `<div class="briefing-sources">Sources: ${sourcesHtml}</div>` : ''}
+          </div>
+        `;
+      }
+
+      briefingEl.innerHTML = `
+        <div class="briefing-header">
+          <span class="briefing-title">Crypto <span>Briefing</span></span>
+          <span class="briefing-date">${dateStr}</span>
+        </div>
+        <div class="briefing-overview">${escapeHtml(briefing.overview)}</div>
+        ${topicsHtml}
+        <div class="briefing-footer">
+          Based on ${briefing.videos_used} podcast episodes · ${(briefing.channels_used || []).length} channels
+        </div>
+      `;
+
+      const feed = document.getElementById('video-feed');
+      feed.parentNode.insertBefore(briefingEl, feed);
     }
 
     async function loadCategory() {
@@ -182,6 +235,9 @@
       feed.querySelectorAll('.fade-up').forEach((el, i) => {
         el.style.animationDelay = `${i * 0.06}s`;
       });
+
+      // Load crypto briefing if applicable
+      await loadBriefing(catName);
     }
 
     loadCategory();

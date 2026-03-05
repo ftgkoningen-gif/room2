@@ -515,7 +515,7 @@ async function main() {
   try {
     const { data, error } = await resend.emails.send({
       from: `Price Hunter <${process.env.EMAIL_FROM || "onboarding@resend.dev"}>`,
-      to: [emailTo], subject: `Price Hunter — Aanbiedingen week ${week} (TEST)`, html: emailHtml,
+      to: [emailTo], subject: `Price Hunter — Prijsupdate week ${week} (TEST)`, html: emailHtml,
     });
     if (error) console.error("MISLUKT:", error);
     else console.log(`VERSTUURD! ID: ${data?.id}`);
@@ -533,75 +533,34 @@ function getWeekNumber(d: Date): number {
 }
 
 function buildEmailHtml(results: ProductResult[]): string {
-  const { from, to } = getOfferDateRange();
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
   const week = getWeekNumber(tomorrow);
 
-  let html = `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:600px;margin:0 auto;padding:20px;">
+  const totalProducts = results.length;
+  const totalOffers = results.reduce((sum, r) => sum + r.offers.filter((o) => o.isOnSale).length, 0);
+
+  return `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:600px;margin:0 auto;padding:20px;">
     <h1 style="color:#FF7300;font-size:24px;border-bottom:2px solid #FF7300;padding-bottom:10px;">Price Hunter — Week ${week}</h1>
-    <p style="color:#666;font-size:14px;">Aanbiedingen ${formatDate(from)} t/m ${formatDate(to)}</p>`;
-
-  for (const r of results) {
-    html += `<div style="margin:20px 0;padding:16px;background:#f8f9fa;border-radius:8px;">`;
-    html += `<h2 style="margin:0 0 12px;font-size:18px;color:#333;">${r.name}</h2>`;
-
-    for (const e of r.errors) html += `<p style="color:#dc3545;font-size:12px;">Fout: ${e}</p>`;
-
-    const best = bestPerSupermarket(r.offers);
-
-    if (best.length === 0 && r.errors.length === 0) {
-      html += `<p style="color:#666;">Geen resultaten gevonden.</p>`;
-    } else if (best.length > 0) {
-      const cheapest = best.reduce((a, b) => a.effectivePrice < b.effectivePrice ? a : b);
-      const cheapestLink = cheapest.productUrl
-        ? `<a href="${cheapest.productUrl}" style="font-size:16px;font-weight:bold;color:#2e7d32;text-decoration:underline;" target="_blank">${cheapest.supermarket}</a>`
-        : `<span style="font-size:16px;font-weight:bold;">${cheapest.supermarket}</span>`;
-
-      html += `<div style="padding:12px;margin:8px 0;background:#e8f5e9;border-left:4px solid #4caf50;border-radius:4px;">
-        <strong style="color:#2e7d32;font-size:14px;">GOEDKOOPST</strong><br/>
-        ${cheapestLink} —
-        <strong style="font-size:18px;color:#2e7d32;">&euro;${cheapest.effectivePrice.toFixed(2)}</strong>
-        <span style="font-size:12px;color:#666;"> per stuk${cheapest.isOnSale ? " (met actie)" : ""}</span>
-        ${cheapest.discountLabel ? `<br/><span style="font-size:13px;color:#FF7300;">${cheapest.discountLabel}</span>` : ""}
-        ${cheapest.discountPeriod ? `<br/><span style="font-size:12px;color:#555;">Looptijd: ${cheapest.discountPeriod}</span>` : ""}
-      </div>`;
-
-      // Prijsvergelijking andere supermarkten
-      const others = best.filter((o) => o !== cheapest).sort((a, b) => a.effectivePrice - b.effectivePrice);
-      if (others.length > 0) {
-        html += `<table style="width:100%;font-size:13px;margin-top:8px;border-collapse:collapse;">`;
-        for (const o of others) {
-          const link = o.productUrl
-            ? `<a href="${o.productUrl}" style="color:#333;text-decoration:underline;" target="_blank">${o.supermarket}</a>`
-            : o.supermarket;
-          html += `<tr style="border-bottom:1px solid #eee;">
-            <td style="padding:6px 0;">${link}</td>
-            <td style="padding:6px 0;text-align:right;">
-              <strong>&euro;${o.effectivePrice.toFixed(2)}</strong>
-              ${o.discountLabel ? `<span style="color:#FF7300;font-size:11px;margin-left:4px;">${o.discountLabel}</span>` : ""}
-            </td>
-          </tr>`;
-        }
-        html += `</table>`;
-      }
-    }
-
-    html += `</div>`;
-  }
-
-  html += `<p style="font-size:11px;color:#aaa;margin-top:30px;border-top:1px solid #eee;padding-top:10px;">
-    Bronnen: Albert Heijn API, Jumbo API, Dirk API, Aldi API, Vomar API<br/>
-    Bij 1+1 / 2e gratis: effectieve prijs = gemiddelde stuksprijs<br/>
-    Automatisch verstuurd door Price Hunter via Trigger.dev</p></div>`;
-  return html;
+    <p style="color:#333;font-size:16px;line-height:1.6;">
+      De prijzen van deze week zijn bijgewerkt. Er zijn <strong>${totalProducts} producten</strong> gecheckt
+      bij Albert Heijn, Jumbo, Dirk, Aldi en Vomar${totalOffers > 0 ? `, waarvan <strong>${totalOffers} aanbiedingen</strong>` : ""}.
+    </p>
+    <p style="margin:24px 0;">
+      <a href="https://pricehunter-six.vercel.app/" style="display:inline-block;padding:12px 24px;background:#FF7300;color:#fff;font-size:16px;font-weight:bold;text-decoration:none;border-radius:6px;" target="_blank">
+        Bekijk alle prijzen
+      </a>
+    </p>
+    <p style="font-size:12px;color:#aaa;margin-top:30px;border-top:1px solid #eee;padding-top:10px;">
+      Automatisch verstuurd door Price Hunter
+    </p>
+  </div>`;
 }
 
 // --- YouTube Monitor ---
 
 import Anthropic from "@anthropic-ai/sdk";
-import ytTranscript from "@danielxceron/youtube-transcript";
-const { YoutubeTranscript } = ytTranscript;
+import { YoutubeTranscript } from "youtube-transcript-plus";
 import channelsConfig from "./src/trigger/channels.json";
 
 interface YTChannelConfig {
@@ -729,7 +688,9 @@ async function youtubeMain() {
             messages: [
               {
                 role: "user",
-                content: `Vat de volgende YouTube-video samen in 3-5 beknopte bullet points in het Nederlands. Focus op de belangrijkste inzichten en takeaways. Gebruik het formaat "• punt".\n\nVideo: "${video.title}" van ${video.channelName}\n\nTranscript:\n${transcript}`,
+                content: video.category === "Crypto"
+                  ? `Summarize the following YouTube video in 3-5 concise bullet points in English. Focus on the key insights and takeaways. Use the format "• point".\n\nVideo: "${video.title}" by ${video.channelName}\n\nTranscript:\n${transcript}`
+                  : `Vat de volgende YouTube-video samen in 3-5 beknopte bullet points in het Nederlands. Focus op de belangrijkste inzichten en takeaways. Gebruik het formaat "• punt".\n\nVideo: "${video.title}" van ${video.channelName}\n\nTranscript:\n${transcript}`,
               },
             ],
           });
@@ -803,6 +764,118 @@ async function youtubeMain() {
     }
   } else {
     console.log("\nGeen video's om op te slaan");
+  }
+
+  // Crypto briefing genereren
+  if (supabase && process.env.ANTHROPIC_API_KEY) {
+    console.log("\n--- Crypto Briefing genereren ---");
+
+    const weekAgo = new Date();
+    weekAgo.setDate(weekAgo.getDate() - 7);
+
+    const { data: cryptoVideos } = await supabase
+      .from("youtube_videos")
+      .select("video_id, video_title, video_url, channel_name, summary, published_at")
+      .eq("category", "Crypto")
+      .eq("transcript_available", true)
+      .not("summary", "is", null)
+      .gte("published_at", weekAgo.toISOString())
+      .order("published_at", { ascending: false });
+
+    if (cryptoVideos && cryptoVideos.length > 0) {
+      console.log(`${cryptoVideos.length} crypto-samenvattingen gevonden`);
+
+      const videoSummaries = cryptoVideos
+        .map((v: any) => `[${v.channel_name}] "${v.video_title}" (video_id: ${v.video_id})\n${v.summary}`)
+        .join("\n\n---\n\n");
+
+      const briefingPrompt = `You are a crypto market analyst. Below are summaries of recent crypto podcasts from the past week.
+
+Analyze all summaries and create a structured briefing. Identify the 3-7 most important topics discussed across multiple podcasts or that are particularly relevant.
+
+For each topic:
+1. Give a short, catchy title (max 10 words)
+2. Write a clear paragraph (3-5 sentences) explaining what's going on
+3. Indicate which podcasts discussed this topic (use the exact video_id's from the data)
+4. Add context from your own knowledge: is what the podcasters say accurate? Are they missing something? Are there counterarguments?
+5. Give a sentiment indicator: "bullish", "bearish", or "neutral"
+
+Also write an overarching "market mood" paragraph of 2-3 sentences summarizing the general tone.
+
+IMPORTANT: Respond ONLY with valid JSON in exactly this format:
+{
+  "overview": "Overarching market mood paragraph here...",
+  "topics": [
+    {
+      "topic": "Short catchy title",
+      "summary": "Clear paragraph about what's going on...",
+      "sentiment": "bullish",
+      "source_video_ids": ["video_id_1", "video_id_2"],
+      "news_context": "What your own knowledge adds: verification, nuance, missing context..."
+    }
+  ]
+}
+
+--- PODCAST SUMMARIES ---
+
+${videoSummaries}`;
+
+      try {
+        const briefingResponse = await anthropic.messages.create({
+          model: "claude-sonnet-4-20250514",
+          max_tokens: 2048,
+          messages: [{ role: "user", content: briefingPrompt }],
+        });
+
+        const textBlock = briefingResponse.content.find((b) => b.type === "text");
+        if (textBlock && textBlock.type === "text") {
+          const briefing = JSON.parse(textBlock.text);
+
+          // Verrijk bronnen
+          const videoMap = new Map(cryptoVideos.map((v: any) => [v.video_id, v]));
+          for (const topic of briefing.topics) {
+            topic.sources = (topic.source_video_ids || [])
+              .map((id: string) => videoMap.get(id))
+              .filter(Boolean)
+              .map((v: any) => ({
+                video_id: v.video_id,
+                video_title: v.video_title,
+                channel_name: v.channel_name,
+                video_url: v.video_url,
+              }));
+            delete topic.source_video_ids;
+          }
+
+          console.log(`\nBriefing overview: ${briefing.overview}\n`);
+          for (const topic of briefing.topics) {
+            const sentimentIcon = topic.sentiment === "bullish" ? "🟢" : topic.sentiment === "bearish" ? "🔴" : "🟡";
+            console.log(`${sentimentIcon} ${topic.topic}`);
+            console.log(`  ${topic.summary}`);
+            if (topic.news_context) console.log(`  📰 ${topic.news_context}`);
+            console.log(`  Bronnen: ${topic.sources.map((s: any) => s.channel_name).join(", ") || "geen"}\n`);
+          }
+
+          // Opslaan
+          const today = new Date().toISOString().slice(0, 10);
+          const { error: sbErr } = await supabase.from("crypto_briefings").upsert(
+            {
+              briefing_date: today,
+              overview: briefing.overview,
+              topics: briefing.topics,
+              videos_used: cryptoVideos.length,
+              channels_used: [...new Set(cryptoVideos.map((v: any) => v.channel_name))],
+            },
+            { onConflict: "briefing_date" }
+          );
+          if (sbErr) console.error("Briefing opslaan FOUT:", sbErr);
+          else console.log("Crypto briefing opgeslagen in Supabase");
+        }
+      } catch (err) {
+        console.error("Briefing generatie FOUT:", err instanceof Error ? err.message : String(err));
+      }
+    } else {
+      console.log("Geen crypto-samenvattingen beschikbaar voor briefing");
+    }
   }
 
   console.log(`\nKlaar! ${totalNew} video('s) verwerkt (e-mail uitgeschakeld).`);

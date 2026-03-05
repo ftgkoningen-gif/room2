@@ -64,9 +64,34 @@
       "emoji": "₿",
       "channels": [
         {
-          "name": "BNR Nieuwsradio",
-          "channelId": "UCWALr0VavEm8SgPXGafhFDQ",
-          "uploadsPlaylistId": "UUWALr0VavEm8SgPXGafhFDQ"
+          "name": "BNR Cryptocast",
+          "channelId": "UCEnEL-M4VijjaXtLxoRvSbQ",
+          "uploadsPlaylistId": "UUEnEL-M4VijjaXtLxoRvSbQ"
+        },
+        {
+          "name": "Empire (Blockworks)",
+          "channelId": "UCgK_jxvgUZ7iJKlZUS3YvuA",
+          "uploadsPlaylistId": "UUgK_jxvgUZ7iJKlZUS3YvuA"
+        },
+        {
+          "name": "Unchained",
+          "channelId": "UCWiiMnsnw5Isc2PP1to9nNw",
+          "uploadsPlaylistId": "UUWiiMnsnw5Isc2PP1to9nNw"
+        },
+        {
+          "name": "The Pomp Podcast",
+          "channelId": "UCevXpeL8cNyAnww-NqJ4m2w",
+          "uploadsPlaylistId": "UUevXpeL8cNyAnww-NqJ4m2w"
+        },
+        {
+          "name": "Bankless",
+          "channelId": "UCAl9Ld79qaZxp9JzEOwd3aA",
+          "uploadsPlaylistId": "UUAl9Ld79qaZxp9JzEOwd3aA"
+        },
+        {
+          "name": "What Bitcoin Did",
+          "channelId": "UCtvg5cXLY_tHDJeBoRySBtg",
+          "uploadsPlaylistId": "UUtvg5cXLY_tHDJeBoRySBtg"
         }
       ]
     },
