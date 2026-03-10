@@ -800,7 +800,7 @@ async function youtubeMain() {
             messages: [
               {
                 role: "user",
-                content: video.category === "Crypto"
+                content: ["Crypto", "Tech & AI", "Gezondheid", "Podcasts", "Economie"].includes(video.category)
                   ? `Summarize the following YouTube video in 3-5 concise bullet points in English. Focus on the key insights and takeaways. Use the format "• point".\n\nVideo: "${video.title}" by ${video.channelName}\n\nTranscript:\n${transcript}`
                   : `Vat de volgende YouTube-video samen in 3-5 beknopte bullet points in het Nederlands. Focus op de belangrijkste inzichten en takeaways. Gebruik het formaat "• punt".\n\nVideo: "${video.title}" van ${video.channelName}\n\nTranscript:\n${transcript}`,
               },
@@ -1010,6 +1010,268 @@ Identify the 5-10 most significant developments. For each:
 Also write an overarching summary paragraph (3-4 sentences).
 
 IMPORTANT: Respond ONLY with valid JSON (no markdown code fences) in exactly this format:
+{
+  "overview": "Overarching summary...",
+  "topics": [{ "topic": "Title", "summary": "...", "significance": "high", "analysis": "..." }]
+}
+
+--- WEEKLY BRIEFINGS ---
+
+${bs || "No weekly briefings available yet. Use your own knowledge."}`,
+    },
+    {
+      category: "Gezondheid",
+      briefingTable: "gezondheid_briefings",
+      yearlyTable: "gezondheid_yearly_overview",
+      weeklyPromptFn: (vs: string) => `You are a health science and longevity analyst. Below are summaries of recent health-focused YouTube channels from the past week.
+
+Analyze all summaries and create a structured briefing. Identify the 3-7 most important topics discussed across multiple channels or that are particularly relevant.
+
+Focus on EVIDENCE-BASED developments: neuroscience protocols, longevity research, supplement science, sleep optimization, exercise physiology, biomarker tracking, and biohacking innovations. Do NOT focus on anecdotal claims, unverified hacks, or product promotions without scientific backing.
+
+For each topic:
+1. Give a short, catchy title (max 10 words)
+2. Write a clear paragraph (3-5 sentences) explaining what's going on
+3. Indicate which channels discussed this topic (use the exact video_id's from the data)
+4. Add context from your own knowledge: is what the creators say backed by peer-reviewed research? Are they oversimplifying? Are there risks or counterarguments?
+5. Give a sentiment indicator: "bullish", "bearish", or "neutral"
+
+Also write an overarching "health science mood" paragraph of 2-3 sentences summarizing the general tone and themes.
+
+IMPORTANT: Respond ONLY with valid JSON (no markdown code fences) in exactly this format:
+{
+  "overview": "Overarching health science mood paragraph here...",
+  "topics": [
+    {
+      "topic": "Short catchy title",
+      "summary": "Clear paragraph about what's going on...",
+      "sentiment": "bullish",
+      "source_video_ids": ["video_id_1", "video_id_2"],
+      "news_context": "What your own knowledge adds: verification, nuance, missing context..."
+    }
+  ]
+}
+
+--- VIDEO SUMMARIES ---
+
+${vs}`,
+      yearlyPromptFn: (bs: string) => `You are a senior health science analyst writing a comprehensive 12-month overview of the most important developments in health optimization, longevity research, and biohacking.
+
+You have two sources of information:
+1. Weekly briefings from health-focused YouTube channels (provided below)
+2. Your own knowledge of health science developments from the past 12 months
+
+Focus EXCLUSIVELY on evidence-based developments. Include:
+- Neuroscience: Sleep protocols, dopamine management, stress optimization, cognitive enhancement
+- Longevity: Aging biomarkers, caloric restriction research, senolytic therapies, NAD+ pathways
+- Exercise physiology: Training protocols, recovery science, cardiovascular health findings
+- Nutrition: Supplement research updates, gut microbiome discoveries, metabolic health
+- Biohacking: Wearable tech advances, blood testing innovations, light therapy, cold/heat exposure research
+- Clinical research: Major study results, meta-analyses, guideline changes
+
+Identify the 5-10 most significant developments. For each:
+1. Give a clear, descriptive title (max 10 words)
+2. Write a thorough paragraph (4-6 sentences) explaining what happened and why it matters
+3. Rate significance: "high" (field-changing) or "medium" (notable development)
+4. Add your analysis: what are the long-term implications?
+
+IMPORTANT: Respond ONLY with valid JSON (no markdown code fences):
+{
+  "overview": "Overarching summary...",
+  "topics": [{ "topic": "Title", "summary": "...", "significance": "high", "analysis": "..." }]
+}
+
+--- WEEKLY BRIEFINGS ---
+
+${bs || "No weekly briefings available yet. Use your own knowledge."}`,
+    },
+    {
+      category: "Podcasts",
+      briefingTable: "podcasts_briefings",
+      yearlyTable: "podcasts_yearly_overview",
+      weeklyPromptFn: (vs: string) => `You are a cultural commentary and interview analyst. Below are summaries of recent podcast episodes from the past week.
+
+Analyze all summaries and create a structured briefing. Identify the 3-7 most important topics, guest insights, or cultural themes discussed across episodes or that are particularly thought-provoking.
+
+Focus on SUBSTANTIVE content: notable guest revelations, contrarian viewpoints, cultural shifts, entrepreneurship insights, psychological frameworks, and societal observations. Do NOT focus on entertainment gossip, clickbait moments, or superficial celebrity content.
+
+For each topic:
+1. Give a short, catchy title (max 10 words)
+2. Write a clear paragraph (3-5 sentences) explaining the key insight or discussion
+3. Indicate which episodes discussed this topic (use the exact video_id's from the data)
+4. Add context from your own knowledge: is the guest's perspective well-founded? Are there important counterpoints or nuances they missed?
+5. Give a sentiment indicator: "bullish", "bearish", or "neutral"
+
+Also write an overarching "podcast landscape" paragraph of 2-3 sentences summarizing the general themes and tone.
+
+IMPORTANT: Respond ONLY with valid JSON (no markdown code fences) in exactly this format:
+{
+  "overview": "Overarching podcast landscape paragraph here...",
+  "topics": [
+    {
+      "topic": "Short catchy title",
+      "summary": "Clear paragraph about what's going on...",
+      "sentiment": "bullish",
+      "source_video_ids": ["video_id_1", "video_id_2"],
+      "news_context": "What your own knowledge adds: verification, nuance, missing context..."
+    }
+  ]
+}
+
+--- VIDEO SUMMARIES ---
+
+${vs}`,
+      yearlyPromptFn: (bs: string) => `You are a senior media analyst writing a comprehensive 12-month overview of the most important themes, guest insights, and cultural discussions from long-form podcast interviews.
+
+You have two sources of information:
+1. Weekly briefings from podcast channels (provided below)
+2. Your own knowledge of major cultural and intellectual discussions from the past 12 months
+
+Focus EXCLUSIVELY on substantive content. Include:
+- Guest insights: Breakthrough ideas, personal revelations, expert perspectives
+- Cultural commentary: Free speech debates, identity politics, media criticism, societal trends
+- Entrepreneurship: Business lessons, startup wisdom, career frameworks
+- Psychology & self-improvement: Mental health, behavioral science, habit formation
+- Contrarian viewpoints: Important challenges to mainstream narratives
+
+Identify the 5-10 most significant themes. For each:
+1. Give a clear, descriptive title (max 10 words)
+2. Write a thorough paragraph (4-6 sentences) explaining the theme and why it matters
+3. Rate significance: "high" (discourse-shaping) or "medium" (notable discussion)
+4. Add your analysis: what are the long-term cultural implications?
+
+IMPORTANT: Respond ONLY with valid JSON (no markdown code fences):
+{
+  "overview": "Overarching summary...",
+  "topics": [{ "topic": "Title", "summary": "...", "significance": "high", "analysis": "..." }]
+}
+
+--- WEEKLY BRIEFINGS ---
+
+${bs || "No weekly briefings available yet. Use your own knowledge."}`,
+    },
+    {
+      category: "Nieuws",
+      briefingTable: "nieuws_briefings",
+      yearlyTable: "nieuws_yearly_overview",
+      weeklyPromptFn: (vs: string) => `Je bent een Nederlandse nieuwsanalist. Hieronder staan samenvattingen van recente nieuwsvideo's van de afgelopen week.
+
+Analyseer alle samenvattingen en maak een gestructureerde briefing. Identificeer de 3-7 belangrijkste onderwerpen die besproken zijn.
+
+Focus op FUNDAMENTELE ontwikkelingen: geopolitiek, Nederlandse politiek, economisch beleid, mediakritiek, maatschappelijke verschuivingen en wereldgebeurtenissen. Focus NIET op sensatie, complottheorieen zonder onderbouwing, of oppervlakkige meningen.
+
+Per onderwerp:
+1. Geef een korte, pakkende titel (max 10 woorden)
+2. Schrijf een duidelijke paragraaf (3-5 zinnen) over wat er speelt
+3. Geef aan welke video's dit onderwerp bespraken (gebruik de exacte video_id's uit de data)
+4. Voeg context toe vanuit je eigen kennis: klopt wat er gezegd wordt? Missen ze iets? Zijn er tegenargumenten?
+5. Geef een sentiment-indicator: "bullish", "bearish", of "neutral"
+
+Schrijf ook een overkoepelende "nieuwsstemming" paragraaf van 2-3 zinnen over de algemene toon.
+
+BELANGRIJK: Antwoord ALLEEN met geldige JSON (geen markdown code fences) in exact dit formaat:
+{
+  "overview": "Overkoepelende nieuwsstemming paragraaf hier...",
+  "topics": [
+    {
+      "topic": "Korte pakkende titel",
+      "summary": "Duidelijke paragraaf over wat er speelt...",
+      "sentiment": "bullish",
+      "source_video_ids": ["video_id_1", "video_id_2"],
+      "news_context": "Wat je eigen kennis toevoegt: verificatie, nuance, ontbrekende context..."
+    }
+  ]
+}
+
+--- VIDEO SAMENVATTINGEN ---
+
+${vs}`,
+      yearlyPromptFn: (bs: string) => `Je bent een senior nieuwsanalist die een uitgebreid 12-maanden overzicht schrijft van de belangrijkste ontwikkelingen in het Nederlandse en wereldnieuws.
+
+Je hebt twee informatiebronnen:
+1. Wekelijkse briefings van nieuwskanalen (hieronder)
+2. Je eigen kennis van nieuwsgebeurtenissen van de afgelopen 12 maanden
+
+Focus UITSLUITEND op fundamentele ontwikkelingen:
+- Geopolitiek: Internationale conflicten, diplomatieke verschuivingen, handelsoorlogen
+- Nederlandse politiek: Kabinetsbeleid, verkiezingen, coalitiedynamiek
+- Economisch beleid: Inflatie, ECB-beleid, woningmarkt, energietransitie
+- Mediakritiek: Mainstream vs alternatieve media, censuurdebatten
+- Maatschappij: Migratiedebatten, culturele verschuivingen, protestbewegingen
+
+Identificeer de 5-10 meest significante ontwikkelingen. Per onderwerp:
+1. Geef een duidelijke, beschrijvende titel (max 10 woorden)
+2. Schrijf een grondige paragraaf (4-6 zinnen)
+3. Beoordeel significantie: "high" of "medium"
+4. Voeg je analyse toe: wat zijn de langetermijngevolgen?
+
+BELANGRIJK: Antwoord ALLEEN met geldige JSON (geen markdown code fences):
+{
+  "overview": "Overkoepelende samenvatting...",
+  "topics": [{ "topic": "Titel", "summary": "...", "significance": "high", "analysis": "..." }]
+}
+
+--- WEKELIJKSE BRIEFINGS ---
+
+${bs || "Nog geen wekelijkse briefings beschikbaar. Gebruik je eigen kennis."}`,
+    },
+    {
+      category: "Economie",
+      briefingTable: "economie_briefings",
+      yearlyTable: "economie_yearly_overview",
+      weeklyPromptFn: (vs: string) => `You are a macroeconomics analyst. Below are summaries of recent economics-focused YouTube channels from the past week.
+
+Analyze all summaries and create a structured briefing. Identify the 3-7 most important topics discussed across multiple channels or that are particularly relevant.
+
+Focus on FUNDAMENTAL developments: macroeconomic trends, central bank policy, housing markets, wealth inequality, labor markets, fiscal policy, and structural economic shifts. Do NOT focus on stock tips, day-trading strategies, or short-term market noise.
+
+For each topic:
+1. Give a short, catchy title (max 10 words)
+2. Write a clear paragraph (3-5 sentences) explaining what's going on
+3. Indicate which channels discussed this topic (use the exact video_id's from the data)
+4. Add context from your own knowledge: is what the creators say backed by economic data? Are they oversimplifying complex dynamics? Are there counterarguments from other schools of economic thought?
+5. Give a sentiment indicator: "bullish", "bearish", or "neutral"
+
+Also write an overarching "economic outlook" paragraph of 2-3 sentences summarizing the general tone and themes.
+
+IMPORTANT: Respond ONLY with valid JSON (no markdown code fences) in exactly this format:
+{
+  "overview": "Overarching economic outlook paragraph here...",
+  "topics": [
+    {
+      "topic": "Short catchy title",
+      "summary": "Clear paragraph about what's going on...",
+      "sentiment": "bullish",
+      "source_video_ids": ["video_id_1", "video_id_2"],
+      "news_context": "What your own knowledge adds: verification, nuance, missing context..."
+    }
+  ]
+}
+
+--- VIDEO SUMMARIES ---
+
+${vs}`,
+      yearlyPromptFn: (bs: string) => `You are a senior macroeconomics analyst writing a comprehensive 12-month overview of the most important economic developments, policy shifts, and structural trends.
+
+You have two sources of information:
+1. Weekly briefings from economics YouTube channels (provided below)
+2. Your own knowledge of economic events from the past 12 months
+
+Focus EXCLUSIVELY on fundamentals:
+- Central bank policy: Interest rate decisions, quantitative tightening/easing
+- Housing markets: Affordability crises, mortgage rate impacts, construction trends
+- Wealth inequality: Wealth concentration data, wage stagnation, cost-of-living
+- Labor markets: Employment trends, remote work shifts, automation impacts
+- Fiscal policy: Government spending, taxation changes, debt levels
+- Structural shifts: De-globalization, energy transition economics, demographics
+
+Identify the 5-10 most significant developments. For each:
+1. Give a clear, descriptive title (max 10 words)
+2. Write a thorough paragraph (4-6 sentences) explaining what happened and why it matters
+3. Rate significance: "high" (economy-changing) or "medium" (notable development)
+4. Add your analysis: what are the long-term implications?
+
+IMPORTANT: Respond ONLY with valid JSON (no markdown code fences):
 {
   "overview": "Overarching summary...",
   "topics": [{ "topic": "Title", "summary": "...", "significance": "high", "analysis": "..." }]

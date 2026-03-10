@@ -110,6 +110,10 @@
     const BRIEFING_CONFIGS = {
       'Crypto': { briefingTable: 'crypto_briefings', yearlyTable: 'crypto_yearly_overview', label: 'Crypto' },
       'Tech & AI': { briefingTable: 'ai_briefings', yearlyTable: 'ai_yearly_overview', label: 'Tech & AI' },
+      'Gezondheid': { briefingTable: 'gezondheid_briefings', yearlyTable: 'gezondheid_yearly_overview', label: 'Health Science' },
+      'Podcasts': { briefingTable: 'podcasts_briefings', yearlyTable: 'podcasts_yearly_overview', label: 'Podcast' },
+      'Nieuws': { briefingTable: 'nieuws_briefings', yearlyTable: 'nieuws_yearly_overview', label: 'Nieuws' },
+      'Economie': { briefingTable: 'economie_briefings', yearlyTable: 'economie_yearly_overview', label: 'Economics' },
     };
 
     // Current category config (set in loadCategory)
@@ -286,16 +290,8 @@
         }
       }
 
-      // Show tabs for categories with briefings, otherwise show video feed directly
-      if (hasTabs) {
-        document.getElementById('category-tabs').style.display = 'flex';
-      } else {
-        // For categories without tabs, move video-feed out of the tab wrapper
-        const feed = document.getElementById('video-feed');
-        const tabWeek = document.getElementById('tab-week');
-        tabWeek.parentNode.insertBefore(feed, document.getElementById('category-tabs'));
-        feed.style.display = '';
-      }
+      // All categories now have tabs
+      document.getElementById('category-tabs').style.display = 'flex';
 
       // Fetch videos
       const { data: videos, error } = await db
