@@ -4,19 +4,19 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev:trigger": "npx trigger.dev@latest dev",
-    "deploy:trigger": "npx trigger.dev@latest deploy"
+    "dev:trigger": "npx trigger.dev@4.4.1 dev",
+    "deploy:trigger": "npx trigger.dev@4.4.1 deploy"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.78.0",
-    "@danielxceron/youtube-transcript": "^1.2.6",
     "@supabase/supabase-js": "^2.98.0",
-    "@trigger.dev/sdk": "4.4.1",
+    "@trigger.dev/sdk": "4.4.2",
     "import-in-the-middle": "^3.0.0",
-    "resend": "^6.9.3"
+    "resend": "^6.9.3",
+    "youtube-transcript-plus": "^1.2.0"
   },
   "devDependencies": {
-    "@trigger.dev/build": "4.4.1",
+    "@trigger.dev/build": "4.4.2",
     "tsx": "^4.21.0",
     "typescript": "^5.5.0"
   }

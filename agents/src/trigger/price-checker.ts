@@ -3,10 +3,15 @@ import { Resend } from "resend";
 import { createClient } from "@supabase/supabase-js";
 import products from "./products.json";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-const supabase = process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_KEY
-  ? createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY)
-  : null;
+function getResend() {
+  return new Resend(process.env.RESEND_API_KEY);
+}
+
+function getSupabase() {
+  return process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_KEY
+    ? createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY)
+    : null;
+}
 
 interface Offer {
   productName: string;
@@ -394,6 +399,105 @@ async function searchAldi(category: string): Promise<Offer[]> {
   return offers;
 }
 
+// --- Holland & Barrett (HTML scrape) ---
+
+async function searchHollandBarrett(categoryPath: string, query: string): Promise<Offer[]> {
+  const url = `https://www.hollandandbarrett.nl/shop/${categoryPath}/?query=${encodeURIComponent(query)}`;
+  const res = await fetch(url, {
+    headers: {
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+      "Accept": "text/html",
+    },
+    signal: AbortSignal.timeout(20000),
+  });
+  if (!res.ok) throw new Error(`H&B fetch failed: ${res.status}`);
+  const html = await res.text();
+
+  // Extract tiles arrays using bracket-depth matching
+  const offers: Offer[] = [];
+  const tilesMarker = '"tiles":';
+  let searchFrom = 0;
+
+  while (true) {
+    const idx = html.indexOf(tilesMarker, searchFrom);
+    if (idx === -1) break;
+    const bracketStart = html.indexOf("[", idx + tilesMarker.length);
+    if (bracketStart === -1) break;
+
+    // Walk to find matching closing bracket
+    let depth = 0;
+    let end = bracketStart;
+    for (let i = bracketStart; i < html.length; i++) {
+      if (html[i] === "[") depth++;
+      if (html[i] === "]") depth--;
+      if (depth === 0) { end = i; break; }
+    }
+    searchFrom = end + 1;
+
+    const tilesJson = html.substring(bracketStart, end + 1);
+    if (tilesJson === "[]") continue;
+
+    try {
+      const tiles = JSON.parse(tilesJson);
+
+      for (const tile of tiles) {
+        // H&B structure: name=brand, title=product description
+        const productTitle = tile.title || "";
+        const brandName = tile.brandName || tile.name || "";
+        const fullName = brandName && productTitle ? `${brandName} ${productTitle}` : productTitle || brandName;
+        if (!fullName) continue;
+
+        // retailPrice = original, actualPrice = current/sale price
+        const actualPriceStr = (tile.actualPrice || "").replace(/[€\s\u20AC]/g, "").replace(",", ".");
+        const retailPriceStr = (tile.retailPrice || "").replace(/[€\s\u20AC]/g, "").replace(",", ".");
+
+        const actualPrice = parseFloat(actualPriceStr);
+        const retailPrice = parseFloat(retailPriceStr);
+        if (isNaN(actualPrice) || actualPrice <= 0) continue;
+
+        const hasDiscount = tile.showRetailPrice && !isNaN(retailPrice) && retailPrice > actualPrice;
+        const promotion = tile.promotion || null;
+
+        let discountLabel: string | null = null;
+        if (promotion) {
+          discountLabel = promotion;
+        } else if (hasDiscount && tile.discountPercentage) {
+          discountLabel = `${tile.discountPercentage}% korting`;
+        } else if (hasDiscount) {
+          const pct = Math.round((1 - actualPrice / retailPrice) * 100);
+          discountLabel = `${pct}% korting`;
+        }
+
+        const effectivePrice = promotion
+          ? calcEffectivePrice(actualPrice, promotion)
+          : actualPrice;
+
+        const productUrl = tile.url
+          ? `https://www.hollandandbarrett.nl${tile.url}`
+          : null;
+
+        offers.push({
+          productName: fullName,
+          supermarket: "Holland & Barrett",
+          currentPrice: hasDiscount ? retailPrice : actualPrice,
+          originalPrice: hasDiscount ? retailPrice : null,
+          effectivePrice,
+          discountLabel,
+          discountPeriod: null,
+          isOnSale: hasDiscount || !!promotion,
+          productUrl,
+          weightGrams: null,
+          pricePerKg: null,
+        });
+      }
+    } catch {
+      // JSON parse failed for this tiles block, skip
+    }
+  }
+
+  return offers;
+}
+
 // --- Combine sources ---
 
 async function checkProduct(
@@ -404,11 +508,13 @@ async function checkProduct(
   let allOffers: Offer[] = [];
 
   // Albert Heijn
-  try {
-    const offers = await searchAh(product.ah.query, ahToken);
-    allOffers.push(...filterOffers(offers, product.brand, product.titleContains, (product as any).titleExcludes));
-  } catch (err) {
-    errors.push(`AH: ${err instanceof Error ? err.message : String(err)}`);
+  if (product.ah) {
+    try {
+      const offers = await searchAh(product.ah.query, ahToken);
+      allOffers.push(...filterOffers(offers, product.brand, product.titleContains, (product as any).titleExcludes));
+    } catch (err) {
+      errors.push(`AH: ${err instanceof Error ? err.message : String(err)}`);
+    }
   }
 
   // Jumbo (met delay voor rate limiting)
@@ -452,6 +558,17 @@ async function checkProduct(
     }
   }
 
+  // Holland & Barrett
+  if ((product as any).hb) {
+    try {
+      const hbConfig = (product as any).hb;
+      const offers = await searchHollandBarrett(hbConfig.category, hbConfig.query);
+      allOffers.push(...filterOffers(offers, product.brand, product.titleContains, (product as any).titleExcludes));
+    } catch (err) {
+      errors.push(`H&B: ${err instanceof Error ? err.message : String(err)}`);
+    }
+  }
+
   // Enrich all offers with weight and per-kg price
   allOffers = allOffers.map(enrichWithWeight);
 
@@ -469,87 +586,37 @@ function getWeekNumber(date: Date): number {
 }
 
 function buildEmailHtml(results: ProductResult[]): string {
-  const { from, to } = getOfferDateRange();
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
   const week = getWeekNumber(tomorrow);
 
-  let html = `
+  const totalProducts = results.length;
+  const totalOffers = results.reduce((sum, r) => sum + r.offers.filter((o) => o.isOnSale).length, 0);
+
+  return `
     <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
       <h1 style="color: #FF7300; font-size: 24px; border-bottom: 2px solid #FF7300; padding-bottom: 10px;">
         Price Hunter — Week ${week}
       </h1>
-      <p style="color: #666; font-size: 14px;">Aanbiedingen ${formatDate(from)} t/m ${formatDate(to)}</p>
-  `;
-
-  for (const result of results) {
-    html += `<div style="margin: 20px 0; padding: 16px; background: #f8f9fa; border-radius: 8px;">`;
-    html += `<h2 style="margin: 0 0 12px 0; font-size: 18px; color: #333;">${result.name}</h2>`;
-
-    if (result.errors.length > 0) {
-      for (const err of result.errors) {
-        html += `<p style="color: #dc3545; font-size: 12px;">Fout: ${err}</p>`;
-      }
-    }
-
-    const best = bestPerSupermarket(result.offers);
-
-    if (best.length === 0 && result.errors.length === 0) {
-      html += `<p style="color: #666;">Geen resultaten gevonden.</p>`;
-    } else if (best.length > 0) {
-      const cheapest = best.reduce((a, b) => a.effectivePrice < b.effectivePrice ? a : b);
-      const cheapestLink = cheapest.productUrl
-        ? `<a href="${cheapest.productUrl}" style="font-size: 16px; font-weight: bold; color: #2e7d32; text-decoration: underline;" target="_blank">${cheapest.supermarket}</a>`
-        : `<span style="font-size: 16px; font-weight: bold;">${cheapest.supermarket}</span>`;
-
-      html += `
-        <div style="padding: 12px; margin: 8px 0; background: #e8f5e9; border-left: 4px solid #4caf50; border-radius: 4px;">
-          <strong style="color: #2e7d32; font-size: 14px;">GOEDKOOPST</strong><br/>
-          ${cheapestLink} —
-          <strong style="font-size: 18px; color: #2e7d32;">&euro;${cheapest.effectivePrice.toFixed(2)}</strong>
-          <span style="font-size: 12px; color: #666;"> per stuk${cheapest.isOnSale ? " (met actie)" : ""}</span>
-          ${cheapest.discountLabel ? `<br/><span style="font-size: 13px; color: #FF7300;">${cheapest.discountLabel}</span>` : ""}
-          ${cheapest.discountPeriod ? `<br/><span style="font-size: 12px; color: #555;">Looptijd: ${cheapest.discountPeriod}</span>` : ""}
-        </div>`;
-
-      // Prijsvergelijking andere supermarkten
-      const others = best.filter((o) => o !== cheapest).sort((a, b) => a.effectivePrice - b.effectivePrice);
-      if (others.length > 0) {
-        html += `<table style="width: 100%; font-size: 13px; margin-top: 8px; border-collapse: collapse;">`;
-        for (const o of others) {
-          const link = o.productUrl
-            ? `<a href="${o.productUrl}" style="color: #333; text-decoration: underline;" target="_blank">${o.supermarket}</a>`
-            : o.supermarket;
-          html += `
-            <tr style="border-bottom: 1px solid #eee;">
-              <td style="padding: 6px 0;">${link}</td>
-              <td style="padding: 6px 0; text-align: right;">
-                <strong>&euro;${o.effectivePrice.toFixed(2)}</strong>
-                ${o.discountLabel ? `<span style="color: #FF7300; font-size: 11px; margin-left: 4px;">${o.discountLabel}</span>` : ""}
-              </td>
-            </tr>`;
-        }
-        html += `</table>`;
-      }
-    }
-
-    html += `</div>`;
-  }
-
-  html += `
-      <p style="font-size: 11px; color: #aaa; margin-top: 30px; border-top: 1px solid #eee; padding-top: 10px;">
-        Bronnen: Albert Heijn API, Jumbo API, Dirk API, Aldi API, Vomar API<br/>
-        Bij 1+1 / 2e gratis: effectieve prijs = gemiddelde stuksprijs<br/>
-        Automatisch verstuurd door Price Hunter via Trigger.dev
+      <p style="color: #333; font-size: 16px; line-height: 1.6;">
+        De prijzen van deze week zijn bijgewerkt. Er zijn <strong>${totalProducts} producten</strong> gecheckt
+        bij Albert Heijn, Jumbo, Dirk, Aldi, Vomar en Holland &amp; Barrett${totalOffers > 0 ? `, waarvan <strong>${totalOffers} aanbiedingen</strong>` : ""}.
+      </p>
+      <p style="margin: 24px 0;">
+        <a href="https://pricehunter-six.vercel.app/" style="display: inline-block; padding: 12px 24px; background: #FF7300; color: #fff; font-size: 16px; font-weight: bold; text-decoration: none; border-radius: 6px;" target="_blank">
+          Bekijk alle prijzen
+        </a>
+      </p>
+      <p style="font-size: 12px; color: #aaa; margin-top: 30px; border-top: 1px solid #eee; padding-top: 10px;">
+        Automatisch verstuurd door Price Hunter
       </p>
     </div>`;
-
-  return html;
 }
 
 // --- Supabase opslag ---
 
 async function saveToSupabase(results: ProductResult[], weekNumber: number, year: number) {
+  const supabase = getSupabase();
   if (!supabase) {
     console.log("Supabase niet geconfigureerd, opslag overgeslagen");
     return;
@@ -636,10 +703,10 @@ export const priceChecker = schedules.task({
     const emailTo = process.env.EMAIL_TO || "koningen@proton.me";
     const emailFrom = process.env.EMAIL_FROM || "onboarding@resend.dev";
 
-    const { data, error } = await resend.emails.send({
+    const { data, error } = await getResend().emails.send({
       from: `Price Hunter <${emailFrom}>`,
       to: [emailTo],
-      subject: `Price Hunter — Aanbiedingen week ${week}`,
+      subject: `Price Hunter — Prijsupdate week ${week}`,
       html: emailHtml,
     });
 

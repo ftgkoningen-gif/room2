@@ -93,6 +93,7 @@
         <span class="flex items-center gap-1.5"><span class="ph-supermarket-dot ph-dot-dirk"></span>Dirk</span>
         <span class="flex items-center gap-1.5"><span class="ph-supermarket-dot ph-dot-aldi"></span>Aldi</span>
         <span class="flex items-center gap-1.5"><span class="ph-supermarket-dot ph-dot-vomar"></span>Vomar</span>
+        <span class="flex items-center gap-1.5"><span class="ph-supermarket-dot ph-dot-hb"></span>H&B</span>
       </div>
     </div>
 
@@ -103,7 +104,7 @@
     <!-- Footer -->
     <footer class="mt-16 pb-8 text-center">
       <p class="text-xs text-gray-400">
-        Bronnen: Albert Heijn API, Jumbo API, Dirk API, Aldi API, Vomar API<br>
+        Bronnen: Albert Heijn API, Jumbo API, Dirk API, Aldi API, Vomar API, Holland &amp; Barrett<br>
         Bij 1+1 / 2e gratis: effectieve prijs = gemiddelde stuksprijs
       </p>
     </footer>
@@ -146,6 +147,9 @@
       'Bio kastanjechampignons': 'bio-paddestoelen',
       'Bio shiitake': 'bio-paddestoelen',
       'Bio oesterzwam': 'bio-paddestoelen',
+      'Re-Lyte Hydration Gemengde Bessen 380g': 'houdbaar',
+      'Biotona Fung-Immun Poeder BIO 150g': 'houdbaar',
+      'Biotona 100% Raw Supergreens Poeder BIO 150g': 'houdbaar',
     };
 
     const SHOW_PER_KG = ['bio-groenten-heel', 'bio-diepvries', 'bio-paddestoelen', 'niet-houdbaar'];
@@ -187,6 +191,7 @@
       'Dirk':         { bg: '#E53935', line: '#E53935', dot: 'ph-dot-dirk' },
       'Aldi':         { bg: '#0063AF', line: '#0063AF', dot: 'ph-dot-aldi' },
       'Vomar':        { bg: '#006C3A', line: '#006C3A', dot: 'ph-dot-vomar' },
+      'Holland & Barrett': { bg: '#1D3A6B', line: '#1D3A6B', dot: 'ph-dot-hb' },
     };
 
     const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);

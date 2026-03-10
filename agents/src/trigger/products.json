@@ -248,5 +248,28 @@
     "ah": { "query": "biologisch oesterzwam" },
     "jumbo": { "query": "biologisch oesterzwam" },
     "dirk": { "query": "biologische oesterzwam" }
+  },
+
+  {
+    "name": "Re-Lyte Hydration Gemengde Bessen 380g",
+    "category": "houdbaar",
+    "brand": "re-lyte",
+    "titleContains": ["hydration", "gemengde bessen|bessen"],
+    "titleExcludes": ["sticks|stick|15"],
+    "hb": { "category": "sport-voeding/hydratatie", "query": "re-lyte hydration gemengde bessen" }
+  },
+  {
+    "name": "Biotona Fung-Immun Poeder BIO 150g",
+    "category": "houdbaar",
+    "brand": "biotona",
+    "titleContains": ["fung-immun|fung immun"],
+    "hb": { "category": "vitamines-supplementen/planten-kruiden", "query": "biotona fung-immun" }
+  },
+  {
+    "name": "Biotona 100% Raw Supergreens Poeder BIO 150g",
+    "category": "houdbaar",
+    "brand": "biotona",
+    "titleContains": ["supergreens|super greens"],
+    "hb": { "category": "voeding-dranken/superfoods/superfoodpoeders", "query": "supergreens" }
   }
 ]

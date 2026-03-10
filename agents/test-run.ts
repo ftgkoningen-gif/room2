@@ -800,7 +800,7 @@ async function youtubeMain() {
             messages: [
               {
                 role: "user",
-                content: ["Crypto", "Tech & AI", "Gezondheid", "Podcasts", "Economie"].includes(video.category)
+                content: !["De Nieuwe Wereld", "Cafe Weltschmerz", "blckbx", "BNR Cryptocast", "Madelon Vos"].includes(video.channelName)
                   ? `Summarize the following YouTube video in 3-5 concise bullet points in English. Focus on the key insights and takeaways. Use the format "• point".\n\nVideo: "${video.title}" by ${video.channelName}\n\nTranscript:\n${transcript}`
                   : `Vat de volgende YouTube-video samen in 3-5 beknopte bullet points in het Nederlands. Focus op de belangrijkste inzichten en takeaways. Gebruik het formaat "• punt".\n\nVideo: "${video.title}" van ${video.channelName}\n\nTranscript:\n${transcript}`,
               },

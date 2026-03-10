@@ -151,7 +151,8 @@ async function summarizeVideo(
   category: string = ""
 ): Promise<string | null> {
   try {
-    const isEnglish = ["Crypto", "Tech & AI", "Gezondheid", "Podcasts", "Economie"].includes(category);
+    const dutchChannels = ["De Nieuwe Wereld", "Cafe Weltschmerz", "blckbx", "BNR Cryptocast", "Madelon Vos"];
+    const isEnglish = !dutchChannels.includes(channelName);
     const prompt = isEnglish
       ? `Summarize the following YouTube video in 3-5 concise bullet points in English. Focus on the key insights and takeaways. Use the format "• point".\n\nVideo: "${title}" by ${channelName}\n\nTranscript:\n${transcript}`
       : `Vat de volgende YouTube-video samen in 3-5 beknopte bullet points in het Nederlands. Focus op de belangrijkste inzichten en takeaways. Gebruik het formaat "• punt".\n\nVideo: "${title}" van ${channelName}\n\nTranscript:\n${transcript}`;
