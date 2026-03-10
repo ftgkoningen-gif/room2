@@ -527,6 +527,170 @@ body::before {
   font-style: italic;
 }
 
+/* === Crypto Tabs === */
+
+.crypto-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 32px;
+}
+
+.crypto-tab {
+  font-family: 'Satoshi', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--yt-text-muted);
+  background: var(--yt-surface);
+  border: 1px solid var(--yt-border);
+  padding: 8px 20px;
+  border-radius: 24px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.crypto-tab:hover {
+  border-color: var(--yt-border-hover);
+  color: var(--yt-text);
+}
+
+.crypto-tab.active {
+  background: var(--yt-red);
+  border-color: var(--yt-red);
+  color: #fff;
+}
+
+.crypto-tab-content {
+  display: none;
+}
+
+.crypto-tab-content.active {
+  display: block;
+}
+
+/* === Yearly Overview === */
+
+.yearly-section {
+  background: var(--yt-surface);
+  border: 1px solid var(--yt-border);
+  border-radius: var(--yt-radius);
+  padding: 28px;
+  margin-bottom: 32px;
+}
+
+.yearly-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.yearly-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--yt-text);
+}
+
+.yearly-title span {
+  color: var(--yt-red);
+}
+
+.yearly-date {
+  font-size: 12px;
+  color: var(--yt-text-dim);
+}
+
+.yearly-overview {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--yt-text-muted);
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--yt-border);
+}
+
+.yearly-topic {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--yt-border);
+  border-radius: var(--yt-radius-sm);
+  padding: 20px;
+  margin-bottom: 12px;
+  transition: border-color 0.2s;
+}
+
+.yearly-topic:last-of-type {
+  margin-bottom: 0;
+}
+
+.yearly-topic:hover {
+  border-color: var(--yt-border-hover);
+}
+
+.yearly-topic-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.yearly-significance {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 3px 8px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.yearly-significance.high {
+  color: var(--yt-red);
+  background: var(--yt-red-glow);
+}
+
+.yearly-significance.medium {
+  color: var(--yt-text-muted);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.yearly-topic-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--yt-text);
+}
+
+.yearly-topic-summary {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--yt-text-muted);
+  margin-bottom: 12px;
+}
+
+.yearly-topic-analysis {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--yt-text-dim);
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.015);
+  border-left: 2px solid var(--yt-border-hover);
+  border-radius: 0 var(--yt-radius-sm) var(--yt-radius-sm) 0;
+}
+
+.yearly-footer {
+  font-size: 12px;
+  color: var(--yt-text-dim);
+  text-align: center;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--yt-border);
+}
+
+@media (max-width: 768px) {
+  .yearly-section { padding: 20px; }
+  .yearly-topic-title { font-size: 16px; }
+}
+
 /* === Crypto Briefing === */
 
 .briefing-section {

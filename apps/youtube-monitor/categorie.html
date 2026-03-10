@@ -37,11 +37,26 @@
     <!-- Channel pills -->
     <div class="channel-pills" id="channel-pills"></div>
 
-    <!-- Video feed -->
-    <div class="video-feed" id="video-feed">
-      <div class="skeleton" style="height: 200px;"></div>
-      <div class="skeleton" style="height: 200px;"></div>
-      <div class="skeleton" style="height: 200px;"></div>
+    <!-- Category tabs (visible for Crypto and Tech & AI) -->
+    <div class="crypto-tabs" id="category-tabs" style="display: none;">
+      <button class="crypto-tab active" data-tab="week">News Last Week</button>
+      <button class="crypto-tab" data-tab="year">Main News Last 12 Months</button>
+    </div>
+
+    <!-- Tab: News Last Week -->
+    <div class="crypto-tab-content active" id="tab-week">
+      <div class="video-feed" id="video-feed">
+        <div class="skeleton" style="height: 200px;"></div>
+        <div class="skeleton" style="height: 200px;"></div>
+        <div class="skeleton" style="height: 200px;"></div>
+      </div>
+    </div>
+
+    <!-- Tab: Main News Last 12 Months -->
+    <div class="crypto-tab-content" id="tab-year">
+      <div id="yearly-container">
+        <div class="skeleton" style="height: 300px;"></div>
+      </div>
     </div>
 
     <!-- Footer -->
@@ -91,11 +106,21 @@
         .join('');
     }
 
+    // Category briefing config: maps category name to Supabase tables + labels
+    const BRIEFING_CONFIGS = {
+      'Crypto': { briefingTable: 'crypto_briefings', yearlyTable: 'crypto_yearly_overview', label: 'Crypto' },
+      'Tech & AI': { briefingTable: 'ai_briefings', yearlyTable: 'ai_yearly_overview', label: 'Tech & AI' },
+    };
+
+    // Current category config (set in loadCategory)
+    let currentConfig = null;
+
     async function loadBriefing(catName) {
-      if (catName !== 'Crypto') return;
+      const config = BRIEFING_CONFIGS[catName];
+      if (!config) return;
 
       const { data: briefing, error } = await db
-        .from('crypto_briefings')
+        .from(config.briefingTable)
         .select('*')
         .order('briefing_date', { ascending: false })
         .limit(1)
@@ -107,7 +132,7 @@
       briefingEl.className = 'briefing-section fade-up';
 
       const dateStr = new Date(briefing.briefing_date + 'T00:00:00')
-        .toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' });
+        .toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
 
       let topicsHtml = '';
       for (const topic of (briefing.topics || [])) {
@@ -130,18 +155,106 @@
 
       briefingEl.innerHTML = `
         <div class="briefing-header">
-          <span class="briefing-title">Crypto <span>Briefing</span></span>
+          <span class="briefing-title">${config.label} <span>Briefing</span></span>
           <span class="briefing-date">${dateStr}</span>
         </div>
         <div class="briefing-overview">${escapeHtml(briefing.overview)}</div>
         ${topicsHtml}
         <div class="briefing-footer">
-          Based on ${briefing.videos_used} podcast episodes · ${(briefing.channels_used || []).length} channels
+          Based on ${briefing.videos_used} episodes · ${(briefing.channels_used || []).length} channels
         </div>
       `;
 
       const feed = document.getElementById('video-feed');
       feed.parentNode.insertBefore(briefingEl, feed);
+    }
+
+    async function loadYearlyOverview() {
+      if (!currentConfig) return;
+      const container = document.getElementById('yearly-container');
+
+      const { data: overview, error } = await db
+        .from(currentConfig.yearlyTable)
+        .select('*')
+        .order('generated_at', { ascending: false })
+        .limit(1)
+        .single();
+
+      if (error || !overview) {
+        container.innerHTML = '<p style="color: var(--yt-text-dim); text-align: center; padding: 48px 0;">No yearly overview available yet.</p>';
+        return;
+      }
+
+      const dateStr = new Date(overview.generated_at)
+        .toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
+
+      let topicsHtml = '';
+      for (const topic of (overview.topics || [])) {
+        topicsHtml += `
+          <div class="yearly-topic">
+            <div class="yearly-topic-header">
+              <span class="yearly-significance ${topic.significance || 'medium'}">${(topic.significance || 'medium').toUpperCase()}</span>
+              <span class="yearly-topic-title">${escapeHtml(topic.topic)}</span>
+            </div>
+            <div class="yearly-topic-summary">${escapeHtml(topic.summary)}</div>
+            ${topic.analysis ? `<div class="yearly-topic-analysis">${escapeHtml(topic.analysis)}</div>` : ''}
+          </div>
+        `;
+      }
+
+      container.innerHTML = `
+        <div class="yearly-section fade-up">
+          <div class="yearly-header">
+            <span class="yearly-title">12-Month <span>Overview</span></span>
+            <span class="yearly-date">Updated ${dateStr}</span>
+          </div>
+          <div class="yearly-overview">${escapeHtml(overview.overview)}</div>
+          ${topicsHtml}
+          <div class="yearly-footer">
+            Based on ${overview.briefings_used} weekly briefings · Updated monthly
+          </div>
+        </div>
+      `;
+
+      container.querySelectorAll('.fade-up').forEach((el, i) => {
+        el.style.animationDelay = `${i * 0.06}s`;
+      });
+    }
+
+    function setupTabs() {
+      const tabsContainer = document.getElementById('category-tabs');
+      const tabs = tabsContainer.querySelectorAll('.crypto-tab');
+      const tabWeek = document.getElementById('tab-week');
+      const tabYear = document.getElementById('tab-year');
+      let yearlyLoaded = false;
+
+      // Check URL hash for initial tab
+      const hash = window.location.hash.replace('#', '');
+      if (hash === 'year') {
+        tabs[0].classList.remove('active');
+        tabs[1].classList.add('active');
+        tabWeek.classList.remove('active');
+        tabYear.classList.add('active');
+        loadYearlyOverview();
+        yearlyLoaded = true;
+      }
+
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          tabs.forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+
+          const target = tab.dataset.tab;
+          tabWeek.classList.toggle('active', target === 'week');
+          tabYear.classList.toggle('active', target === 'year');
+          window.location.hash = target;
+
+          if (target === 'year' && !yearlyLoaded) {
+            loadYearlyOverview();
+            yearlyLoaded = true;
+          }
+        });
+      });
     }
 
     async function loadCategory() {
@@ -153,6 +266,8 @@
         return;
       }
 
+      const hasTabs = catName in BRIEFING_CONFIGS;
+      currentConfig = BRIEFING_CONFIGS[catName] || null;
       const cat = CATEGORIES.find(c => c.name === catName);
       document.title = `${cat ? cat.emoji + ' ' : ''}${catName} — My YouTube Monitor`;
 
@@ -171,6 +286,17 @@
         }
       }
 
+      // Show tabs for categories with briefings, otherwise show video feed directly
+      if (hasTabs) {
+        document.getElementById('category-tabs').style.display = 'flex';
+      } else {
+        // For categories without tabs, move video-feed out of the tab wrapper
+        const feed = document.getElementById('video-feed');
+        const tabWeek = document.getElementById('tab-week');
+        tabWeek.parentNode.insertBefore(feed, document.getElementById('category-tabs'));
+        feed.style.display = '';
+      }
+
       // Fetch videos
       const { data: videos, error } = await db
         .from('youtube_videos')
@@ -182,22 +308,22 @@
       if (error || !videos) {
         console.error('Supabase error:', error);
         document.getElementById('video-feed').innerHTML =
-          '<p style="color: var(--yt-text-dim);">Kon video\'s niet laden.</p>';
+          '<p style="color: var(--yt-text-dim);">Could not load videos.</p>';
         return;
       }
 
       // Subtitle + count
       document.getElementById('page-subtitle').textContent =
-        `${videos.length} video's van ${cat ? cat.channels.length : '?'} kanalen`;
+        `${videos.length} videos from ${cat ? cat.channels.length : '?'} channels`;
       document.getElementById('video-count').textContent =
-        `${videos.length} video's`;
+        `${videos.length} videos`;
 
       // Render video feed
       const feed = document.getElementById('video-feed');
       feed.innerHTML = '';
 
       if (videos.length === 0) {
-        feed.innerHTML = '<p style="color: var(--yt-text-dim); text-align: center; padding: 48px 0;">Nog geen video\'s in deze categorie.</p>';
+        feed.innerHTML = '<p style="color: var(--yt-text-dim); text-align: center; padding: 48px 0;">No videos in this category yet.</p>';
         return;
       }
 
@@ -216,7 +342,7 @@
               </div>
               <div class="video-meta">
                 ${escapeHtml(video.channel_name)} · ${timeAgo(video.published_at)}
-                ${video.transcript_available ? '' : ' · <em>Geen transcript</em>'}
+                ${video.transcript_available ? '' : ' · <em>No transcript</em>'}
               </div>
             </div>
           </div>
@@ -224,7 +350,7 @@
             ? `<div class="video-summary">
                 <div class="video-summary-content">${formatSummary(video.summary)}</div>
               </div>`
-            : `<div class="video-no-summary">Geen samenvatting beschikbaar</div>`
+            : `<div class="video-no-summary">No summary available</div>`
           }
         `;
 
@@ -236,8 +362,11 @@
         el.style.animationDelay = `${i * 0.06}s`;
       });
 
-      // Load crypto briefing if applicable
-      await loadBriefing(catName);
+      // Load briefing + setup tabs for categories with briefings
+      if (hasTabs) {
+        await loadBriefing(catName);
+        setupTabs();
+      }
     }
 
     loadCategory();

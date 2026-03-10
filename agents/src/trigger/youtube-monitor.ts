@@ -4,12 +4,17 @@ import Anthropic from "@anthropic-ai/sdk";
 import { YoutubeTranscript } from "youtube-transcript-plus";
 import channelsConfig from "./channels.json";
 
-const supabase =
-  process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_KEY
-    ? createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY)
-    : null;
-const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
-const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY;
+let supabase: ReturnType<typeof createClient> | null = null;
+let anthropic: Anthropic;
+let YOUTUBE_API_KEY: string;
+
+function initClients() {
+  if (!supabase && process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_KEY) {
+    supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY);
+  }
+  anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+  YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY!;
+}
 
 // --- Interfaces ---
 
@@ -224,11 +229,26 @@ async function updateRecentViewCounts(): Promise<number> {
   return updated;
 }
 
-// --- Crypto Briefing ---
+// --- Category Briefing Config ---
 
-const BRIEFING_PROMPT = (videoSummaries: string) => `You are a crypto market analyst. Below are summaries of recent crypto podcasts from the past week.
+interface BriefingConfig {
+  category: string;
+  briefingTable: string;
+  yearlyTable: string;
+  weeklyPrompt: (summaries: string) => string;
+  yearlyPrompt: (summaries: string) => string;
+}
+
+const BRIEFING_CONFIGS: BriefingConfig[] = [
+  {
+    category: "Crypto",
+    briefingTable: "crypto_briefings",
+    yearlyTable: "crypto_yearly_overview",
+    weeklyPrompt: (videoSummaries) => `You are a crypto market analyst. Below are summaries of recent crypto podcasts from the past week.
 
 Analyze all summaries and create a structured briefing. Identify the 3-7 most important topics discussed across multiple podcasts or that are particularly relevant.
+
+Focus on FUNDAMENTAL developments: regulation, technology, institutional adoption, infrastructure, and industry events. Do NOT focus on price action, trading patterns, or short-term market movements.
 
 For each topic:
 1. Give a short, catchy title (max 10 words)
@@ -239,7 +259,7 @@ For each topic:
 
 Also write an overarching "market mood" paragraph of 2-3 sentences summarizing the general tone.
 
-IMPORTANT: Respond ONLY with valid JSON in exactly this format:
+IMPORTANT: Respond ONLY with valid JSON (no markdown code fences) in exactly this format:
 {
   "overview": "Overarching market mood paragraph here...",
   "topics": [
@@ -255,60 +275,184 @@ IMPORTANT: Respond ONLY with valid JSON in exactly this format:
 
 --- PODCAST SUMMARIES ---
 
-${videoSummaries}`;
+${videoSummaries}`,
+    yearlyPrompt: (briefingSummaries) => `You are a senior crypto analyst writing a comprehensive 12-month overview of the most important FUNDAMENTAL developments in cryptocurrency and blockchain.
 
-async function generateCryptoBriefing(): Promise<void> {
+You have two sources of information:
+1. Weekly briefings from crypto podcasts (provided below) — use these as primary source where available
+2. Your own knowledge of crypto events from the past 12 months — use this to fill gaps and add context
+
+Focus EXCLUSIVELY on fundamentals. Include:
+- Regulation: ETF approvals, legal frameworks, government stances, enforcement actions
+- Technology: Layer 2 scaling, protocol upgrades (e.g. Ethereum Dencun), new consensus mechanisms
+- Institutional adoption: Corporate treasuries, bank integrations, payment processors
+- Infrastructure: Stablecoin growth, DeFi milestones, cross-chain bridges
+- Industry events: Exchange collapses, major hacks, mergers & acquisitions, key personnel changes
+
+Do NOT include: price predictions, trading patterns, short-term market movements, or speculation.
+
+Identify the 5-10 most significant developments. For each:
+1. Give a clear, descriptive title (max 10 words)
+2. Write a thorough paragraph (4-6 sentences) explaining what happened and why it matters
+3. Rate significance: "high" (industry-changing) or "medium" (notable development)
+4. Add your analysis: what are the long-term implications?
+
+Also write an overarching summary paragraph (3-4 sentences) of the major themes shaping crypto over the past year.
+
+IMPORTANT: Respond ONLY with valid JSON (no markdown code fences) in exactly this format:
+{
+  "overview": "Overarching summary of major themes...",
+  "topics": [
+    {
+      "topic": "Short descriptive title",
+      "summary": "Thorough paragraph about what happened and why it matters...",
+      "significance": "high",
+      "analysis": "Long-term implications and your assessment..."
+    }
+  ]
+}
+
+--- WEEKLY BRIEFINGS (if available) ---
+
+${briefingSummaries || "No weekly briefings available yet. Use your own knowledge to compile the overview."}`,
+  },
+  {
+    category: "Tech & AI",
+    briefingTable: "ai_briefings",
+    yearlyTable: "ai_yearly_overview",
+    weeklyPrompt: (videoSummaries) => `You are a tech and AI industry analyst. Below are summaries of recent tech/AI YouTube channels from the past week.
+
+Analyze all summaries and create a structured briefing. Identify the 3-7 most important topics discussed across multiple channels or that are particularly relevant.
+
+Focus on FUNDAMENTAL developments: new model releases, framework updates, developer tooling breakthroughs, AI agent developments, startup launches, open-source milestones, and industry shifts. Do NOT focus on hype, speculation, or superficial product demos.
+
+For each topic:
+1. Give a short, catchy title (max 10 words)
+2. Write a clear paragraph (3-5 sentences) explaining what's going on
+3. Indicate which channels discussed this topic (use the exact video_id's from the data)
+4. Add context from your own knowledge: is what the creators say accurate? Are they missing something? Are there counterarguments?
+5. Give a sentiment indicator: "bullish", "bearish", or "neutral"
+
+Also write an overarching "industry mood" paragraph of 2-3 sentences summarizing the general tone.
+
+IMPORTANT: Respond ONLY with valid JSON (no markdown code fences) in exactly this format:
+{
+  "overview": "Overarching industry mood paragraph here...",
+  "topics": [
+    {
+      "topic": "Short catchy title",
+      "summary": "Clear paragraph about what's going on...",
+      "sentiment": "bullish",
+      "source_video_ids": ["video_id_1", "video_id_2"],
+      "news_context": "What your own knowledge adds: verification, nuance, missing context..."
+    }
+  ]
+}
+
+--- VIDEO SUMMARIES ---
+
+${videoSummaries}`,
+    yearlyPrompt: (briefingSummaries) => `You are a senior technology analyst writing a comprehensive 12-month overview of the most important FUNDAMENTAL developments in AI, developer tools, and the tech industry.
+
+You have two sources of information:
+1. Weekly briefings from tech/AI YouTube channels (provided below) — use these as primary source where available
+2. Your own knowledge of tech/AI events from the past 12 months — use this to fill gaps and add context
+
+Focus EXCLUSIVELY on fundamentals. Include:
+- Model releases: Major LLM launches (GPT-4o, Claude 3.5/4, Gemini, Llama, etc.), capability breakthroughs
+- Developer tools: New frameworks, IDEs, coding assistants, deployment platforms
+- AI agents: Autonomous agent frameworks, multi-agent systems, tool use advances
+- Open source: Major open-source releases, community milestones, licensing changes
+- Industry shifts: Acquisitions, funding rounds, company pivots, regulatory developments
+- Infrastructure: GPU availability, cloud AI services, edge AI, training innovations
+
+Do NOT include: hype cycles, speculation about AGI timelines, or superficial product comparisons.
+
+Identify the 5-10 most significant developments. For each:
+1. Give a clear, descriptive title (max 10 words)
+2. Write a thorough paragraph (4-6 sentences) explaining what happened and why it matters
+3. Rate significance: "high" (industry-changing) or "medium" (notable development)
+4. Add your analysis: what are the long-term implications?
+
+Also write an overarching summary paragraph (3-4 sentences) of the major themes shaping tech/AI over the past year.
+
+IMPORTANT: Respond ONLY with valid JSON (no markdown code fences) in exactly this format:
+{
+  "overview": "Overarching summary of major themes...",
+  "topics": [
+    {
+      "topic": "Short descriptive title",
+      "summary": "Thorough paragraph about what happened and why it matters...",
+      "significance": "high",
+      "analysis": "Long-term implications and your assessment..."
+    }
+  ]
+}
+
+--- WEEKLY BRIEFINGS (if available) ---
+
+${briefingSummaries || "No weekly briefings available yet. Use your own knowledge to compile the overview."}`,
+  },
+];
+
+// --- Generic Briefing + Yearly Overview ---
+
+function parseJsonResponse(text: string): any {
+  let jsonText = text.trim();
+  if (jsonText.startsWith("```")) {
+    jsonText = jsonText.replace(/^```(?:json)?\s*/, "").replace(/\s*```$/, "");
+  }
+  return JSON.parse(jsonText);
+}
+
+async function generateCategoryBriefing(config: BriefingConfig): Promise<void> {
   if (!supabase) return;
 
-  // Haal laatste 7 dagen crypto-samenvattingen op
   const weekAgo = new Date();
   weekAgo.setDate(weekAgo.getDate() - 7);
 
-  const { data: recentCryptoVideos } = await supabase
+  const { data: recentVideos } = await supabase
     .from("youtube_videos")
     .select("video_id, video_title, video_url, channel_name, summary, published_at")
-    .eq("category", "Crypto")
+    .eq("category", config.category)
     .eq("transcript_available", true)
     .not("summary", "is", null)
     .gte("published_at", weekAgo.toISOString())
     .order("published_at", { ascending: false });
 
-  if (!recentCryptoVideos || recentCryptoVideos.length === 0) {
-    console.log("Geen crypto-samenvattingen gevonden voor briefing");
+  if (!recentVideos || recentVideos.length === 0) {
+    console.log(`No ${config.category} summaries found for briefing`);
     return;
   }
 
-  console.log(`Crypto briefing genereren op basis van ${recentCryptoVideos.length} video's...`);
+  console.log(`${config.category} briefing: ${recentVideos.length} videos...`);
 
-  // Bouw input voor synthese-prompt
-  const videoSummaries = recentCryptoVideos
+  const videoSummaries = recentVideos
     .map((v: any) => `[${v.channel_name}] "${v.video_title}" (video_id: ${v.video_id})\n${v.summary}`)
     .join("\n\n---\n\n");
 
-  // Claude Sonnet voor synthese
-  const briefingResponse = await anthropic.messages.create({
+  const response = await anthropic.messages.create({
     model: "claude-sonnet-4-20250514",
     max_tokens: 2048,
-    messages: [{ role: "user", content: BRIEFING_PROMPT(videoSummaries) }],
+    messages: [{ role: "user", content: config.weeklyPrompt(videoSummaries) }],
   });
 
-  const textBlock = briefingResponse.content.find((b) => b.type === "text");
+  const textBlock = response.content.find((b) => b.type === "text");
   if (!textBlock || textBlock.type !== "text") {
-    console.error("Geen tekst in briefing response");
+    console.error(`No text in ${config.category} briefing response`);
     return;
   }
 
-  // Parse JSON response
   let briefing: any;
   try {
-    briefing = JSON.parse(textBlock.text);
+    briefing = parseJsonResponse(textBlock.text);
   } catch {
-    console.error("Briefing JSON parse mislukt:", textBlock.text.slice(0, 200));
+    console.error(`${config.category} briefing JSON parse failed:`, textBlock.text.slice(0, 200));
     return;
   }
 
-  // Verrijk source_video_ids met volledige video-info
-  const videoMap = new Map(recentCryptoVideos.map((v: any) => [v.video_id, v]));
+  // Enrich source_video_ids with full video info
+  const videoMap = new Map(recentVideos.map((v: any) => [v.video_id, v]));
   for (const topic of briefing.topics) {
     topic.sources = (topic.source_video_ids || [])
       .map((id: string) => videoMap.get(id))
@@ -322,23 +466,94 @@ async function generateCryptoBriefing(): Promise<void> {
     delete topic.source_video_ids;
   }
 
-  // Opslaan in Supabase
   const today = new Date().toISOString().slice(0, 10);
-  const { error } = await supabase.from("crypto_briefings").upsert(
+  const { error } = await supabase.from(config.briefingTable).upsert(
     {
       briefing_date: today,
       overview: briefing.overview,
       topics: briefing.topics,
-      videos_used: recentCryptoVideos.length,
-      channels_used: [...new Set(recentCryptoVideos.map((v: any) => v.channel_name))],
+      videos_used: recentVideos.length,
+      channels_used: [...new Set(recentVideos.map((v: any) => v.channel_name))],
     },
     { onConflict: "briefing_date" }
   );
 
   if (error) {
-    console.error("Crypto briefing opslaan mislukt:", error);
+    console.error(`${config.category} briefing save failed:`, error);
   } else {
-    console.log(`Crypto briefing opgeslagen (${briefing.topics.length} onderwerpen)`);
+    console.log(`${config.category} briefing saved (${briefing.topics.length} topics)`);
+  }
+}
+
+async function generateCategoryYearlyOverview(config: BriefingConfig): Promise<void> {
+  if (!supabase) return;
+
+  // Check if last yearly overview is recent enough (< 30 days)
+  const { data: existing } = await supabase
+    .from(config.yearlyTable)
+    .select("generated_at")
+    .order("generated_at", { ascending: false })
+    .limit(1)
+    .single();
+
+  if (existing?.generated_at) {
+    const daysSince = (Date.now() - new Date(existing.generated_at).getTime()) / (1000 * 60 * 60 * 24);
+    if (daysSince < 30) {
+      console.log(`${config.category} yearly overview is ${Math.floor(daysSince)} days old, skipping`);
+      return;
+    }
+  }
+
+  const yearAgo = new Date();
+  yearAgo.setFullYear(yearAgo.getFullYear() - 1);
+
+  const { data: briefings } = await supabase
+    .from(config.briefingTable)
+    .select("briefing_date, overview, topics")
+    .gte("briefing_date", yearAgo.toISOString().slice(0, 10))
+    .order("briefing_date", { ascending: false });
+
+  const briefingSummaries = (briefings || [])
+    .map((b: any) => {
+      const topicSummary = (b.topics || [])
+        .map((t: any) => `- ${t.topic}: ${t.summary}`)
+        .join("\n");
+      return `[${b.briefing_date}]\n${b.overview}\n${topicSummary}`;
+    })
+    .join("\n\n---\n\n");
+
+  console.log(`${config.category} yearly overview: ${(briefings || []).length} briefings...`);
+
+  const response = await anthropic.messages.create({
+    model: "claude-sonnet-4-20250514",
+    max_tokens: 4096,
+    messages: [{ role: "user", content: config.yearlyPrompt(briefingSummaries) }],
+  });
+
+  const textBlock = response.content.find((b) => b.type === "text");
+  if (!textBlock || textBlock.type !== "text") {
+    console.error(`No text in ${config.category} yearly overview response`);
+    return;
+  }
+
+  let overview: any;
+  try {
+    overview = parseJsonResponse(textBlock.text);
+  } catch {
+    console.error(`${config.category} yearly overview JSON parse failed:`, textBlock.text.slice(0, 200));
+    return;
+  }
+
+  const { error } = await supabase.from(config.yearlyTable).insert({
+    overview: overview.overview,
+    topics: overview.topics,
+    briefings_used: (briefings || []).length,
+  });
+
+  if (error) {
+    console.error(`${config.category} yearly overview save failed:`, error);
+  } else {
+    console.log(`${config.category} yearly overview saved (${overview.topics.length} topics)`);
   }
 }
 
@@ -378,11 +593,12 @@ async function saveToSupabase(videos: VideoWithSummary[]): Promise<void> {
 export const youtubeMonitor = schedules.task({
   id: "youtube-monitor",
   cron: {
-    pattern: "0 8 * * *", // Dagelijks om 08:00
+    pattern: "0 8 * * 1", // Weekly on Monday at 08:00
     timezone: "Europe/Amsterdam",
   },
   maxDuration: 300,
   run: async () => {
+    initClients();
     console.log("YouTube Monitor gestart");
 
     if (!YOUTUBE_API_KEY) {
@@ -450,13 +666,20 @@ export const youtubeMonitor = schedules.task({
     // View counts updaten voor alle video's van afgelopen week
     const viewsUpdated = await updateRecentViewCounts();
 
-    // Crypto briefing genereren
-    const cryptoVideos = videosByCategory.get("Crypto") || [];
-    if (cryptoVideos.length > 0) {
+    // Generate briefings + yearly overviews for configured categories
+    for (const config of BRIEFING_CONFIGS) {
+      const catVideos = videosByCategory.get(config.category) || [];
+      if (catVideos.length > 0) {
+        try {
+          await generateCategoryBriefing(config);
+        } catch (err) {
+          console.error(`${config.category} briefing failed:`, err instanceof Error ? err.message : err);
+        }
+      }
       try {
-        await generateCryptoBriefing();
+        await generateCategoryYearlyOverview(config);
       } catch (err) {
-        console.error("Crypto briefing mislukt:", err instanceof Error ? err.message : err);
+        console.error(`${config.category} yearly overview failed:`, err instanceof Error ? err.message : err);
       }
     }
 

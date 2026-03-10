@@ -369,6 +369,101 @@ async function searchAldi(category: string): Promise<Offer[]> {
   return offers;
 }
 
+// --- Holland & Barrett (HTML scrape) ---
+
+async function searchHollandBarrett(categoryPath: string, query: string): Promise<Offer[]> {
+  const url = `https://www.hollandandbarrett.nl/shop/${categoryPath}/?query=${encodeURIComponent(query)}`;
+  const res = await fetch(url, {
+    headers: {
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+      "Accept": "text/html",
+    },
+    signal: AbortSignal.timeout(20000),
+  });
+  if (!res.ok) throw new Error(`H&B fetch failed: ${res.status}`);
+  const html = await res.text();
+
+  const offers: Offer[] = [];
+  const tilesMarker = '"tiles":';
+  let searchFrom = 0;
+
+  while (true) {
+    const idx = html.indexOf(tilesMarker, searchFrom);
+    if (idx === -1) break;
+    const bracketStart = html.indexOf("[", idx + tilesMarker.length);
+    if (bracketStart === -1) break;
+
+    let depth = 0;
+    let end = bracketStart;
+    for (let i = bracketStart; i < html.length; i++) {
+      if (html[i] === "[") depth++;
+      if (html[i] === "]") depth--;
+      if (depth === 0) { end = i; break; }
+    }
+    searchFrom = end + 1;
+
+    const tilesJson = html.substring(bracketStart, end + 1);
+    if (tilesJson === "[]") continue;
+
+    try {
+      const tiles = JSON.parse(tilesJson);
+
+      for (const tile of tiles) {
+        const productTitle = tile.title || "";
+        const brandName = tile.brandName || tile.name || "";
+        const fullName = brandName && productTitle ? `${brandName} ${productTitle}` : productTitle || brandName;
+        if (!fullName) continue;
+
+        const actualPriceStr = (tile.actualPrice || "").replace(/[€\s\u20AC]/g, "").replace(",", ".");
+        const retailPriceStr = (tile.retailPrice || "").replace(/[€\s\u20AC]/g, "").replace(",", ".");
+
+        const actualPrice = parseFloat(actualPriceStr);
+        const retailPrice = parseFloat(retailPriceStr);
+        if (isNaN(actualPrice) || actualPrice <= 0) continue;
+
+        const hasDiscount = tile.showRetailPrice && !isNaN(retailPrice) && retailPrice > actualPrice;
+        const promotion = tile.promotion || null;
+
+        let discountLabel: string | null = null;
+        if (promotion) {
+          discountLabel = promotion;
+        } else if (hasDiscount && tile.discountPercentage) {
+          discountLabel = `${tile.discountPercentage}% korting`;
+        } else if (hasDiscount) {
+          const pct = Math.round((1 - actualPrice / retailPrice) * 100);
+          discountLabel = `${pct}% korting`;
+        }
+
+        const effectivePrice = promotion
+          ? calcEffectivePrice(actualPrice, promotion)
+          : actualPrice;
+
+        const productUrl = tile.url
+          ? `https://www.hollandandbarrett.nl${tile.url}`
+          : null;
+
+        offers.push({
+          productName: fullName,
+          supermarket: "Holland & Barrett",
+          currentPrice: hasDiscount ? retailPrice : actualPrice,
+          originalPrice: hasDiscount ? retailPrice : null,
+          effectivePrice,
+          discountLabel,
+          discountPeriod: null,
+          isOnSale: hasDiscount || !!promotion,
+          productUrl,
+          weightGrams: null,
+          pricePerKg: null,
+        });
+      }
+    } catch {
+      // JSON parse failed, skip
+    }
+  }
+
+  return offers;
+}
+
 // --- Main ---
 
 async function main() {
@@ -387,15 +482,17 @@ async function main() {
     let allOffers: Offer[] = [];
 
     // AH
-    try {
-      const ah = await searchAh(product.ah.query, ahToken);
-      const filtered = filterOffers(ah, product.brand, product.titleContains, product.titleExcludes);
-      console.log(`  AH: ${ah.length} resultaten → ${filtered.length} na filter`);
-      allOffers.push(...filtered);
-    } catch (e) {
-      const m = e instanceof Error ? e.message : String(e);
-      console.log(`  AH FOUT: ${m}`);
-      errors.push(m);
+    if (product.ah) {
+      try {
+        const ah = await searchAh(product.ah.query, ahToken);
+        const filtered = filterOffers(ah, product.brand, product.titleContains, product.titleExcludes);
+        console.log(`  AH: ${ah.length} resultaten → ${filtered.length} na filter`);
+        allOffers.push(...filtered);
+      } catch (e) {
+        const m = e instanceof Error ? e.message : String(e);
+        console.log(`  AH FOUT: ${m}`);
+        errors.push(m);
+      }
     }
 
     // Jumbo
@@ -451,6 +548,21 @@ async function main() {
       } catch (e) {
         const m = e instanceof Error ? e.message : String(e);
         console.log(`  Vomar FOUT: ${m}`);
+        errors.push(m);
+      }
+    }
+
+    // Holland & Barrett
+    if ((product as any).hb) {
+      try {
+        const hbConfig = (product as any).hb;
+        const hb = await searchHollandBarrett(hbConfig.category, hbConfig.query);
+        const filtered = filterOffers(hb, product.brand, product.titleContains, product.titleExcludes);
+        console.log(`  H&B: ${hb.length} resultaten → ${filtered.length} na filter`);
+        allOffers.push(...filtered);
+      } catch (e) {
+        const m = e instanceof Error ? e.message : String(e);
+        console.log(`  H&B FOUT: ${m}`);
         errors.push(m);
       }
     }
@@ -766,32 +878,17 @@ async function youtubeMain() {
     console.log("\nGeen video's om op te slaan");
   }
 
-  // Crypto briefing genereren
-  if (supabase && process.env.ANTHROPIC_API_KEY) {
-    console.log("\n--- Crypto Briefing genereren ---");
-
-    const weekAgo = new Date();
-    weekAgo.setDate(weekAgo.getDate() - 7);
-
-    const { data: cryptoVideos } = await supabase
-      .from("youtube_videos")
-      .select("video_id, video_title, video_url, channel_name, summary, published_at")
-      .eq("category", "Crypto")
-      .eq("transcript_available", true)
-      .not("summary", "is", null)
-      .gte("published_at", weekAgo.toISOString())
-      .order("published_at", { ascending: false });
-
-    if (cryptoVideos && cryptoVideos.length > 0) {
-      console.log(`${cryptoVideos.length} crypto-samenvattingen gevonden`);
-
-      const videoSummaries = cryptoVideos
-        .map((v: any) => `[${v.channel_name}] "${v.video_title}" (video_id: ${v.video_id})\n${v.summary}`)
-        .join("\n\n---\n\n");
-
-      const briefingPrompt = `You are a crypto market analyst. Below are summaries of recent crypto podcasts from the past week.
+  // Briefings + yearly overviews genereren voor Crypto en Tech & AI
+  const briefingConfigs = [
+    {
+      category: "Crypto",
+      briefingTable: "crypto_briefings",
+      yearlyTable: "crypto_yearly_overview",
+      weeklyPromptFn: (vs: string) => `You are a crypto market analyst. Below are summaries of recent crypto podcasts from the past week.
 
 Analyze all summaries and create a structured briefing. Identify the 3-7 most important topics discussed across multiple podcasts or that are particularly relevant.
+
+Focus on FUNDAMENTAL developments: regulation, technology, institutional adoption, infrastructure, and industry events. Do NOT focus on price action, trading patterns, or short-term market movements.
 
 For each topic:
 1. Give a short, catchy title (max 10 words)
@@ -802,7 +899,7 @@ For each topic:
 
 Also write an overarching "market mood" paragraph of 2-3 sentences summarizing the general tone.
 
-IMPORTANT: Respond ONLY with valid JSON in exactly this format:
+IMPORTANT: Respond ONLY with valid JSON (no markdown code fences) in exactly this format:
 {
   "overview": "Overarching market mood paragraph here...",
   "topics": [
@@ -818,63 +915,247 @@ IMPORTANT: Respond ONLY with valid JSON in exactly this format:
 
 --- PODCAST SUMMARIES ---
 
-${videoSummaries}`;
+${vs}`,
+      yearlyPromptFn: (bs: string) => `You are a senior crypto analyst writing a comprehensive 12-month overview of the most important FUNDAMENTAL developments in cryptocurrency and blockchain.
+
+You have two sources of information:
+1. Weekly briefings from crypto podcasts (provided below) — use these as primary source where available
+2. Your own knowledge of crypto events from the past 12 months — use this to fill gaps and add context
+
+Focus EXCLUSIVELY on fundamentals. Include:
+- Regulation: ETF approvals, legal frameworks, government stances, enforcement actions
+- Technology: Layer 2 scaling, protocol upgrades, new consensus mechanisms
+- Institutional adoption: Corporate treasuries, bank integrations, payment processors
+- Infrastructure: Stablecoin growth, DeFi milestones, cross-chain bridges
+- Industry events: Exchange collapses, major hacks, mergers & acquisitions
+
+Do NOT include: price predictions, trading patterns, short-term market movements, or speculation.
+
+Identify the 5-10 most significant developments. For each:
+1. Give a clear, descriptive title (max 10 words)
+2. Write a thorough paragraph (4-6 sentences) explaining what happened and why it matters
+3. Rate significance: "high" (industry-changing) or "medium" (notable development)
+4. Add your analysis: what are the long-term implications?
+
+Also write an overarching summary paragraph (3-4 sentences).
+
+IMPORTANT: Respond ONLY with valid JSON (no markdown code fences) in exactly this format:
+{
+  "overview": "Overarching summary...",
+  "topics": [{ "topic": "Title", "summary": "...", "significance": "high", "analysis": "..." }]
+}
+
+--- WEEKLY BRIEFINGS ---
+
+${bs || "No weekly briefings available yet. Use your own knowledge."}`,
+    },
+    {
+      category: "Tech & AI",
+      briefingTable: "ai_briefings",
+      yearlyTable: "ai_yearly_overview",
+      weeklyPromptFn: (vs: string) => `You are a tech and AI industry analyst. Below are summaries of recent tech/AI YouTube channels from the past week.
+
+Analyze all summaries and create a structured briefing. Identify the 3-7 most important topics discussed across multiple channels or that are particularly relevant.
+
+Focus on FUNDAMENTAL developments: new model releases, framework updates, developer tooling breakthroughs, AI agent developments, startup launches, open-source milestones, and industry shifts. Do NOT focus on hype, speculation, or superficial product demos.
+
+For each topic:
+1. Give a short, catchy title (max 10 words)
+2. Write a clear paragraph (3-5 sentences) explaining what's going on
+3. Indicate which channels discussed this topic (use the exact video_id's from the data)
+4. Add context from your own knowledge: is what the creators say accurate? Are they missing something? Are there counterarguments?
+5. Give a sentiment indicator: "bullish", "bearish", or "neutral"
+
+Also write an overarching "industry mood" paragraph of 2-3 sentences summarizing the general tone.
+
+IMPORTANT: Respond ONLY with valid JSON (no markdown code fences) in exactly this format:
+{
+  "overview": "Overarching industry mood paragraph here...",
+  "topics": [
+    {
+      "topic": "Short catchy title",
+      "summary": "Clear paragraph about what's going on...",
+      "sentiment": "bullish",
+      "source_video_ids": ["video_id_1", "video_id_2"],
+      "news_context": "What your own knowledge adds: verification, nuance, missing context..."
+    }
+  ]
+}
+
+--- VIDEO SUMMARIES ---
+
+${vs}`,
+      yearlyPromptFn: (bs: string) => `You are a senior technology analyst writing a comprehensive 12-month overview of the most important FUNDAMENTAL developments in AI, developer tools, and the tech industry.
+
+You have two sources of information:
+1. Weekly briefings from tech/AI channels (provided below) — use these as primary source where available
+2. Your own knowledge of tech/AI events from the past 12 months — use this to fill gaps and add context
+
+Focus EXCLUSIVELY on fundamentals. Include:
+- Model releases: Major LLM launches, capability breakthroughs
+- Developer tools: New frameworks, IDEs, coding assistants, deployment platforms
+- AI agents: Autonomous agent frameworks, multi-agent systems, tool use advances
+- Open source: Major releases, community milestones, licensing changes
+- Industry shifts: Acquisitions, funding rounds, company pivots, regulatory developments
+- Infrastructure: GPU availability, cloud AI services, edge AI, training innovations
+
+Do NOT include: hype cycles, speculation about AGI timelines, or superficial comparisons.
+
+Identify the 5-10 most significant developments. For each:
+1. Give a clear, descriptive title (max 10 words)
+2. Write a thorough paragraph (4-6 sentences) explaining what happened and why it matters
+3. Rate significance: "high" (industry-changing) or "medium" (notable development)
+4. Add your analysis: what are the long-term implications?
+
+Also write an overarching summary paragraph (3-4 sentences).
+
+IMPORTANT: Respond ONLY with valid JSON (no markdown code fences) in exactly this format:
+{
+  "overview": "Overarching summary...",
+  "topics": [{ "topic": "Title", "summary": "...", "significance": "high", "analysis": "..." }]
+}
+
+--- WEEKLY BRIEFINGS ---
+
+${bs || "No weekly briefings available yet. Use your own knowledge."}`,
+    },
+  ];
+
+  if (supabase && process.env.ANTHROPIC_API_KEY) {
+    for (const config of briefingConfigs) {
+      // Weekly briefing
+      console.log(`\n--- ${config.category} Briefing genereren ---`);
+
+      const weekAgo = new Date();
+      weekAgo.setDate(weekAgo.getDate() - 7);
+
+      const { data: catVideos } = await supabase
+        .from("youtube_videos")
+        .select("video_id, video_title, video_url, channel_name, summary, published_at")
+        .eq("category", config.category)
+        .eq("transcript_available", true)
+        .not("summary", "is", null)
+        .gte("published_at", weekAgo.toISOString())
+        .order("published_at", { ascending: false });
+
+      if (catVideos && catVideos.length > 0) {
+        console.log(`${catVideos.length} summaries found`);
+
+        const videoSummaries = catVideos
+          .map((v: any) => `[${v.channel_name}] "${v.video_title}" (video_id: ${v.video_id})\n${v.summary}`)
+          .join("\n\n---\n\n");
+
+        try {
+          const briefingResponse = await anthropic.messages.create({
+            model: "claude-sonnet-4-20250514",
+            max_tokens: 2048,
+            messages: [{ role: "user", content: config.weeklyPromptFn(videoSummaries) }],
+          });
+
+          const textBlock = briefingResponse.content.find((b) => b.type === "text");
+          if (textBlock && textBlock.type === "text") {
+            let jsonText = textBlock.text.trim();
+            if (jsonText.startsWith("```")) {
+              jsonText = jsonText.replace(/^```(?:json)?\s*/, "").replace(/\s*```$/, "");
+            }
+            const briefing = JSON.parse(jsonText);
+
+            const videoMap = new Map(catVideos.map((v: any) => [v.video_id, v]));
+            for (const topic of briefing.topics) {
+              topic.sources = (topic.source_video_ids || [])
+                .map((id: string) => videoMap.get(id))
+                .filter(Boolean)
+                .map((v: any) => ({
+                  video_id: v.video_id,
+                  video_title: v.video_title,
+                  channel_name: v.channel_name,
+                  video_url: v.video_url,
+                }));
+              delete topic.source_video_ids;
+            }
+
+            console.log(`\nOverview: ${briefing.overview}\n`);
+            for (const topic of briefing.topics) {
+              const icon = topic.sentiment === "bullish" ? "🟢" : topic.sentiment === "bearish" ? "🔴" : "🟡";
+              console.log(`${icon} ${topic.topic}`);
+            }
+
+            const today = new Date().toISOString().slice(0, 10);
+            const { error: sbErr } = await supabase.from(config.briefingTable).upsert(
+              {
+                briefing_date: today,
+                overview: briefing.overview,
+                topics: briefing.topics,
+                videos_used: catVideos.length,
+                channels_used: [...new Set(catVideos.map((v: any) => v.channel_name))],
+              },
+              { onConflict: "briefing_date" }
+            );
+            if (sbErr) console.error(`${config.category} briefing save error:`, sbErr);
+            else console.log(`${config.category} briefing saved`);
+          }
+        } catch (err) {
+          console.error(`${config.category} briefing error:`, err instanceof Error ? err.message : String(err));
+        }
+      } else {
+        console.log(`No ${config.category} summaries available`);
+      }
+
+      // Yearly overview
+      console.log(`\n--- ${config.category} Yearly Overview genereren ---`);
+
+      const yearAgo = new Date();
+      yearAgo.setFullYear(yearAgo.getFullYear() - 1);
+
+      const { data: briefings } = await supabase
+        .from(config.briefingTable)
+        .select("briefing_date, overview, topics")
+        .gte("briefing_date", yearAgo.toISOString().slice(0, 10))
+        .order("briefing_date", { ascending: false });
+
+      const briefingSummaries = (briefings || [])
+        .map((b: any) => {
+          const topicSummary = (b.topics || [])
+            .map((t: any) => `- ${t.topic}: ${t.summary}`)
+            .join("\n");
+          return `[${b.briefing_date}]\n${b.overview}\n${topicSummary}`;
+        })
+        .join("\n\n---\n\n");
+
+      console.log(`${(briefings || []).length} briefings as context`);
 
       try {
-        const briefingResponse = await anthropic.messages.create({
+        const yearlyResponse = await anthropic.messages.create({
           model: "claude-sonnet-4-20250514",
-          max_tokens: 2048,
-          messages: [{ role: "user", content: briefingPrompt }],
+          max_tokens: 4096,
+          messages: [{ role: "user", content: config.yearlyPromptFn(briefingSummaries) }],
         });
 
-        const textBlock = briefingResponse.content.find((b) => b.type === "text");
+        const textBlock = yearlyResponse.content.find((b) => b.type === "text");
         if (textBlock && textBlock.type === "text") {
-          const briefing = JSON.parse(textBlock.text);
+          let jsonText = textBlock.text.trim();
+          if (jsonText.startsWith("```")) {
+            jsonText = jsonText.replace(/^```(?:json)?\s*/, "").replace(/\s*```$/, "");
+          }
+          const overview = JSON.parse(jsonText);
 
-          // Verrijk bronnen
-          const videoMap = new Map(cryptoVideos.map((v: any) => [v.video_id, v]));
-          for (const topic of briefing.topics) {
-            topic.sources = (topic.source_video_ids || [])
-              .map((id: string) => videoMap.get(id))
-              .filter(Boolean)
-              .map((v: any) => ({
-                video_id: v.video_id,
-                video_title: v.video_title,
-                channel_name: v.channel_name,
-                video_url: v.video_url,
-              }));
-            delete topic.source_video_ids;
+          console.log(`\nOverview: ${overview.overview}\n`);
+          for (const topic of overview.topics) {
+            const badge = topic.significance === "high" ? "🔴" : "🟡";
+            console.log(`${badge} ${topic.topic}`);
           }
 
-          console.log(`\nBriefing overview: ${briefing.overview}\n`);
-          for (const topic of briefing.topics) {
-            const sentimentIcon = topic.sentiment === "bullish" ? "🟢" : topic.sentiment === "bearish" ? "🔴" : "🟡";
-            console.log(`${sentimentIcon} ${topic.topic}`);
-            console.log(`  ${topic.summary}`);
-            if (topic.news_context) console.log(`  📰 ${topic.news_context}`);
-            console.log(`  Bronnen: ${topic.sources.map((s: any) => s.channel_name).join(", ") || "geen"}\n`);
-          }
-
-          // Opslaan
-          const today = new Date().toISOString().slice(0, 10);
-          const { error: sbErr } = await supabase.from("crypto_briefings").upsert(
-            {
-              briefing_date: today,
-              overview: briefing.overview,
-              topics: briefing.topics,
-              videos_used: cryptoVideos.length,
-              channels_used: [...new Set(cryptoVideos.map((v: any) => v.channel_name))],
-            },
-            { onConflict: "briefing_date" }
-          );
-          if (sbErr) console.error("Briefing opslaan FOUT:", sbErr);
-          else console.log("Crypto briefing opgeslagen in Supabase");
+          const { error: sbErr } = await supabase.from(config.yearlyTable).insert({
+            overview: overview.overview,
+            topics: overview.topics,
+            briefings_used: (briefings || []).length,
+          });
+          if (sbErr) console.error(`${config.category} yearly save error:`, sbErr);
+          else console.log(`${config.category} yearly overview saved`);
         }
       } catch (err) {
-        console.error("Briefing generatie FOUT:", err instanceof Error ? err.message : String(err));
+        console.error(`${config.category} yearly error:`, err instanceof Error ? err.message : String(err));
       }
-    } else {
-      console.log("Geen crypto-samenvattingen beschikbaar voor briefing");
     }
   }
 
