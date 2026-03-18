@@ -53,8 +53,8 @@
       <div class="skeleton" style="height: 180px;"></div>
     </div>
 
-    <!-- Top 10 deze week per categorie -->
-    <h2 class="section-title">Top 10 deze week</h2>
+    <!-- Top 10 deze maand per categorie -->
+    <h2 class="section-title">Top 10 deze maand</h2>
     <div class="ranking-tabs" id="ranking-tabs"></div>
     <div class="ranking-list" id="ranking-list">
       <div class="skeleton" style="height: 60px;"></div>
@@ -191,22 +191,22 @@
       });
 
       // --- Top 10 per categorie ---
-      const weekAgo = new Date();
-      weekAgo.setDate(weekAgo.getDate() - 7);
-      const weekVideos = videos.filter(v => new Date(v.published_at) >= weekAgo);
+      const monthAgo = new Date();
+      monthAgo.setDate(monthAgo.getDate() - 30);
+      const monthVideos = videos.filter(v => new Date(v.published_at) >= monthAgo);
 
-      const weekByCategory = {};
-      for (const v of weekVideos) {
-        if (!weekByCategory[v.category]) weekByCategory[v.category] = [];
-        weekByCategory[v.category].push(v);
+      const monthByCategory = {};
+      for (const v of monthVideos) {
+        if (!monthByCategory[v.category]) monthByCategory[v.category] = [];
+        monthByCategory[v.category].push(v);
       }
       // Sort each category by view_count desc
-      for (const cat in weekByCategory) {
-        weekByCategory[cat].sort((a, b) => (b.view_count || 0) - (a.view_count || 0));
+      for (const cat in monthByCategory) {
+        monthByCategory[cat].sort((a, b) => (b.view_count || 0) - (a.view_count || 0));
       }
 
       // Also build "Alles" combined list
-      const allWeekSorted = [...weekVideos].sort((a, b) => (b.view_count || 0) - (a.view_count || 0));
+      const allMonthSorted = [...monthVideos].sort((a, b) => (b.view_count || 0) - (a.view_count || 0));
 
       const tabs = document.getElementById('ranking-tabs');
       const list = document.getElementById('ranking-list');
@@ -214,7 +214,7 @@
 
       function renderRanking(catName) {
         activeTab = catName;
-        const items = catName === 'Alles' ? allWeekSorted : (weekByCategory[catName] || []);
+        const items = catName === 'Alles' ? allMonthSorted : (monthByCategory[catName] || []);
         const top10 = items.slice(0, 10);
 
         // Update active tab
@@ -224,7 +224,7 @@
 
         list.innerHTML = '';
         if (top10.length === 0) {
-          list.innerHTML = '<p style="color: var(--yt-text-dim); padding: 24px 0; text-align: center;">Geen video\'s deze week.</p>';
+          list.innerHTML = '<p style="color: var(--yt-text-dim); padding: 24px 0; text-align: center;">Geen video\'s deze maand.</p>';
           return;
         }
 
@@ -267,7 +267,7 @@
       tabs.appendChild(allTab);
 
       for (const cat of CATEGORIES) {
-        if (!weekByCategory[cat.name] || weekByCategory[cat.name].length === 0) continue;
+        if (!monthByCategory[cat.name] || monthByCategory[cat.name].length === 0) continue;
         const tab = document.createElement('button');
         tab.className = 'ranking-tab';
         tab.dataset.cat = cat.name;

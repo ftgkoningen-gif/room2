@@ -39,12 +39,12 @@
 
     <!-- Category tabs (visible for Crypto and Tech & AI) -->
     <div class="crypto-tabs" id="category-tabs" style="display: none;">
-      <button class="crypto-tab active" data-tab="week">News Last Week</button>
+      <button class="crypto-tab active" data-tab="month">News Last Month</button>
       <button class="crypto-tab" data-tab="year">Main News Last 12 Months</button>
     </div>
 
-    <!-- Tab: News Last Week -->
-    <div class="crypto-tab-content active" id="tab-week">
+    <!-- Tab: News Last Month -->
+    <div class="crypto-tab-content active" id="tab-month">
       <div class="video-feed" id="video-feed">
         <div class="skeleton" style="height: 200px;"></div>
         <div class="skeleton" style="height: 200px;"></div>
@@ -215,7 +215,7 @@
           <div class="yearly-overview">${escapeHtml(overview.overview)}</div>
           ${topicsHtml}
           <div class="yearly-footer">
-            Based on ${overview.briefings_used} weekly briefings · Updated monthly
+            Based on ${overview.briefings_used} monthly briefings · Updated monthly
           </div>
         </div>
       `;
@@ -228,7 +228,7 @@
     function setupTabs() {
       const tabsContainer = document.getElementById('category-tabs');
       const tabs = tabsContainer.querySelectorAll('.crypto-tab');
-      const tabWeek = document.getElementById('tab-week');
+      const tabMonth = document.getElementById('tab-month');
       const tabYear = document.getElementById('tab-year');
       let yearlyLoaded = false;
 
@@ -237,7 +237,7 @@
       if (hash === 'year') {
         tabs[0].classList.remove('active');
         tabs[1].classList.add('active');
-        tabWeek.classList.remove('active');
+        tabMonth.classList.remove('active');
         tabYear.classList.add('active');
         loadYearlyOverview();
         yearlyLoaded = true;
@@ -249,7 +249,7 @@
           tab.classList.add('active');
 
           const target = tab.dataset.tab;
-          tabWeek.classList.toggle('active', target === 'week');
+          tabMonth.classList.toggle('active', target === 'month');
           tabYear.classList.toggle('active', target === 'year');
           window.location.hash = target;
 
