@@ -203,13 +203,13 @@ async function fetchViewCounts(videoIds: string[]): Promise<Map<string, number>>
 async function updateRecentViewCounts(): Promise<number> {
   if (!supabase) return 0;
 
-  const weekAgo = new Date();
-  weekAgo.setDate(weekAgo.getDate() - 7);
+  const monthAgo = new Date();
+  monthAgo.setDate(monthAgo.getDate() - 30);
 
   const { data: recentVideos } = await supabase
     .from("youtube_videos")
     .select("video_id")
-    .gte("published_at", weekAgo.toISOString());
+    .gte("published_at", monthAgo.toISOString());
 
   if (!recentVideos || recentVideos.length === 0) return 0;
 
@@ -236,7 +236,7 @@ interface BriefingConfig {
   category: string;
   briefingTable: string;
   yearlyTable: string;
-  weeklyPrompt: (summaries: string) => string;
+  monthlyPrompt: (summaries: string) => string;
   yearlyPrompt: (summaries: string) => string;
 }
 
@@ -245,7 +245,7 @@ const BRIEFING_CONFIGS: BriefingConfig[] = [
     category: "Crypto",
     briefingTable: "crypto_briefings",
     yearlyTable: "crypto_yearly_overview",
-    weeklyPrompt: (videoSummaries) => `You are a crypto market analyst. Below are summaries of recent crypto podcasts from the past week.
+    monthlyPrompt: (videoSummaries) => `You are a crypto market analyst. Below are summaries of recent crypto podcasts from the past month.
 
 Analyze all summaries and create a structured briefing. Identify the 3-7 most important topics discussed across multiple podcasts or that are particularly relevant.
 
@@ -280,7 +280,7 @@ ${videoSummaries}`,
     yearlyPrompt: (briefingSummaries) => `You are a senior crypto analyst writing a comprehensive 12-month overview of the most important FUNDAMENTAL developments in cryptocurrency and blockchain.
 
 You have two sources of information:
-1. Weekly briefings from crypto podcasts (provided below) — use these as primary source where available
+1. Monthly briefings from crypto podcasts (provided below) — use these as primary source where available
 2. Your own knowledge of crypto events from the past 12 months — use this to fill gaps and add context
 
 Focus EXCLUSIVELY on fundamentals. Include:
@@ -313,15 +313,15 @@ IMPORTANT: Respond ONLY with valid JSON (no markdown code fences) in exactly thi
   ]
 }
 
---- WEEKLY BRIEFINGS (if available) ---
+--- MONTHLY BRIEFINGS (if available) ---
 
-${briefingSummaries || "No weekly briefings available yet. Use your own knowledge to compile the overview."}`,
+${briefingSummaries || "No monthly briefings available yet. Use your own knowledge to compile the overview."}`,
   },
   {
     category: "Tech & AI",
     briefingTable: "ai_briefings",
     yearlyTable: "ai_yearly_overview",
-    weeklyPrompt: (videoSummaries) => `You are a tech and AI industry analyst. Below are summaries of recent tech/AI YouTube channels from the past week.
+    monthlyPrompt: (videoSummaries) => `You are a tech and AI industry analyst. Below are summaries of recent tech/AI YouTube channels from the past month.
 
 Analyze all summaries and create a structured briefing. Identify the 3-7 most important topics discussed across multiple channels or that are particularly relevant.
 
@@ -356,7 +356,7 @@ ${videoSummaries}`,
     yearlyPrompt: (briefingSummaries) => `You are a senior technology analyst writing a comprehensive 12-month overview of the most important FUNDAMENTAL developments in AI, developer tools, and the tech industry.
 
 You have two sources of information:
-1. Weekly briefings from tech/AI YouTube channels (provided below) — use these as primary source where available
+1. Monthly briefings from tech/AI YouTube channels (provided below) — use these as primary source where available
 2. Your own knowledge of tech/AI events from the past 12 months — use this to fill gaps and add context
 
 Focus EXCLUSIVELY on fundamentals. Include:
@@ -390,15 +390,15 @@ IMPORTANT: Respond ONLY with valid JSON (no markdown code fences) in exactly thi
   ]
 }
 
---- WEEKLY BRIEFINGS (if available) ---
+--- MONTHLY BRIEFINGS (if available) ---
 
-${briefingSummaries || "No weekly briefings available yet. Use your own knowledge to compile the overview."}`,
+${briefingSummaries || "No monthly briefings available yet. Use your own knowledge to compile the overview."}`,
   },
   {
     category: "Gezondheid",
     briefingTable: "gezondheid_briefings",
     yearlyTable: "gezondheid_yearly_overview",
-    weeklyPrompt: (videoSummaries) => `You are a health science and longevity analyst. Below are summaries of recent health-focused YouTube channels from the past week.
+    monthlyPrompt: (videoSummaries) => `You are a health science and longevity analyst. Below are summaries of recent health-focused YouTube channels from the past month.
 
 Analyze all summaries and create a structured briefing. Identify the 3-7 most important topics discussed across multiple channels or that are particularly relevant.
 
@@ -433,7 +433,7 @@ ${videoSummaries}`,
     yearlyPrompt: (briefingSummaries) => `You are a senior health science analyst writing a comprehensive 12-month overview of the most important developments in health optimization, longevity research, and biohacking.
 
 You have two sources of information:
-1. Weekly briefings from health-focused YouTube channels (provided below) — use these as primary source where available
+1. Monthly briefings from health-focused YouTube channels (provided below) — use these as primary source where available
 2. Your own knowledge of health science developments from the past 12 months — use this to fill gaps and add context
 
 Focus EXCLUSIVELY on evidence-based developments. Include:
@@ -467,15 +467,15 @@ IMPORTANT: Respond ONLY with valid JSON (no markdown code fences) in exactly thi
   ]
 }
 
---- WEEKLY BRIEFINGS (if available) ---
+--- MONTHLY BRIEFINGS (if available) ---
 
-${briefingSummaries || "No weekly briefings available yet. Use your own knowledge to compile the overview."}`,
+${briefingSummaries || "No monthly briefings available yet. Use your own knowledge to compile the overview."}`,
   },
   {
     category: "Podcasts",
     briefingTable: "podcasts_briefings",
     yearlyTable: "podcasts_yearly_overview",
-    weeklyPrompt: (videoSummaries) => `You are a cultural commentary and interview analyst. Below are summaries of recent podcast episodes from the past week.
+    monthlyPrompt: (videoSummaries) => `You are a cultural commentary and interview analyst. Below are summaries of recent podcast episodes from the past month.
 
 Analyze all summaries and create a structured briefing. Identify the 3-7 most important topics, guest insights, or cultural themes discussed across episodes or that are particularly thought-provoking.
 
@@ -510,7 +510,7 @@ ${videoSummaries}`,
     yearlyPrompt: (briefingSummaries) => `You are a senior media analyst writing a comprehensive 12-month overview of the most important themes, guest insights, and cultural discussions from long-form podcast interviews.
 
 You have two sources of information:
-1. Weekly briefings from podcast channels (provided below) — use these as primary source where available
+1. Monthly briefings from podcast channels (provided below) — use these as primary source where available
 2. Your own knowledge of major cultural and intellectual discussions from the past 12 months — use this to fill gaps and add context
 
 Focus EXCLUSIVELY on substantive content. Include:
@@ -544,15 +544,15 @@ IMPORTANT: Respond ONLY with valid JSON (no markdown code fences) in exactly thi
   ]
 }
 
---- WEEKLY BRIEFINGS (if available) ---
+--- MONTHLY BRIEFINGS (if available) ---
 
-${briefingSummaries || "No weekly briefings available yet. Use your own knowledge to compile the overview."}`,
+${briefingSummaries || "No monthly briefings available yet. Use your own knowledge to compile the overview."}`,
   },
   {
     category: "Nieuws",
     briefingTable: "nieuws_briefings",
     yearlyTable: "nieuws_yearly_overview",
-    weeklyPrompt: (videoSummaries) => `Je bent een Nederlandse nieuwsanalist. Hieronder staan samenvattingen van recente nieuwsvideo's van de afgelopen week.
+    monthlyPrompt: (videoSummaries) => `Je bent een Nederlandse nieuwsanalist. Hieronder staan samenvattingen van recente nieuwsvideo's van de afgelopen maand.
 
 Analyseer alle samenvattingen en maak een gestructureerde briefing. Identificeer de 3-7 belangrijkste onderwerpen die besproken zijn.
 
@@ -587,7 +587,7 @@ ${videoSummaries}`,
     yearlyPrompt: (briefingSummaries) => `Je bent een senior nieuwsanalist die een uitgebreid 12-maanden overzicht schrijft van de belangrijkste ontwikkelingen in het Nederlandse en wereldnieuws.
 
 Je hebt twee informatiebronnen:
-1. Wekelijkse briefings van nieuwskanalen (hieronder) — gebruik deze als primaire bron waar beschikbaar
+1. Maandelijkse briefings van nieuwskanalen (hieronder) — gebruik deze als primaire bron waar beschikbaar
 2. Je eigen kennis van nieuwsgebeurtenissen van de afgelopen 12 maanden — gebruik dit om gaten te vullen en context toe te voegen
 
 Focus UITSLUITEND op fundamentele ontwikkelingen. Inclusief:
@@ -619,15 +619,15 @@ BELANGRIJK: Antwoord ALLEEN met geldige JSON (geen markdown code fences) in exac
   ]
 }
 
---- WEKELIJKSE BRIEFINGS (indien beschikbaar) ---
+--- MAANDELIJKSE BRIEFINGS (indien beschikbaar) ---
 
-${briefingSummaries || "Nog geen wekelijkse briefings beschikbaar. Gebruik je eigen kennis om het overzicht samen te stellen."}`,
+${briefingSummaries || "Nog geen maandelijkse briefings beschikbaar. Gebruik je eigen kennis om het overzicht samen te stellen."}`,
   },
   {
     category: "Economie",
     briefingTable: "economie_briefings",
     yearlyTable: "economie_yearly_overview",
-    weeklyPrompt: (videoSummaries) => `You are a macroeconomics analyst. Below are summaries of recent economics-focused YouTube channels from the past week.
+    monthlyPrompt: (videoSummaries) => `You are a macroeconomics analyst. Below are summaries of recent economics-focused YouTube channels from the past month.
 
 Analyze all summaries and create a structured briefing. Identify the 3-7 most important topics discussed across multiple channels or that are particularly relevant.
 
@@ -662,7 +662,7 @@ ${videoSummaries}`,
     yearlyPrompt: (briefingSummaries) => `You are a senior macroeconomics analyst writing a comprehensive 12-month overview of the most important economic developments, policy shifts, and structural trends.
 
 You have two sources of information:
-1. Weekly briefings from economics YouTube channels (provided below) — use these as primary source where available
+1. Monthly briefings from economics YouTube channels (provided below) — use these as primary source where available
 2. Your own knowledge of economic events from the past 12 months — use this to fill gaps and add context
 
 Focus EXCLUSIVELY on fundamentals. Include:
@@ -696,9 +696,9 @@ IMPORTANT: Respond ONLY with valid JSON (no markdown code fences) in exactly thi
   ]
 }
 
---- WEEKLY BRIEFINGS (if available) ---
+--- MONTHLY BRIEFINGS (if available) ---
 
-${briefingSummaries || "No weekly briefings available yet. Use your own knowledge to compile the overview."}`,
+${briefingSummaries || "No monthly briefings available yet. Use your own knowledge to compile the overview."}`,
   },
 ];
 
@@ -715,8 +715,8 @@ function parseJsonResponse(text: string): any {
 async function generateCategoryBriefing(config: BriefingConfig): Promise<void> {
   if (!supabase) return;
 
-  const weekAgo = new Date();
-  weekAgo.setDate(weekAgo.getDate() - 7);
+  const monthAgo = new Date();
+  monthAgo.setDate(monthAgo.getDate() - 30);
 
   const { data: recentVideos } = await supabase
     .from("youtube_videos")
@@ -724,7 +724,7 @@ async function generateCategoryBriefing(config: BriefingConfig): Promise<void> {
     .eq("category", config.category)
     .eq("transcript_available", true)
     .not("summary", "is", null)
-    .gte("published_at", weekAgo.toISOString())
+    .gte("published_at", monthAgo.toISOString())
     .order("published_at", { ascending: false });
 
   if (!recentVideos || recentVideos.length === 0) {
@@ -741,7 +741,7 @@ async function generateCategoryBriefing(config: BriefingConfig): Promise<void> {
   const response = await anthropic.messages.create({
     model: "claude-sonnet-4-20250514",
     max_tokens: 2048,
-    messages: [{ role: "user", content: config.weeklyPrompt(videoSummaries) }],
+    messages: [{ role: "user", content: config.monthlyPrompt(videoSummaries) }],
   });
 
   const textBlock = response.content.find((b) => b.type === "text");
@@ -900,7 +900,7 @@ async function saveToSupabase(videos: VideoWithSummary[]): Promise<void> {
 export const youtubeMonitor = schedules.task({
   id: "youtube-monitor",
   cron: {
-    pattern: "0 8 * * 1", // Weekly on Monday at 08:00
+    pattern: "0 8 1 * *", // Monthly on the 1st at 08:00
     timezone: "Europe/Amsterdam",
   },
   maxDuration: 300,
@@ -970,7 +970,7 @@ export const youtubeMonitor = schedules.task({
     // Opslaan in Supabase
     await saveToSupabase(allVideos);
 
-    // View counts updaten voor alle video's van afgelopen week
+    // View counts updaten voor alle video's van afgelopen maand
     const viewsUpdated = await updateRecentViewCounts();
 
     // Generate briefings + yearly overviews for configured categories
