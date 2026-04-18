@@ -1,0 +1,11 @@
+{
+  "_simulatie": "WK 2022 — Qatar, 20 november – 18 december 2022.",
+  "landenPerFase": {
+    "1/16": [],
+    "1/8": ["Argentinië", "Nederland", "Brazilië", "Frankrijk", "Engeland", "Kroatië", "Portugal", "Marokko", "Spanje", "Polen"],
+    "1/4": ["Argentinië", "Nederland", "Brazilië", "Frankrijk", "Engeland", "Kroatië", "Portugal", "Marokko"],
+    "1/2": ["Argentinië", "Frankrijk", "Kroatië", "Marokko"],
+    "F":   ["Argentinië", "Frankrijk"],
+    "Winnaar": ["Argentinië"]
+  }
+}

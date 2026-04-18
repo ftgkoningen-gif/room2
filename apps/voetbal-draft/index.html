@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WK draft 2022</title>
+  <meta name="description" content="WK draft 2022 — simulatie van de draft-pool van Richard, Frank en Ferdi, gebaseerd op echte WK 2022-data." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,800;0,9..144,900;1,9..144,400;1,9..144,600&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="voetbal-draft.css" />
+</head>
+<body class="text-ink">
+
+  <!-- SVG noise (paper grain) -->
+  <svg class="grain" aria-hidden="true">
+    <filter id="noise">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch" />
+      <feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.08 0" />
+    </filter>
+    <rect width="100%" height="100%" filter="url(#noise)" />
+  </svg>
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       MASTHEAD
+  ═══════════════════════════════════════════════════════════════════ -->
+  <header class="masthead">
+    <div class="masthead__rules" aria-hidden="true"></div>
+
+    <div class="masthead__meta">
+      <span class="masthead__edition">Simulatie 5e editie</span>
+      <span class="masthead__sep">·</span>
+      <span class="masthead__price">Richard, Frank &amp; Ferdi</span>
+    </div>
+
+    <h1 class="masthead__title">
+      <span class="word">WK&nbsp;draft</span>
+      <span class="year">2022</span>
+    </h1>
+
+    <div class="masthead__tagline">
+      <span>Qatar</span>
+      <span class="dot">•</span>
+      <span>20 november – 18 december 2022</span>
+      <span class="dot">•</span>
+      <span>13 deelnemers</span>
+    </div>
+
+    <div class="masthead__rules masthead__rules--thick" aria-hidden="true"></div>
+  </header>
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       NAVIGATIE
+  ═══════════════════════════════════════════════════════════════════ -->
+  <nav class="nav" role="tablist" aria-label="Secties">
+    <button class="nav__tab is-active" role="tab" data-tab="overzicht">
+      <span class="nav__num">I</span>
+      <span class="nav__label">Overzicht</span>
+    </button>
+    <button class="nav__tab" role="tab" data-tab="reglement">
+      <span class="nav__num">II</span>
+      <span class="nav__label">Reglement</span>
+    </button>
+    <button class="nav__tab" role="tab" data-tab="teams">
+      <span class="nav__num">III</span>
+      <span class="nav__label">Teams</span>
+    </button>
+    <button class="nav__tab" role="tab" data-tab="wedstrijden">
+      <span class="nav__num">IV</span>
+      <span class="nav__label">Wedstrijden</span>
+    </button>
+  </nav>
+
+  <main>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         I — OVERZICHT (landing)
+    ═══════════════════════════════════════════════════════════════════ -->
+    <section class="section" id="tab-overzicht" data-tab-panel="overzicht">
+      <div class="section__header">
+        <div class="section__num">I.</div>
+        <div>
+          <div class="section__kicker">Welkom</div>
+          <h2 class="section__title">Het <em>Overzicht</em></h2>
+          <p class="section__intro">De actuele stand van de WK draft 2022-simulatie — met de top drie van dit moment.</p>
+        </div>
+      </div>
+
+      <div class="overzicht__intro">
+        <p>Een draft-pool rond het WK. <strong>13 deelnemers</strong> kozen ieder 11 spelers uit de WK 2022-selecties, €20 per persoon, <strong>€260 prijzenpot</strong> (60/30/10 %). De punten worden na elke wedstrijd bijgewerkt op basis van echte <strong>API-Football-data</strong>: goals, assists, kaarten, clean sheets, gespeelde minuten. Fase-bonussen (1/8, 1/4, halve, finale, winnaar) en topscorer/beste-speler-bonus tellen mee volgens het reglement.</p>
+      </div>
+
+      <div class="overzicht__stats" id="overzichtStats">
+        <!-- JS: 4 tegeltjes -->
+      </div>
+
+      <h3 class="overzicht__h3">De top drie</h3>
+      <div id="overzichtPodium" class="podium">
+        <!-- JS: podium -->
+      </div>
+
+      <h3 class="overzicht__h3">Hoe werkt deze app?</h3>
+      <div class="overzicht__howto">
+        <article class="howto">
+          <div class="howto__num">01</div>
+          <div class="howto__label">Reglement</div>
+          <p>De complete spelregels, puntenverdeling per positie en fase-bonussen.</p>
+          <button class="howto__link" type="button" data-goto="reglement">Naar reglement →</button>
+        </article>
+        <article class="howto">
+          <div class="howto__num">02</div>
+          <div class="howto__label">Teams</div>
+          <p>Alle 13 deelnemers met hun 11 spelers, gesorteerd op actuele punten. Klik een speler voor detail.</p>
+          <button class="howto__link" type="button" data-goto="teams">Naar teams →</button>
+        </article>
+        <article class="howto">
+          <div class="howto__num">03</div>
+          <div class="howto__label">Wedstrijden</div>
+          <p>Alle 64 WK 2022-wedstrijden. Klap uit voor de punten per gedrafte speler per match.</p>
+          <button class="howto__link" type="button" data-goto="wedstrijden">Naar wedstrijden →</button>
+        </article>
+        <article class="howto">
+          <div class="howto__num">04</div>
+          <div class="howto__label">Per speler</div>
+          <p>Klik op een spelernaam — een overzicht verschijnt met alle events per wedstrijd en de totale puntenberekening.</p>
+          <button class="howto__link" type="button" data-goto="teams">Open een team →</button>
+        </article>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         II — HET REGLEMENT
+    ═══════════════════════════════════════════════════════════════════ -->
+    <section class="section hidden" id="tab-reglement" data-tab-panel="reglement">
+      <div class="section__header">
+        <div class="section__num">II.</div>
+        <div>
+          <div class="section__kicker">Rubriek &#8545;</div>
+          <h2 class="section__title">Het <em>Reglement</em></h2>
+          <p class="section__intro">De spelregels van de draft-pool, zoals kritisch tegen het licht gehouden door de drie organisatoren.</p>
+        </div>
+      </div>
+
+      <div class="prose columns">
+        <p class="lede">Deze simulatie herspeelt het WK 2022 in Qatar (20 november – 18 december) met 13 deelnemers die ieder elf spelers drafteden. Richard, Frank en Ferdi organiseren de pool en werken dagelijks de stand bij op basis van echte wedstrijddata.</p>
+
+        <h3>Deelname</h3>
+        <ul>
+          <li>Er kunnen maximaal <strong>18 voetbalkenners</strong> deelnemen.</li>
+          <li>Elke deelnemer kiest <strong>11 spelers</strong> &mdash; in totaal dus maximaal 198 spelers.</li>
+          <li>Inleg per persoon: <strong>€20</strong>. Maximale prijzenpot: <strong>€360</strong> (in deze editie €260 bij 13 deelnemers).</li>
+        </ul>
+
+        <h3>De draft</h3>
+        <p>De draft vindt plaats in een fysieke setting. Uitgangspunten voor WK 2022: <strong>32 deelnemende landen</strong> met ieder een 26-koppige selectie &mdash; een totaal van 832 beschikbare spelers. Per land mag je maximaal <strong>3 spelers</strong> kiezen.</p>
+        <p>Er wordt gestart met de loting voor de picks. In <em>ronde 1</em> mag de eerste gelote deelnemer als eerste kiezen. In <em>ronde 2</em> is de volgorde omgekeerd (snake). Dit patroon herhaalt zich tot ronde 11.</p>
+
+        <h3 id="puntenmodel">Puntenmodel</h3>
+        <div class="table-wrap">
+          <table class="points-table">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Keeper</th>
+                <th>Verdediger</th>
+                <th>Middenvelder</th>
+                <th>Aanvaller</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Gele kaart</td><td class="neg">−2</td><td class="neg">−2</td><td class="neg">−2</td><td class="neg">−2</td></tr>
+              <tr><td>Directe rode kaart</td><td class="neg">−5</td><td class="neg">−5</td><td class="neg">−5</td><td class="neg">−5</td></tr>
+              <tr><td>Eigen doelpunt</td><td class="neg">−2</td><td class="neg">−2</td><td class="neg">−2</td><td class="neg">−2</td></tr>
+              <tr><td>Gespeelde wedstrijd (≥ 45 min)</td><td>+3</td><td>+2</td><td>+2</td><td>+1</td></tr>
+              <tr><td>Gewonnen poulewedstrijd</td><td>+3</td><td>+3</td><td>+3</td><td>+3</td></tr>
+              <tr><td>Gelijkspel</td><td>+1</td><td>+1</td><td>+1</td><td>+1</td></tr>
+              <tr><td>Velddoelpunt (incl. vrije trap)</td><td>+6</td><td>+5</td><td>+4</td><td>+4</td></tr>
+              <tr><td>Assist</td><td>+4</td><td>+3</td><td>+2</td><td>+2</td></tr>
+              <tr><td>Strafschop</td><td>+1</td><td>+1</td><td>+1</td><td>+1</td></tr>
+              <tr><td>De nul houden (≥ 45 min)</td><td>+2</td><td>+2</td><td>+1</td><td class="na">—</td></tr>
+              <tr><td>Elk tegendoelpunt</td><td class="neg">−1</td><td class="neg">−1</td><td class="na">—</td><td class="na">—</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Fase-bonussen</h3>
+        <ul class="bonus-list">
+          <li><span>Achtste finale</span><span class="dots"></span><span class="pts">+3 p.p.</span></li>
+          <li><span>Kwartfinale</span><span class="dots"></span><span class="pts">+3 p.p.</span></li>
+          <li><span>Halve finale</span><span class="dots"></span><span class="pts">+5 p.p.</span></li>
+          <li><span>Finale</span><span class="dots"></span><span class="pts">+5 p.p.</span></li>
+          <li><span>Winnaar WK</span><span class="dots"></span><span class="pts">+5 p.p.</span></li>
+        </ul>
+
+        <h3>Extra</h3>
+        <ul class="bonus-list">
+          <li><span>Topscorer WK <em>&mdash; mits in team</em></span><span class="dots"></span><span class="pts">+10</span></li>
+          <li><span>Beste speler WK (FIFA) <em>&mdash; mits in team</em></span><span class="dots"></span><span class="pts">+10</span></li>
+        </ul>
+
+        <h3>Overige regels</h3>
+        <ul>
+          <li>Alle gekozen teams worden gepubliceerd op de avond van de draft.</li>
+          <li><strong>Spoileren verboden</strong>: tijdens het draften mag niet over nog niet gekozen spelers worden gesproken.</li>
+          <li>Bij blessure vóór de eerste wedstrijd &mdash; waarbij de speler het toernooi niet meer in actie komt én vervangen wordt in de selectie &mdash; mag deze speler éénmalig geruild worden. Daarna gesloten.</li>
+          <li>Prijzenverdeling: <strong>60&nbsp;%</strong> (1e) &mdash; <strong>30&nbsp;%</strong> (2e) &mdash; <strong>10&nbsp;%</strong> (3e).</li>
+          <li>Dagelijks wordt de stand gedeeld in de WhatsApp-groep.</li>
+          <li>Brondata: wedstrijdgegevens worden opgehaald via <strong>API-Football</strong> (api-sports.io) — goals, assists, gele/rode kaarten, gespeelde minuten per speler.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         III — DE TEAMS
+    ═══════════════════════════════════════════════════════════════════ -->
+    <section class="section hidden" id="tab-teams" data-tab-panel="teams">
+      <div class="section__header">
+        <div class="section__num">III.</div>
+        <div>
+          <div class="section__kicker">Rubriek &#8546;</div>
+          <h2 class="section__title">De <em>Teams</em></h2>
+          <p class="section__intro">Alle deelnemers met hun elftal, gesorteerd op actuele punten.</p>
+        </div>
+      </div>
+
+      <div class="teams-toolbar">
+        <div class="teams-toolbar__count">
+          <span id="teamsCountNum">0</span>
+          <span class="teams-toolbar__countlabel">deelnemers</span>
+        </div>
+      </div>
+
+      <div id="teamsGrid" class="teams-grid">
+        <!-- gegenereerd door JS -->
+      </div>
+
+      <div id="teamsEmpty" class="empty-state hidden">
+        <div class="empty-state__num">00</div>
+        <h3 class="empty-state__title">Nog geen teams gedraft</h3>
+        <p class="empty-state__body">Zodra de draft achter de rug is, deel je de Excel met elftallen. Ze worden opgenomen in <code>data/deelnemers.json</code> en hier weergegeven.</p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         IV — WEDSTRIJDEN
+    ═══════════════════════════════════════════════════════════════════ -->
+    <section class="section hidden" id="tab-wedstrijden" data-tab-panel="wedstrijden">
+      <div class="section__header">
+        <div class="section__num">IV.</div>
+        <div>
+          <div class="section__kicker">Rubriek &#8547;</div>
+          <h2 class="section__title">De <em>Wedstrijden</em></h2>
+          <p class="section__intro">Alle 64 WK 2022-matches. Klap uit voor de puntenverdeling per gedrafte speler.</p>
+        </div>
+      </div>
+
+      <div class="api-panel">
+        <div class="api-panel__left">
+          <div class="api-panel__kicker">Bron</div>
+          <div class="api-panel__title">API-Football <span class="mono">v3 · api-sports.io</span></div>
+          <p class="api-panel__text">Na elke gespeelde wedstrijd haalt Claude via de scheidsrechter-skill <span class="mono">/fixtures/events</span>, <span class="mono">/fixtures/lineups</span> en <span class="mono">/fixtures/players</span> op. Events worden weggeschreven naar <span class="mono">data/wedstrijden.json</span>.</p>
+        </div>
+        <div class="api-panel__right">
+          <div class="api-panel__kicker">Key-opslag</div>
+          <div class="api-panel__title mono" style="font-size:14px">apps/voetbal-draft/.api-keys/</div>
+          <div class="api-panel__note">Plak je key in dat lokale mapje (<span class="mono">api-football.txt</span>). Wordt niet gecommit (<span class="mono">.gitignore</span>), staat niet in deze website. Claude leest hem alleen als jij een update vraagt.</div>
+        </div>
+      </div>
+
+      <div id="wedstrijdenList" class="wedstrijden-list">
+        <!-- gegenereerd door JS -->
+      </div>
+
+      <div id="wedstrijdenEmpty" class="empty-state hidden">
+        <div class="empty-state__num">00</div>
+        <h3 class="empty-state__title">Speelschema nog leeg</h3>
+        <p class="empty-state__body">Vraag Claude: <em>"haal speelschema op voor voetbal-draft"</em>. De scheidsrechter leest de key uit <code>.api-keys/</code>, fetcht de data en schrijft naar <code>data/wedstrijden.json</code>.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="footer__rule"></div>
+    <div class="footer__grid">
+      <div>
+        <div class="footer__kicker">Colofon</div>
+        <p>Simulatie van de WK 2022-draft, gebaseerd op echte wedstrijddata uit API-Football. Organisatie: Richard, Frank &amp; Ferdi.</p>
+      </div>
+      <div>
+        <div class="footer__kicker">Prijzenpot</div>
+        <p id="prizePotFooter">&mdash;</p>
+      </div>
+      <div>
+        <div class="footer__kicker">Bron</div>
+        <p><a href="https://www.api-football.com" target="_blank" rel="noopener">api-football.com</a></p>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>Interne uitgave &mdash; niet voor publicatie</span>
+      <span class="footer__mono mono">WK 2022 &middot; 13 DEELNEMERS</span>
+    </div>
+  </footer>
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       SPELER-MODAL
+  ═══════════════════════════════════════════════════════════════════ -->
+  <div id="spelerModal" class="modal hidden" role="dialog" aria-modal="true">
+    <div class="modal__backdrop"></div>
+    <div id="modalContent" class="modal__content"></div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       TOAST
+  ═══════════════════════════════════════════════════════════════════ -->
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="app.js" defer></script>
+</body>
+</html>

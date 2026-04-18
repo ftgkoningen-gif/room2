@@ -1,0 +1,4908 @@
+{
+  "_simulatie": "WK 2022 — events uit API-Football",
+  "wedstrijden": [
+    {
+      "id": "wk22-855736",
+      "apiFixtureId": 855736,
+      "datum": "2022-11-20",
+      "fase": "groep",
+      "poule": true,
+      "thuis": "Qatar",
+      "uit": "Ecuador",
+      "uitslag": {
+        "thuis": 0,
+        "uit": 2
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": [
+        {
+          "speler": "Piero Hincapie",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Piero Hincapie",
+          "type": "cleanSheet45"
+        }
+      ]
+    },
+    {
+      "id": "wk22-855734",
+      "apiFixtureId": 855734,
+      "datum": "2022-11-21",
+      "fase": "groep",
+      "poule": true,
+      "thuis": "Senegal",
+      "uit": "Nederland",
+      "uitslag": {
+        "thuis": 0,
+        "uit": 2
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": [
+        {
+          "speler": "Andries Noppert",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Andries Noppert",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Matthijs de Ligt",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Matthijs de Ligt",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Matthijs de Ligt",
+          "type": "geleKaart"
+        },
+        {
+          "speler": "Virgil van Dijk",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Virgil van Dijk",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Nathan Ake",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Nathan Ake",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Denzel Dumfries",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Denzel Dumfries",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Steven Berghuis",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Steven Berghuis",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Frenkie de Jong",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Frenkie de Jong",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Frenkie de Jong",
+          "type": "assist"
+        },
+        {
+          "speler": "Cody Gakpo",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Cody Gakpo",
+          "type": "velddoelpunt"
+        },
+        {
+          "speler": "Vincent Janssen",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Steven Bergwijn",
+          "type": "gespeeld45"
+        }
+      ]
+    },
+    {
+      "id": "wk22-855735",
+      "apiFixtureId": 855735,
+      "datum": "2022-11-21",
+      "fase": "groep",
+      "poule": true,
+      "thuis": "Engeland",
+      "uit": "Iran",
+      "uitslag": {
+        "thuis": 6,
+        "uit": 2
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": [
+        {
+          "speler": "Jordan Pickford",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Jordan Pickford",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Jordan Pickford",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "John Stones",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "John Stones",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "John Stones",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Luke Shaw",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Luke Shaw",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Luke Shaw",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Luke Shaw",
+          "type": "assist"
+        },
+        {
+          "speler": "Jude Bellingham",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Jude Bellingham",
+          "type": "velddoelpunt"
+        },
+        {
+          "speler": "Declan Rice",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Bukayo Saka",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Bukayo Saka",
+          "type": "velddoelpunt"
+        },
+        {
+          "speler": "Bukayo Saka",
+          "type": "velddoelpunt"
+        },
+        {
+          "speler": "Mason Mount",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Raheem Sterling",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Raheem Sterling",
+          "type": "velddoelpunt"
+        },
+        {
+          "speler": "Raheem Sterling",
+          "type": "assist"
+        },
+        {
+          "speler": "Harry Kane",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Harry Kane",
+          "type": "assist"
+        },
+        {
+          "speler": "Harry Kane",
+          "type": "assist"
+        },
+        {
+          "speler": "Marcus Rashford",
+          "type": "velddoelpunt"
+        }
+      ]
+    },
+    {
+      "id": "wk22-866681",
+      "apiFixtureId": 866681,
+      "datum": "2022-11-21",
+      "fase": "groep",
+      "poule": true,
+      "thuis": "Verenigde Staten",
+      "uit": "Wales",
+      "uitslag": {
+        "thuis": 1,
+        "uit": 1
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": [
+        {
+          "speler": "Gareth Bale",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Gareth Bale",
+          "type": "strafschop"
+        },
+        {
+          "speler": "Gareth Bale",
+          "type": "geleKaart"
+        }
+      ]
+    },
+    {
+      "id": "wk22-855737",
+      "apiFixtureId": 855737,
+      "datum": "2022-11-22",
+      "fase": "groep",
+      "poule": true,
+      "thuis": "Argentinië",
+      "uit": "Saudi-Arabië",
+      "uitslag": {
+        "thuis": 1,
+        "uit": 2
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": [
+        {
+          "speler": "Emiliano Martinez",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Emiliano Martinez",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Emiliano Martinez",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Nahuel Molina",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Nahuel Molina",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Nahuel Molina",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Cristian Romero",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Cristian Romero",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Cristian Romero",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Nicolas Otamendi",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Nicolas Otamendi",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Nicolas Otamendi",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Nicolas Tagliafico",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Nicolas Tagliafico",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Nicolas Tagliafico",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Angel Di Maria",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Rodrigo de Paul",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Leandro Paredes",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Alejandro Papu Gomez",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Lionel Messi",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Lionel Messi",
+          "type": "strafschop"
+        },
+        {
+          "speler": "Lautaro Martinez",
+          "type": "gespeeld45"
+        }
+      ]
+    },
+    {
+      "id": "wk22-855738",
+      "apiFixtureId": 855738,
+      "datum": "2022-11-22",
+      "fase": "groep",
+      "poule": true,
+      "thuis": "Denemarken",
+      "uit": "Tunesië",
+      "uitslag": {
+        "thuis": 0,
+        "uit": 0
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": []
+    },
+    {
+      "id": "wk22-855739",
+      "apiFixtureId": 855739,
+      "datum": "2022-11-22",
+      "fase": "groep",
+      "poule": true,
+      "thuis": "Mexico",
+      "uit": "Polen",
+      "uitslag": {
+        "thuis": 0,
+        "uit": 0
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": [
+        {
+          "speler": "Edson Alvarez",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Edson Alvarez",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Hirving Lozano",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Robert Lewandowski",
+          "type": "gespeeld45"
+        }
+      ]
+    },
+    {
+      "id": "wk22-871850",
+      "apiFixtureId": 871850,
+      "datum": "2022-11-22",
+      "fase": "groep",
+      "poule": true,
+      "thuis": "Frankrijk",
+      "uit": "Australië",
+      "uitslag": {
+        "thuis": 4,
+        "uit": 1
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": [
+        {
+          "speler": "Hugo Lloris",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Hugo Lloris",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Benjamin Pavard",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Benjamin Pavard",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Dayot Upamecano",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Dayot Upamecano",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Adrien Rabiot",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Adrien Rabiot",
+          "type": "velddoelpunt"
+        },
+        {
+          "speler": "Adrien Rabiot",
+          "type": "assist"
+        },
+        {
+          "speler": "Aurelien Tchouameni",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Ousmane Dembele",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Ousmane Dembele",
+          "type": "assist"
+        },
+        {
+          "speler": "Antoine Griezmann",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Kylian Mbappe",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Kylian Mbappe",
+          "type": "velddoelpunt"
+        },
+        {
+          "speler": "Kylian Mbappe",
+          "type": "assist"
+        },
+        {
+          "speler": "Olivier Giroud",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Olivier Giroud",
+          "type": "velddoelpunt"
+        },
+        {
+          "speler": "Olivier Giroud",
+          "type": "velddoelpunt"
+        },
+        {
+          "speler": "Theo Hernandez",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Theo Hernandez",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Theo Hernandez",
+          "type": "assist"
+        }
+      ]
+    },
+    {
+      "id": "wk22-855740",
+      "apiFixtureId": 855740,
+      "datum": "2022-11-23",
+      "fase": "groep",
+      "poule": true,
+      "thuis": "Marokko",
+      "uit": "Kroatië",
+      "uitslag": {
+        "thuis": 0,
+        "uit": 0
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": [
+        {
+          "speler": "Achraf Hakimi",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Achraf Hakimi",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Hakim Ziyech",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Luka Modric",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Luka Modric",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Ivan Perisic",
+          "type": "gespeeld45"
+        }
+      ]
+    },
+    {
+      "id": "wk22-855741",
+      "apiFixtureId": 855741,
+      "datum": "2022-11-23",
+      "fase": "groep",
+      "poule": true,
+      "thuis": "Duitsland",
+      "uit": "Japan",
+      "uitslag": {
+        "thuis": 1,
+        "uit": 2
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": [
+        {
+          "speler": "Manuel Neuer",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Manuel Neuer",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Manuel Neuer",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Niklas Sule",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Niklas Sule",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Niklas Sule",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Antonio Rudiger",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Antonio Rudiger",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Antonio Rudiger",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "David Raum",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "David Raum",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "David Raum",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Joshua Kimmich",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Ilkay Gundogan",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Ilkay Gundogan",
+          "type": "strafschop"
+        },
+        {
+          "speler": "Serge Gnabry",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Thomas Muller",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Jamal Musiala",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Kai Havertz",
+          "type": "gespeeld45"
+        }
+      ]
+    },
+    {
+      "id": "wk22-855742",
+      "apiFixtureId": 855742,
+      "datum": "2022-11-23",
+      "fase": "groep",
+      "poule": true,
+      "thuis": "België",
+      "uit": "Canada",
+      "uitslag": {
+        "thuis": 1,
+        "uit": 0
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": [
+        {
+          "speler": "Thibaut Courtois",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Thibaut Courtois",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Jan Vertonghen",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Jan Vertonghen",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Youri Tielemans",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Youri Tielemans",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Axel Witsel",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Axel Witsel",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Kevin de Bruyne",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Kevin de Bruyne",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Eden Hazard",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Thomas Meunier",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Thomas Meunier",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Thomas Meunier",
+          "type": "geleKaart"
+        }
+      ]
+    },
+    {
+      "id": "wk22-871851",
+      "apiFixtureId": 871851,
+      "datum": "2022-11-23",
+      "fase": "groep",
+      "poule": true,
+      "thuis": "Spanje",
+      "uit": "Costa Rica",
+      "uitslag": {
+        "thuis": 7,
+        "uit": 0
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": [
+        {
+          "speler": "Unai Simon",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Unai Simon",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Jordi Alba",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Jordi Alba",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Jordi Alba",
+          "type": "assist"
+        },
+        {
+          "speler": "Gavi",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Gavi",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Gavi",
+          "type": "velddoelpunt"
+        },
+        {
+          "speler": "Sergio Busquets",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Sergio Busquets",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Pedri",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Pedri",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Ferran Torres",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Ferran Torres",
+          "type": "velddoelpunt"
+        },
+        {
+          "speler": "Ferran Torres",
+          "type": "strafschop"
+        },
+        {
+          "speler": "Marco Asensio",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Marco Asensio",
+          "type": "velddoelpunt"
+        },
+        {
+          "speler": "Alvaro Morata",
+          "type": "velddoelpunt"
+        },
+        {
+          "speler": "Alvaro Morata",
+          "type": "assist"
+        }
+      ]
+    },
+    {
+      "id": "wk22-855743",
+      "apiFixtureId": 855743,
+      "datum": "2022-11-24",
+      "fase": "groep",
+      "poule": true,
+      "thuis": "Zwitserland",
+      "uit": "Kameroen",
+      "uitslag": {
+        "thuis": 1,
+        "uit": 0
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": []
+    },
+    {
+      "id": "wk22-855744",
+      "apiFixtureId": 855744,
+      "datum": "2022-11-24",
+      "fase": "groep",
+      "poule": true,
+      "thuis": "Uruguay",
+      "uit": "Zuid-Korea",
+      "uitslag": {
+        "thuis": 0,
+        "uit": 0
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": [
+        {
+          "speler": "Federico Valverde",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Federico Valverde",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Rodrigo Bentancur",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Rodrigo Bentancur",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Luis Suarez",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Darwin Nunez",
+          "type": "gespeeld45"
+        }
+      ]
+    },
+    {
+      "id": "wk22-855745",
+      "apiFixtureId": 855745,
+      "datum": "2022-11-24",
+      "fase": "groep",
+      "poule": true,
+      "thuis": "Portugal",
+      "uit": "Ghana",
+      "uitslag": {
+        "thuis": 3,
+        "uit": 2
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": [
+        {
+          "speler": "Diogo Costa",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Diogo Costa",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Diogo Costa",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Joao Cancelo",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Joao Cancelo",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Joao Cancelo",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Ruben Dias",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Ruben Dias",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Ruben Dias",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Bernardo Silva",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Bruno Fernandes",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Bruno Fernandes",
+          "type": "assist"
+        },
+        {
+          "speler": "Bruno Fernandes",
+          "type": "assist"
+        },
+        {
+          "speler": "Bruno Fernandes",
+          "type": "geleKaart"
+        },
+        {
+          "speler": "Cristiano Ronaldo",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Cristiano Ronaldo",
+          "type": "strafschop"
+        },
+        {
+          "speler": "Joao Felix",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Joao Felix",
+          "type": "velddoelpunt"
+        },
+        {
+          "speler": "Rafael Leao",
+          "type": "velddoelpunt"
+        }
+      ]
+    },
+    {
+      "id": "wk22-855746",
+      "apiFixtureId": 855746,
+      "datum": "2022-11-24",
+      "fase": "groep",
+      "poule": true,
+      "thuis": "Brazilië",
+      "uit": "Servië",
+      "uitslag": {
+        "thuis": 2,
+        "uit": 0
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": [
+        {
+          "speler": "Alisson",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Alisson",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Danilo",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Danilo",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Marquinhos",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Marquinhos",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Thiago Silva",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Thiago Silva",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Alex Sandro",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Alex Sandro",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Lucas Paqueta",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Lucas Paqueta",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Casemiro",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Casemiro",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Raphinha",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Neymar",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Vinicius Jr.",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Vinicius Jr.",
+          "type": "assist"
+        },
+        {
+          "speler": "Richarlison",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Richarlison",
+          "type": "velddoelpunt"
+        },
+        {
+          "speler": "Richarlison",
+          "type": "velddoelpunt"
+        },
+        {
+          "speler": "Aleksandar Mitrovic",
+          "type": "gespeeld45"
+        }
+      ]
+    },
+    {
+      "id": "wk22-855747",
+      "apiFixtureId": 855747,
+      "datum": "2022-11-25",
+      "fase": "groep",
+      "poule": true,
+      "thuis": "Qatar",
+      "uit": "Senegal",
+      "uitslag": {
+        "thuis": 1,
+        "uit": 3
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": []
+    },
+    {
+      "id": "wk22-855748",
+      "apiFixtureId": 855748,
+      "datum": "2022-11-25",
+      "fase": "groep",
+      "poule": true,
+      "thuis": "Nederland",
+      "uit": "Ecuador",
+      "uitslag": {
+        "thuis": 1,
+        "uit": 1
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": [
+        {
+          "speler": "Andries Noppert",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Andries Noppert",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Jurrien Timber",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Jurrien Timber",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Virgil van Dijk",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Virgil van Dijk",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Nathan Ake",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Nathan Ake",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Denzel Dumfries",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Denzel Dumfries",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Teun Koopmeiners",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Frenkie de Jong",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Cody Gakpo",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Cody Gakpo",
+          "type": "velddoelpunt"
+        },
+        {
+          "speler": "Steven Bergwijn",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Memphis Depay",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Piero Hincapie",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Piero Hincapie",
+          "type": "tegendoelpunt"
+        }
+      ]
+    },
+    {
+      "id": "wk22-855749",
+      "apiFixtureId": 855749,
+      "datum": "2022-11-25",
+      "fase": "groep",
+      "poule": true,
+      "thuis": "Engeland",
+      "uit": "Verenigde Staten",
+      "uitslag": {
+        "thuis": 0,
+        "uit": 0
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": [
+        {
+          "speler": "Jordan Pickford",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Jordan Pickford",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "John Stones",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "John Stones",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Luke Shaw",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Luke Shaw",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Jude Bellingham",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Jude Bellingham",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Declan Rice",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Declan Rice",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Bukayo Saka",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Mason Mount",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Mason Mount",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Raheem Sterling",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Harry Kane",
+          "type": "gespeeld45"
+        }
+      ]
+    },
+    {
+      "id": "wk22-866682",
+      "apiFixtureId": 866682,
+      "datum": "2022-11-25",
+      "fase": "groep",
+      "poule": true,
+      "thuis": "Wales",
+      "uit": "Iran",
+      "uitslag": {
+        "thuis": 0,
+        "uit": 2
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": [
+        {
+          "speler": "Gareth Bale",
+          "type": "gespeeld45"
+        }
+      ]
+    },
+    {
+      "id": "wk22-855750",
+      "apiFixtureId": 855750,
+      "datum": "2022-11-26",
+      "fase": "groep",
+      "poule": true,
+      "thuis": "Polen",
+      "uit": "Saudi-Arabië",
+      "uitslag": {
+        "thuis": 2,
+        "uit": 0
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": [
+        {
+          "speler": "Robert Lewandowski",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Robert Lewandowski",
+          "type": "velddoelpunt"
+        },
+        {
+          "speler": "Robert Lewandowski",
+          "type": "assist"
+        }
+      ]
+    },
+    {
+      "id": "wk22-855751",
+      "apiFixtureId": 855751,
+      "datum": "2022-11-26",
+      "fase": "groep",
+      "poule": true,
+      "thuis": "Frankrijk",
+      "uit": "Denemarken",
+      "uitslag": {
+        "thuis": 2,
+        "uit": 1
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": [
+        {
+          "speler": "Hugo Lloris",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Hugo Lloris",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Jules Kounde",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Jules Kounde",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Jules Kounde",
+          "type": "geleKaart"
+        },
+        {
+          "speler": "Raphael Varane",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Raphael Varane",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Dayot Upamecano",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Dayot Upamecano",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Theo Hernandez",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Theo Hernandez",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Theo Hernandez",
+          "type": "assist"
+        },
+        {
+          "speler": "Aurelien Tchouameni",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Adrien Rabiot",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Ousmane Dembele",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Antoine Griezmann",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Antoine Griezmann",
+          "type": "assist"
+        },
+        {
+          "speler": "Kylian Mbappe",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Kylian Mbappe",
+          "type": "velddoelpunt"
+        },
+        {
+          "speler": "Kylian Mbappe",
+          "type": "velddoelpunt"
+        },
+        {
+          "speler": "Olivier Giroud",
+          "type": "gespeeld45"
+        }
+      ]
+    },
+    {
+      "id": "wk22-855752",
+      "apiFixtureId": 855752,
+      "datum": "2022-11-26",
+      "fase": "groep",
+      "poule": true,
+      "thuis": "Argentinië",
+      "uit": "Mexico",
+      "uitslag": {
+        "thuis": 2,
+        "uit": 0
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": [
+        {
+          "speler": "Emiliano Martinez",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Emiliano Martinez",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Gonzalo Montiel",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Gonzalo Montiel",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Gonzalo Montiel",
+          "type": "geleKaart"
+        },
+        {
+          "speler": "Nicolas Otamendi",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Nicolas Otamendi",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Lisandro Martinez",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Lisandro Martinez",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Marcos Acuna",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Marcos Acuna",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Angel Di Maria",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Angel Di Maria",
+          "type": "assist"
+        },
+        {
+          "speler": "Rodrigo de Paul",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Rodrigo de Paul",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Guido Rodriguez",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Guido Rodriguez",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Alexis Mac Allister",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Alexis Mac Allister",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Lionel Messi",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Lionel Messi",
+          "type": "velddoelpunt"
+        },
+        {
+          "speler": "Lionel Messi",
+          "type": "assist"
+        },
+        {
+          "speler": "Lautaro Martinez",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Enzo Fernandez",
+          "type": "velddoelpunt"
+        },
+        {
+          "speler": "Edson Alvarez",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Hirving Lozano",
+          "type": "gespeeld45"
+        }
+      ]
+    },
+    {
+      "id": "wk22-871852",
+      "apiFixtureId": 871852,
+      "datum": "2022-11-26",
+      "fase": "groep",
+      "poule": true,
+      "thuis": "Tunesië",
+      "uit": "Australië",
+      "uitslag": {
+        "thuis": 0,
+        "uit": 1
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": []
+    },
+    {
+      "id": "wk22-855753",
+      "apiFixtureId": 855753,
+      "datum": "2022-11-27",
+      "fase": "groep",
+      "poule": true,
+      "thuis": "België",
+      "uit": "Marokko",
+      "uitslag": {
+        "thuis": 0,
+        "uit": 2
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": [
+        {
+          "speler": "Thibaut Courtois",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Thibaut Courtois",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Thibaut Courtois",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Thomas Meunier",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Thomas Meunier",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Thomas Meunier",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Jan Vertonghen",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Jan Vertonghen",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Jan Vertonghen",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Axel Witsel",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Kevin de Bruyne",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Eden Hazard",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Eden Hazard",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Achraf Hakimi",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Achraf Hakimi",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Hakim Ziyech",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Hakim Ziyech",
+          "type": "assist"
+        }
+      ]
+    },
+    {
+      "id": "wk22-855754",
+      "apiFixtureId": 855754,
+      "datum": "2022-11-27",
+      "fase": "groep",
+      "poule": true,
+      "thuis": "Kroatië",
+      "uit": "Canada",
+      "uitslag": {
+        "thuis": 4,
+        "uit": 1
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": [
+        {
+          "speler": "Luka Modric",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Luka Modric",
+          "type": "geleKaart"
+        },
+        {
+          "speler": "Ivan Perisic",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Ivan Perisic",
+          "type": "assist"
+        },
+        {
+          "speler": "Ivan Perisic",
+          "type": "assist"
+        }
+      ]
+    },
+    {
+      "id": "wk22-855755",
+      "apiFixtureId": 855755,
+      "datum": "2022-11-27",
+      "fase": "groep",
+      "poule": true,
+      "thuis": "Spanje",
+      "uit": "Duitsland",
+      "uitslag": {
+        "thuis": 1,
+        "uit": 1
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": [
+        {
+          "speler": "Unai Simon",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Unai Simon",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Dani Carvajal",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Dani Carvajal",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Jordi Alba",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Jordi Alba",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Jordi Alba",
+          "type": "assist"
+        },
+        {
+          "speler": "Gavi",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Sergio Busquets",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Sergio Busquets",
+          "type": "geleKaart"
+        },
+        {
+          "speler": "Pedri",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Ferran Torres",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Marco Asensio",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Alvaro Morata",
+          "type": "velddoelpunt"
+        },
+        {
+          "speler": "Manuel Neuer",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Manuel Neuer",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Niklas Sule",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Niklas Sule",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Antonio Rudiger",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Antonio Rudiger",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "David Raum",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "David Raum",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Joshua Kimmich",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Joshua Kimmich",
+          "type": "geleKaart"
+        },
+        {
+          "speler": "Leon Goretzka",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Leon Goretzka",
+          "type": "geleKaart"
+        },
+        {
+          "speler": "Serge Gnabry",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Ilkay Gundogan",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Jamal Musiala",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Jamal Musiala",
+          "type": "assist"
+        },
+        {
+          "speler": "Thomas Muller",
+          "type": "gespeeld45"
+        }
+      ]
+    },
+    {
+      "id": "wk22-871853",
+      "apiFixtureId": 871853,
+      "datum": "2022-11-27",
+      "fase": "groep",
+      "poule": true,
+      "thuis": "Japan",
+      "uit": "Costa Rica",
+      "uitslag": {
+        "thuis": 0,
+        "uit": 1
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": []
+    },
+    {
+      "id": "wk22-855756",
+      "apiFixtureId": 855756,
+      "datum": "2022-11-28",
+      "fase": "groep",
+      "poule": true,
+      "thuis": "Kameroen",
+      "uit": "Servië",
+      "uitslag": {
+        "thuis": 3,
+        "uit": 3
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": [
+        {
+          "speler": "Aleksandar Mitrovic",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Aleksandar Mitrovic",
+          "type": "velddoelpunt"
+        }
+      ]
+    },
+    {
+      "id": "wk22-855757",
+      "apiFixtureId": 855757,
+      "datum": "2022-11-28",
+      "fase": "groep",
+      "poule": true,
+      "thuis": "Zuid-Korea",
+      "uit": "Ghana",
+      "uitslag": {
+        "thuis": 2,
+        "uit": 3
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": []
+    },
+    {
+      "id": "wk22-855758",
+      "apiFixtureId": 855758,
+      "datum": "2022-11-28",
+      "fase": "groep",
+      "poule": true,
+      "thuis": "Brazilië",
+      "uit": "Zwitserland",
+      "uitslag": {
+        "thuis": 1,
+        "uit": 0
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": [
+        {
+          "speler": "Alisson",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Alisson",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Eder Militao",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Eder Militao",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Marquinhos",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Marquinhos",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Thiago Silva",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Thiago Silva",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Alex Sandro",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Alex Sandro",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Fred",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Fred",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Fred",
+          "type": "geleKaart"
+        },
+        {
+          "speler": "Casemiro",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Casemiro",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Casemiro",
+          "type": "velddoelpunt"
+        },
+        {
+          "speler": "Lucas Paqueta",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Lucas Paqueta",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Raphinha",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Richarlison",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Vinicius Jr.",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Rodrygo",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Rodrygo",
+          "type": "assist"
+        }
+      ]
+    },
+    {
+      "id": "wk22-855759",
+      "apiFixtureId": 855759,
+      "datum": "2022-11-28",
+      "fase": "groep",
+      "poule": true,
+      "thuis": "Portugal",
+      "uit": "Uruguay",
+      "uitslag": {
+        "thuis": 2,
+        "uit": 0
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": [
+        {
+          "speler": "Diogo Costa",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Diogo Costa",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Joao Cancelo",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Joao Cancelo",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Ruben Dias",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Ruben Dias",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Ruben Dias",
+          "type": "geleKaart"
+        },
+        {
+          "speler": "Bernardo Silva",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Bernardo Silva",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Bruno Fernandes",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Bruno Fernandes",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Bruno Fernandes",
+          "type": "velddoelpunt"
+        },
+        {
+          "speler": "Bruno Fernandes",
+          "type": "strafschop"
+        },
+        {
+          "speler": "Joao Felix",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Joao Felix",
+          "type": "geleKaart"
+        },
+        {
+          "speler": "Cristiano Ronaldo",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Federico Valverde",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Rodrigo Bentancur",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Rodrigo Bentancur",
+          "type": "geleKaart"
+        },
+        {
+          "speler": "Darwin Nunez",
+          "type": "gespeeld45"
+        }
+      ]
+    },
+    {
+      "id": "wk22-855760",
+      "apiFixtureId": 855760,
+      "datum": "2022-11-29",
+      "fase": "groep",
+      "poule": true,
+      "thuis": "Nederland",
+      "uit": "Qatar",
+      "uitslag": {
+        "thuis": 2,
+        "uit": 0
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": [
+        {
+          "speler": "Andries Noppert",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Andries Noppert",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Jurrien Timber",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Jurrien Timber",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Virgil van Dijk",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Virgil van Dijk",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Nathan Ake",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Nathan Ake",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Nathan Ake",
+          "type": "geleKaart"
+        },
+        {
+          "speler": "Denzel Dumfries",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Denzel Dumfries",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Frenkie de Jong",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Frenkie de Jong",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Frenkie de Jong",
+          "type": "velddoelpunt"
+        },
+        {
+          "speler": "Cody Gakpo",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Cody Gakpo",
+          "type": "velddoelpunt"
+        },
+        {
+          "speler": "Memphis Depay",
+          "type": "gespeeld45"
+        }
+      ]
+    },
+    {
+      "id": "wk22-855761",
+      "apiFixtureId": 855761,
+      "datum": "2022-11-29",
+      "fase": "groep",
+      "poule": true,
+      "thuis": "Ecuador",
+      "uit": "Senegal",
+      "uitslag": {
+        "thuis": 1,
+        "uit": 2
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": [
+        {
+          "speler": "Piero Hincapie",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Piero Hincapie",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Piero Hincapie",
+          "type": "tegendoelpunt"
+        }
+      ]
+    },
+    {
+      "id": "wk22-855762",
+      "apiFixtureId": 855762,
+      "datum": "2022-11-29",
+      "fase": "groep",
+      "poule": true,
+      "thuis": "Iran",
+      "uit": "Verenigde Staten",
+      "uitslag": {
+        "thuis": 0,
+        "uit": 1
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": []
+    },
+    {
+      "id": "wk22-866683",
+      "apiFixtureId": 866683,
+      "datum": "2022-11-29",
+      "fase": "groep",
+      "poule": true,
+      "thuis": "Wales",
+      "uit": "Engeland",
+      "uitslag": {
+        "thuis": 0,
+        "uit": 3
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": [
+        {
+          "speler": "Gareth Bale",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Jordan Pickford",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Jordan Pickford",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Kyle Walker",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Kyle Walker",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "John Stones",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "John Stones",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Luke Shaw",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Luke Shaw",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Declan Rice",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Declan Rice",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Jude Bellingham",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Jude Bellingham",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Phil Foden",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Phil Foden",
+          "type": "velddoelpunt"
+        },
+        {
+          "speler": "Harry Kane",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Harry Kane",
+          "type": "assist"
+        },
+        {
+          "speler": "Marcus Rashford",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Marcus Rashford",
+          "type": "velddoelpunt"
+        },
+        {
+          "speler": "Marcus Rashford",
+          "type": "velddoelpunt"
+        }
+      ]
+    },
+    {
+      "id": "wk22-855763",
+      "apiFixtureId": 855763,
+      "datum": "2022-11-30",
+      "fase": "groep",
+      "poule": true,
+      "thuis": "Tunesië",
+      "uit": "Frankrijk",
+      "uitslag": {
+        "thuis": 1,
+        "uit": 0
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": [
+        {
+          "speler": "Raphael Varane",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Raphael Varane",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Eduardo Camavinga",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Youssouf Fofana",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Aurelien Tchouameni",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Kingsley Coman",
+          "type": "gespeeld45"
+        }
+      ]
+    },
+    {
+      "id": "wk22-855764",
+      "apiFixtureId": 855764,
+      "datum": "2022-11-30",
+      "fase": "groep",
+      "poule": true,
+      "thuis": "Polen",
+      "uit": "Argentinië",
+      "uitslag": {
+        "thuis": 0,
+        "uit": 2
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": [
+        {
+          "speler": "Robert Lewandowski",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Emiliano Martinez",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Emiliano Martinez",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Nahuel Molina",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Nahuel Molina",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Nahuel Molina",
+          "type": "assist"
+        },
+        {
+          "speler": "Cristian Romero",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Cristian Romero",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Nicolas Otamendi",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Nicolas Otamendi",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Marcos Acuna",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Marcos Acuna",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Marcos Acuna",
+          "type": "geleKaart"
+        },
+        {
+          "speler": "Rodrigo de Paul",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Rodrigo de Paul",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Enzo Fernandez",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Enzo Fernandez",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Enzo Fernandez",
+          "type": "assist"
+        },
+        {
+          "speler": "Alexis Mac Allister",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Alexis Mac Allister",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Alexis Mac Allister",
+          "type": "velddoelpunt"
+        },
+        {
+          "speler": "Angel Di Maria",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Lionel Messi",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Julian Alvarez",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Julian Alvarez",
+          "type": "velddoelpunt"
+        }
+      ]
+    },
+    {
+      "id": "wk22-855765",
+      "apiFixtureId": 855765,
+      "datum": "2022-11-30",
+      "fase": "groep",
+      "poule": true,
+      "thuis": "Saudi-Arabië",
+      "uit": "Mexico",
+      "uitslag": {
+        "thuis": 1,
+        "uit": 2
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": [
+        {
+          "speler": "Edson Alvarez",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Edson Alvarez",
+          "type": "geleKaart"
+        },
+        {
+          "speler": "Hirving Lozano",
+          "type": "gespeeld45"
+        }
+      ]
+    },
+    {
+      "id": "wk22-871854",
+      "apiFixtureId": 871854,
+      "datum": "2022-11-30",
+      "fase": "groep",
+      "poule": true,
+      "thuis": "Australië",
+      "uit": "Denemarken",
+      "uitslag": {
+        "thuis": 1,
+        "uit": 0
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": []
+    },
+    {
+      "id": "wk22-855766",
+      "apiFixtureId": 855766,
+      "datum": "2022-12-01",
+      "fase": "groep",
+      "poule": true,
+      "thuis": "Kroatië",
+      "uit": "België",
+      "uitslag": {
+        "thuis": 0,
+        "uit": 0
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": [
+        {
+          "speler": "Luka Modric",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Luka Modric",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Ivan Perisic",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Thibaut Courtois",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Thibaut Courtois",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Thomas Meunier",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Thomas Meunier",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Jan Vertonghen",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Jan Vertonghen",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Axel Witsel",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Axel Witsel",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Kevin de Bruyne",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Kevin de Bruyne",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Romelu Lukaku",
+          "type": "gespeeld45"
+        }
+      ]
+    },
+    {
+      "id": "wk22-855767",
+      "apiFixtureId": 855767,
+      "datum": "2022-12-01",
+      "fase": "groep",
+      "poule": true,
+      "thuis": "Canada",
+      "uit": "Marokko",
+      "uitslag": {
+        "thuis": 1,
+        "uit": 2
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": [
+        {
+          "speler": "Achraf Hakimi",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Achraf Hakimi",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Achraf Hakimi",
+          "type": "assist"
+        },
+        {
+          "speler": "Hakim Ziyech",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Hakim Ziyech",
+          "type": "velddoelpunt"
+        }
+      ]
+    },
+    {
+      "id": "wk22-855768",
+      "apiFixtureId": 855768,
+      "datum": "2022-12-01",
+      "fase": "groep",
+      "poule": true,
+      "thuis": "Japan",
+      "uit": "Spanje",
+      "uitslag": {
+        "thuis": 2,
+        "uit": 1
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": [
+        {
+          "speler": "Unai Simon",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Unai Simon",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Unai Simon",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Pau Torres",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Pau Torres",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Pau Torres",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Gavi",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Sergio Busquets",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Pedri",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Alvaro Morata",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Alvaro Morata",
+          "type": "velddoelpunt"
+        },
+        {
+          "speler": "Dani Carvajal",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Dani Carvajal",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Dani Carvajal",
+          "type": "tegendoelpunt"
+        }
+      ]
+    },
+    {
+      "id": "wk22-871855",
+      "apiFixtureId": 871855,
+      "datum": "2022-12-01",
+      "fase": "groep",
+      "poule": true,
+      "thuis": "Costa Rica",
+      "uit": "Duitsland",
+      "uitslag": {
+        "thuis": 2,
+        "uit": 4
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": [
+        {
+          "speler": "Manuel Neuer",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Manuel Neuer",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Manuel Neuer",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Joshua Kimmich",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Niklas Sule",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Niklas Sule",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Niklas Sule",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Antonio Rudiger",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Antonio Rudiger",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Antonio Rudiger",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "David Raum",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "David Raum",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "David Raum",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "David Raum",
+          "type": "assist"
+        },
+        {
+          "speler": "Leon Goretzka",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Ilkay Gundogan",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Leroy Sane",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Leroy Sane",
+          "type": "assist"
+        },
+        {
+          "speler": "Jamal Musiala",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Serge Gnabry",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Serge Gnabry",
+          "type": "velddoelpunt"
+        },
+        {
+          "speler": "Serge Gnabry",
+          "type": "assist"
+        },
+        {
+          "speler": "Thomas Muller",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Kai Havertz",
+          "type": "velddoelpunt"
+        },
+        {
+          "speler": "Kai Havertz",
+          "type": "velddoelpunt"
+        }
+      ]
+    },
+    {
+      "id": "wk22-855769",
+      "apiFixtureId": 855769,
+      "datum": "2022-12-02",
+      "fase": "groep",
+      "poule": true,
+      "thuis": "Zuid-Korea",
+      "uit": "Portugal",
+      "uitslag": {
+        "thuis": 2,
+        "uit": 1
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": [
+        {
+          "speler": "Diogo Costa",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Diogo Costa",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Diogo Costa",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Bernardo Silva",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Joao Cancelo",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Joao Cancelo",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Joao Cancelo",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Cristiano Ronaldo",
+          "type": "gespeeld45"
+        }
+      ]
+    },
+    {
+      "id": "wk22-855770",
+      "apiFixtureId": 855770,
+      "datum": "2022-12-02",
+      "fase": "groep",
+      "poule": true,
+      "thuis": "Ghana",
+      "uit": "Uruguay",
+      "uitslag": {
+        "thuis": 0,
+        "uit": 2
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": [
+        {
+          "speler": "Federico Valverde",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Federico Valverde",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Luis Suarez",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Luis Suarez",
+          "type": "assist"
+        },
+        {
+          "speler": "Luis Suarez",
+          "type": "geleKaart"
+        },
+        {
+          "speler": "Darwin Nunez",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Darwin Nunez",
+          "type": "geleKaart"
+        }
+      ]
+    },
+    {
+      "id": "wk22-855771",
+      "apiFixtureId": 855771,
+      "datum": "2022-12-02",
+      "fase": "groep",
+      "poule": true,
+      "thuis": "Kameroen",
+      "uit": "Brazilië",
+      "uitslag": {
+        "thuis": 1,
+        "uit": 0
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": [
+        {
+          "speler": "Dani Alves",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Dani Alves",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Eder Militao",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Eder Militao",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Eder Militao",
+          "type": "geleKaart"
+        },
+        {
+          "speler": "Alex Telles",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Alex Telles",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Fred",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Fabinho",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Antony",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Rodrygo",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Gabriel Martinelli",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Gabriel Jesus",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Bruno Guimaraes",
+          "type": "geleKaart"
+        }
+      ]
+    },
+    {
+      "id": "wk22-855772",
+      "apiFixtureId": 855772,
+      "datum": "2022-12-02",
+      "fase": "groep",
+      "poule": true,
+      "thuis": "Servië",
+      "uit": "Zwitserland",
+      "uitslag": {
+        "thuis": 2,
+        "uit": 3
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": [
+        {
+          "speler": "Aleksandar Mitrovic",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Aleksandar Mitrovic",
+          "type": "velddoelpunt"
+        },
+        {
+          "speler": "Aleksandar Mitrovic",
+          "type": "geleKaart"
+        }
+      ]
+    },
+    {
+      "id": "wk22-976533",
+      "apiFixtureId": 976533,
+      "datum": "2022-12-03",
+      "fase": "1/8",
+      "poule": false,
+      "thuis": "Nederland",
+      "uit": "Verenigde Staten",
+      "uitslag": {
+        "thuis": 3,
+        "uit": 1
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": [
+        {
+          "speler": "Andries Noppert",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Andries Noppert",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Jurrien Timber",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Jurrien Timber",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Virgil van Dijk",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Virgil van Dijk",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Nathan Ake",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Nathan Ake",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Denzel Dumfries",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Denzel Dumfries",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Denzel Dumfries",
+          "type": "velddoelpunt"
+        },
+        {
+          "speler": "Denzel Dumfries",
+          "type": "assist"
+        },
+        {
+          "speler": "Denzel Dumfries",
+          "type": "assist"
+        },
+        {
+          "speler": "Frenkie de Jong",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Frenkie de Jong",
+          "type": "geleKaart"
+        },
+        {
+          "speler": "Cody Gakpo",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Memphis Depay",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Memphis Depay",
+          "type": "velddoelpunt"
+        },
+        {
+          "speler": "Teun Koopmeiners",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Teun Koopmeiners",
+          "type": "geleKaart"
+        },
+        {
+          "speler": "Steven Bergwijn",
+          "type": "gespeeld45"
+        }
+      ]
+    },
+    {
+      "id": "wk22-976642",
+      "apiFixtureId": 976642,
+      "datum": "2022-12-03",
+      "fase": "1/8",
+      "poule": false,
+      "thuis": "Argentinië",
+      "uit": "Australië",
+      "uitslag": {
+        "thuis": 2,
+        "uit": 1
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": [
+        {
+          "speler": "Emiliano Martinez",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Emiliano Martinez",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Nahuel Molina",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Nahuel Molina",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Cristian Romero",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Cristian Romero",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Nicolas Otamendi",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Nicolas Otamendi",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Nicolas Otamendi",
+          "type": "assist"
+        },
+        {
+          "speler": "Marcos Acuna",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Marcos Acuna",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Rodrigo de Paul",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Enzo Fernandez",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Alexis Mac Allister",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Julian Alvarez",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Julian Alvarez",
+          "type": "velddoelpunt"
+        },
+        {
+          "speler": "Lionel Messi",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Lionel Messi",
+          "type": "velddoelpunt"
+        },
+        {
+          "speler": "Alejandro Papu Gomez",
+          "type": "gespeeld45"
+        }
+      ]
+    },
+    {
+      "id": "wk22-976534",
+      "apiFixtureId": 976534,
+      "datum": "2022-12-04",
+      "fase": "1/8",
+      "poule": false,
+      "thuis": "Engeland",
+      "uit": "Senegal",
+      "uitslag": {
+        "thuis": 3,
+        "uit": 0
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": [
+        {
+          "speler": "Jordan Pickford",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Jordan Pickford",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Kyle Walker",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Kyle Walker",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "John Stones",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "John Stones",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Luke Shaw",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Luke Shaw",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Declan Rice",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Declan Rice",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Jude Bellingham",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Jude Bellingham",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Jude Bellingham",
+          "type": "assist"
+        },
+        {
+          "speler": "Bukayo Saka",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Bukayo Saka",
+          "type": "velddoelpunt"
+        },
+        {
+          "speler": "Harry Kane",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Harry Kane",
+          "type": "velddoelpunt"
+        },
+        {
+          "speler": "Phil Foden",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Phil Foden",
+          "type": "assist"
+        },
+        {
+          "speler": "Phil Foden",
+          "type": "assist"
+        }
+      ]
+    },
+    {
+      "id": "wk22-976643",
+      "apiFixtureId": 976643,
+      "datum": "2022-12-04",
+      "fase": "1/8",
+      "poule": false,
+      "thuis": "Frankrijk",
+      "uit": "Polen",
+      "uitslag": {
+        "thuis": 3,
+        "uit": 1
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": [
+        {
+          "speler": "Hugo Lloris",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Hugo Lloris",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Jules Kounde",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Jules Kounde",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Raphael Varane",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Raphael Varane",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Dayot Upamecano",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Dayot Upamecano",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Theo Hernandez",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Theo Hernandez",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Aurelien Tchouameni",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Aurelien Tchouameni",
+          "type": "geleKaart"
+        },
+        {
+          "speler": "Adrien Rabiot",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Ousmane Dembele",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Ousmane Dembele",
+          "type": "assist"
+        },
+        {
+          "speler": "Antoine Griezmann",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Kylian Mbappe",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Kylian Mbappe",
+          "type": "velddoelpunt"
+        },
+        {
+          "speler": "Kylian Mbappe",
+          "type": "velddoelpunt"
+        },
+        {
+          "speler": "Kylian Mbappe",
+          "type": "assist"
+        },
+        {
+          "speler": "Olivier Giroud",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Olivier Giroud",
+          "type": "velddoelpunt"
+        },
+        {
+          "speler": "Robert Lewandowski",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Robert Lewandowski",
+          "type": "strafschop"
+        }
+      ]
+    },
+    {
+      "id": "wk22-977344",
+      "apiFixtureId": 977344,
+      "datum": "2022-12-05",
+      "fase": "1/8",
+      "poule": false,
+      "thuis": "Japan",
+      "uit": "Kroatië",
+      "uitslag": {
+        "thuis": 1,
+        "uit": 1
+      },
+      "pens": {
+        "thuis": 1,
+        "uit": 3
+      },
+      "status": "verwerkt",
+      "events": [
+        {
+          "speler": "Luka Modric",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Ivan Perisic",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Ivan Perisic",
+          "type": "velddoelpunt"
+        }
+      ]
+    },
+    {
+      "id": "wk22-977705",
+      "apiFixtureId": 977705,
+      "datum": "2022-12-05",
+      "fase": "1/8",
+      "poule": false,
+      "thuis": "Brazilië",
+      "uit": "Zuid-Korea",
+      "uitslag": {
+        "thuis": 4,
+        "uit": 1
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": [
+        {
+          "speler": "Alisson",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Alisson",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Eder Militao",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Eder Militao",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Marquinhos",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Marquinhos",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Thiago Silva",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Thiago Silva",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Thiago Silva",
+          "type": "assist"
+        },
+        {
+          "speler": "Danilo",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Danilo",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Lucas Paqueta",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Lucas Paqueta",
+          "type": "velddoelpunt"
+        },
+        {
+          "speler": "Casemiro",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Raphinha",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Neymar",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Neymar",
+          "type": "strafschop"
+        },
+        {
+          "speler": "Neymar",
+          "type": "assist"
+        },
+        {
+          "speler": "Vinicius Jr.",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Vinicius Jr.",
+          "type": "velddoelpunt"
+        },
+        {
+          "speler": "Vinicius Jr.",
+          "type": "assist"
+        },
+        {
+          "speler": "Richarlison",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Richarlison",
+          "type": "velddoelpunt"
+        }
+      ]
+    },
+    {
+      "id": "wk22-977345",
+      "apiFixtureId": 977345,
+      "datum": "2022-12-06",
+      "fase": "1/8",
+      "poule": false,
+      "thuis": "Marokko",
+      "uit": "Spanje",
+      "uitslag": {
+        "thuis": 0,
+        "uit": 0
+      },
+      "pens": {
+        "thuis": 3,
+        "uit": 0
+      },
+      "status": "verwerkt",
+      "events": [
+        {
+          "speler": "Achraf Hakimi",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Achraf Hakimi",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Hakim Ziyech",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Unai Simon",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Unai Simon",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Jordi Alba",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Jordi Alba",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Gavi",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Gavi",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Sergio Busquets",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Sergio Busquets",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Pedri",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Pedri",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Ferran Torres",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Marco Asensio",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Alvaro Morata",
+          "type": "gespeeld45"
+        }
+      ]
+    },
+    {
+      "id": "wk22-977706",
+      "apiFixtureId": 977706,
+      "datum": "2022-12-06",
+      "fase": "1/8",
+      "poule": false,
+      "thuis": "Portugal",
+      "uit": "Zwitserland",
+      "uitslag": {
+        "thuis": 6,
+        "uit": 1
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": [
+        {
+          "speler": "Diogo Costa",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Diogo Costa",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Ruben Dias",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Ruben Dias",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Bernardo Silva",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Bruno Fernandes",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Bruno Fernandes",
+          "type": "assist"
+        },
+        {
+          "speler": "Joao Felix",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Joao Felix",
+          "type": "assist"
+        },
+        {
+          "speler": "Joao Felix",
+          "type": "assist"
+        },
+        {
+          "speler": "Rafael Leao",
+          "type": "velddoelpunt"
+        }
+      ]
+    },
+    {
+      "id": "wk22-977794",
+      "apiFixtureId": 977794,
+      "datum": "2022-12-09",
+      "fase": "1/4",
+      "poule": false,
+      "thuis": "Nederland",
+      "uit": "Argentinië",
+      "uitslag": {
+        "thuis": 2,
+        "uit": 2
+      },
+      "pens": {
+        "thuis": 3,
+        "uit": 4
+      },
+      "status": "verwerkt",
+      "events": [
+        {
+          "speler": "Andries Noppert",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Andries Noppert",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Andries Noppert",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Jurrien Timber",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Jurrien Timber",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Jurrien Timber",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Jurrien Timber",
+          "type": "geleKaart"
+        },
+        {
+          "speler": "Virgil van Dijk",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Virgil van Dijk",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Virgil van Dijk",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Nathan Ake",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Nathan Ake",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Nathan Ake",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Denzel Dumfries",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Denzel Dumfries",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Denzel Dumfries",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Denzel Dumfries",
+          "type": "geleKaart"
+        },
+        {
+          "speler": "Denzel Dumfries",
+          "type": "geleKaart"
+        },
+        {
+          "speler": "Denzel Dumfries",
+          "type": "directeRood"
+        },
+        {
+          "speler": "Frenkie de Jong",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Cody Gakpo",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Steven Bergwijn",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Steven Bergwijn",
+          "type": "geleKaart"
+        },
+        {
+          "speler": "Memphis Depay",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Memphis Depay",
+          "type": "geleKaart"
+        },
+        {
+          "speler": "Steven Berghuis",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Steven Berghuis",
+          "type": "assist"
+        },
+        {
+          "speler": "Steven Berghuis",
+          "type": "geleKaart"
+        },
+        {
+          "speler": "Teun Koopmeiners",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Teun Koopmeiners",
+          "type": "assist"
+        },
+        {
+          "speler": "Frenkie de Jong",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Emiliano Martinez",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Emiliano Martinez",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Emiliano Martinez",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Nahuel Molina",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Nahuel Molina",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Nahuel Molina",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Nahuel Molina",
+          "type": "velddoelpunt"
+        },
+        {
+          "speler": "Cristian Romero",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Cristian Romero",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Cristian Romero",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Cristian Romero",
+          "type": "geleKaart"
+        },
+        {
+          "speler": "Nicolas Otamendi",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Nicolas Otamendi",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Nicolas Otamendi",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Nicolas Otamendi",
+          "type": "geleKaart"
+        },
+        {
+          "speler": "Lisandro Martinez",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Lisandro Martinez",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Lisandro Martinez",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Lisandro Martinez",
+          "type": "geleKaart"
+        },
+        {
+          "speler": "Marcos Acuna",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Marcos Acuna",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Marcos Acuna",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Marcos Acuna",
+          "type": "geleKaart"
+        },
+        {
+          "speler": "Rodrigo de Paul",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Enzo Fernandez",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Alexis Mac Allister",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Lionel Messi",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Lionel Messi",
+          "type": "strafschop"
+        },
+        {
+          "speler": "Lionel Messi",
+          "type": "assist"
+        },
+        {
+          "speler": "Lionel Messi",
+          "type": "geleKaart"
+        },
+        {
+          "speler": "Julian Alvarez",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Gonzalo Montiel",
+          "type": "geleKaart"
+        },
+        {
+          "speler": "Leandro Paredes",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Leandro Paredes",
+          "type": "geleKaart"
+        }
+      ]
+    },
+    {
+      "id": "wk22-978072",
+      "apiFixtureId": 978072,
+      "datum": "2022-12-09",
+      "fase": "1/4",
+      "poule": false,
+      "thuis": "Kroatië",
+      "uit": "Brazilië",
+      "uitslag": {
+        "thuis": 1,
+        "uit": 1
+      },
+      "pens": {
+        "thuis": 4,
+        "uit": 2
+      },
+      "status": "verwerkt",
+      "events": [
+        {
+          "speler": "Luka Modric",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Ivan Perisic",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Alisson",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Alisson",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Eder Militao",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Eder Militao",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Marquinhos",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Marquinhos",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Marquinhos",
+          "type": "geleKaart"
+        },
+        {
+          "speler": "Thiago Silva",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Thiago Silva",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Danilo",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Danilo",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Danilo",
+          "type": "geleKaart"
+        },
+        {
+          "speler": "Lucas Paqueta",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Lucas Paqueta",
+          "type": "assist"
+        },
+        {
+          "speler": "Casemiro",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Casemiro",
+          "type": "geleKaart"
+        },
+        {
+          "speler": "Raphinha",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Neymar",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Neymar",
+          "type": "velddoelpunt"
+        },
+        {
+          "speler": "Vinicius Jr.",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Richarlison",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Antony",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Rodrygo",
+          "type": "gespeeld45"
+        }
+      ]
+    },
+    {
+      "id": "wk22-978036",
+      "apiFixtureId": 978036,
+      "datum": "2022-12-10",
+      "fase": "1/4",
+      "poule": false,
+      "thuis": "Engeland",
+      "uit": "Frankrijk",
+      "uitslag": {
+        "thuis": 1,
+        "uit": 2
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": [
+        {
+          "speler": "Jordan Pickford",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Jordan Pickford",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Jordan Pickford",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Kyle Walker",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Kyle Walker",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Kyle Walker",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "John Stones",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "John Stones",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "John Stones",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Luke Shaw",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Luke Shaw",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Luke Shaw",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Declan Rice",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Jude Bellingham",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Bukayo Saka",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Harry Kane",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Harry Kane",
+          "type": "strafschop"
+        },
+        {
+          "speler": "Phil Foden",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Hugo Lloris",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Hugo Lloris",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Jules Kounde",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Jules Kounde",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Raphael Varane",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Raphael Varane",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Dayot Upamecano",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Dayot Upamecano",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Theo Hernandez",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Theo Hernandez",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Theo Hernandez",
+          "type": "geleKaart"
+        },
+        {
+          "speler": "Aurelien Tchouameni",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Aurelien Tchouameni",
+          "type": "velddoelpunt"
+        },
+        {
+          "speler": "Adrien Rabiot",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Ousmane Dembele",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Ousmane Dembele",
+          "type": "geleKaart"
+        },
+        {
+          "speler": "Antoine Griezmann",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Antoine Griezmann",
+          "type": "assist"
+        },
+        {
+          "speler": "Antoine Griezmann",
+          "type": "assist"
+        },
+        {
+          "speler": "Antoine Griezmann",
+          "type": "geleKaart"
+        },
+        {
+          "speler": "Kylian Mbappe",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Olivier Giroud",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Olivier Giroud",
+          "type": "velddoelpunt"
+        }
+      ]
+    },
+    {
+      "id": "wk22-978088",
+      "apiFixtureId": 978088,
+      "datum": "2022-12-10",
+      "fase": "1/4",
+      "poule": false,
+      "thuis": "Marokko",
+      "uit": "Portugal",
+      "uitslag": {
+        "thuis": 1,
+        "uit": 0
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": [
+        {
+          "speler": "Achraf Hakimi",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Achraf Hakimi",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Hakim Ziyech",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Diogo Costa",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Diogo Costa",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Ruben Dias",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Ruben Dias",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Bernardo Silva",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Bruno Fernandes",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Joao Felix",
+          "type": "gespeeld45"
+        }
+      ]
+    },
+    {
+      "id": "wk22-978279",
+      "apiFixtureId": 978279,
+      "datum": "2022-12-13",
+      "fase": "1/2",
+      "poule": false,
+      "thuis": "Argentinië",
+      "uit": "Kroatië",
+      "uitslag": {
+        "thuis": 3,
+        "uit": 0
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": [
+        {
+          "speler": "Emiliano Martinez",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Emiliano Martinez",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Nahuel Molina",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Nahuel Molina",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Cristian Romero",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Cristian Romero",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Cristian Romero",
+          "type": "geleKaart"
+        },
+        {
+          "speler": "Nicolas Otamendi",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Nicolas Otamendi",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Nicolas Otamendi",
+          "type": "geleKaart"
+        },
+        {
+          "speler": "Nicolas Tagliafico",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Nicolas Tagliafico",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Rodrigo de Paul",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Rodrigo de Paul",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Leandro Paredes",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Leandro Paredes",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Enzo Fernandez",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Enzo Fernandez",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Alexis Mac Allister",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Alexis Mac Allister",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Lionel Messi",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Lionel Messi",
+          "type": "strafschop"
+        },
+        {
+          "speler": "Lionel Messi",
+          "type": "assist"
+        },
+        {
+          "speler": "Julian Alvarez",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Julian Alvarez",
+          "type": "velddoelpunt"
+        },
+        {
+          "speler": "Julian Alvarez",
+          "type": "velddoelpunt"
+        },
+        {
+          "speler": "Luka Modric",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Ivan Perisic",
+          "type": "gespeeld45"
+        }
+      ]
+    },
+    {
+      "id": "wk22-978488",
+      "apiFixtureId": 978488,
+      "datum": "2022-12-14",
+      "fase": "1/2",
+      "poule": false,
+      "thuis": "Frankrijk",
+      "uit": "Marokko",
+      "uitslag": {
+        "thuis": 2,
+        "uit": 0
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": [
+        {
+          "speler": "Hugo Lloris",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Hugo Lloris",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Jules Kounde",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Jules Kounde",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Raphael Varane",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Raphael Varane",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Theo Hernandez",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Theo Hernandez",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Theo Hernandez",
+          "type": "velddoelpunt"
+        },
+        {
+          "speler": "Aurelien Tchouameni",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Aurelien Tchouameni",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Youssouf Fofana",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Youssouf Fofana",
+          "type": "cleanSheet45"
+        },
+        {
+          "speler": "Ousmane Dembele",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Antoine Griezmann",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Kylian Mbappe",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Olivier Giroud",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Achraf Hakimi",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Achraf Hakimi",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Achraf Hakimi",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Hakim Ziyech",
+          "type": "gespeeld45"
+        }
+      ]
+    },
+    {
+      "id": "wk22-979138",
+      "apiFixtureId": 979138,
+      "datum": "2022-12-17",
+      "fase": "F",
+      "poule": false,
+      "thuis": "Kroatië",
+      "uit": "Marokko",
+      "uitslag": {
+        "thuis": 2,
+        "uit": 1
+      },
+      "pens": null,
+      "status": "verwerkt",
+      "events": [
+        {
+          "speler": "Ivan Perisic",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Ivan Perisic",
+          "type": "assist"
+        },
+        {
+          "speler": "Luka Modric",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Achraf Hakimi",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Achraf Hakimi",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Achraf Hakimi",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Hakim Ziyech",
+          "type": "gespeeld45"
+        }
+      ]
+    },
+    {
+      "id": "wk22-979139",
+      "apiFixtureId": 979139,
+      "datum": "2022-12-18",
+      "fase": "F",
+      "poule": false,
+      "thuis": "Argentinië",
+      "uit": "Frankrijk",
+      "uitslag": {
+        "thuis": 3,
+        "uit": 3
+      },
+      "pens": {
+        "thuis": 4,
+        "uit": 2
+      },
+      "status": "verwerkt",
+      "events": [
+        {
+          "speler": "Emiliano Martinez",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Emiliano Martinez",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Emiliano Martinez",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Emiliano Martinez",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Emiliano Martinez",
+          "type": "geleKaart"
+        },
+        {
+          "speler": "Nahuel Molina",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Nahuel Molina",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Nahuel Molina",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Nahuel Molina",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Cristian Romero",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Cristian Romero",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Cristian Romero",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Cristian Romero",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Nicolas Otamendi",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Nicolas Otamendi",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Nicolas Otamendi",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Nicolas Otamendi",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Nicolas Tagliafico",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Nicolas Tagliafico",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Nicolas Tagliafico",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Nicolas Tagliafico",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Rodrigo de Paul",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Enzo Fernandez",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Enzo Fernandez",
+          "type": "geleKaart"
+        },
+        {
+          "speler": "Alexis Mac Allister",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Alexis Mac Allister",
+          "type": "assist"
+        },
+        {
+          "speler": "Lionel Messi",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Lionel Messi",
+          "type": "velddoelpunt"
+        },
+        {
+          "speler": "Lionel Messi",
+          "type": "strafschop"
+        },
+        {
+          "speler": "Julian Alvarez",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Angel Di Maria",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Angel Di Maria",
+          "type": "velddoelpunt"
+        },
+        {
+          "speler": "Gonzalo Montiel",
+          "type": "geleKaart"
+        },
+        {
+          "speler": "Marcos Acuna",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Marcos Acuna",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Marcos Acuna",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Marcos Acuna",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Marcos Acuna",
+          "type": "geleKaart"
+        },
+        {
+          "speler": "Leandro Paredes",
+          "type": "geleKaart"
+        },
+        {
+          "speler": "Hugo Lloris",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Hugo Lloris",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Hugo Lloris",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Hugo Lloris",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Jules Kounde",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Jules Kounde",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Jules Kounde",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Jules Kounde",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Raphael Varane",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Raphael Varane",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Raphael Varane",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Raphael Varane",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Dayot Upamecano",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Dayot Upamecano",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Dayot Upamecano",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Dayot Upamecano",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Theo Hernandez",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Theo Hernandez",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Theo Hernandez",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Theo Hernandez",
+          "type": "tegendoelpunt"
+        },
+        {
+          "speler": "Aurelien Tchouameni",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Adrien Rabiot",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Adrien Rabiot",
+          "type": "geleKaart"
+        },
+        {
+          "speler": "Antoine Griezmann",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Kylian Mbappe",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Kylian Mbappe",
+          "type": "velddoelpunt"
+        },
+        {
+          "speler": "Kylian Mbappe",
+          "type": "strafschop"
+        },
+        {
+          "speler": "Kylian Mbappe",
+          "type": "strafschop"
+        },
+        {
+          "speler": "Olivier Giroud",
+          "type": "geleKaart"
+        },
+        {
+          "speler": "Kingsley Coman",
+          "type": "gespeeld45"
+        },
+        {
+          "speler": "Eduardo Camavinga",
+          "type": "gespeeld45"
+        }
+      ]
+    }
+  ]
+}
