@@ -1,0 +1,5 @@
+.env
+.env.local
+.api-keys/*
+!.api-keys/README.md
+scripts/cache/

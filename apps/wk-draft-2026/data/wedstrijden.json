@@ -1,0 +1,4 @@
+{
+  "_info": "Primaire bron is Supabase (wk2026_wedstrijden + wk2026_events). Deze file is fallback wanneer Supabase niet bereikbaar is.",
+  "wedstrijden": []
+}

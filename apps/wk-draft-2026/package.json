@@ -1,0 +1,9 @@
+{
+  "name": "@websites/wk-draft-2026",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "node ../../serve.mjs . 3006",
+    "build": "echo 'Statische site — geen build stap nodig'"
+  }
+}

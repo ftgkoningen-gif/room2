@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WK draft 2026</title>
+  <meta name="description" content="WK draft 2026 — zesde editie draft-pool van Richard, Frank en Ferdi, met live wedstrijd- en selectie-data via API-Football." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,800;0,9..144,900;1,9..144,400;1,9..144,600&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js" defer></script>
+  <link rel="stylesheet" href="voetbal-draft.css" />
+</head>
+<body class="text-ink">
+
+  <!-- SVG noise (paper grain) -->
+  <svg class="grain" aria-hidden="true">
+    <filter id="noise">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch" />
+      <feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.08 0" />
+    </filter>
+    <rect width="100%" height="100%" filter="url(#noise)" />
+  </svg>
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       MASTHEAD
+  ═══════════════════════════════════════════════════════════════════ -->
+  <header class="masthead">
+    <div class="masthead__rules" aria-hidden="true"></div>
+
+    <div class="masthead__meta">
+      <span class="masthead__edition">Zesde editie</span>
+      <span class="masthead__sep">·</span>
+      <span class="masthead__price">Richard, Frank &amp; Ferdi</span>
+      <span class="masthead__sep">·</span>
+      <span class="masthead__date" id="headerCountdown">Draft-datum volgt</span>
+    </div>
+
+    <h1 class="masthead__title">
+      <span class="word">WK&nbsp;draft</span>
+      <span class="year">2026</span>
+    </h1>
+
+    <div class="masthead__tagline">
+      <span>Canada · Mexico · Verenigde Staten</span>
+      <span class="dot">•</span>
+      <span>11 juni – 19 juli 2026</span>
+      <span class="dot">•</span>
+      <span>48 landen</span>
+    </div>
+
+    <div class="masthead__rules masthead__rules--thick" aria-hidden="true"></div>
+  </header>
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       NAVIGATIE
+  ═══════════════════════════════════════════════════════════════════ -->
+  <nav class="nav" role="tablist" aria-label="Secties">
+    <button class="nav__tab is-active" role="tab" data-tab="overzicht">
+      <span class="nav__num">I</span>
+      <span class="nav__label">Overzicht</span>
+    </button>
+    <button class="nav__tab" role="tab" data-tab="reglement">
+      <span class="nav__num">II</span>
+      <span class="nav__label">Reglement</span>
+    </button>
+    <button class="nav__tab" role="tab" data-tab="teams">
+      <span class="nav__num">III</span>
+      <span class="nav__label">Teams</span>
+    </button>
+    <button class="nav__tab" role="tab" data-tab="wedstrijden">
+      <span class="nav__num">IV</span>
+      <span class="nav__label">Wedstrijden</span>
+    </button>
+  </nav>
+
+  <main>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         I — OVERZICHT (landing)
+    ═══════════════════════════════════════════════════════════════════ -->
+    <section class="section" id="tab-overzicht" data-tab-panel="overzicht">
+      <div class="section__header">
+        <div class="section__num">I.</div>
+        <div>
+          <div class="section__kicker">Welkom</div>
+          <h2 class="section__title">Het <em>Overzicht</em></h2>
+          <p class="section__intro">Op weg naar de zesde editie. Speelschema, deelnemende landen en straks de actuele stand.</p>
+        </div>
+      </div>
+
+      <div class="overzicht__intro">
+        <p>Richard, Frank en Ferdi organiseren opnieuw hun draft-pool, nu rond het <strong>WK 2026</strong> in Canada, Mexico en de Verenigde Staten. <strong>48 landen</strong>, 26-koppige selectie per land — in totaal <strong>1.248 beschikbare spelers</strong>. Elke deelnemer kiest 11 spelers (max 3 per land), €20 inleg, prijzenpot 60/30/10 %. Aftrap is <strong>11 juni 2026</strong> in Mexico-Stad; de draft-avond wordt daarvoor ingepland.</p>
+      </div>
+
+      <div class="overzicht__stats" id="overzichtStats">
+        <!-- JS: 4 tegeltjes -->
+      </div>
+
+      <h3 class="overzicht__h3">De top drie</h3>
+      <div id="overzichtPodium" class="podium">
+        <!-- JS: podium of empty-state -->
+      </div>
+
+      <h3 class="overzicht__h3">Speelschema</h3>
+      <div id="speelschema" class="speelschema">
+        <!-- JS: fase-tijdlijn -->
+      </div>
+
+      <h3 class="overzicht__h3">Deelnemende landen</h3>
+      <p class="overzicht__sub">De 48 gekwalificeerde landen, gesorteerd per confederatie. Groepsaanduiding (A–L) volgens FIFA-loting.</p>
+      <div id="landenGrid" class="landen-grid">
+        <!-- JS: per confederatie een blok met land-pills -->
+      </div>
+
+      <h3 class="overzicht__h3">Selecties</h3>
+      <p class="overzicht__sub">FIFA hanteert een 26-koppige selectie per land. Zodra een land zijn definitieve selectie indient, verschijnt die hier automatisch via API-Football.</p>
+      <div id="selectiesBlock">
+        <!-- JS: progress-balk + land-kaartjes -->
+      </div>
+
+      <h3 class="overzicht__h3">Hoe werkt deze app?</h3>
+      <div class="overzicht__howto">
+        <article class="howto">
+          <div class="howto__num">01</div>
+          <div class="howto__label">Reglement</div>
+          <p>De complete spelregels, puntenverdeling per positie en fase-bonussen.</p>
+          <button class="howto__link" type="button" data-goto="reglement">Naar reglement →</button>
+        </article>
+        <article class="howto">
+          <div class="howto__num">02</div>
+          <div class="howto__label">Teams</div>
+          <p>Zodra de draft-avond is geweest, verschijnen hier alle deelnemers met hun 11 spelers, gesorteerd op actuele punten.</p>
+          <button class="howto__link" type="button" data-goto="teams">Naar teams →</button>
+        </article>
+        <article class="howto">
+          <div class="howto__num">03</div>
+          <div class="howto__label">Wedstrijden</div>
+          <p>Alle WK 2026-matches. Na elke fluitsignaal haalt de scheidsrechter-bot scores, goals en kaarten binnen; de stand wordt direct bijgewerkt.</p>
+          <button class="howto__link" type="button" data-goto="wedstrijden">Naar wedstrijden →</button>
+        </article>
+        <article class="howto">
+          <div class="howto__num">04</div>
+          <div class="howto__label">Per speler</div>
+          <p>Klik een speler — een overzicht verschijnt met alle events per wedstrijd en de volledige puntenberekening.</p>
+          <button class="howto__link" type="button" data-goto="teams">Open een team →</button>
+        </article>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         II — HET REGLEMENT
+    ═══════════════════════════════════════════════════════════════════ -->
+    <section class="section hidden" id="tab-reglement" data-tab-panel="reglement">
+      <div class="section__header">
+        <div class="section__num">II.</div>
+        <div>
+          <div class="section__kicker">Rubriek &#8545;</div>
+          <h2 class="section__title">Het <em>Reglement</em></h2>
+          <p class="section__intro">De spelregels van de draft-pool, zoals kritisch tegen het licht gehouden door de drie organisatoren.</p>
+        </div>
+      </div>
+
+      <div class="prose columns">
+        <p class="lede">Met nog iets meer dan één maand tot de aftrap in Mexico-Stad gaat de zesde editie van de WK-draft van start. 48 landen, 26-koppige selecties, één pool. Richard, Frank en Ferdi houden dagelijks de stand bij op basis van echte wedstrijddata.</p>
+
+        <h3>Deelname</h3>
+        <ul>
+          <li>Er kunnen maximaal <strong>18 voetbalkenners</strong> deelnemen.</li>
+          <li>Elke deelnemer kiest <strong>11 spelers</strong> &mdash; in totaal dus maximaal 198 spelers.</li>
+          <li>Inleg per persoon: <strong>€20</strong>. Maximale prijzenpot: <strong>€360</strong>.</li>
+        </ul>
+
+        <h3>De draft</h3>
+        <p>De draft vindt plaats in een fysieke setting. Uitgangspunten voor WK 2026: <strong>48 deelnemende landen</strong> met ieder een 26-koppige selectie &mdash; een totaal van 1.248 beschikbare spelers. Per land mag je maximaal <strong>3 spelers</strong> kiezen.</p>
+        <p>Er wordt gestart met de loting voor de picks. In <em>ronde 1</em> mag de eerste gelote deelnemer als eerste kiezen. In <em>ronde 2</em> is de volgorde omgekeerd (snake). Dit patroon herhaalt zich tot ronde 11.</p>
+
+        <h3 id="puntenmodel">Puntenmodel</h3>
+        <div class="table-wrap">
+          <table class="points-table">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Keeper</th>
+                <th>Verdediger</th>
+                <th>Middenvelder</th>
+                <th>Aanvaller</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Gele kaart</td><td class="neg">−2</td><td class="neg">−2</td><td class="neg">−2</td><td class="neg">−2</td></tr>
+              <tr><td>Directe rode kaart</td><td class="neg">−5</td><td class="neg">−5</td><td class="neg">−5</td><td class="neg">−5</td></tr>
+              <tr><td>Eigen doelpunt</td><td class="neg">−2</td><td class="neg">−2</td><td class="neg">−2</td><td class="neg">−2</td></tr>
+              <tr><td>Gespeelde wedstrijd (≥ 45 min)</td><td>+3</td><td>+2</td><td>+2</td><td>+1</td></tr>
+              <tr><td>Gewonnen poulewedstrijd</td><td>+3</td><td>+3</td><td>+3</td><td>+3</td></tr>
+              <tr><td>Gelijkspel</td><td>+1</td><td>+1</td><td>+1</td><td>+1</td></tr>
+              <tr><td>Velddoelpunt (incl. vrije trap)</td><td>+6</td><td>+5</td><td>+4</td><td>+4</td></tr>
+              <tr><td>Assist</td><td>+4</td><td>+3</td><td>+2</td><td>+2</td></tr>
+              <tr><td>Strafschop</td><td>+1</td><td>+1</td><td>+1</td><td>+1</td></tr>
+              <tr><td>De nul houden (≥ 45 min)</td><td>+2</td><td>+2</td><td>+1</td><td class="na">—</td></tr>
+              <tr><td>Elk tegendoelpunt</td><td class="neg">−1</td><td class="neg">−1</td><td class="na">—</td><td class="na">—</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Fase-bonussen</h3>
+        <ul class="bonus-list">
+          <li><span>Achtste finale</span><span class="dots"></span><span class="pts">+3 p.p.</span></li>
+          <li><span>Kwartfinale</span><span class="dots"></span><span class="pts">+3 p.p.</span></li>
+          <li><span>Halve finale</span><span class="dots"></span><span class="pts">+5 p.p.</span></li>
+          <li><span>Finale</span><span class="dots"></span><span class="pts">+5 p.p.</span></li>
+          <li><span>Winnaar WK</span><span class="dots"></span><span class="pts">+5 p.p.</span></li>
+        </ul>
+
+        <h3>Extra</h3>
+        <ul class="bonus-list">
+          <li><span>Topscorer WK <em>&mdash; mits in team</em></span><span class="dots"></span><span class="pts">+10</span></li>
+          <li><span>Beste speler WK (FIFA) <em>&mdash; mits in team</em></span><span class="dots"></span><span class="pts">+10</span></li>
+        </ul>
+
+        <h3>Overige regels</h3>
+        <ul>
+          <li>Alle gekozen teams worden gepubliceerd op de avond van de draft.</li>
+          <li><strong>Spoileren verboden</strong>: tijdens het draften mag niet over nog niet gekozen spelers worden gesproken.</li>
+          <li>Bij blessure vóór de eerste wedstrijd &mdash; waarbij de speler het toernooi niet meer in actie komt én vervangen wordt in de selectie &mdash; mag deze speler éénmalig geruild worden. Daarna gesloten.</li>
+          <li>Prijzenverdeling: <strong>60&nbsp;%</strong> (1e) &mdash; <strong>30&nbsp;%</strong> (2e) &mdash; <strong>10&nbsp;%</strong> (3e).</li>
+          <li>Dagelijks wordt de stand gedeeld in de WhatsApp-groep.</li>
+          <li>Brondata: wedstrijdgegevens worden opgehaald via <strong>API-Football</strong> (api-sports.io) — goals, assists, gele/rode kaarten, gespeelde minuten per speler.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         III — DE TEAMS
+    ═══════════════════════════════════════════════════════════════════ -->
+    <section class="section hidden" id="tab-teams" data-tab-panel="teams">
+      <div class="section__header">
+        <div class="section__num">III.</div>
+        <div>
+          <div class="section__kicker">Rubriek &#8546;</div>
+          <h2 class="section__title">De <em>Teams</em></h2>
+          <p class="section__intro">Alle deelnemers met hun elftal, gesorteerd op actuele punten.</p>
+        </div>
+      </div>
+
+      <div class="teams-toolbar">
+        <div class="teams-toolbar__count">
+          <span id="teamsCountNum">0</span>
+          <span class="teams-toolbar__countlabel">deelnemers</span>
+        </div>
+      </div>
+
+      <div id="teamsGrid" class="teams-grid">
+        <!-- gegenereerd door JS -->
+      </div>
+
+      <div id="teamsEmpty" class="empty-state hidden">
+        <div class="empty-state__num">00</div>
+        <h3 class="empty-state__title">De draft moet nog plaatsvinden</h3>
+        <p class="empty-state__body">Op de draft-avond (begin juni 2026) kiest elke deelnemer zijn elf spelers. Daarna verschijnen hier alle teams, gesorteerd op actuele punten.</p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         IV — WEDSTRIJDEN
+    ═══════════════════════════════════════════════════════════════════ -->
+    <section class="section hidden" id="tab-wedstrijden" data-tab-panel="wedstrijden">
+      <div class="section__header">
+        <div class="section__num">IV.</div>
+        <div>
+          <div class="section__kicker">Rubriek &#8547;</div>
+          <h2 class="section__title">De <em>Wedstrijden</em></h2>
+          <p class="section__intro">Alle WK 2026-matches met live event-data. Klap uit voor de puntenverdeling per gedrafte speler.</p>
+        </div>
+      </div>
+
+      <div class="api-panel">
+        <div class="api-panel__left">
+          <div class="api-panel__kicker">Automatische sync</div>
+          <div class="api-panel__title">Trigger.dev · elke 30 minuten</div>
+          <p class="api-panel__text">Een cron-task leest na elke fluitsignaal <span class="mono">/fixtures/events</span>, <span class="mono">/fixtures/lineups</span> en <span class="mono">/fixtures/players</span> van API-Football, past het reglement toe en schrijft events naar Supabase (tabellen <span class="mono">wk2026_wedstrijden</span> + <span class="mono">wk2026_events</span>). Deze pagina toont direct de actuele stand.</p>
+        </div>
+        <div class="api-panel__right">
+          <div class="api-panel__kicker">Selecties</div>
+          <div class="api-panel__title">Vanaf mei 2026</div>
+          <div class="api-panel__note">Zodra FIFA's deadline van 4 juni voor squad-inlevering nadert, vult dezelfde trigger de 26-koppige selectie per land. Zichtbaar op de Overzicht-pagina.</div>
+        </div>
+      </div>
+
+      <div id="wedstrijdenList" class="wedstrijden-list">
+        <!-- gegenereerd door JS -->
+      </div>
+
+      <div id="wedstrijdenEmpty" class="empty-state hidden">
+        <div class="empty-state__num">00</div>
+        <h3 class="empty-state__title">Het WK is nog niet begonnen</h3>
+        <p class="empty-state__body">Op 11 juni 2026 trapt Mexico de eerste wedstrijd af. Daarna verschijnen hier alle matches, live bijgewerkt na elke fluitsignaal.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="footer__rule"></div>
+    <div class="footer__grid">
+      <div>
+        <div class="footer__kicker">Colofon</div>
+        <p>Zesde editie van de draft, aankomend WK 2026. Automatisch bijgewerkt via API-Football + Trigger.dev. Organisatie: Richard, Frank &amp; Ferdi.</p>
+      </div>
+      <div>
+        <div class="footer__kicker">Prijzenpot</div>
+        <p id="prizePotFooter">&mdash;</p>
+      </div>
+      <div>
+        <div class="footer__kicker">Bron</div>
+        <p><a href="https://www.api-football.com" target="_blank" rel="noopener">api-football.com</a></p>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>Interne uitgave &mdash; niet voor publicatie</span>
+      <span class="footer__mono mono">WK 2026 &middot; DRAFT VOLGT</span>
+    </div>
+  </footer>
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       SPELER-MODAL
+  ═══════════════════════════════════════════════════════════════════ -->
+  <div id="spelerModal" class="modal hidden" role="dialog" aria-modal="true">
+    <div class="modal__backdrop"></div>
+    <div id="modalContent" class="modal__content"></div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       TOAST
+  ═══════════════════════════════════════════════════════════════════ -->
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="app.js" defer></script>
+</body>
+</html>

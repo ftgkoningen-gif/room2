@@ -1,0 +1,64 @@
+{
+  "_info": "WK 2026 — 48 landen × 26-koppige selectie = 1.248 beschikbare spelers. Groepsindeling volgens FIFA-loting, actueel per 18 april 2026. Selecties volgen mei/juni 2026.",
+  "landen": [
+    { "naam": "Mexico",            "code": "MEX", "vlag": "🇲🇽", "confederatie": "CONCACAF", "groep": "A", "host": true,  "selectie": [] },
+    { "naam": "Zuid-Afrika",       "code": "RSA", "vlag": "🇿🇦", "confederatie": "CAF",      "groep": "A", "selectie": [] },
+    { "naam": "Zuid-Korea",        "code": "KOR", "vlag": "🇰🇷", "confederatie": "AFC",      "groep": "A", "selectie": [] },
+    { "naam": "Tsjechië",          "code": "CZE", "vlag": "🇨🇿", "confederatie": "UEFA",     "groep": "A", "selectie": [] },
+
+    { "naam": "Canada",            "code": "CAN", "vlag": "🇨🇦", "confederatie": "CONCACAF", "groep": "B", "host": true, "selectie": [] },
+    { "naam": "Bosnië en Herzegovina", "code": "BIH", "vlag": "🇧🇦", "confederatie": "UEFA", "groep": "B", "selectie": [] },
+    { "naam": "Qatar",             "code": "QAT", "vlag": "🇶🇦", "confederatie": "AFC",      "groep": "B", "selectie": [] },
+    { "naam": "Zwitserland",       "code": "SUI", "vlag": "🇨🇭", "confederatie": "UEFA",     "groep": "B", "selectie": [] },
+
+    { "naam": "Brazilië",          "code": "BRA", "vlag": "🇧🇷", "confederatie": "CONMEBOL", "groep": "C", "selectie": [] },
+    { "naam": "Marokko",           "code": "MAR", "vlag": "🇲🇦", "confederatie": "CAF",      "groep": "C", "selectie": [] },
+    { "naam": "Haïti",             "code": "HAI", "vlag": "🇭🇹", "confederatie": "CONCACAF", "groep": "C", "selectie": [] },
+    { "naam": "Schotland",         "code": "SCO", "vlag": "🏴󠁧󠁢󠁳󠁣󠁴󠁿", "confederatie": "UEFA",     "groep": "C", "selectie": [] },
+
+    { "naam": "Verenigde Staten",  "code": "USA", "vlag": "🇺🇸", "confederatie": "CONCACAF", "groep": "D", "host": true, "selectie": [] },
+    { "naam": "Paraguay",          "code": "PAR", "vlag": "🇵🇾", "confederatie": "CONMEBOL", "groep": "D", "selectie": [] },
+    { "naam": "Australië",         "code": "AUS", "vlag": "🇦🇺", "confederatie": "AFC",      "groep": "D", "selectie": [] },
+    { "naam": "Turkije",           "code": "TUR", "vlag": "🇹🇷", "confederatie": "UEFA",     "groep": "D", "selectie": [] },
+
+    { "naam": "Duitsland",         "code": "GER", "vlag": "🇩🇪", "confederatie": "UEFA",     "groep": "E", "selectie": [] },
+    { "naam": "Curaçao",           "code": "CUW", "vlag": "🇨🇼", "confederatie": "CONCACAF", "groep": "E", "selectie": [] },
+    { "naam": "Ivoorkust",         "code": "CIV", "vlag": "🇨🇮", "confederatie": "CAF",      "groep": "E", "selectie": [] },
+    { "naam": "Ecuador",           "code": "ECU", "vlag": "🇪🇨", "confederatie": "CONMEBOL", "groep": "E", "selectie": [] },
+
+    { "naam": "Nederland",         "code": "NED", "vlag": "🇳🇱", "confederatie": "UEFA",     "groep": "F", "selectie": [] },
+    { "naam": "Japan",             "code": "JPN", "vlag": "🇯🇵", "confederatie": "AFC",      "groep": "F", "selectie": [] },
+    { "naam": "Zweden",            "code": "SWE", "vlag": "🇸🇪", "confederatie": "UEFA",     "groep": "F", "selectie": [] },
+    { "naam": "Tunesië",           "code": "TUN", "vlag": "🇹🇳", "confederatie": "CAF",      "groep": "F", "selectie": [] },
+
+    { "naam": "België",            "code": "BEL", "vlag": "🇧🇪", "confederatie": "UEFA",     "groep": "G", "selectie": [] },
+    { "naam": "Egypte",            "code": "EGY", "vlag": "🇪🇬", "confederatie": "CAF",      "groep": "G", "selectie": [] },
+    { "naam": "Iran",              "code": "IRN", "vlag": "🇮🇷", "confederatie": "AFC",      "groep": "G", "selectie": [] },
+    { "naam": "Nieuw-Zeeland",     "code": "NZL", "vlag": "🇳🇿", "confederatie": "OFC",      "groep": "G", "selectie": [] },
+
+    { "naam": "Spanje",            "code": "ESP", "vlag": "🇪🇸", "confederatie": "UEFA",     "groep": "H", "selectie": [] },
+    { "naam": "Kaapverdië",        "code": "CPV", "vlag": "🇨🇻", "confederatie": "CAF",      "groep": "H", "selectie": [] },
+    { "naam": "Saudi-Arabië",      "code": "KSA", "vlag": "🇸🇦", "confederatie": "AFC",      "groep": "H", "selectie": [] },
+    { "naam": "Uruguay",           "code": "URU", "vlag": "🇺🇾", "confederatie": "CONMEBOL", "groep": "H", "selectie": [] },
+
+    { "naam": "Frankrijk",         "code": "FRA", "vlag": "🇫🇷", "confederatie": "UEFA",     "groep": "I", "selectie": [] },
+    { "naam": "Senegal",           "code": "SEN", "vlag": "🇸🇳", "confederatie": "CAF",      "groep": "I", "selectie": [] },
+    { "naam": "Bolivia",           "code": "BOL", "vlag": "🇧🇴", "confederatie": "CONMEBOL", "groep": "I", "selectie": [], "opmerking": "Playoff-winnaar (Bolivia vs Irak)" },
+    { "naam": "Noorwegen",         "code": "NOR", "vlag": "🇳🇴", "confederatie": "UEFA",     "groep": "I", "selectie": [] },
+
+    { "naam": "Argentinië",        "code": "ARG", "vlag": "🇦🇷", "confederatie": "CONMEBOL", "groep": "J", "selectie": [] },
+    { "naam": "Algerije",          "code": "ALG", "vlag": "🇩🇿", "confederatie": "CAF",      "groep": "J", "selectie": [] },
+    { "naam": "Oostenrijk",        "code": "AUT", "vlag": "🇦🇹", "confederatie": "UEFA",     "groep": "J", "selectie": [] },
+    { "naam": "Jordanië",          "code": "JOR", "vlag": "🇯🇴", "confederatie": "AFC",      "groep": "J", "selectie": [] },
+
+    { "naam": "Portugal",          "code": "POR", "vlag": "🇵🇹", "confederatie": "UEFA",     "groep": "K", "selectie": [] },
+    { "naam": "Congo-Kinshasa",    "code": "COD", "vlag": "🇨🇩", "confederatie": "CAF",      "groep": "K", "selectie": [] },
+    { "naam": "Oezbekistan",       "code": "UZB", "vlag": "🇺🇿", "confederatie": "AFC",      "groep": "K", "selectie": [] },
+    { "naam": "Colombia",          "code": "COL", "vlag": "🇨🇴", "confederatie": "CONMEBOL", "groep": "K", "selectie": [] },
+
+    { "naam": "Engeland",          "code": "ENG", "vlag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "confederatie": "UEFA",     "groep": "L", "selectie": [] },
+    { "naam": "Kroatië",           "code": "CRO", "vlag": "🇭🇷", "confederatie": "UEFA",     "groep": "L", "selectie": [] },
+    { "naam": "Ghana",             "code": "GHA", "vlag": "🇬🇭", "confederatie": "CAF",      "groep": "L", "selectie": [] },
+    { "naam": "Panama",            "code": "PAN", "vlag": "🇵🇦", "confederatie": "CONCACAF", "groep": "L", "selectie": [] }
+  ]
+}
