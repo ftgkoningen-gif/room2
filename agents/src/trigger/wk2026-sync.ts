@@ -1,33 +1,50 @@
 /* ═══════════════════════════════════════════════════════════════════
    WK 2026 — Trigger.dev auto-sync
+   ───────────────────────────────────────────────────────────────────
+   Drie tasks:
 
-   Eén cron-task die twee sub-jobs draait:
-     1. Matches-sync  — na elke gespeelde wedstrijd: fetch events,
-        upsert naar Supabase (wk2026_wedstrijden + wk2026_events)
-     2. Squads-sync   — vanaf mei 2026: fetch 26-koppige selectie per
-        land, upsert naar wk2026_selecties
+   1. wk2026-scheduler     (cron, dagelijks 04:00 tijdens WK)
+      → haalt alle wedstrijden van komende 48u op
+      → queued per wedstrijd een one-off wk2026-fetch-match task,
+        gepland 30 min na het verwachte einde van de wedstrijd
+        (135 min na aftrap; houdt rekening met verlenging/pens)
 
-   Cron: elke 30 min; de task kiest zelf welke sub-job relevant is
-   op basis van de huidige datum.
+   2. wk2026-fetch-match   (worker, geen eigen schedule)
+      → fetch player-stats van één specifieke fixture
+      → upsert naar Supabase (wk2026_wedstrijden + wk2026_events)
+      → als match-status nog niet 'FT' is, re-queue zichzelf +15 min
 
-   Env vars (in Trigger.dev dashboard):
-     - API_FOOTBALL_KEY     (api-sports.io key)
+   3. wk2026-squads-sync   (cron, dagelijks 12:00 tijdens selectie-venster)
+      → haalt 26-koppige squads per land op
+      → upsert naar wk2026_selecties
+
+   Zo draait de taak-infra alleen wanneer het zin heeft i.p.v.
+   elke 30 min blind te pollen.
+
+   Env vars (Trigger.dev dashboard, Production):
+     - API_FOOTBALL_KEY
      - SUPABASE_URL
      - SUPABASE_SERVICE_KEY
    ═══════════════════════════════════════════════════════════════════ */
 
-import { schedules, logger } from "@trigger.dev/sdk";
+import { schedules, task, logger } from "@trigger.dev/sdk";
 import { createClient } from "@supabase/supabase-js";
 
 const API_BASE = "https://v3.football.api-sports.io";
-const LEAGUE_ID = 1;       // FIFA World Cup
+const LEAGUE_ID = 1;
 const SEASON = 2026;
 
-// Windows waarin elke sub-job actief is (UTC-dates)
-const MATCHES_WINDOW_START = new Date("2026-06-11T00:00:00Z");
+const MATCHES_WINDOW_START = new Date("2026-06-10T00:00:00Z");
 const MATCHES_WINDOW_END   = new Date("2026-07-20T00:00:00Z");
 const SQUADS_WINDOW_START  = new Date("2026-05-20T00:00:00Z");
 const SQUADS_WINDOW_END    = new Date("2026-06-12T00:00:00Z");
+
+// Delay-policy: 90 min match + 15 HT + 30 (eventuele ET) = 135 min na aftrap
+const FETCH_DELAY_AFTER_KICKOFF_MIN = 135;
+
+// Als fixture nog niet FT is bij fetch-moment → retry na 15 min (max 3x)
+const RETRY_DELAY_MIN = 15;
+const RETRY_MAX = 3;
 
 // ─── Helpers ─────────────────────────────────────────────────────────
 
@@ -73,7 +90,7 @@ const TEAM_NL: Record<string, string> = {
   Ghana: "Ghana", Cameroon: "Kameroen", "South Africa": "Zuid-Afrika",
   "DR Congo": "Congo-Kinshasa", "Congo DR": "Congo-Kinshasa",
   "Cape Verde": "Kaapverdië", "New Zealand": "Nieuw-Zeeland",
-  Wales: "Wales",
+  Iraq: "Irak",
 };
 
 function toNL(apiName: string): string {
@@ -90,86 +107,7 @@ function faseOf(round: string): string {
   return "groep";
 }
 
-// ─── Matches-sync ────────────────────────────────────────────────────
-
-async function syncMatches(supabase: any) {
-  logger.info("matches-sync: fixtures ophalen");
-  const fixturesData = await apiFetch(`/fixtures?league=${LEAGUE_ID}&season=${SEASON}`);
-  const fixtures = fixturesData.response ?? [];
-  logger.info(`matches-sync: ${fixtures.length} fixtures in API`);
-
-  // Welke zijn al 'verwerkt' in Supabase?
-  const { data: verwerkt } = await supabase
-    .from("wk2026_wedstrijden")
-    .select("api_fixture_id, status")
-    .eq("status", "verwerkt");
-  const verwerktIds = new Set((verwerkt ?? []).map((r: any) => r.api_fixture_id));
-
-  let nieuw = 0;
-  let overgeslagen = 0;
-  let fouten = 0;
-
-  for (const f of fixtures) {
-    const id: number = f.fixture.id;
-    const status: string = f.fixture.status?.short;
-    const isFinished = status === "FT" || status === "AET" || status === "PEN";
-
-    if (!isFinished) { overgeslagen++; continue; }
-    if (verwerktIds.has(id)) { overgeslagen++; continue; }
-
-    try {
-      await upsertFixture(supabase, f);
-      nieuw++;
-      await sleep(7000); // rate-limit 10/min
-    } catch (err) {
-      logger.error(`matches-sync: fixture ${id} faalde`, { err: String(err) });
-      fouten++;
-      if (fouten >= 3) break; // stop bij herhaalde API-fouten
-    }
-  }
-
-  logger.info(`matches-sync klaar: ${nieuw} nieuw, ${overgeslagen} skip, ${fouten} fout`);
-  return { nieuw, overgeslagen, fouten };
-}
-
-async function upsertFixture(supabase: any, f: any) {
-  const id: number = f.fixture.id;
-  const fase = faseOf(f.league.round ?? "");
-  const thuis = toNL(f.teams.home.name);
-  const uit   = toNL(f.teams.away.name);
-
-  const wedstrijd = {
-    api_fixture_id: id,
-    datum: (f.fixture.date ?? "").slice(0, 10) || null,
-    fase,
-    poule: fase === "groep",
-    thuis,
-    uit,
-    uitslag_thuis: f.goals?.home ?? null,
-    uitslag_uit:   f.goals?.away ?? null,
-    pens_thuis: f.score?.penalty?.home ?? null,
-    pens_uit:   f.score?.penalty?.away ?? null,
-    status: "verwerkt",
-    updated_at: new Date().toISOString(),
-  };
-
-  // Fetch player-stats voor events
-  const players = await apiFetch(`/fixtures/players?fixture=${id}`);
-  const events = buildEventsFromPlayers(players, f, thuis);
-
-  // Upsert wedstrijd
-  const { error: wErr } = await supabase
-    .from("wk2026_wedstrijden")
-    .upsert(wedstrijd, { onConflict: "api_fixture_id" });
-  if (wErr) throw wErr;
-
-  // Replace events voor deze fixture (delete-then-insert)
-  await supabase.from("wk2026_events").delete().eq("api_fixture_id", id);
-  if (events.length) {
-    const { error: eErr } = await supabase.from("wk2026_events").insert(events);
-    if (eErr) throw eErr;
-  }
-}
+// ─── Event-parser ────────────────────────────────────────────────────
 
 function buildEventsFromPlayers(playersData: any, f: any, thuisNL: string) {
   const eigen = { thuis: f.goals?.home ?? 0, uit: f.goals?.away ?? 0 };
@@ -188,11 +126,8 @@ function buildEventsFromPlayers(playersData: any, f: any, thuisNL: string) {
       if (minuten < 1) continue;
 
       const apiPos = s.games?.position ?? "";
-      // Positie afleiden: K/V/M/A — mag later door scheidsrechter overschreven
-      // (we gebruiken API-positie als hint; frontend matcht met deelnemer-positie)
       const posHint = ({ G: "K", D: "V", M: "M", F: "A" } as any)[apiPos] ?? null;
 
-      // Gespeeld ≥ 45 min
       if (minuten >= 45) {
         events.push({ api_fixture_id: f.fixture.id, speler: naam, type: "gespeeld45", detail: posHint });
         if (tegenGoals === 0) {
@@ -222,104 +157,214 @@ function buildEventsFromPlayers(playersData: any, f: any, thuisNL: string) {
   return events;
 }
 
-// ─── Squads-sync ─────────────────────────────────────────────────────
+async function upsertFixture(supabase: any, f: any) {
+  const id: number = f.fixture.id;
+  const fase = faseOf(f.league.round ?? "");
+  const thuis = toNL(f.teams.home.name);
+  const uit   = toNL(f.teams.away.name);
 
-async function syncSquads(supabase: any) {
-  logger.info("squads-sync: teams ophalen");
-  const teamsData = await apiFetch(`/teams?league=${LEAGUE_ID}&season=${SEASON}`);
-  const teams = teamsData.response ?? [];
-  logger.info(`squads-sync: ${teams.length} teams gevonden`);
+  const wedstrijd = {
+    api_fixture_id: id,
+    datum: (f.fixture.date ?? "").slice(0, 10) || null,
+    fase,
+    poule: fase === "groep",
+    thuis, uit,
+    uitslag_thuis: f.goals?.home ?? null,
+    uitslag_uit:   f.goals?.away ?? null,
+    pens_thuis: f.score?.penalty?.home ?? null,
+    pens_uit:   f.score?.penalty?.away ?? null,
+    status: "verwerkt",
+    updated_at: new Date().toISOString(),
+  };
 
-  const { data: existing } = await supabase
-    .from("wk2026_selecties")
-    .select("land");
-  const countsPerLand: Record<string, number> = {};
-  for (const r of (existing ?? [])) {
-    countsPerLand[r.land] = (countsPerLand[r.land] ?? 0) + 1;
+  const players = await apiFetch(`/fixtures/players?fixture=${id}`);
+  const events = buildEventsFromPlayers(players, f, thuis);
+
+  const { error: wErr } = await supabase
+    .from("wk2026_wedstrijden")
+    .upsert(wedstrijd, { onConflict: "api_fixture_id" });
+  if (wErr) throw wErr;
+
+  await supabase.from("wk2026_events").delete().eq("api_fixture_id", id);
+  if (events.length) {
+    const { error: eErr } = await supabase.from("wk2026_events").insert(events);
+    if (eErr) throw eErr;
   }
 
-  let nieuw = 0;
-  let skip = 0;
-  let fouten = 0;
-
-  for (const t of teams) {
-    const teamId = t.team?.id;
-    const apiNaam = t.team?.name;
-    const landNL = toNL(apiNaam);
-    if (!teamId || !landNL) continue;
-
-    // Al volledig → skip
-    if ((countsPerLand[landNL] ?? 0) >= 26) { skip++; continue; }
-
-    try {
-      const squadData = await apiFetch(`/players/squads?team=${teamId}`);
-      const squad = squadData.response?.[0]?.players ?? [];
-      if (squad.length === 0) { skip++; await sleep(7000); continue; }
-
-      const rows = squad.map((p: any) => ({
-        land: landNL,
-        speler: p.name,
-        positie: ({ Goalkeeper: "K", Defender: "V", Midfielder: "M", Attacker: "A" } as any)[p.position] ?? null,
-        nummer: p.number ?? null,
-        foto_url: p.photo ?? null,
-        api_player_id: p.id ?? null,
-        updated_at: new Date().toISOString(),
-      }));
-
-      const { error } = await supabase
-        .from("wk2026_selecties")
-        .upsert(rows, { onConflict: "land,speler" });
-      if (error) throw error;
-
-      nieuw += rows.length;
-      logger.info(`squads-sync: ${landNL} — ${rows.length} spelers`);
-      await sleep(7000);
-    } catch (err) {
-      logger.error(`squads-sync: ${landNL} faalde`, { err: String(err) });
-      fouten++;
-      if (fouten >= 3) break;
-    }
-  }
-
-  logger.info(`squads-sync klaar: ${nieuw} rows, ${skip} skip, ${fouten} fout`);
-  return { nieuw, skip, fouten };
+  return { fixtureId: id, events: events.length };
 }
 
-// ─── Scheduled task ──────────────────────────────────────────────────
+// ─── 1. WORKER: wk2026-fetch-match ───────────────────────────────────
 
-export const wk2026Sync = schedules.task({
-  id: "wk2026-sync",
+type FetchMatchPayload = { fixtureId: number; attempt?: number };
+
+export const wk2026FetchMatch = task({
+  id: "wk2026-fetch-match",
+  maxDuration: 300,
+  run: async (payload: FetchMatchPayload) => {
+    const { fixtureId, attempt = 1 } = payload;
+    const supabase = getSupabase();
+
+    logger.info(`fetch-match: fixture ${fixtureId}, poging ${attempt}/${RETRY_MAX}`);
+
+    const fixturesData = await apiFetch(`/fixtures?id=${fixtureId}`);
+    const f = fixturesData.response?.[0];
+    if (!f) {
+      logger.warn(`Fixture ${fixtureId} niet gevonden in API`);
+      return { fixtureId, status: "not-found" };
+    }
+
+    const status = f.fixture.status?.short;
+    const isFinished = status === "FT" || status === "AET" || status === "PEN";
+
+    if (!isFinished) {
+      if (attempt >= RETRY_MAX) {
+        logger.warn(`Fixture ${fixtureId}: ${attempt} pogingen gedaan, nog niet klaar (status=${status}). Stop.`);
+        return { fixtureId, status: "gave-up", apiStatus: status };
+      }
+      logger.info(`Fixture ${fixtureId} nog status ${status}, re-queue +${RETRY_DELAY_MIN} min`);
+      await wk2026FetchMatch.trigger(
+        { fixtureId, attempt: attempt + 1 },
+        { delay: `${RETRY_DELAY_MIN}m` }
+      );
+      return { fixtureId, status: "retry-queued", apiStatus: status };
+    }
+
+    const result = await upsertFixture(supabase, f);
+    logger.info(`Fixture ${fixtureId} verwerkt: ${result.events} events`);
+    return { fixtureId, status: "done", events: result.events };
+  },
+});
+
+// ─── 2. SCHEDULER: wk2026-scheduler ──────────────────────────────────
+
+export const wk2026Scheduler = schedules.task({
+  id: "wk2026-scheduler",
   cron: {
-    pattern: "*/30 * * * *", // elke 30 min
+    pattern: "0 4 * * *",               // elke dag 04:00
+    timezone: "Europe/Amsterdam",
+  },
+  maxDuration: 180,
+  run: async () => {
+    const now = new Date();
+
+    if (now < MATCHES_WINDOW_START || now > MATCHES_WINDOW_END) {
+      logger.info(`Buiten WK-venster (${now.toISOString()}), scheduler slaat over`);
+      return { scheduled: [], skipped: "outside-window" };
+    }
+
+    const from = now.toISOString().slice(0, 10);
+    const toD = new Date(now.getTime() + 2 * 86400000).toISOString().slice(0, 10);
+    const { response } = await apiFetch(
+      `/fixtures?league=${LEAGUE_ID}&season=${SEASON}&from=${from}&to=${toD}`
+    );
+    const fixtures = response ?? [];
+    logger.info(`Scheduler: ${fixtures.length} fixtures in venster ${from}..${toD}`);
+
+    const supabase = getSupabase();
+    const { data: verwerkt } = await supabase
+      .from("wk2026_wedstrijden")
+      .select("api_fixture_id")
+      .eq("status", "verwerkt");
+    const verwerktIds = new Set((verwerkt ?? []).map((r: any) => r.api_fixture_id));
+
+    const scheduled: any[] = [];
+    for (const f of fixtures) {
+      const id = f.fixture.id;
+      if (verwerktIds.has(id)) continue;
+
+      const kickoff = new Date(f.fixture.date);
+      const fetchAt = new Date(kickoff.getTime() + FETCH_DELAY_AFTER_KICKOFF_MIN * 60_000);
+      const delaySec = Math.floor((fetchAt.getTime() - Date.now()) / 1000);
+
+      if (delaySec < -60 * 60) {
+        // match eindigde >1u geleden en is nog niet verwerkt — queue nu
+        await wk2026FetchMatch.trigger({ fixtureId: id });
+        scheduled.push({ fixtureId: id, fetchAt: "now", note: "match already past" });
+      } else if (delaySec > 0) {
+        await wk2026FetchMatch.trigger(
+          { fixtureId: id },
+          { delay: `${delaySec}s` }
+        );
+        scheduled.push({ fixtureId: id, fetchAt: fetchAt.toISOString() });
+      }
+      await sleep(100);
+    }
+
+    logger.info(`Scheduler klaar: ${scheduled.length} match-fetches gequeued`);
+    return { scheduled, totalFixtures: fixtures.length };
+  },
+});
+
+// ─── 3. SQUADS-SYNC: wk2026-squads-sync ──────────────────────────────
+
+export const wk2026SquadsSync = schedules.task({
+  id: "wk2026-squads-sync",
+  cron: {
+    pattern: "0 12 * * *",              // dagelijks 12:00
     timezone: "Europe/Amsterdam",
   },
   maxDuration: 1200,
   run: async () => {
     const now = new Date();
+
+    if (now < SQUADS_WINDOW_START || now > SQUADS_WINDOW_END) {
+      logger.info(`Buiten selectie-venster (${now.toISOString()}), skip`);
+      return { skipped: "outside-window" };
+    }
+
     const supabase = getSupabase();
 
-    const inMatchesWindow = now >= MATCHES_WINDOW_START && now <= MATCHES_WINDOW_END;
-    const inSquadsWindow  = now >= SQUADS_WINDOW_START  && now <= SQUADS_WINDOW_END;
+    const teamsData = await apiFetch(`/teams?league=${LEAGUE_ID}&season=${SEASON}`);
+    const teams = teamsData.response ?? [];
+    logger.info(`squads-sync: ${teams.length} teams`);
 
-    logger.info("wk2026-sync start", {
-      now: now.toISOString(),
-      inMatchesWindow,
-      inSquadsWindow,
-    });
-
-    const result: any = { matches: null, squads: null };
-
-    if (inMatchesWindow) {
-      result.matches = await syncMatches(supabase);
-    }
-    if (inSquadsWindow) {
-      result.squads = await syncSquads(supabase);
+    const { data: existing } = await supabase
+      .from("wk2026_selecties")
+      .select("land");
+    const countsPerLand: Record<string, number> = {};
+    for (const r of (existing ?? [])) {
+      countsPerLand[r.land] = (countsPerLand[r.land] ?? 0) + 1;
     }
 
-    if (!inMatchesWindow && !inSquadsWindow) {
-      logger.info("Buiten beide vensters — niets te doen.");
+    let nieuw = 0, skip = 0, fouten = 0;
+    for (const t of teams) {
+      const teamId = t.team?.id;
+      const landNL = toNL(t.team?.name);
+      if (!teamId) continue;
+      if ((countsPerLand[landNL] ?? 0) >= 26) { skip++; continue; }
+
+      try {
+        const squadData = await apiFetch(`/players/squads?team=${teamId}`);
+        const squad = squadData.response?.[0]?.players ?? [];
+        if (squad.length === 0) { skip++; await sleep(7000); continue; }
+
+        const rows = squad.map((p: any) => ({
+          land: landNL,
+          speler: p.name,
+          positie: ({ Goalkeeper: "K", Defender: "V", Midfielder: "M", Attacker: "A" } as any)[p.position] ?? null,
+          nummer: p.number ?? null,
+          foto_url: p.photo ?? null,
+          api_player_id: p.id ?? null,
+          updated_at: new Date().toISOString(),
+        }));
+
+        const { error } = await supabase
+          .from("wk2026_selecties")
+          .upsert(rows, { onConflict: "land,speler" });
+        if (error) throw error;
+
+        nieuw += rows.length;
+        logger.info(`squads-sync: ${landNL} — ${rows.length} spelers`);
+        await sleep(7000);
+      } catch (err) {
+        logger.error(`squads-sync: ${landNL} faalde`, { err: String(err) });
+        fouten++;
+        if (fouten >= 3) break;
+      }
     }
 
-    return result;
+    logger.info(`squads-sync klaar: ${nieuw} rows, ${skip} skip, ${fouten} fout`);
+    return { nieuw, skip, fouten };
   },
 });
