@@ -549,35 +549,62 @@ function renderSpeelschema() {
 function renderLandenGrid() {
   const el = document.getElementById("landenGrid");
   if (!el) return;
-  const volgorde = ["UEFA", "CONMEBOL", "CONCACAF", "AFC", "CAF", "OFC"];
+
+  const volgorde = ["A","B","C","D","E","F","G","H","I","J","K","L"];
   const grouped = {};
+  const zonderGroep = [];
   for (const l of state.landen) {
-    (grouped[l.confederatie] = grouped[l.confederatie] || []).push(l);
+    if (l.groep && volgorde.includes(l.groep)) {
+      (grouped[l.groep] = grouped[l.groep] || []).push(l);
+    } else {
+      zonderGroep.push(l);
+    }
   }
 
-  el.innerHTML = volgorde
-    .filter(c => grouped[c])
-    .map(c => {
-      const items = grouped[c]
+  const groepsBlokken = volgorde
+    .filter(g => grouped[g])
+    .map(g => {
+      const items = grouped[g]
         .slice()
-        .sort((a,b) => (a.groep || "").localeCompare(b.groep || "") || a.naam.localeCompare(b.naam))
+        .sort((a,b) => a.naam.localeCompare(b.naam))
         .map(l => `
-          <div class="land-pill ${l.host ? "is-host" : ""}" title="${l.host ? "Gastland · " : ""}Groep ${escapeHtml(l.groep || "—")}">
+          <div class="land-pill ${l.host ? "is-host" : ""}" title="${l.host ? "Gastland · " : ""}${escapeHtml(l.confederatie || "")}">
             <span class="land-pill__flag">${l.vlag}</span>
             <span class="land-pill__name">${escapeHtml(l.naam)}</span>
-            <span class="land-pill__group">${escapeHtml(l.groep || "")}</span>
+            <span class="land-pill__conf">${escapeHtml(l.confederatie || "")}</span>
           </div>
         `).join("");
       return `
-        <section class="confederatie">
-          <header class="confederatie__head">
-            <h4 class="confederatie__title">${escapeHtml(c)}</h4>
-            <span class="confederatie__count mono">${grouped[c].length} landen</span>
+        <section class="poule">
+          <header class="poule__head">
+            <span class="poule__letter">${g}</span>
+            <h4 class="poule__title">Groep ${g}</h4>
+            <span class="poule__count mono">${grouped[g].length} landen</span>
           </header>
-          <div class="confederatie__grid">${items}</div>
+          <div class="poule__grid">${items}</div>
         </section>
       `;
     }).join("");
+
+  const rest = zonderGroep.length
+    ? `<section class="poule poule--tbd">
+         <header class="poule__head">
+           <span class="poule__letter">?</span>
+           <h4 class="poule__title">Nog niet ingedeeld</h4>
+           <span class="poule__count mono">${zonderGroep.length} landen</span>
+         </header>
+         <div class="poule__grid">
+           ${zonderGroep.map(l => `
+             <div class="land-pill">
+               <span class="land-pill__flag">${l.vlag}</span>
+               <span class="land-pill__name">${escapeHtml(l.naam)}</span>
+               <span class="land-pill__conf">${escapeHtml(l.confederatie || "")}</span>
+             </div>`).join("")}
+         </div>
+       </section>`
+    : "";
+
+  el.innerHTML = groepsBlokken + rest;
 }
 
 function renderSelecties() {

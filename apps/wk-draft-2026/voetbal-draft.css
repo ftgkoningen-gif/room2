@@ -450,60 +450,81 @@ code {
   .schema-row__note { grid-area: note; font-size: 11px; }
 }
 
-/* ───── Landen-grid per confederatie ─────────────────────────────── */
+/* ───── Landen-grid per poule (A-L) ──────────────────────────────── */
 .landen-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 18px;
 }
-.confederatie {
+.poule {
   background: var(--paper-card);
   border: 1px solid var(--ink);
-  padding: 18px 18px 16px;
   box-shadow: var(--shadow-card);
-}
-.confederatie__head {
   display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  padding-bottom: 10px;
-  margin-bottom: 12px;
-  border-bottom: 1px solid var(--rule);
+  flex-direction: column;
 }
-.confederatie__title {
+.poule__head {
+  display: grid;
+  grid-template-columns: 46px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px 10px 10px;
+  background: var(--ink);
+  color: var(--paper);
+  border-bottom: 1px solid var(--ink);
+}
+.poule__letter {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 900;
+  font-size: 26px;
+  line-height: 1;
+  color: var(--ink);
+  background: var(--gold);
+  border-radius: 2px;
+  letter-spacing: -0.02em;
+}
+.poule__title {
+  margin: 0;
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 18px;
-  color: var(--red);
-  letter-spacing: 0.06em;
-  margin: 0;
+  font-size: 15px;
+  letter-spacing: 0.08em;
+  color: var(--paper);
+  text-transform: uppercase;
 }
-.confederatie__count {
-  font-size: 11px;
-  color: var(--ink-mute);
-  letter-spacing: 0.1em;
+.poule__count {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--gold-soft);
+  font-weight: 700;
 }
-.confederatie__grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 6px;
+.poule__grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: var(--rule);
+  padding: 1px;
+  flex: 1;
 }
+.poule--tbd .poule__letter { background: var(--ink-mute); color: var(--paper); }
+
 .land-pill {
   display: grid;
-  grid-template-columns: 20px 1fr auto;
+  grid-template-columns: 22px 1fr auto;
   align-items: center;
-  gap: 8px;
-  padding: 6px 10px;
+  gap: 10px;
+  padding: 8px 12px;
   background: var(--paper);
-  border: 1px solid var(--rule);
   font-size: 13px;
-  transition: border-color 0.15s, transform 0.15s;
+  transition: background 0.15s;
 }
-.land-pill:hover {
-  border-color: var(--ink);
-  transform: translateY(-1px);
-}
-.land-pill__flag { font-size: 15px; text-align: center; line-height: 1; }
+.land-pill:hover { background: var(--paper-deep); }
+.land-pill__flag { font-size: 16px; text-align: center; line-height: 1; }
 .land-pill__name {
   font-family: var(--font-display);
   font-weight: 500;
@@ -512,34 +533,33 @@ code {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.land-pill__group {
-  font-family: var(--font-mono);
-  font-size: 11px;
+.land-pill__conf {
+  font-family: var(--font-body);
+  font-size: 9px;
   font-weight: 700;
+  letter-spacing: 0.15em;
   color: var(--ink-mute);
-  background: var(--paper-deep);
-  padding: 1px 6px;
-  border-radius: 2px;
-  letter-spacing: 0;
+  text-transform: uppercase;
 }
 .land-pill.is-host {
-  background: linear-gradient(180deg, var(--paper), #FFF5E6 140%);
-  border-color: var(--gold);
+  background: linear-gradient(90deg, #FFF5E6, var(--paper));
   position: relative;
 }
 .land-pill.is-host::after {
   content: "HOST";
   position: absolute;
-  top: -7px;
-  right: 6px;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
   font-size: 8px;
   letter-spacing: 0.15em;
   background: var(--gold);
   color: var(--ink);
-  padding: 1px 5px;
+  padding: 2px 5px;
   font-weight: 800;
   border-radius: 2px;
 }
+.land-pill.is-host .land-pill__conf { visibility: hidden; }
 
 /* ───── Selecties-blok ───────────────────────────────────────────── */
 .selecties__header { margin-bottom: 16px; }
