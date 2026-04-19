@@ -11,6 +11,6 @@
    ═══════════════════════════════════════════════════════════════════ */
 
 window.WK_CONFIG = {
-  SUPABASE_URL:      "",   // bv. "https://xxxx.supabase.co"
-  SUPABASE_ANON_KEY: "",   // bv. "eyJhbGciOi..."
+  SUPABASE_URL:      "https://mvwsloxbrzzjeamakfzg.supabase.co",
+  SUPABASE_ANON_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im12d3Nsb3hicnp6amVhbWFrZnpnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzOTQxNjAsImV4cCI6MjA4Nzk3MDE2MH0.98WKwNtkUsjBncuoPtsWTINOHh1KYvjkKY33zrf5MZc"
 };
