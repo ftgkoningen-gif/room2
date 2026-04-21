@@ -425,8 +425,31 @@ function renderOverzicht() {
   renderPodium();
   renderSpeelschema();
   renderLandenGrid();
+  renderSelectiesTeaser();
   renderSelecties();
   renderCountdown();
+}
+
+function renderSelectiesTeaser() {
+  const el = document.getElementById("selectiesTeaser");
+  if (!el) return;
+  const compleet = state.landen.filter(l => (l.selectie || []).length >= 26).length;
+  const totaal = state.landen.length || 48;
+  const progress = Math.round((compleet / totaal) * 100);
+
+  const status = compleet === 0
+    ? `<strong>Nog geen</strong> selecties bekend`
+    : `<strong>${compleet}</strong> van de ${totaal} landen heeft de selectie ingeleverd`;
+
+  el.innerHTML = `
+    <div class="selecties-teaser__row">
+      <div class="selecties-teaser__progress">
+        <div class="selecties-teaser__bar"><div class="selecties-teaser__fill" style="width:${progress}%"></div></div>
+        <div class="selecties-teaser__label">${status}</div>
+      </div>
+      <button class="btn btn--primary" type="button" data-goto="selecties">Bekijk selecties →</button>
+    </div>
+  `;
 }
 
 function renderCountdown() {

@@ -76,6 +76,10 @@
       <span class="nav__num">IV</span>
       <span class="nav__label">Wedstrijden</span>
     </button>
+    <button class="nav__tab" role="tab" data-tab="selecties">
+      <span class="nav__num">V</span>
+      <span class="nav__label">Selecties</span>
+    </button>
   </nav>
 
   <main>
@@ -131,9 +135,9 @@
       </div>
 
       <h3 class="overzicht__h3">Selecties</h3>
-      <p class="overzicht__sub">FIFA hanteert een 26-koppige selectie per land. Zodra een land zijn definitieve selectie indient, verschijnt die hier automatisch via API-Football.</p>
-      <div id="selectiesBlock">
-        <!-- JS: progress-balk + land-kaartjes -->
+      <p class="overzicht__sub">FIFA hanteert een 26-koppige selectie per land. Zodra de selecties bekend zijn (vanaf eind mei), verschijnen ze automatisch op een eigen pagina.</p>
+      <div id="selectiesTeaser" class="selecties-teaser">
+        <!-- JS: compacte teaser met progress + link -->
       </div>
 
       <h3 class="overzicht__h3">Hoe werkt deze app?</h3>
@@ -158,9 +162,9 @@
         </article>
         <article class="howto">
           <div class="howto__num">04</div>
-          <div class="howto__label">Per speler</div>
-          <p>Klik een speler — een overzicht verschijnt met alle events per wedstrijd en de volledige puntenberekening.</p>
-          <button class="howto__link" type="button" data-goto="teams">Open een team →</button>
+          <div class="howto__label">Selecties</div>
+          <p>De 26-koppige selectie per land verschijnt op een eigen pagina zodra FIFA de squads vrijgeeft (4 juni 2026).</p>
+          <button class="howto__link" type="button" data-goto="selecties">Naar selecties →</button>
         </article>
       </div>
     </section>
@@ -312,6 +316,26 @@
         <div class="empty-state__num">00</div>
         <h3 class="empty-state__title">Het WK is nog niet begonnen</h3>
         <p class="empty-state__body">Op 11 juni 2026 trapt Mexico de eerste wedstrijd af. Daarna verschijnen hier alle matches, live bijgewerkt na elke fluitsignaal.</p>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         V — SELECTIES
+    ═══════════════════════════════════════════════════════════════════ -->
+    <section class="section hidden" id="tab-selecties" data-tab-panel="selecties">
+      <div class="section__header">
+        <div class="section__num">V.</div>
+        <div>
+          <div class="section__kicker">Rubriek &#8548;</div>
+          <h2 class="section__title">De <em>Selecties</em></h2>
+          <p class="section__intro">De 26-koppige selectie per land, bijgewerkt zodra FIFA de squads vrijgeeft.</p>
+        </div>
+      </div>
+
+      <p class="overzicht__sub">FIFA's deadline voor definitieve selecties is <strong>4 juni 2026</strong>. Onze Trigger.dev-task haalt vanaf <strong>20 mei</strong> dagelijks om 12:00 op welke landen hun squad hebben ingeleverd, en verschijnt hier binnen een dag na bekendmaking. Klik op een land om de elf spelers en reserves uit te klappen.</p>
+
+      <div id="selectiesBlock">
+        <!-- JS: progress-balk + land-kaartjes -->
       </div>
     </section>
 

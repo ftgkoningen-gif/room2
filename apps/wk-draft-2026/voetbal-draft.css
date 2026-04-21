@@ -643,7 +643,48 @@ code {
 }
 .land-pill.is-host .land-pill__conf { visibility: hidden; }
 
-/* ───── Selecties-blok ───────────────────────────────────────────── */
+/* ───── Selecties teaser (op overzicht) ──────────────────────────── */
+.selecties-teaser {
+  background: var(--paper-card);
+  border: 1px solid var(--ink);
+  padding: 18px 22px;
+  box-shadow: var(--shadow-card);
+}
+.selecties-teaser__row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 24px;
+}
+.selecties-teaser__progress { min-width: 0; }
+.selecties-teaser__bar {
+  height: 6px;
+  background: var(--paper-deep);
+  border: 1px solid var(--rule);
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+.selecties-teaser__fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--pitch), var(--gold));
+  transition: width 0.4s ease;
+}
+.selecties-teaser__label {
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+.selecties-teaser__label strong {
+  font-family: var(--font-mono);
+  color: var(--pitch);
+  font-size: 16px;
+  font-weight: 700;
+  margin-right: 4px;
+}
+@media (max-width: 540px) {
+  .selecties-teaser__row { grid-template-columns: 1fr; }
+}
+
+/* ───── Selecties-blok (op subpagina) ────────────────────────────── */
 .selecties__header { margin-bottom: 16px; }
 .selecties__progress-label {
   font-size: 13px;
