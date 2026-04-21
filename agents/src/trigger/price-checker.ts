@@ -56,13 +56,23 @@ function calcEffectivePrice(price: number, discountLabel: string | null): number
 // --- Datumlogica ---
 
 function getOfferDateRange(): { from: string; to: string } {
-  const tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
-  const weekEnd = new Date(tomorrow);
-  weekEnd.setDate(weekEnd.getDate() + 6);
+  const now = new Date();
+  // Op zondag: aanbiedingen van komende week (ma-zo)
+  // Op andere dagen: aanbiedingen van huidige week
+  const isSunday = now.getDay() === 0;
+  const from = new Date(now);
+  if (isSunday) {
+    from.setDate(from.getDate() + 1); // maandag
+  } else {
+    // Terug naar afgelopen maandag
+    const daysSinceMonday = (now.getDay() + 6) % 7;
+    from.setDate(from.getDate() - daysSinceMonday);
+  }
+  const to = new Date(from);
+  to.setDate(to.getDate() + 6); // zondag
   return {
-    from: tomorrow.toISOString().slice(0, 10),
-    to: weekEnd.toISOString().slice(0, 10),
+    from: from.toISOString().slice(0, 10),
+    to: to.toISOString().slice(0, 10),
   };
 }
 
@@ -355,7 +365,7 @@ async function searchVomar(query: string): Promise<Offer[]> {
       discountLabel,
       discountPeriod: null,
       isOnSale,
-      productUrl: `https://www.vomar.nl/assortiment?q=${encodeURIComponent(query)}`,
+      productUrl: `https://www.vomar.nl/producten?q=${encodeURIComponent(query)}`,
     };
   });
 }
@@ -501,15 +511,19 @@ async function searchHollandBarrett(categoryPath: string, query: string): Promis
 
 // --- Combine sources ---
 
+type Supermarket = "ah" | "jumbo" | "dirk" | "aldi" | "vomar" | "hb";
+const ALL_SUPERMARKETS: Supermarket[] = ["ah", "jumbo", "dirk", "aldi", "vomar", "hb"];
+
 async function checkProduct(
   product: (typeof products)[0],
-  ahToken: string
+  ahToken: string,
+  supermarkets: Set<Supermarket> = new Set(ALL_SUPERMARKETS)
 ): Promise<ProductResult> {
   const errors: string[] = [];
   let allOffers: Offer[] = [];
 
   // Albert Heijn
-  if (product.ah) {
+  if (product.ah && supermarkets.has("ah")) {
     try {
       const offers = await searchAh(product.ah.query, ahToken);
       allOffers.push(...filterOffers(offers, product.brand, product.titleContains, (product as any).titleExcludes));
@@ -519,7 +533,7 @@ async function checkProduct(
   }
 
   // Jumbo (met delay voor rate limiting)
-  if (product.jumbo) {
+  if (product.jumbo && supermarkets.has("jumbo")) {
     await delay(1500);
     try {
       const offers = await searchJumbo(product.jumbo.query);
@@ -530,7 +544,7 @@ async function checkProduct(
   }
 
   // Dirk
-  if (product.dirk) {
+  if (product.dirk && supermarkets.has("dirk")) {
     try {
       const offers = await searchDirk(product.dirk.query);
       allOffers.push(...filterOffers(offers, product.brand, product.titleContains, (product as any).titleExcludes));
@@ -540,7 +554,7 @@ async function checkProduct(
   }
 
   // Aldi
-  if ((product as any).aldi) {
+  if ((product as any).aldi && supermarkets.has("aldi")) {
     try {
       const offers = await searchAldi((product as any).aldi.category);
       allOffers.push(...filterOffers(offers, product.brand, product.titleContains, (product as any).titleExcludes));
@@ -550,7 +564,7 @@ async function checkProduct(
   }
 
   // Vomar
-  if ((product as any).vomar) {
+  if ((product as any).vomar && supermarkets.has("vomar")) {
     try {
       const offers = await searchVomar((product as any).vomar.query);
       allOffers.push(...filterOffers(offers, product.brand, product.titleContains, (product as any).titleExcludes));
@@ -560,7 +574,7 @@ async function checkProduct(
   }
 
   // Holland & Barrett
-  if ((product as any).hb) {
+  if ((product as any).hb && supermarkets.has("hb")) {
     try {
       const hbConfig = (product as any).hb;
       const offers = await searchHollandBarrett(hbConfig.category, hbConfig.query);
@@ -587,9 +601,9 @@ function getWeekNumber(date: Date): number {
 }
 
 function buildEmailHtml(results: ProductResult[]): string {
-  const tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
-  const week = getWeekNumber(tomorrow);
+  const refDate = new Date();
+  if (refDate.getDay() === 0) refDate.setDate(refDate.getDate() + 1);
+  const week = getWeekNumber(refDate);
 
   const totalProducts = results.length;
   const totalOffers = results.reduce((sum, r) => sum + r.offers.filter((o) => o.isOnSale).length, 0);
@@ -658,48 +672,49 @@ async function saveToSupabase(results: ProductResult[], weekNumber: number, year
 
 // --- Scheduled task ---
 
-export const priceChecker = schedules.task({
-  id: "price-checker",
-  cron: {
-    pattern: "30 20 * * 0", // Zondag 20:30
-    timezone: "Europe/Amsterdam",
-  },
-  maxDuration: 120,
-  run: async () => {
-    const { from, to } = getOfferDateRange();
-    console.log(`Price check gestart voor ${products.length} producten`);
-    console.log(`Aanbiedingen periode: ${from} t/m ${to}`);
+async function runPriceCheck(opts: { supermarkets: Set<Supermarket>; sendEmail: boolean; label: string }) {
+  const { from, to } = getOfferDateRange();
+  const relevant = products.filter((p) =>
+    ALL_SUPERMARKETS.some((s) => opts.supermarkets.has(s) && (p as any)[s])
+  );
+  console.log(`${opts.label} gestart voor ${relevant.length}/${products.length} producten`);
+  console.log(`Aanbiedingen periode: ${from} t/m ${to}`);
+  console.log(`Supermarkten: ${[...opts.supermarkets].join(", ")}`);
 
-    let ahToken = "";
+  const needsAh = opts.supermarkets.has("ah");
+  let ahToken = "";
+  if (needsAh) {
     try {
       ahToken = await getAhToken();
       console.log("AH API token verkregen");
     } catch (err) {
       console.error("AH token mislukt:", err);
     }
+  }
 
-    const results: ProductResult[] = [];
-    for (const product of products) {
-      console.log(`Checking: ${product.name}`);
-      const result = await checkProduct(product, ahToken);
-      results.push(result);
+  const results: ProductResult[] = [];
+  for (const product of relevant) {
+    console.log(`Checking: ${product.name}`);
+    const result = await checkProduct(product, ahToken, opts.supermarkets);
+    results.push(result);
 
-      const best = bestPerSupermarket(result.offers);
-      console.log(`  → ${result.offers.length} resultaten van ${best.length} supermarkten`);
-      if (best.length > 0) {
-        const cheapest = best.reduce((a, b) => a.effectivePrice < b.effectivePrice ? a : b);
-        console.log(`  → Goedkoopst: ${cheapest.supermarket} €${cheapest.effectivePrice.toFixed(2)}/stuk`);
-      }
+    const best = bestPerSupermarket(result.offers);
+    console.log(`  → ${result.offers.length} resultaten van ${best.length} supermarkten`);
+    if (best.length > 0) {
+      const cheapest = best.reduce((a, b) => a.effectivePrice < b.effectivePrice ? a : b);
+      console.log(`  → Goedkoopst: ${cheapest.supermarket} €${cheapest.effectivePrice.toFixed(2)}/stuk`);
     }
+  }
 
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    const week = getWeekNumber(tomorrow);
-    const year = tomorrow.getFullYear();
+  // Weeknummer volgt de `from`-datum van de actieve aanbiedingsperiode.
+  const refDate = new Date(from);
+  const week = getWeekNumber(refDate);
+  const year = refDate.getFullYear();
 
-    // Opslaan in Supabase
-    await saveToSupabase(results, week, year);
+  await saveToSupabase(results, week, year);
 
+  let emailId: string | undefined;
+  if (opts.sendEmail) {
     const emailHtml = buildEmailHtml(results);
     const emailTo = process.env.EMAIL_TO || "koningen@proton.me";
     const emailFrom = process.env.EMAIL_FROM || "onboarding@resend.dev";
@@ -715,13 +730,45 @@ export const priceChecker = schedules.task({
       console.error("E-mail versturen mislukt:", error);
       throw new Error(`Email failed: ${error.message}`);
     }
+    emailId = data?.id;
+    console.log(`E-mail verstuurd naar ${emailTo}, id: ${emailId}`);
+  }
 
-    console.log(`E-mail verstuurd naar ${emailTo}, id: ${data?.id}`);
+  return {
+    productsChecked: relevant.length,
+    totalOffers: results.reduce((sum, r) => sum + r.offers.filter((o) => o.isOnSale).length, 0),
+    emailId,
+  };
+}
 
-    return {
-      productsChecked: products.length,
-      totalOffers: results.reduce((sum, r) => sum + r.offers.filter((o) => o.isOnSale).length, 0),
-      emailId: data?.id,
-    };
+// Zondag 20:30: AH, Dirk, Aldi, Vomar, Holland & Barrett — aanbiedingen ma-zo
+export const priceChecker = schedules.task({
+  id: "price-checker",
+  cron: {
+    pattern: "30 20 * * 0",
+    timezone: "Europe/Amsterdam",
   },
+  maxDuration: 120,
+  run: async () => runPriceCheck({
+    supermarkets: new Set<Supermarket>(["ah", "dirk", "aldi", "vomar", "hb"]),
+    sendEmail: true,
+    label: "Price check (zondag)",
+  }),
+});
+
+// Woensdag 00:30: alleen Jumbo — Jumbo's nieuwe aanbiedingscycle (wo t/m di)
+// gaat rond middernacht live, dus kort erna draaien garandeert dat we de
+// komende week ophalen en niet de aflopende.
+export const jumboChecker = schedules.task({
+  id: "jumbo-checker",
+  cron: {
+    pattern: "30 0 * * 3",
+    timezone: "Europe/Amsterdam",
+  },
+  maxDuration: 120,
+  run: async () => runPriceCheck({
+    supermarkets: new Set<Supermarket>(["jumbo"]),
+    sendEmail: false,
+    label: "Jumbo check (woensdag 00:30)",
+  }),
 });
