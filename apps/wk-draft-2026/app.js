@@ -66,6 +66,10 @@ async function init() {
   renderAll();
   wireNav();
   wireEvents();
+
+  // Countdown ververst zichzelf elk uur zodat een tab die de hele dag
+  // open staat ook de juiste dag toont.
+  setInterval(renderCountdown, 60 * 60 * 1000);
 }
 
 async function loadAllData() {
