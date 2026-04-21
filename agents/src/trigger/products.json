@@ -290,35 +290,5 @@
     "brand": "oppo",
     "titleContains": ["oppo", "refreshed", "raspberry|framboos|frambozen|coulis"],
     "ah": { "query": "oppo brothers refreshed raspberry" }
-  },
-  {
-    "name": "Oppo Brothers Refreshed mango & passionfruit",
-    "category": "houdbaar",
-    "brand": "oppo",
-    "titleContains": ["oppo", "refreshed|mango", "mango|passion|passionfruit|passievrucht"],
-    "ah": { "query": "oppo brothers refreshed mango passionfruit" }
-  },
-  {
-    "name": "Oppo Brothers Naked double chocolate",
-    "category": "houdbaar",
-    "brand": "oppo",
-    "titleContains": ["oppo", "naked", "double chocolate|dubbele chocolade|chocolate|chocolade"],
-    "ah": { "query": "oppo brothers naked double chocolate" }
-  },
-  {
-    "name": "Oppo Brothers High Protein Chocolate Brownie",
-    "category": "houdbaar",
-    "brand": "oppo",
-    "titleContains": ["oppo", "high protein|pro", "chocolate|chocolade", "brownie"],
-    "ah": { "query": "oppo brothers high protein chocolate brownie" },
-    "jumbo": { "query": "oppo chocolate brownie" }
-  },
-  {
-    "name": "Oppo Brothers High Protein Strawberry Cheesecake",
-    "category": "houdbaar",
-    "brand": "oppo",
-    "titleContains": ["oppo", "high protein|pro", "strawberry|aardbei", "cheesecake"],
-    "ah": { "query": "oppo brothers high protein strawberry cheesecake" },
-    "jumbo": { "query": "oppo cheesecake" }
   }
 ]
