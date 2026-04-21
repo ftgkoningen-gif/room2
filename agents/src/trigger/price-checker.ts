@@ -39,12 +39,13 @@ const delay = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 function calcEffectivePrice(price: number, discountLabel: string | null): number {
   if (!discountLabel) return price;
-  const label = discountLabel.toLowerCase();
+  // Normaliseer spaties rond `+` zodat "1 + 1 gratis" en "1+1" beide matchen.
+  const label = discountLabel.toLowerCase().replace(/\s*\+\s*/g, "+");
 
   if (label.includes("1+1") || label.includes("2e gratis")) return price / 2;
   if (label.includes("2e halve prijs") || label.includes("2e 50%")) return (price + price / 2) / 2;
-  if (label.includes("3+2 gratis") || label.includes("3 + 2 gratis")) return (price * 3) / 5;
-  if (label.includes("2+1 gratis") || label.includes("2 + 1 gratis")) return (price * 2) / 3;
+  if (label.includes("3+2 gratis")) return (price * 3) / 5;
+  if (label.includes("2+1 gratis")) return (price * 2) / 3;
 
   const pctMatch = label.match(/(\d+)%\s*korting/);
   if (pctMatch) return price * (1 - parseInt(pctMatch[1]) / 100);
