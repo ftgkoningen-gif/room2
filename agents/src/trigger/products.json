@@ -290,5 +290,12 @@
     "brand": "oppo",
     "titleContains": ["oppo", "refreshed", "raspberry|framboos|frambozen|coulis"],
     "ah": { "query": "oppo brothers refreshed raspberry" }
+  },
+  {
+    "name": "UNA Vaatwastabletten classic",
+    "category": "houdbaar",
+    "brand": "",
+    "titleContains": ["vaatwas", "tabletten|tabs", "classic"],
+    "aldi": { "category": "huishouden/afwassen-vaatwasmiddelen" }
   }
 ]
