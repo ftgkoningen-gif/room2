@@ -557,7 +557,7 @@ function renderSpeelschema() {
     { label: "Achtste finale",      datum: "4 – 7 juli",     aantal: "8 wedstrijden",  note: "+3 p.p. voor gedrafte spelers" },
     { label: "Kwartfinales",        datum: "9 – 11 juli",    aantal: "4 wedstrijden",  note: "+3 p.p." },
     { label: "Halve finales",       datum: "14 – 15 juli",   aantal: "2 wedstrijden",  note: "+5 p.p." },
-    { label: "Strijd om derde",     datum: "18 juli",        aantal: "1 wedstrijd",    note: "" },
+    { label: "Strijd om derde",     datum: "18 juli",        aantal: "Hard Rock, Miami", note: "" },
     { label: "Finale",              datum: "19 juli",        aantal: "MetLife, New York", note: "+5 p.p. · Winnaar +5 p.p." }
   ];
   el.innerHTML = fases.map((f, i) => `
