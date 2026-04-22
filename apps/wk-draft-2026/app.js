@@ -554,11 +554,11 @@ function renderSpeelschema() {
   const fases = [
     { label: "Groepsfase",          datum: "11 – 27 juni",   aantal: "48 wedstrijden", note: "12 groepen × 4 landen" },
     { label: "Ronde van 32",        datum: "28 juni – 3 juli", aantal: "16 wedstrijden", note: "Top 2 per groep + 8 beste derden" },
-    { label: "Achtste finale",      datum: "4 – 7 juli",     aantal: "8 wedstrijden",  note: "+3 p.p. voor gedrafte spelers" },
-    { label: "Kwartfinales",        datum: "9 – 11 juli",    aantal: "4 wedstrijden",  note: "+3 p.p." },
-    { label: "Halve finales",       datum: "14 – 15 juli",   aantal: "2 wedstrijden",  note: "+5 p.p." },
+    { label: "Achtste finale",      datum: "4 – 7 juli",     aantal: "8 wedstrijden",  note: "+3 per speler" },
+    { label: "Kwartfinales",        datum: "9 – 11 juli",    aantal: "4 wedstrijden",  note: "+3 per speler" },
+    { label: "Halve finales",       datum: "14 – 15 juli",   aantal: "2 wedstrijden",  note: "+5 per speler" },
     { label: "Strijd om derde",     datum: "18 juli",        aantal: "Hard Rock, Miami", note: "" },
-    { label: "Finale",              datum: "19 juli",        aantal: "MetLife, New York", note: "+5 p.p. · Winnaar +5 p.p." }
+    { label: "Finale",              datum: "19 juli",        aantal: "MetLife, New York", note: "+5 per speler · Winnaar +5 per speler" }
   ];
   el.innerHTML = fases.map((f, i) => `
     <div class="schema-row">
