@@ -9,13 +9,13 @@ const POINTS = {
   geleKaart:     { K: -2, V: -2, M: -2, A: -2 },
   directeRood:   { K: -5, V: -5, M: -5, A: -5 },
   eigenGoal:     { K: -2, V: -2, M: -2, A: -2 },
-  gespeeld45:    { K:  3, V:  2, M:  2, A:  1 },
+  gespeeld45:    { K:  2, V:  2, M:  2, A:  1 },
   poulewinst:    { K:  3, V:  3, M:  3, A:  3 },
   gelijkspel:    { K:  1, V:  1, M:  1, A:  1 },
   velddoelpunt:  { K:  6, V:  5, M:  4, A:  4 },
   assist:        { K:  4, V:  3, M:  2, A:  2 },
   strafschop:    { K:  1, V:  1, M:  1, A:  1 },
-  cleanSheet45:  { K:  2, V:  2, M:  1, A:  0 },
+  cleanSheet45:  { K:  3, V:  2, M:  2, A:  0 },
   tegendoelpunt: { K: -1, V: -1, M:  0, A:  0 }
 };
 
