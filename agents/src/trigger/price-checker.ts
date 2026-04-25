@@ -768,7 +768,7 @@ export const jumboChecker = schedules.task({
   maxDuration: 120,
   run: async () => runPriceCheck({
     supermarkets: new Set<Supermarket>(["jumbo"]),
-    sendEmail: false,
+    sendEmail: true,
     label: "Jumbo check (woensdag 00:30)",
   }),
 });
