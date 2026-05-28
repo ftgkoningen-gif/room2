@@ -50,6 +50,14 @@ function calcEffectivePrice(price: number, discountLabel: string | null): number
   const pctMatch = label.match(/(\d+)%\s*korting/);
   if (pctMatch) return price * (1 - parseInt(pctMatch[1]) / 100);
 
+  // "3 voor 9.99" / "2 voor 5,00" → totaalprijs / aantal
+  const nVoorMatch = label.match(/(\d+)\s+voor\s+([\d,.]+)/);
+  if (nVoorMatch) {
+    const qty = parseInt(nVoorMatch[1]);
+    const total = parseFloat(nVoorMatch[2].replace(",", "."));
+    if (qty > 0 && total > 0) return total / qty;
+  }
+
   return price;
 }
 
@@ -600,7 +608,7 @@ function getWeekNumber(date: Date): number {
   return Math.ceil(((d.getTime() - yearStart.getTime()) / 86400000 + 1) / 7);
 }
 
-function buildEmailHtml(results: ProductResult[]): string {
+function buildEmailHtml(results: ProductResult[], stores: string): string {
   const refDate = new Date();
   if (refDate.getDay() === 0) refDate.setDate(refDate.getDate() + 1);
   const week = getWeekNumber(refDate);
@@ -615,7 +623,7 @@ function buildEmailHtml(results: ProductResult[]): string {
       </h1>
       <p style="color: #333; font-size: 16px; line-height: 1.6;">
         De prijzen van deze week zijn bijgewerkt. Er zijn <strong>${totalProducts} producten</strong> gecheckt
-        bij Albert Heijn, Jumbo, Dirk, Aldi, Vomar en Holland &amp; Barrett${totalOffers > 0 ? `, waarvan <strong>${totalOffers} aanbiedingen</strong>` : ""}.
+        bij ${stores}${totalOffers > 0 ? `, waarvan <strong>${totalOffers} aanbiedingen</strong>` : ""}.
       </p>
       <p style="margin: 24px 0;">
         <a href="https://pricehunter-six.vercel.app/" style="display: inline-block; padding: 12px 24px; background: #FF7300; color: #fff; font-size: 16px; font-weight: bold; text-decoration: none; border-radius: 6px;" target="_blank">
@@ -672,6 +680,15 @@ async function saveToSupabase(results: ProductResult[], weekNumber: number, year
 
 // --- Scheduled task ---
 
+const STORE_NAMES: Record<Supermarket, string> = {
+  ah: "Albert Heijn",
+  jumbo: "Jumbo",
+  dirk: "Dirk",
+  aldi: "Aldi",
+  vomar: "Vomar",
+  hb: "Holland & Barrett",
+};
+
 async function runPriceCheck(opts: { supermarkets: Set<Supermarket>; sendEmail: boolean; label: string }) {
   const { from, to } = getOfferDateRange();
   const relevant = products.filter((p) =>
@@ -715,7 +732,8 @@ async function runPriceCheck(opts: { supermarkets: Set<Supermarket>; sendEmail: 
 
   let emailId: string | undefined;
   if (opts.sendEmail) {
-    const emailHtml = buildEmailHtml(results);
+    const storesLabel = [...opts.supermarkets].map(s => STORE_NAMES[s]).join(", ");
+    const emailHtml = buildEmailHtml(results, storesLabel);
     const emailTo = process.env.EMAIL_TO || "koningen@proton.me";
     const emailFrom = process.env.EMAIL_FROM || "onboarding@resend.dev";
 
@@ -741,7 +759,7 @@ async function runPriceCheck(opts: { supermarkets: Set<Supermarket>; sendEmail: 
   };
 }
 
-// Zondag 20:30: AH, Dirk, Aldi, Vomar, Holland & Barrett — aanbiedingen ma-zo
+// Zondag 20:30: AH, Aldi, Vomar, Holland & Barrett — Jumbo en Dirk draaien woensdag
 export const priceChecker = schedules.task({
   id: "price-checker",
   cron: {
@@ -750,25 +768,23 @@ export const priceChecker = schedules.task({
   },
   maxDuration: 120,
   run: async () => runPriceCheck({
-    supermarkets: new Set<Supermarket>(["ah", "dirk", "aldi", "vomar", "hb"]),
+    supermarkets: new Set<Supermarket>(["ah", "aldi", "vomar", "hb"]),
     sendEmail: true,
-    label: "Price check (zondag)",
+    label: "Price check (zondag — AH/Aldi/Vomar/H&B)",
   }),
 });
 
-// Woensdag 00:30: alleen Jumbo — Jumbo's nieuwe aanbiedingscycle (wo t/m di)
-// gaat rond middernacht live, dus kort erna draaien garandeert dat we de
-// komende week ophalen en niet de aflopende.
+// Woensdag 20:30: Jumbo + Dirk
 export const jumboChecker = schedules.task({
   id: "jumbo-checker",
   cron: {
-    pattern: "30 0 * * 3",
+    pattern: "30 20 * * 3",
     timezone: "Europe/Amsterdam",
   },
   maxDuration: 120,
   run: async () => runPriceCheck({
-    supermarkets: new Set<Supermarket>(["jumbo"]),
+    supermarkets: new Set<Supermarket>(["jumbo", "dirk"]),
     sendEmail: true,
-    label: "Jumbo check (woensdag 00:30)",
+    label: "Jumbo + Dirk check (woensdag 20:30)",
   }),
 });

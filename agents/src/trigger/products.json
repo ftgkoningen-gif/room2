@@ -214,10 +214,10 @@
     "category": "bio-diepvries",
     "brand": "",
     "titleContains": ["biologisch|bio", "sperzieboon|sperziebonen|sperzie"],
-    "titleExcludes": ["baby|hapje|maaltijd|potje|snack|soep|saus|bonbébé|bonbebe|ella|bambix|knijp"],
-    "ah": { "query": "biologisch sperziebonen" },
-    "jumbo": { "query": "biologische sperziebonen" },
-    "dirk": { "query": "biologische sperziebonen" }
+    "titleExcludes": ["hak|gebroken|blik|pot|baby|hapje|maaltijd|potje|snack|soep|saus|bonbébé|bonbebe|ella|bambix|knijp"],
+    "ah": { "query": "biologisch sperziebonen diepvries" },
+    "jumbo": { "query": "biologische sperziebonen diepvries" },
+    "dirk": { "query": "biologische sperziebonen diepvries" }
   },
   {
     "name": "Bio kastanjechampignons",
