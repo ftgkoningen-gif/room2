@@ -119,7 +119,7 @@ async function loadFromSupabase() {
     const [wRes, eRes, sRes] = await Promise.all([
       client.from("wk2026_wedstrijden").select("*"),
       client.from("wk2026_events").select("*"),
-      client.from("wk2026_selecties").select("*")
+      client.from("wk2026_selecties").select("*").limit(2000)
     ]);
 
     if (!wRes.error && Array.isArray(wRes.data) && wRes.data.length) {
@@ -437,7 +437,7 @@ function renderOverzicht() {
 function renderSelectiesTeaser() {
   const el = document.getElementById("selectiesTeaser");
   if (!el) return;
-  const compleet = state.landen.filter(l => (l.selectie || []).length >= 26).length;
+  const compleet = state.landen.filter(l => (l.selectie || []).length >= 23).length;
   const totaal = state.landen.length || 48;
   const progress = Math.round((compleet / totaal) * 100);
 
@@ -471,7 +471,7 @@ function renderStats() {
 
   const pot = state.deelnemers.length * INLEG_PER_DEELNEMER;
   const verwerkt = state.wedstrijden.filter(w => w.status === "verwerkt").length;
-  const selectiesCompleet = state.landen.filter(l => (l.selectie || []).length >= 26).length;
+  const selectiesCompleet = state.landen.filter(l => (l.selectie || []).length >= 23).length;
   const beforeWK = (WK_START - new Date()) > 0;
 
   // Tegel 1: landen (altijd 48)
@@ -638,7 +638,7 @@ function renderSelecties() {
   const el = document.getElementById("selectiesBlock");
   if (!el) return;
   const landenMetSelectie = state.landen.filter(l => (l.selectie || []).length > 0);
-  const compleet = state.landen.filter(l => (l.selectie || []).length >= 26).length;
+  const compleet = state.landen.filter(l => (l.selectie || []).length >= 23).length;
   const totaal = state.landen.length || 48;
   const progress = Math.round((compleet / totaal) * 100);
 
@@ -662,7 +662,7 @@ function renderSelecties() {
 
   const pillen = state.landen.map(l => {
     const sel = l.selectie || [];
-    const isReady = sel.length >= 26;
+    const isReady = sel.length >= 23;
     const cls = isReady ? "selectie-land is-ready" : (sel.length > 0 ? "selectie-land is-partial" : "selectie-land is-pending");
     const badge = isReady ? "✓" : (sel.length > 0 ? `${sel.length}/26` : "—");
     return `
@@ -674,12 +674,13 @@ function renderSelecties() {
           <span class="selectie-land__badge mono">${badge}</span>
         </summary>
         <ol class="selectie-list">
-          ${sel.map(s => `
-            <li>
-              ${s.nummer ? `<span class="sel-num mono">${s.nummer}</span>` : `<span class="sel-num"></span>`}
-              <span class="sel-pos">${escapeHtml(s.positie || "")}</span>
+          ${sel.map(s => {
+            const posLabel = {K:"Doelman",V:"Verdediger",M:"Middenvelder",A:"Aanvaller"}[s.positie] || s.positie || "";
+            return `<li>
+              <span class="sel-pos sel-pos--${s.positie||'X'}">${escapeHtml(posLabel)}</span>
               <span class="sel-name">${escapeHtml(s.naam)}</span>
-            </li>`).join("") || '<li class="italic" style="color:var(--ink-mute)">Selectie nog niet bekend</li>'}
+            </li>`;
+          }).join("") || '<li class="italic" style="color:var(--ink-mute)">Selectie nog niet bekend</li>'}
         </ol>
       </details>
     `;
