@@ -119,7 +119,13 @@ async function loadFromSupabase() {
     const [wRes, eRes, sRes] = await Promise.all([
       client.from("wk2026_wedstrijden").select("*"),
       client.from("wk2026_events").select("*"),
-      client.from("wk2026_selecties").select("*").limit(2000)
+      (async () => {
+        const [p1, p2] = await Promise.all([
+          client.from("wk2026_selecties").select("*").range(0, 999),
+          client.from("wk2026_selecties").select("*").range(1000, 1999),
+        ]);
+        return { data: [...(p1.data||[]), ...(p2.data||[])], error: p1.error || p2.error };
+      })()
     ]);
 
     if (!wRes.error && Array.isArray(wRes.data) && wRes.data.length) {
@@ -660,7 +666,7 @@ function renderSelecties() {
     return;
   }
 
-  const pillen = state.landen.map(l => {
+  function renderLandKaart(l) {
     const sel = l.selectie || [];
     const isReady = sel.length >= 23;
     const cls = isReady ? "selectie-land is-ready" : (sel.length > 0 ? "selectie-land is-partial" : "selectie-land is-pending");
@@ -670,28 +676,40 @@ function renderSelecties() {
         <summary>
           <span class="selectie-land__flag">${l.vlag}</span>
           <span class="selectie-land__name">${escapeHtml(l.naam)}</span>
-          <span class="selectie-land__group mono">${escapeHtml(l.groep || "")}</span>
           <span class="selectie-land__badge mono">${badge}</span>
         </summary>
         <ol class="selectie-list">
-          ${sel.map(s => {
-            const posLabel = {K:"Doelman",V:"Verdediger",M:"Middenvelder",A:"Aanvaller"}[s.positie] || s.positie || "";
-            return `<li>
-              <span class="sel-pos sel-pos--${s.positie||'X'}">${escapeHtml(posLabel)}</span>
+          ${[...sel].sort((a,b) => {
+            const o = {K:0,V:1,M:2,A:3};
+            return (o[a.positie]??4) - (o[b.positie]??4);
+          }).map(s => `<li>
+              <span class="sel-pos">${escapeHtml(s.positie || "")}</span>
               <span class="sel-name">${escapeHtml(s.naam)}</span>
-            </li>`;
-          }).join("") || '<li class="italic" style="color:var(--ink-mute)">Selectie nog niet bekend</li>'}
+            </li>`).join("") || '<li class="italic" style="color:var(--ink-mute)">Selectie nog niet bekend</li>'}
         </ol>
-      </details>
-    `;
-  }).join("");
+      </details>`;
+  }
+
+  const groepen = {};
+  for (const l of state.landen) {
+    const g = l.groep || '?';
+    if (!groepen[g]) groepen[g] = [];
+    groepen[g].push(l);
+  }
+
+  const groepSections = Object.keys(groepen).sort().map(groep => `
+    <div class="selecties__groep">
+      <h3 class="selecties__groep-titel">Groep ${escapeHtml(groep)}</h3>
+      <div class="selecties__grid">${groepen[groep].map(renderLandKaart).join("")}</div>
+    </div>
+  `).join("");
 
   el.innerHTML = `
     <div class="selecties__header">
       <div class="selecties__progress-label">Selecties bekend: <strong>${compleet}</strong> / ${totaal} landen${updatedStr}</div>
       <div class="selecties__progress-bar"><div class="selecties__progress-fill" style="width:${progress}%"></div></div>
     </div>
-    <div class="selecties__grid">${pillen}</div>
+    ${groepSections}
   `;
 }
 
