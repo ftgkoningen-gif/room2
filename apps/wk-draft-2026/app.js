@@ -443,13 +443,13 @@ function renderOverzicht() {
 function renderSelectiesTeaser() {
   const el = document.getElementById("selectiesTeaser");
   if (!el) return;
-  const compleet = state.landen.filter(l => (l.selectie || []).length >= 23).length;
+  const definitief = state.landen.filter(l => { const n = (l.selectie||[]).length; return n >= 23 && n <= 26; }).length;
   const totaal = state.landen.length || 48;
-  const progress = Math.round((compleet / totaal) * 100);
+  const progress = Math.round((definitief / totaal) * 100);
 
-  const status = compleet === 0
+  const status = definitief === 0
     ? `<strong>Nog geen</strong> selecties bekend`
-    : `<strong>${compleet}</strong> van de ${totaal} landen heeft de selectie ingeleverd`;
+    : `<strong>${definitief}</strong> van de ${totaal} landen heeft de definitieve selectie ingeleverd`;
 
   el.innerHTML = `
     <div class="selecties-teaser__row">
@@ -477,7 +477,7 @@ function renderStats() {
 
   const pot = state.deelnemers.length * INLEG_PER_DEELNEMER;
   const verwerkt = state.wedstrijden.filter(w => w.status === "verwerkt").length;
-  const selectiesCompleet = state.landen.filter(l => (l.selectie || []).length >= 23).length;
+  const selectiesCompleet = state.landen.filter(l => { const n = (l.selectie||[]).length; return n >= 23 && n <= 26; }).length;
   const beforeWK = (WK_START - new Date()) > 0;
 
   // Tegel 1: landen (altijd 48)
@@ -643,8 +643,8 @@ function renderLandenGrid() {
 function renderSelecties() {
   const el = document.getElementById("selectiesBlock");
   if (!el) return;
-  const landenMetSelectie = state.landen.filter(l => (l.selectie || []).length > 0);
-  const compleet = state.landen.filter(l => (l.selectie || []).length >= 23).length;
+  const landenMetSelectie = state.landen.filter(l => { const n = (l.selectie||[]).length; return n >= 1 && n <= 26; });
+  const compleet = state.landen.filter(l => { const n = (l.selectie||[]).length; return n >= 23 && n <= 26; }).length;
   const totaal = state.landen.length || 48;
   const progress = Math.round((compleet / totaal) * 100);
 
@@ -667,9 +667,12 @@ function renderSelecties() {
   }
 
   function renderLandKaart(l) {
-    const sel = l.selectie || [];
+    const raw = l.selectie || [];
+    const sel = raw.length <= 26 ? raw : []; // voorselecties negeren
     const isReady = sel.length >= 23;
-    const cls = isReady ? "selectie-land is-ready" : (sel.length > 0 ? "selectie-land is-partial" : "selectie-land is-pending");
+    const cls = isReady        ? "selectie-land is-ready"
+              : sel.length > 0 ? "selectie-land is-partial"
+              :                  "selectie-land is-pending";
     const badge = isReady ? "✓" : (sel.length > 0 ? `${sel.length}/26` : "—");
     return `
       <details class="${cls}">
@@ -706,7 +709,7 @@ function renderSelecties() {
 
   el.innerHTML = `
     <div class="selecties__header">
-      <div class="selecties__progress-label">Selecties bekend: <strong>${compleet}</strong> / ${totaal} landen${updatedStr}</div>
+      <div class="selecties__progress-label">Definitieve selecties: <strong>${compleet}</strong> / ${totaal} landen${updatedStr}</div>
       <div class="selecties__progress-bar"><div class="selecties__progress-fill" style="width:${progress}%"></div></div>
     </div>
     ${groepSections}

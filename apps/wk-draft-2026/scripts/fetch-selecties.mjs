@@ -141,10 +141,26 @@ if (existsSync(rawPath)) {
     const naam = t.team.name;
     process.stdout.write(`[${++i}/${teams.length}] ${naam}… `);
     try {
-      const j       = await api(`/players/squads?team=${id}`);
-      const players = j.response?.[0]?.players ?? [];
+      // Gebruik league=1&season=2026 voor de definitieve WK-selectie (26 spelers).
+      // Vóór aanvang toernooi: fallback naar /players/squads als resultaat leeg is.
+      let players = [];
+      const wkRes = await api(`/players/squads?team=${id}&league=1&season=2026`);
+      players = wkRes.response?.[0]?.players ?? [];
+
+      if (players.length === 0) {
+        // Fallback: algemene squad (markeert als voorselectie bij >26 spelers)
+        const fbRes = await api(`/players/squads?team=${id}`);
+        players = fbRes.response?.[0]?.players ?? [];
+        if (players.length > 0) {
+          console.log(`${players.length} spelers (voorselectie-fallback)`);
+        } else {
+          console.log(`geen spelers`);
+        }
+      } else {
+        console.log(`${players.length} spelers (definitief WK)`);
+      }
+
       selectiesRaw[id] = { team: t.team, players };
-      console.log(`${players.length} spelers`);
     } catch (e) {
       console.error(`FOUT: ${e.message}`);
       selectiesRaw[id] = { team: t.team, players: [] };
