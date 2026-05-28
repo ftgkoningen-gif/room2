@@ -736,6 +736,22 @@ code {
 .selectie-land.is-ready { border-left: 4px solid var(--pitch); }
 .selectie-land.is-partial { border-left: 4px solid var(--gold); }
 .selectie-land.is-pending { border-left: 4px solid var(--rule); opacity: 0.75; }
+
+/* Uitklappen over volledige breedte */
+.selectie-land[open] {
+  grid-column: 1 / -1;
+}
+.selectie-land[open] .selectie-list {
+  column-count: 3;
+  column-gap: 24px;
+}
+.selectie-list li { break-inside: avoid; }
+@media (max-width: 700px) {
+  .selectie-land[open] .selectie-list { column-count: 2; }
+}
+@media (max-width: 420px) {
+  .selectie-land[open] .selectie-list { column-count: 1; }
+}
 .selectie-land summary {
   display: grid;
   grid-template-columns: 22px 1fr auto auto;
@@ -782,7 +798,7 @@ code {
 }
 .selectie-list li {
   display: grid;
-  grid-template-columns: 90px 1fr;
+  grid-template-columns: 28px 1fr;
   align-items: center;
   gap: 8px;
   padding: 4px 0;
