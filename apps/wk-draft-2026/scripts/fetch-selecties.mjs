@@ -21,7 +21,7 @@ const keyPath   = join(root, '.api-keys', 'api-football.txt');
 
 if (!existsSync(cacheDir)) mkdirSync(cacheDir, { recursive: true });
 
-const KEY  = readFileSync(keyPath, 'utf8').trim();
+const KEY  = readFileSync(keyPath, 'utf8').split('\n')[0].trim();
 const BASE = 'https://v3.football.api-sports.io';
 
 async function api(path) {
@@ -96,6 +96,7 @@ const TEAM_NL = {
   "Croatia":                     "Kroatië",
   "Ghana":                       "Ghana",
   "Panama":                      "Panama",
+  "Iraq":                        "Irak",
 };
 
 // API-positie → app-positie
@@ -141,26 +142,10 @@ if (existsSync(rawPath)) {
     const naam = t.team.name;
     process.stdout.write(`[${++i}/${teams.length}] ${naam}… `);
     try {
-      // Gebruik league=1&season=2026 voor de definitieve WK-selectie (26 spelers).
-      // Vóór aanvang toernooi: fallback naar /players/squads als resultaat leeg is.
-      let players = [];
-      const wkRes = await api(`/players/squads?team=${id}&league=1&season=2026`);
-      players = wkRes.response?.[0]?.players ?? [];
-
-      if (players.length === 0) {
-        // Fallback: algemene squad (markeert als voorselectie bij >26 spelers)
-        const fbRes = await api(`/players/squads?team=${id}`);
-        players = fbRes.response?.[0]?.players ?? [];
-        if (players.length > 0) {
-          console.log(`${players.length} spelers (voorselectie-fallback)`);
-        } else {
-          console.log(`geen spelers`);
-        }
-      } else {
-        console.log(`${players.length} spelers (definitief WK)`);
-      }
-
+      const j       = await api(`/players/squads?team=${id}`);
+      const players = j.response?.[0]?.players ?? [];
       selectiesRaw[id] = { team: t.team, players };
+      console.log(`${players.length} spelers`);
     } catch (e) {
       console.error(`FOUT: ${e.message}`);
       selectiesRaw[id] = { team: t.team, players: [] };

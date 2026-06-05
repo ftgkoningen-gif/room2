@@ -47,7 +47,7 @@ const TEAM_NL = {
   "Jordan": "Jordanië", "Portugal": "Portugal", "DR Congo": "Congo-Kinshasa",
   "Congo DR": "Congo-Kinshasa", "Congo": "Congo-Kinshasa",
   "Uzbekistan": "Oezbekistan", "Colombia": "Colombia", "England": "Engeland",
-  "Croatia": "Kroatië", "Ghana": "Ghana", "Panama": "Panama",
+  "Croatia": "Kroatië", "Ghana": "Ghana", "Panama": "Panama", "Iraq": "Irak",
 };
 
 const POS_MAP = { "Goalkeeper": "K", "Defender": "V", "Midfielder": "M", "Forward": "A", "Attacker": "A" };

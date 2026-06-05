@@ -43,7 +43,7 @@
 
     { "naam": "Frankrijk",         "code": "FRA", "vlag": "🇫🇷", "confederatie": "UEFA",     "groep": "I", "selectie": [] },
     { "naam": "Senegal",           "code": "SEN", "vlag": "🇸🇳", "confederatie": "CAF",      "groep": "I", "selectie": [] },
-    { "naam": "Bolivia",           "code": "BOL", "vlag": "🇧🇴", "confederatie": "CONMEBOL", "groep": "I", "selectie": [], "opmerking": "Playoff-winnaar (Bolivia vs Irak)" },
+    { "naam": "Irak",              "code": "IRQ", "vlag": "🇮🇶", "confederatie": "AFC",      "groep": "I", "selectie": [] },
     { "naam": "Noorwegen",         "code": "NOR", "vlag": "🇳🇴", "confederatie": "UEFA",     "groep": "I", "selectie": [] },
 
     { "naam": "Argentinië",        "code": "ARG", "vlag": "🇦🇷", "confederatie": "CONMEBOL", "groep": "J", "selectie": [] },
