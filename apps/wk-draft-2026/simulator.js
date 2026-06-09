@@ -530,7 +530,7 @@
 
     // Reset alles
     el.querySelector('#simReset')?.addEventListener('click', () => {
-      if (!confirm('Weet je zeker dat je de simulator wil resetten?')) return;
+      if (!confirm('Weet je zeker dat je de simulatie wil resetten?')) return;
       SIM.derden  = [];
       SIM.winners = {};
       SIM.stap    = 1;
