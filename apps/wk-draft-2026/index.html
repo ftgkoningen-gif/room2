@@ -80,6 +80,10 @@
       <span class="nav__num">V</span>
       <span class="nav__label">Selecties</span>
     </button>
+    <button class="nav__tab" role="tab" data-tab="simulator">
+      <span class="nav__num">VI</span>
+      <span class="nav__label">Simulator</span>
+    </button>
   </nav>
 
   <main>
@@ -339,6 +343,25 @@
       </div>
     </section>
 
+    <!-- ═══════════════════════════════════════════════════════════════════
+         VI — SIMULATOR
+    ═══════════════════════════════════════════════════════════════════ -->
+    <section class="section hidden" id="tab-simulator" data-tab-panel="simulator">
+      <div class="section__header">
+        <div class="section__num">VI.</div>
+        <div>
+          <div class="section__kicker">Scenario's</div>
+          <h2 class="section__title">De <em>Simulator</em></h2>
+          <p class="section__intro">Stel de poulevolgorde in, kies de beste derden en speel de knock-outfase door. Zo zie je welke landen in jouw scenario ver komen.</p>
+        </div>
+      </div>
+
+      <div id="sim-content">
+        <!-- Wordt gevuld door simulator.js zodra dit tabblad wordt geopend -->
+        <p class="overzicht__sub">Open dit tabblad om de simulator te laden.</p>
+      </div>
+    </section>
+
   </main>
 
   <!-- ═══════════════════════════════════════════════════════════════════
@@ -380,5 +403,6 @@
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
   <script src="app.js?v=20260528e" defer></script>
+  <script src="simulator.js" defer></script>
 </body>
 </html>

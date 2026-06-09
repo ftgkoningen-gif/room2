@@ -1,64 +1,6680 @@
 {
   "_info": "WK 2026 — 48 landen × 26-koppige selectie = 1.248 beschikbare spelers. Groepsindeling volgens FIFA-loting, actueel per 18 april 2026. Selecties volgen mei/juni 2026.",
   "landen": [
-    { "naam": "Mexico",            "code": "MEX", "vlag": "🇲🇽", "confederatie": "CONCACAF", "groep": "A", "host": true,  "selectie": [] },
-    { "naam": "Zuid-Afrika",       "code": "RSA", "vlag": "🇿🇦", "confederatie": "CAF",      "groep": "A", "selectie": [] },
-    { "naam": "Zuid-Korea",        "code": "KOR", "vlag": "🇰🇷", "confederatie": "AFC",      "groep": "A", "selectie": [] },
-    { "naam": "Tsjechië",          "code": "CZE", "vlag": "🇨🇿", "confederatie": "UEFA",     "groep": "A", "selectie": [] },
-
-    { "naam": "Canada",            "code": "CAN", "vlag": "🇨🇦", "confederatie": "CONCACAF", "groep": "B", "host": true, "selectie": [] },
-    { "naam": "Bosnië en Herzegovina", "code": "BIH", "vlag": "🇧🇦", "confederatie": "UEFA", "groep": "B", "selectie": [] },
-    { "naam": "Qatar",             "code": "QAT", "vlag": "🇶🇦", "confederatie": "AFC",      "groep": "B", "selectie": [] },
-    { "naam": "Zwitserland",       "code": "SUI", "vlag": "🇨🇭", "confederatie": "UEFA",     "groep": "B", "selectie": [] },
-
-    { "naam": "Brazilië",          "code": "BRA", "vlag": "🇧🇷", "confederatie": "CONMEBOL", "groep": "C", "selectie": [] },
-    { "naam": "Marokko",           "code": "MAR", "vlag": "🇲🇦", "confederatie": "CAF",      "groep": "C", "selectie": [] },
-    { "naam": "Haïti",             "code": "HAI", "vlag": "🇭🇹", "confederatie": "CONCACAF", "groep": "C", "selectie": [] },
-    { "naam": "Schotland",         "code": "SCO", "vlag": "🏴󠁧󠁢󠁳󠁣󠁴󠁿", "confederatie": "UEFA",     "groep": "C", "selectie": [] },
-
-    { "naam": "Verenigde Staten",  "code": "USA", "vlag": "🇺🇸", "confederatie": "CONCACAF", "groep": "D", "host": true, "selectie": [] },
-    { "naam": "Paraguay",          "code": "PAR", "vlag": "🇵🇾", "confederatie": "CONMEBOL", "groep": "D", "selectie": [] },
-    { "naam": "Australië",         "code": "AUS", "vlag": "🇦🇺", "confederatie": "AFC",      "groep": "D", "selectie": [] },
-    { "naam": "Turkije",           "code": "TUR", "vlag": "🇹🇷", "confederatie": "UEFA",     "groep": "D", "selectie": [] },
-
-    { "naam": "Duitsland",         "code": "GER", "vlag": "🇩🇪", "confederatie": "UEFA",     "groep": "E", "selectie": [] },
-    { "naam": "Curaçao",           "code": "CUW", "vlag": "🇨🇼", "confederatie": "CONCACAF", "groep": "E", "selectie": [] },
-    { "naam": "Ivoorkust",         "code": "CIV", "vlag": "🇨🇮", "confederatie": "CAF",      "groep": "E", "selectie": [] },
-    { "naam": "Ecuador",           "code": "ECU", "vlag": "🇪🇨", "confederatie": "CONMEBOL", "groep": "E", "selectie": [] },
-
-    { "naam": "Nederland",         "code": "NED", "vlag": "🇳🇱", "confederatie": "UEFA",     "groep": "F", "selectie": [] },
-    { "naam": "Japan",             "code": "JPN", "vlag": "🇯🇵", "confederatie": "AFC",      "groep": "F", "selectie": [] },
-    { "naam": "Zweden",            "code": "SWE", "vlag": "🇸🇪", "confederatie": "UEFA",     "groep": "F", "selectie": [] },
-    { "naam": "Tunesië",           "code": "TUN", "vlag": "🇹🇳", "confederatie": "CAF",      "groep": "F", "selectie": [] },
-
-    { "naam": "België",            "code": "BEL", "vlag": "🇧🇪", "confederatie": "UEFA",     "groep": "G", "selectie": [] },
-    { "naam": "Egypte",            "code": "EGY", "vlag": "🇪🇬", "confederatie": "CAF",      "groep": "G", "selectie": [] },
-    { "naam": "Iran",              "code": "IRN", "vlag": "🇮🇷", "confederatie": "AFC",      "groep": "G", "selectie": [] },
-    { "naam": "Nieuw-Zeeland",     "code": "NZL", "vlag": "🇳🇿", "confederatie": "OFC",      "groep": "G", "selectie": [] },
-
-    { "naam": "Spanje",            "code": "ESP", "vlag": "🇪🇸", "confederatie": "UEFA",     "groep": "H", "selectie": [] },
-    { "naam": "Kaapverdië",        "code": "CPV", "vlag": "🇨🇻", "confederatie": "CAF",      "groep": "H", "selectie": [] },
-    { "naam": "Saudi-Arabië",      "code": "KSA", "vlag": "🇸🇦", "confederatie": "AFC",      "groep": "H", "selectie": [] },
-    { "naam": "Uruguay",           "code": "URU", "vlag": "🇺🇾", "confederatie": "CONMEBOL", "groep": "H", "selectie": [] },
-
-    { "naam": "Frankrijk",         "code": "FRA", "vlag": "🇫🇷", "confederatie": "UEFA",     "groep": "I", "selectie": [] },
-    { "naam": "Senegal",           "code": "SEN", "vlag": "🇸🇳", "confederatie": "CAF",      "groep": "I", "selectie": [] },
-    { "naam": "Irak",              "code": "IRQ", "vlag": "🇮🇶", "confederatie": "AFC",      "groep": "I", "selectie": [] },
-    { "naam": "Noorwegen",         "code": "NOR", "vlag": "🇳🇴", "confederatie": "UEFA",     "groep": "I", "selectie": [] },
-
-    { "naam": "Argentinië",        "code": "ARG", "vlag": "🇦🇷", "confederatie": "CONMEBOL", "groep": "J", "selectie": [] },
-    { "naam": "Algerije",          "code": "ALG", "vlag": "🇩🇿", "confederatie": "CAF",      "groep": "J", "selectie": [] },
-    { "naam": "Oostenrijk",        "code": "AUT", "vlag": "🇦🇹", "confederatie": "UEFA",     "groep": "J", "selectie": [] },
-    { "naam": "Jordanië",          "code": "JOR", "vlag": "🇯🇴", "confederatie": "AFC",      "groep": "J", "selectie": [] },
-
-    { "naam": "Portugal",          "code": "POR", "vlag": "🇵🇹", "confederatie": "UEFA",     "groep": "K", "selectie": [] },
-    { "naam": "Congo-Kinshasa",    "code": "COD", "vlag": "🇨🇩", "confederatie": "CAF",      "groep": "K", "selectie": [] },
-    { "naam": "Oezbekistan",       "code": "UZB", "vlag": "🇺🇿", "confederatie": "AFC",      "groep": "K", "selectie": [] },
-    { "naam": "Colombia",          "code": "COL", "vlag": "🇨🇴", "confederatie": "CONMEBOL", "groep": "K", "selectie": [] },
-
-    { "naam": "Engeland",          "code": "ENG", "vlag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "confederatie": "UEFA",     "groep": "L", "selectie": [] },
-    { "naam": "Kroatië",           "code": "CRO", "vlag": "🇭🇷", "confederatie": "UEFA",     "groep": "L", "selectie": [] },
-    { "naam": "Ghana",             "code": "GHA", "vlag": "🇬🇭", "confederatie": "CAF",      "groep": "L", "selectie": [] },
-    { "naam": "Panama",            "code": "PAN", "vlag": "🇵🇦", "confederatie": "CONCACAF", "groep": "L", "selectie": [] }
+    {
+      "naam": "Mexico",
+      "code": "MEX",
+      "vlag": "🇲🇽",
+      "confederatie": "CONCACAF",
+      "groep": "A",
+      "host": true,
+      "selectie": [
+        {
+          "naam": "C. Acevedo",
+          "positie": "K",
+          "nummer": 12
+        },
+        {
+          "naam": "G. Ochoa",
+          "positie": "K",
+          "nummer": 13
+        },
+        {
+          "naam": "J. Rangel",
+          "positie": "K",
+          "nummer": 1
+        },
+        {
+          "naam": "J. Gallardo",
+          "positie": "V",
+          "nummer": 23
+        },
+        {
+          "naam": "C. Montes",
+          "positie": "V",
+          "nummer": 3
+        },
+        {
+          "naam": "I. Reyes",
+          "positie": "V",
+          "nummer": 15
+        },
+        {
+          "naam": "J. Sánchez",
+          "positie": "V",
+          "nummer": 2
+        },
+        {
+          "naam": "J. Vásquez",
+          "positie": "V",
+          "nummer": 5
+        },
+        {
+          "naam": "E. Álvarez",
+          "positie": "M",
+          "nummer": 4
+        },
+        {
+          "naam": "M. Chávez",
+          "positie": "V",
+          "nummer": 20
+        },
+        {
+          "naam": "O. Vargas",
+          "positie": "M",
+          "nummer": 18
+        },
+        {
+          "naam": "L. Chávez",
+          "positie": "M",
+          "nummer": 24
+        },
+        {
+          "naam": "Álvaro Fidalgo",
+          "positie": "M",
+          "nummer": 8
+        },
+        {
+          "naam": "B. Gutiérrez",
+          "positie": "M",
+          "nummer": 26
+        },
+        {
+          "naam": "É. Lira",
+          "positie": "M",
+          "nummer": 6
+        },
+        {
+          "naam": "G. Mora",
+          "positie": "M",
+          "nummer": 19
+        },
+        {
+          "naam": "O. Pineda",
+          "positie": "M",
+          "nummer": 17
+        },
+        {
+          "naam": "L. Romo",
+          "positie": "M",
+          "nummer": 7
+        },
+        {
+          "naam": "R. Alvarado",
+          "positie": "M",
+          "nummer": 25
+        },
+        {
+          "naam": "S. Giménez",
+          "positie": "A",
+          "nummer": 11
+        },
+        {
+          "naam": "A. González",
+          "positie": "A",
+          "nummer": 14
+        },
+        {
+          "naam": "C. Huerta",
+          "positie": "M",
+          "nummer": 21
+        },
+        {
+          "naam": "R. Jiménez",
+          "positie": "A",
+          "nummer": 9
+        },
+        {
+          "naam": "G. Martínez",
+          "positie": "A",
+          "nummer": 22
+        },
+        {
+          "naam": "J. Quiñones",
+          "positie": "M",
+          "nummer": 16
+        },
+        {
+          "naam": "A. Vega",
+          "positie": "A",
+          "nummer": 10
+        }
+      ]
+    },
+    {
+      "naam": "Zuid-Afrika",
+      "code": "RSA",
+      "vlag": "🇿🇦",
+      "confederatie": "CAF",
+      "groep": "A",
+      "selectie": [
+        {
+          "naam": "S. Chaine",
+          "positie": "K",
+          "nummer": 16
+        },
+        {
+          "naam": "R. Goss",
+          "positie": "K",
+          "nummer": 22
+        },
+        {
+          "naam": "R. Williams",
+          "positie": "K",
+          "nummer": 1
+        },
+        {
+          "naam": "B. Cross",
+          "positie": "V",
+          "nummer": 26
+        },
+        {
+          "naam": "S. Kabini",
+          "positie": "V",
+          "nummer": 18
+        },
+        {
+          "naam": "O. Makhanya",
+          "positie": "V",
+          "nummer": 24
+        },
+        {
+          "naam": "M. Mbokazi",
+          "positie": "V",
+          "nummer": 14
+        },
+        {
+          "naam": "A. Modiba",
+          "positie": "V",
+          "nummer": 6
+        },
+        {
+          "naam": "K. Mudau",
+          "positie": "V",
+          "nummer": 20
+        },
+        {
+          "naam": "K. Ndamane",
+          "positie": "V",
+          "nummer": 3
+        },
+        {
+          "naam": "I. Okon",
+          "positie": "V",
+          "nummer": 21
+        },
+        {
+          "naam": "N. Sibisi",
+          "positie": "V",
+          "nummer": 19
+        },
+        {
+          "naam": "T. Matuludi",
+          "positie": "V",
+          "nummer": 2
+        },
+        {
+          "naam": "J. Adams",
+          "positie": "M",
+          "nummer": 23
+        },
+        {
+          "naam": "T. Mbatha",
+          "positie": "M",
+          "nummer": 5
+        },
+        {
+          "naam": "T. Mokoena",
+          "positie": "M",
+          "nummer": 4
+        },
+        {
+          "naam": "S. Sithole",
+          "positie": "M",
+          "nummer": 13
+        },
+        {
+          "naam": "T. Zwane",
+          "positie": "M",
+          "nummer": 11
+        },
+        {
+          "naam": "O. Appollis",
+          "positie": "A",
+          "nummer": 7
+        },
+        {
+          "naam": "L. Foster",
+          "positie": "A",
+          "nummer": 9
+        },
+        {
+          "naam": "E. Makgopa",
+          "positie": "A",
+          "nummer": 99
+        },
+        {
+          "naam": "T. Maseko",
+          "positie": "A",
+          "nummer": 12
+        },
+        {
+          "naam": "R. Mofokeng",
+          "positie": "A",
+          "nummer": 10
+        },
+        {
+          "naam": "T. Moremi",
+          "positie": "M",
+          "nummer": 8
+        },
+        {
+          "naam": "I. Rayners",
+          "positie": "A",
+          "nummer": 15
+        },
+        {
+          "naam": "K. Sebelebele",
+          "positie": "M",
+          "nummer": 25
+        }
+      ]
+    },
+    {
+      "naam": "Zuid-Korea",
+      "code": "KOR",
+      "vlag": "🇰🇷",
+      "confederatie": "AFC",
+      "groep": "A",
+      "selectie": [
+        {
+          "naam": "Jo Hyeon-Woo",
+          "positie": "K",
+          "nummer": 21
+        },
+        {
+          "naam": "Kim Seung-Gyu",
+          "positie": "K",
+          "nummer": 12
+        },
+        {
+          "naam": "Song Bum-Keun",
+          "positie": "K",
+          "nummer": 1
+        },
+        {
+          "naam": "Cho Wi-Je",
+          "positie": "V",
+          "nummer": 18
+        },
+        {
+          "naam": "Kim Min-Jae",
+          "positie": "V",
+          "nummer": 2
+        },
+        {
+          "naam": "Kim Moon-Hwan",
+          "positie": "V",
+          "nummer": 15
+        },
+        {
+          "naam": "Kim Tae-Hyeon",
+          "positie": "V",
+          "nummer": 9
+        },
+        {
+          "naam": "Lee Han-Beom",
+          "positie": "V",
+          "nummer": 18
+        },
+        {
+          "naam": "Park Jin-Seop",
+          "positie": "M",
+          "nummer": 22
+        },
+        {
+          "naam": "Lee Tae-Seok",
+          "positie": "M",
+          "nummer": 7
+        },
+        {
+          "naam": "Seol Young-Woo",
+          "positie": "M",
+          "nummer": 16
+        },
+        {
+          "naam": "J. Castrop",
+          "positie": "M",
+          "nummer": 19
+        },
+        {
+          "naam": "Lee Gi-Hyuk",
+          "positie": "V",
+          "nummer": 10
+        },
+        {
+          "naam": "Bae Jun-Ho",
+          "positie": "A",
+          "nummer": 25
+        },
+        {
+          "naam": "Eom Ji-Sung",
+          "positie": "A",
+          "nummer": 23
+        },
+        {
+          "naam": "Hwang In-Beom",
+          "positie": "M",
+          "nummer": 24
+        },
+        {
+          "naam": "Kim Jin-Gyu",
+          "positie": "M",
+          "nummer": 25
+        },
+        {
+          "naam": "Lee Dong-Gyeong",
+          "positie": "A",
+          "nummer": 11
+        },
+        {
+          "naam": "Lee Jae-Sung",
+          "positie": "M",
+          "nummer": 8
+        },
+        {
+          "naam": "Lee Kang-In",
+          "positie": "M",
+          "nummer": 17
+        },
+        {
+          "naam": "Paik Seung-Ho",
+          "positie": "M",
+          "nummer": 4
+        },
+        {
+          "naam": "Yang Hyun-Jun",
+          "positie": "A",
+          "nummer": 26
+        },
+        {
+          "naam": "Hwang Hee-Chan",
+          "positie": "A",
+          "nummer": 20
+        },
+        {
+          "naam": "Cho Gue-Sung",
+          "positie": "A",
+          "nummer": 14
+        },
+        {
+          "naam": "Oh Hyeon-Gyu",
+          "positie": "A",
+          "nummer": 3
+        },
+        {
+          "naam": "Son Heung-Min",
+          "positie": "A",
+          "nummer": 13
+        }
+      ]
+    },
+    {
+      "naam": "Tsjechië",
+      "code": "CZE",
+      "vlag": "🇨🇿",
+      "confederatie": "UEFA",
+      "groep": "A",
+      "selectie": [
+        {
+          "naam": "L. Hornícek",
+          "positie": "K",
+          "nummer": 23
+        },
+        {
+          "naam": "M. Kovár",
+          "positie": "K",
+          "nummer": 1
+        },
+        {
+          "naam": "J. Stanek",
+          "positie": "K",
+          "nummer": 16
+        },
+        {
+          "naam": "S. Chaloupek",
+          "positie": "V",
+          "nummer": 6
+        },
+        {
+          "naam": "V. Coufal",
+          "positie": "V",
+          "nummer": 5
+        },
+        {
+          "naam": "T. Holes",
+          "positie": "V",
+          "nummer": 3
+        },
+        {
+          "naam": "R. Hranác",
+          "positie": "V",
+          "nummer": 4
+        },
+        {
+          "naam": "D. Jurásek",
+          "positie": "V",
+          "nummer": 14
+        },
+        {
+          "naam": "L. Krejcí",
+          "positie": "V",
+          "nummer": 7
+        },
+        {
+          "naam": "J. Zelený",
+          "positie": "V",
+          "nummer": 20
+        },
+        {
+          "naam": "D. Zima",
+          "positie": "V",
+          "nummer": 2
+        },
+        {
+          "naam": "D. Doudera",
+          "positie": "M",
+          "nummer": 21
+        },
+        {
+          "naam": "L. Cerv",
+          "positie": "M",
+          "nummer": 12
+        },
+        {
+          "naam": "V. Darida",
+          "positie": "M",
+          "nummer": 8
+        },
+        {
+          "naam": "L. Provod",
+          "positie": "A",
+          "nummer": 17
+        },
+        {
+          "naam": "M. Sadílek",
+          "positie": "M",
+          "nummer": 18
+        },
+        {
+          "naam": "H. Sochurek",
+          "positie": "M",
+          "nummer": 15
+        },
+        {
+          "naam": "A. Sojka",
+          "positie": "M",
+          "nummer": 2
+        },
+        {
+          "naam": "T. Soucek",
+          "positie": "M",
+          "nummer": 22
+        },
+        {
+          "naam": "P. Sulc",
+          "positie": "A",
+          "nummer": 15
+        },
+        {
+          "naam": "T. Chorý",
+          "positie": "A",
+          "nummer": 19
+        },
+        {
+          "naam": "M. Chytil",
+          "positie": "A",
+          "nummer": 13
+        },
+        {
+          "naam": "A. Hlozek",
+          "positie": "A",
+          "nummer": 9
+        },
+        {
+          "naam": "J. Kuchta",
+          "positie": "A",
+          "nummer": 11
+        },
+        {
+          "naam": "P. Schick",
+          "positie": "A",
+          "nummer": 10
+        },
+        {
+          "naam": "D. Visinský",
+          "positie": "M",
+          "nummer": 8
+        }
+      ]
+    },
+    {
+      "naam": "Canada",
+      "code": "CAN",
+      "vlag": "🇨🇦",
+      "confederatie": "CONCACAF",
+      "groep": "B",
+      "host": true,
+      "selectie": [
+        {
+          "naam": "M. Crépeau",
+          "positie": "K",
+          "nummer": 16
+        },
+        {
+          "naam": "O. Goodman",
+          "positie": "K",
+          "nummer": 18
+        },
+        {
+          "naam": "D. St. Clair",
+          "positie": "K",
+          "nummer": 1
+        },
+        {
+          "naam": "D. Cornelius",
+          "positie": "V",
+          "nummer": 13
+        },
+        {
+          "naam": "L. De Fougerolles",
+          "positie": "V",
+          "nummer": 4
+        },
+        {
+          "naam": "R. Laryea",
+          "positie": "V",
+          "nummer": 22
+        },
+        {
+          "naam": "J. Waterman",
+          "positie": "V",
+          "nummer": 5
+        },
+        {
+          "naam": "A. Johnston",
+          "positie": "V",
+          "nummer": 2
+        },
+        {
+          "naam": "A. Jones",
+          "positie": "V",
+          "nummer": 3
+        },
+        {
+          "naam": "M. Bombito",
+          "positie": "V",
+          "nummer": 15
+        },
+        {
+          "naam": "A. Davies",
+          "positie": "V",
+          "nummer": 19
+        },
+        {
+          "naam": "N. Sigur",
+          "positie": "M",
+          "nummer": 23
+        },
+        {
+          "naam": "J. Shaffelburg",
+          "positie": "M",
+          "nummer": 14
+        },
+        {
+          "naam": "L. Millar",
+          "positie": "M",
+          "nummer": 11
+        },
+        {
+          "naam": "M. Choinière",
+          "positie": "M",
+          "nummer": 6
+        },
+        {
+          "naam": "S. Eustáquio",
+          "positie": "M",
+          "nummer": 7
+        },
+        {
+          "naam": "I. Koné",
+          "positie": "M",
+          "nummer": 8
+        },
+        {
+          "naam": "J. Osorio",
+          "positie": "M",
+          "nummer": 21
+        },
+        {
+          "naam": "N. Saliba",
+          "positie": "M",
+          "nummer": 25
+        },
+        {
+          "naam": "M. Flores",
+          "positie": "M",
+          "nummer": 26
+        },
+        {
+          "naam": "T. Buchanan",
+          "positie": "M",
+          "nummer": 17
+        },
+        {
+          "naam": "J. David",
+          "positie": "A",
+          "nummer": 10
+        },
+        {
+          "naam": "P. David",
+          "positie": "A",
+          "nummer": 24
+        },
+        {
+          "naam": "C. Larin",
+          "positie": "A",
+          "nummer": 9
+        },
+        {
+          "naam": "A. Ahmed",
+          "positie": "M",
+          "nummer": 20
+        },
+        {
+          "naam": "T. Oluwaseyi",
+          "positie": "A",
+          "nummer": 12
+        }
+      ]
+    },
+    {
+      "naam": "Bosnië en Herzegovina",
+      "code": "BIH",
+      "vlag": "🇧🇦",
+      "confederatie": "UEFA",
+      "groep": "B",
+      "selectie": [
+        {
+          "naam": "M. Jurkas",
+          "positie": "K",
+          "nummer": 12
+        },
+        {
+          "naam": "N. Vasilj",
+          "positie": "K",
+          "nummer": 1
+        },
+        {
+          "naam": "M. Zlomislic",
+          "positie": "K",
+          "nummer": 22
+        },
+        {
+          "naam": "N. Celik",
+          "positie": "V",
+          "nummer": 24
+        },
+        {
+          "naam": "A. Dedic",
+          "positie": "V",
+          "nummer": 7
+        },
+        {
+          "naam": "D. Hadzikadunic",
+          "positie": "V",
+          "nummer": 3
+        },
+        {
+          "naam": "N. Katic",
+          "positie": "V",
+          "nummer": 18
+        },
+        {
+          "naam": "S. Kolasinac",
+          "positie": "V",
+          "nummer": 5
+        },
+        {
+          "naam": "T. Muharemovic",
+          "positie": "V",
+          "nummer": 4
+        },
+        {
+          "naam": "N. Mujakic",
+          "positie": "V",
+          "nummer": 2
+        },
+        {
+          "naam": "S. Radeljic",
+          "positie": "V",
+          "nummer": 21
+        },
+        {
+          "naam": "I. Basic",
+          "positie": "M",
+          "nummer": 13
+        },
+        {
+          "naam": "A. Gigovic",
+          "positie": "M",
+          "nummer": 8
+        },
+        {
+          "naam": "A. Hadziahmetovic",
+          "positie": "M",
+          "nummer": 16
+        },
+        {
+          "naam": "Ermin Mahmic",
+          "positie": "M",
+          "nummer": 26
+        },
+        {
+          "naam": "I. Sunjic",
+          "positie": "M",
+          "nummer": 14
+        },
+        {
+          "naam": "B. Tahirovic",
+          "positie": "M",
+          "nummer": 6
+        },
+        {
+          "naam": "A. Memic",
+          "positie": "M",
+          "nummer": 15
+        },
+        {
+          "naam": "D. Burnic",
+          "positie": "M",
+          "nummer": 17
+        },
+        {
+          "naam": "Kerim-Sam Alajbegovic",
+          "positie": "M",
+          "nummer": 19
+        },
+        {
+          "naam": "E. Bajraktarevic",
+          "positie": "A",
+          "nummer": 20
+        },
+        {
+          "naam": "S. Bazdar",
+          "positie": "A",
+          "nummer": 9
+        },
+        {
+          "naam": "E. Demirovic",
+          "positie": "A",
+          "nummer": 10
+        },
+        {
+          "naam": "E. Dzeko",
+          "positie": "A",
+          "nummer": 11
+        },
+        {
+          "naam": "J. Lukic",
+          "positie": "A",
+          "nummer": 25
+        },
+        {
+          "naam": "H. Tabakovic",
+          "positie": "A",
+          "nummer": 23
+        }
+      ]
+    },
+    {
+      "naam": "Qatar",
+      "code": "QAT",
+      "vlag": "🇶🇦",
+      "confederatie": "AFC",
+      "groep": "B",
+      "selectie": [
+        {
+          "naam": "Mahmud Abunada",
+          "positie": "K",
+          "nummer": 1
+        },
+        {
+          "naam": "Meshaal Barsham",
+          "positie": "K",
+          "nummer": 22
+        },
+        {
+          "naam": "Salah Zakaria",
+          "positie": "K",
+          "nummer": 21
+        },
+        {
+          "naam": "Homam Ahmed",
+          "positie": "V",
+          "nummer": 14
+        },
+        {
+          "naam": "Sultan Al Braik",
+          "positie": "V",
+          "nummer": 18
+        },
+        {
+          "naam": "A. Al Hussain",
+          "positie": "V",
+          "nummer": 25
+        },
+        {
+          "naam": "A. Al Oui",
+          "positie": "V",
+          "nummer": 13
+        },
+        {
+          "naam": "Jassem Gaber",
+          "positie": "M",
+          "nummer": 5
+        },
+        {
+          "naam": "Boualem Khoukhi",
+          "positie": "V",
+          "nummer": 16
+        },
+        {
+          "naam": "Lucas Mendes",
+          "positie": "V",
+          "nummer": 3
+        },
+        {
+          "naam": "G. Laye",
+          "positie": "V",
+          "nummer": 4
+        },
+        {
+          "naam": "Pedro Miguel",
+          "positie": "V",
+          "nummer": 2
+        },
+        {
+          "naam": "Assim Madibo",
+          "positie": "M",
+          "nummer": 23
+        },
+        {
+          "naam": "Ahmed Al Ganehi",
+          "positie": "A",
+          "nummer": 17
+        },
+        {
+          "naam": "Abdulaziz Hatem",
+          "positie": "M",
+          "nummer": 6
+        },
+        {
+          "naam": "Karim Boudiaf",
+          "positie": "M",
+          "nummer": 12
+        },
+        {
+          "naam": "Ahmed Fathi",
+          "positie": "M",
+          "nummer": 20
+        },
+        {
+          "naam": "Hassan Al Haydos",
+          "positie": "A",
+          "nummer": 10
+        },
+        {
+          "naam": "Mohamed Al Manai",
+          "positie": "M",
+          "nummer": 26
+        },
+        {
+          "naam": "Y. Abdurisag",
+          "positie": "A",
+          "nummer": 15
+        },
+        {
+          "naam": "Akram Afif",
+          "positie": "A",
+          "nummer": 11
+        },
+        {
+          "naam": "Ahmed Alaa",
+          "positie": "A",
+          "nummer": 7
+        },
+        {
+          "naam": "Almoez Ali",
+          "positie": "A",
+          "nummer": 19
+        },
+        {
+          "naam": "Edmilson Junior",
+          "positie": "A",
+          "nummer": 8
+        },
+        {
+          "naam": "Tahsin Jamshid",
+          "positie": "A",
+          "nummer": 24
+        },
+        {
+          "naam": "Mohammed Muntari",
+          "positie": "A",
+          "nummer": 9
+        }
+      ]
+    },
+    {
+      "naam": "Zwitserland",
+      "code": "SUI",
+      "vlag": "🇨🇭",
+      "confederatie": "UEFA",
+      "groep": "B",
+      "selectie": [
+        {
+          "naam": "M. Keller",
+          "positie": "K",
+          "nummer": 21
+        },
+        {
+          "naam": "G. Kobel",
+          "positie": "K",
+          "nummer": 1
+        },
+        {
+          "naam": "Y. Mvogo",
+          "positie": "K",
+          "nummer": 12
+        },
+        {
+          "naam": "M. Akanji",
+          "positie": "V",
+          "nummer": 5
+        },
+        {
+          "naam": "A. Amenda",
+          "positie": "V",
+          "nummer": 24
+        },
+        {
+          "naam": "E. Cömert",
+          "positie": "V",
+          "nummer": 18
+        },
+        {
+          "naam": "N. Elvedi",
+          "positie": "V",
+          "nummer": 4
+        },
+        {
+          "naam": "L. Jaquez",
+          "positie": "V",
+          "nummer": 25
+        },
+        {
+          "naam": "M. Muheim",
+          "positie": "V",
+          "nummer": 2
+        },
+        {
+          "naam": "R. Rodríguez",
+          "positie": "V",
+          "nummer": 13
+        },
+        {
+          "naam": "S. Widmer",
+          "positie": "V",
+          "nummer": 3
+        },
+        {
+          "naam": "M. Aebischer",
+          "positie": "M",
+          "nummer": 20
+        },
+        {
+          "naam": "R. Freuler",
+          "positie": "M",
+          "nummer": 8
+        },
+        {
+          "naam": "A. Jashari",
+          "positie": "M",
+          "nummer": 14
+        },
+        {
+          "naam": "D. Sow",
+          "positie": "M",
+          "nummer": 15
+        },
+        {
+          "naam": "G. Xhaka",
+          "positie": "M",
+          "nummer": 10
+        },
+        {
+          "naam": "D. Zakaria",
+          "positie": "V",
+          "nummer": 6
+        },
+        {
+          "naam": "C. Fassnacht",
+          "positie": "M",
+          "nummer": 16
+        },
+        {
+          "naam": "C. Itten",
+          "positie": "A",
+          "nummer": 26
+        },
+        {
+          "naam": "F. Rieder",
+          "positie": "M",
+          "nummer": 22
+        },
+        {
+          "naam": "R. Vargas",
+          "positie": "A",
+          "nummer": 17
+        },
+        {
+          "naam": "Z. Amdouni",
+          "positie": "A",
+          "nummer": 23
+        },
+        {
+          "naam": "B. Embolo",
+          "positie": "A",
+          "nummer": 7
+        },
+        {
+          "naam": "J. Manzambi",
+          "positie": "A",
+          "nummer": 9
+        },
+        {
+          "naam": "N. Okafor",
+          "positie": "A",
+          "nummer": 19
+        },
+        {
+          "naam": "D. Ndoye",
+          "positie": "M",
+          "nummer": 11
+        }
+      ]
+    },
+    {
+      "naam": "Brazilië",
+      "code": "BRA",
+      "vlag": "🇧🇷",
+      "confederatie": "CONMEBOL",
+      "groep": "C",
+      "selectie": [
+        {
+          "naam": "Alisson Becker",
+          "positie": "K",
+          "nummer": 1
+        },
+        {
+          "naam": "Ederson",
+          "positie": "K",
+          "nummer": 23
+        },
+        {
+          "naam": "Weverton",
+          "positie": "K",
+          "nummer": 12
+        },
+        {
+          "naam": "Alex Sandro",
+          "positie": "V",
+          "nummer": 6
+        },
+        {
+          "naam": "Bremer",
+          "positie": "V",
+          "nummer": 14
+        },
+        {
+          "naam": "Gabriel Magalhães",
+          "positie": "V",
+          "nummer": 3
+        },
+        {
+          "naam": "Ibañez",
+          "positie": "V",
+          "nummer": 24
+        },
+        {
+          "naam": "Léo Pereira",
+          "positie": "V",
+          "nummer": 15
+        },
+        {
+          "naam": "Marquinhos",
+          "positie": "V",
+          "nummer": 4
+        },
+        {
+          "naam": "Douglas Santos",
+          "positie": "V",
+          "nummer": 16
+        },
+        {
+          "naam": "Wesley",
+          "positie": "V",
+          "nummer": 2
+        },
+        {
+          "naam": "Danilo",
+          "positie": "V",
+          "nummer": 13
+        },
+        {
+          "naam": "Bruno Guimarães",
+          "positie": "M",
+          "nummer": 8
+        },
+        {
+          "naam": "Casemiro",
+          "positie": "M",
+          "nummer": 5
+        },
+        {
+          "naam": "Fabinho",
+          "positie": "M",
+          "nummer": 17
+        },
+        {
+          "naam": "Lucas Paquetá",
+          "positie": "M",
+          "nummer": 20
+        },
+        {
+          "naam": "Danilo Santos",
+          "positie": "M",
+          "nummer": 18
+        },
+        {
+          "naam": "Matheus Cunha",
+          "positie": "A",
+          "nummer": 9
+        },
+        {
+          "naam": "Endrick",
+          "positie": "A",
+          "nummer": 19
+        },
+        {
+          "naam": "Luiz Henrique",
+          "positie": "M",
+          "nummer": 21
+        },
+        {
+          "naam": "Gabriel Martinelli",
+          "positie": "A",
+          "nummer": 22
+        },
+        {
+          "naam": "Neymar",
+          "positie": "A",
+          "nummer": 10
+        },
+        {
+          "naam": "Raphinha",
+          "positie": "M",
+          "nummer": 11
+        },
+        {
+          "naam": "Rayan",
+          "positie": "A",
+          "nummer": 26
+        },
+        {
+          "naam": "Thiago",
+          "positie": "A",
+          "nummer": 25
+        },
+        {
+          "naam": "Vinícius Júnior",
+          "positie": "M",
+          "nummer": 7
+        }
+      ]
+    },
+    {
+      "naam": "Marokko",
+      "code": "MAR",
+      "vlag": "🇲🇦",
+      "confederatie": "CAF",
+      "groep": "C",
+      "selectie": [
+        {
+          "naam": "Y. Bounou",
+          "positie": "K",
+          "nummer": 1
+        },
+        {
+          "naam": "M. Mohamedi",
+          "positie": "K",
+          "nummer": 12
+        },
+        {
+          "naam": "A. Tagnaouti",
+          "positie": "K",
+          "nummer": 22
+        },
+        {
+          "naam": "N. Aguerd",
+          "positie": "V",
+          "nummer": 5
+        },
+        {
+          "naam": "I. Diop",
+          "positie": "V",
+          "nummer": 14
+        },
+        {
+          "naam": "Z. El Ouahdi",
+          "positie": "V",
+          "nummer": 13
+        },
+        {
+          "naam": "A. Hakimi",
+          "positie": "V",
+          "nummer": 2
+        },
+        {
+          "naam": "R. Halhal",
+          "positie": "V",
+          "nummer": 25
+        },
+        {
+          "naam": "N. Mazraoui",
+          "positie": "V",
+          "nummer": 3
+        },
+        {
+          "naam": "C. Riad",
+          "positie": "V",
+          "nummer": 18
+        },
+        {
+          "naam": "A. Salah-Eddine",
+          "positie": "V",
+          "nummer": 26
+        },
+        {
+          "naam": "Y. Belammari",
+          "positie": "V",
+          "nummer": 19
+        },
+        {
+          "naam": "S. Amrabat",
+          "positie": "M",
+          "nummer": 4
+        },
+        {
+          "naam": "A. Bouaddi",
+          "positie": "M",
+          "nummer": 6
+        },
+        {
+          "naam": "N. El Aynaoui",
+          "positie": "M",
+          "nummer": 24
+        },
+        {
+          "naam": "B. El Khannouss",
+          "positie": "M",
+          "nummer": 23
+        },
+        {
+          "naam": "S. El Mourabet",
+          "positie": "M",
+          "nummer": 15
+        },
+        {
+          "naam": "A. Ounahi",
+          "positie": "M",
+          "nummer": 8
+        },
+        {
+          "naam": "I. Saibari",
+          "positie": "A",
+          "nummer": 11
+        },
+        {
+          "naam": "C. Talbi",
+          "positie": "M",
+          "nummer": 7
+        },
+        {
+          "naam": "Gessime Yassine",
+          "positie": "A",
+          "nummer": 16
+        },
+        {
+          "naam": "Brahim Díaz",
+          "positie": "M",
+          "nummer": 10
+        },
+        {
+          "naam": "A. Amaimouni",
+          "positie": "M",
+          "nummer": 21
+        },
+        {
+          "naam": "A. El Kaabi",
+          "positie": "A",
+          "nummer": 20
+        },
+        {
+          "naam": "A. Ezzalzouli",
+          "positie": "M",
+          "nummer": 17
+        },
+        {
+          "naam": "S. Rahimi",
+          "positie": "A",
+          "nummer": 9
+        }
+      ]
+    },
+    {
+      "naam": "Haïti",
+      "code": "HAI",
+      "vlag": "🇭🇹",
+      "confederatie": "CONCACAF",
+      "groep": "C",
+      "selectie": [
+        {
+          "naam": "J. Duverger",
+          "positie": "K",
+          "nummer": 23
+        },
+        {
+          "naam": "A. Pierre",
+          "positie": "K",
+          "nummer": 12
+        },
+        {
+          "naam": "J. Placide",
+          "positie": "K",
+          "nummer": 1
+        },
+        {
+          "naam": "C. Arcus",
+          "positie": "V",
+          "nummer": 2
+        },
+        {
+          "naam": "K. Thermoncy",
+          "positie": "V",
+          "nummer": 3
+        },
+        {
+          "naam": "Ricardo Ade",
+          "positie": "V",
+          "nummer": 4
+        },
+        {
+          "naam": "H. Delcroix",
+          "positie": "V",
+          "nummer": 5
+        },
+        {
+          "naam": "J. Duverne",
+          "positie": "V",
+          "nummer": 22
+        },
+        {
+          "naam": "M. Expérience",
+          "positie": "V",
+          "nummer": 8
+        },
+        {
+          "naam": "D. Lacroix",
+          "positie": "V",
+          "nummer": 13
+        },
+        {
+          "naam": "W. Paugain",
+          "positie": "V",
+          "nummer": 24
+        },
+        {
+          "naam": "J. Bellegarde",
+          "positie": "M",
+          "nummer": 10
+        },
+        {
+          "naam": "D. Jean-Jacques",
+          "positie": "M",
+          "nummer": 17
+        },
+        {
+          "naam": "L. Pierre",
+          "positie": "M",
+          "nummer": 14
+        },
+        {
+          "naam": "W. Pierre",
+          "positie": "M",
+          "nummer": 26
+        },
+        {
+          "naam": "C. F. Sainte",
+          "positie": "M",
+          "nummer": 6
+        },
+        {
+          "naam": "D. Simon",
+          "positie": "M",
+          "nummer": 29
+        },
+        {
+          "naam": "J. Casimir",
+          "positie": "M",
+          "nummer": 21
+        },
+        {
+          "naam": "L. Deedson",
+          "positie": "A",
+          "nummer": 11
+        },
+        {
+          "naam": "D. Etienne",
+          "positie": "A",
+          "nummer": 7
+        },
+        {
+          "naam": "Y. Fortuné",
+          "positie": "A",
+          "nummer": 19
+        },
+        {
+          "naam": "W. Isidor",
+          "positie": "A",
+          "nummer": 18
+        },
+        {
+          "naam": "L. Joseph",
+          "positie": "A",
+          "nummer": 16
+        },
+        {
+          "naam": "D. Nazon",
+          "positie": "A",
+          "nummer": 9
+        },
+        {
+          "naam": "F. Pierrot",
+          "positie": "A",
+          "nummer": 20
+        },
+        {
+          "naam": "R. Providence",
+          "positie": "M",
+          "nummer": 15
+        }
+      ]
+    },
+    {
+      "naam": "Schotland",
+      "code": "SCO",
+      "vlag": "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
+      "confederatie": "UEFA",
+      "groep": "C",
+      "selectie": [
+        {
+          "naam": "C. Gordon",
+          "positie": "K",
+          "nummer": 21
+        },
+        {
+          "naam": "A. Gunn",
+          "positie": "K",
+          "nummer": 1
+        },
+        {
+          "naam": "L. Kelly",
+          "positie": "K",
+          "nummer": 12
+        },
+        {
+          "naam": "G. Hanley",
+          "positie": "V",
+          "nummer": 5
+        },
+        {
+          "naam": "J. Hendry",
+          "positie": "V",
+          "nummer": 13
+        },
+        {
+          "naam": "A. Hickey",
+          "positie": "V",
+          "nummer": 2
+        },
+        {
+          "naam": "D. Hyam",
+          "positie": "V",
+          "nummer": 16
+        },
+        {
+          "naam": "S. McKenna",
+          "positie": "V",
+          "nummer": 26
+        },
+        {
+          "naam": "N. Patterson",
+          "positie": "V",
+          "nummer": 22
+        },
+        {
+          "naam": "A. Ralston",
+          "positie": "V",
+          "nummer": 24
+        },
+        {
+          "naam": "A. Robertson",
+          "positie": "V",
+          "nummer": 3
+        },
+        {
+          "naam": "J. Souttar",
+          "positie": "V",
+          "nummer": 15
+        },
+        {
+          "naam": "K. Tierney",
+          "positie": "V",
+          "nummer": 6
+        },
+        {
+          "naam": "R. Christie",
+          "positie": "M",
+          "nummer": 11
+        },
+        {
+          "naam": "L. Ferguson",
+          "positie": "M",
+          "nummer": 19
+        },
+        {
+          "naam": "T. Fletcher",
+          "positie": "M",
+          "nummer": 4
+        },
+        {
+          "naam": "J.  McGinn",
+          "positie": "M",
+          "nummer": 7
+        },
+        {
+          "naam": "K. McLean",
+          "positie": "M",
+          "nummer": 23
+        },
+        {
+          "naam": "S. McTominay",
+          "positie": "M",
+          "nummer": 4
+        },
+        {
+          "naam": "C. Adams",
+          "positie": "A",
+          "nummer": 10
+        },
+        {
+          "naam": "L. Dykes",
+          "positie": "A",
+          "nummer": 9
+        },
+        {
+          "naam": "B. Doak",
+          "positie": "M",
+          "nummer": 17
+        },
+        {
+          "naam": "G. Hirst",
+          "positie": "A",
+          "nummer": 18
+        },
+        {
+          "naam": "L. Shankland",
+          "positie": "A",
+          "nummer": 20
+        },
+        {
+          "naam": "R. Stewart",
+          "positie": "A",
+          "nummer": 14
+        },
+        {
+          "naam": "Findlay Curtis",
+          "positie": "M",
+          "nummer": 25
+        }
+      ]
+    },
+    {
+      "naam": "Verenigde Staten",
+      "code": "USA",
+      "vlag": "🇺🇸",
+      "confederatie": "CONCACAF",
+      "groep": "D",
+      "host": true,
+      "selectie": [
+        {
+          "naam": "C. Brady",
+          "positie": "K",
+          "nummer": 25
+        },
+        {
+          "naam": "M. Freese",
+          "positie": "K",
+          "nummer": 24
+        },
+        {
+          "naam": "M. Turner",
+          "positie": "K",
+          "nummer": 1
+        },
+        {
+          "naam": "S. Dest",
+          "positie": "M",
+          "nummer": 2
+        },
+        {
+          "naam": "A. Freeman",
+          "positie": "V",
+          "nummer": 16
+        },
+        {
+          "naam": "M. McKenzie",
+          "positie": "V",
+          "nummer": 22
+        },
+        {
+          "naam": "T. Ream",
+          "positie": "V",
+          "nummer": 13
+        },
+        {
+          "naam": "C. Richards",
+          "positie": "V",
+          "nummer": 3
+        },
+        {
+          "naam": "A. Robinson",
+          "positie": "M",
+          "nummer": 5
+        },
+        {
+          "naam": "M. Robinson",
+          "positie": "V",
+          "nummer": 12
+        },
+        {
+          "naam": "J. Scally",
+          "positie": "V",
+          "nummer": 23
+        },
+        {
+          "naam": "A. Trusty",
+          "positie": "V",
+          "nummer": 6
+        },
+        {
+          "naam": "M. Arfsten",
+          "positie": "M",
+          "nummer": 18
+        },
+        {
+          "naam": "S. Berhalter",
+          "positie": "M",
+          "nummer": 14
+        },
+        {
+          "naam": "W. McKennie",
+          "positie": "M",
+          "nummer": 8
+        },
+        {
+          "naam": "G. Reyna",
+          "positie": "A",
+          "nummer": 7
+        },
+        {
+          "naam": "C. Roldan",
+          "positie": "M",
+          "nummer": 15
+        },
+        {
+          "naam": "M. Tillman",
+          "positie": "M",
+          "nummer": 17
+        },
+        {
+          "naam": "T. Adams",
+          "positie": "M",
+          "nummer": 4
+        },
+        {
+          "naam": "T. Weah",
+          "positie": "A",
+          "nummer": 21
+        },
+        {
+          "naam": "A. Zendejas",
+          "positie": "A",
+          "nummer": 26
+        },
+        {
+          "naam": "B. Aaronson",
+          "positie": "M",
+          "nummer": 11
+        },
+        {
+          "naam": "F. Balogun",
+          "positie": "A",
+          "nummer": 20
+        },
+        {
+          "naam": "R. Pepi",
+          "positie": "A",
+          "nummer": 9
+        },
+        {
+          "naam": "C. Pulisic",
+          "positie": "A",
+          "nummer": 10
+        },
+        {
+          "naam": "H. Wright",
+          "positie": "A",
+          "nummer": 19
+        }
+      ]
+    },
+    {
+      "naam": "Paraguay",
+      "code": "PAR",
+      "vlag": "🇵🇾",
+      "confederatie": "CONMEBOL",
+      "groep": "D",
+      "selectie": [
+        {
+          "naam": "R. Fernandez",
+          "positie": "K",
+          "nummer": 1
+        },
+        {
+          "naam": "O. Gill",
+          "positie": "K",
+          "nummer": 12
+        },
+        {
+          "naam": "G. Olveira",
+          "positie": "K",
+          "nummer": 22
+        },
+        {
+          "naam": "O. Alderete",
+          "positie": "V",
+          "nummer": 3
+        },
+        {
+          "naam": "J. Alonso",
+          "positie": "V",
+          "nummer": 6
+        },
+        {
+          "naam": "J. Cáceres",
+          "positie": "V",
+          "nummer": 4
+        },
+        {
+          "naam": "F. Balbuena",
+          "positie": "V",
+          "nummer": 5
+        },
+        {
+          "naam": "G. Gómez",
+          "positie": "V",
+          "nummer": 15
+        },
+        {
+          "naam": "A. Maidana",
+          "positie": "V",
+          "nummer": 26
+        },
+        {
+          "naam": "G. Velázquez",
+          "positie": "V",
+          "nummer": 2
+        },
+        {
+          "naam": "J. Canale",
+          "positie": "V",
+          "nummer": 13
+        },
+        {
+          "naam": "D. Bobadilla",
+          "positie": "M",
+          "nummer": 16
+        },
+        {
+          "naam": "G. Caballero",
+          "positie": "M",
+          "nummer": 24
+        },
+        {
+          "naam": "A. Cubas",
+          "positie": "M",
+          "nummer": 14
+        },
+        {
+          "naam": "M. Galarza",
+          "positie": "M",
+          "nummer": 23
+        },
+        {
+          "naam": "D. Gómez",
+          "positie": "M",
+          "nummer": 8
+        },
+        {
+          "naam": "Maurício",
+          "positie": "M",
+          "nummer": 11
+        },
+        {
+          "naam": "B. Ojeda",
+          "positie": "M",
+          "nummer": 20
+        },
+        {
+          "naam": "R. Sosa",
+          "positie": "M",
+          "nummer": 7
+        },
+        {
+          "naam": "M. Almirón",
+          "positie": "M",
+          "nummer": 10
+        },
+        {
+          "naam": "A. Romero",
+          "positie": "A",
+          "nummer": 17
+        },
+        {
+          "naam": "A. Arce",
+          "positie": "A",
+          "nummer": 18
+        },
+        {
+          "naam": "G. Ávalos",
+          "positie": "A",
+          "nummer": 21
+        },
+        {
+          "naam": "J. Enciso",
+          "positie": "A",
+          "nummer": 19
+        },
+        {
+          "naam": "I. Pitta",
+          "positie": "A",
+          "nummer": 25
+        },
+        {
+          "naam": "A. Sanabria",
+          "positie": "A",
+          "nummer": 9
+        }
+      ]
+    },
+    {
+      "naam": "Australië",
+      "code": "AUS",
+      "vlag": "🇦🇺",
+      "confederatie": "AFC",
+      "groep": "D",
+      "selectie": [
+        {
+          "naam": "P. Beach",
+          "positie": "K",
+          "nummer": 28
+        },
+        {
+          "naam": "P. Izzo",
+          "positie": "K",
+          "nummer": 12
+        },
+        {
+          "naam": "M. Ryan",
+          "positie": "K",
+          "nummer": 1
+        },
+        {
+          "naam": "A. Behich",
+          "positie": "V",
+          "nummer": 16
+        },
+        {
+          "naam": "J. Bos",
+          "positie": "V",
+          "nummer": 5
+        },
+        {
+          "naam": "C. Burgess",
+          "positie": "V",
+          "nummer": 21
+        },
+        {
+          "naam": "A. Circati",
+          "positie": "V",
+          "nummer": 3
+        },
+        {
+          "naam": "J. Geria",
+          "positie": "V",
+          "nummer": 25
+        },
+        {
+          "naam": "L. Herrington",
+          "positie": "V",
+          "nummer": 26
+        },
+        {
+          "naam": "H. Souttar",
+          "positie": "V",
+          "nummer": 19
+        },
+        {
+          "naam": "M. Degenek",
+          "positie": "V",
+          "nummer": 2
+        },
+        {
+          "naam": "J. Italiano",
+          "positie": "V",
+          "nummer": 23
+        },
+        {
+          "naam": "K. Trewin",
+          "positie": "V",
+          "nummer": 36
+        },
+        {
+          "naam": "J. Irvine",
+          "positie": "M",
+          "nummer": 22
+        },
+        {
+          "naam": "C. Devlin",
+          "positie": "M",
+          "nummer": 17
+        },
+        {
+          "naam": "A. O Neill",
+          "positie": "M",
+          "nummer": 13
+        },
+        {
+          "naam": "Paul Okon-Engstler",
+          "positie": "M",
+          "nummer": 20
+        },
+        {
+          "naam": "C. Metcalfe",
+          "positie": "M",
+          "nummer": 8
+        },
+        {
+          "naam": "A. Hrustic",
+          "positie": "M",
+          "nummer": 10
+        },
+        {
+          "naam": "C. Volpato",
+          "positie": "A",
+          "nummer": 20
+        },
+        {
+          "naam": "N. Irankunda",
+          "positie": "A",
+          "nummer": 11
+        },
+        {
+          "naam": "M. Leckie",
+          "positie": "M",
+          "nummer": 7
+        },
+        {
+          "naam": "A. Mabil",
+          "positie": "M",
+          "nummer": 38
+        },
+        {
+          "naam": "T. Yengi",
+          "positie": "A",
+          "nummer": 26
+        },
+        {
+          "naam": "M. Touré",
+          "positie": "A",
+          "nummer": 9
+        },
+        {
+          "naam": "N. Velupillay",
+          "positie": "A",
+          "nummer": 34
+        }
+      ]
+    },
+    {
+      "naam": "Turkije",
+      "code": "TUR",
+      "vlag": "🇹🇷",
+      "confederatie": "UEFA",
+      "groep": "D",
+      "selectie": [
+        {
+          "naam": "A. Bayindir",
+          "positie": "K",
+          "nummer": 12
+        },
+        {
+          "naam": "U. Çakir",
+          "positie": "K",
+          "nummer": 23
+        },
+        {
+          "naam": "M. Günok",
+          "positie": "K",
+          "nummer": 1
+        },
+        {
+          "naam": "S. Akaydin",
+          "positie": "V",
+          "nummer": 14
+        },
+        {
+          "naam": "A. Bardakci",
+          "positie": "V",
+          "nummer": 14
+        },
+        {
+          "naam": "Z. Çelik",
+          "positie": "V",
+          "nummer": 2
+        },
+        {
+          "naam": "M. Demiral",
+          "positie": "V",
+          "nummer": 3
+        },
+        {
+          "naam": "E. Elmali",
+          "positie": "V",
+          "nummer": 13
+        },
+        {
+          "naam": "O. Kabak",
+          "positie": "V",
+          "nummer": 15
+        },
+        {
+          "naam": "F. Kadioglu",
+          "positie": "V",
+          "nummer": 20
+        },
+        {
+          "naam": "M. Müldür",
+          "positie": "V",
+          "nummer": 18
+        },
+        {
+          "naam": "Ç. Söyüncü",
+          "positie": "V",
+          "nummer": 4
+        },
+        {
+          "naam": "H. Çalhanoglu",
+          "positie": "M",
+          "nummer": 10
+        },
+        {
+          "naam": "K. Ayhan",
+          "positie": "V",
+          "nummer": 22
+        },
+        {
+          "naam": "O. Kokçu",
+          "positie": "M",
+          "nummer": 6
+        },
+        {
+          "naam": "S. Özcan",
+          "positie": "M",
+          "nummer": 5
+        },
+        {
+          "naam": "I. Yüksek",
+          "positie": "M",
+          "nummer": 16
+        },
+        {
+          "naam": "C. Uzun",
+          "positie": "M",
+          "nummer": 11
+        },
+        {
+          "naam": "O. Aydin",
+          "positie": "M",
+          "nummer": 20
+        },
+        {
+          "naam": "A. Güler",
+          "positie": "M",
+          "nummer": 8
+        },
+        {
+          "naam": "Y. Akgün",
+          "positie": "M",
+          "nummer": 19
+        },
+        {
+          "naam": "K. Aktürkoglu",
+          "positie": "A",
+          "nummer": 7
+        },
+        {
+          "naam": "D. Gül",
+          "positie": "A",
+          "nummer": 9
+        },
+        {
+          "naam": "I. Kahveci",
+          "positie": "M",
+          "nummer": 17
+        },
+        {
+          "naam": "K. Yildiz",
+          "positie": "A",
+          "nummer": 11
+        },
+        {
+          "naam": "B. Yilmaz",
+          "positie": "A",
+          "nummer": 21
+        }
+      ]
+    },
+    {
+      "naam": "Duitsland",
+      "code": "GER",
+      "vlag": "🇩🇪",
+      "confederatie": "UEFA",
+      "groep": "E",
+      "selectie": [
+        {
+          "naam": "O. Baumann",
+          "positie": "K",
+          "nummer": 12
+        },
+        {
+          "naam": "M. Neuer",
+          "positie": "K",
+          "nummer": 1
+        },
+        {
+          "naam": "A. Nübel",
+          "positie": "K",
+          "nummer": 21
+        },
+        {
+          "naam": "W. Anton",
+          "positie": "V",
+          "nummer": 3
+        },
+        {
+          "naam": "N. Brown",
+          "positie": "V",
+          "nummer": 18
+        },
+        {
+          "naam": "D. Raum",
+          "positie": "V",
+          "nummer": 22
+        },
+        {
+          "naam": "A. Rüdiger",
+          "positie": "V",
+          "nummer": 2
+        },
+        {
+          "naam": "N. Schlotterbeck",
+          "positie": "V",
+          "nummer": 15
+        },
+        {
+          "naam": "J. Tah",
+          "positie": "V",
+          "nummer": 4
+        },
+        {
+          "naam": "M. Thiaw",
+          "positie": "V",
+          "nummer": 24
+        },
+        {
+          "naam": "J. Kimmich",
+          "positie": "V",
+          "nummer": 6
+        },
+        {
+          "naam": "N. Amiri",
+          "positie": "M",
+          "nummer": 20
+        },
+        {
+          "naam": "L. Goretzka",
+          "positie": "M",
+          "nummer": 8
+        },
+        {
+          "naam": "P. Groß",
+          "positie": "M",
+          "nummer": 13
+        },
+        {
+          "naam": "L. Karl",
+          "positie": "M",
+          "nummer": 25
+        },
+        {
+          "naam": "J. Leweling",
+          "positie": "A",
+          "nummer": 9
+        },
+        {
+          "naam": "J. Musiala",
+          "positie": "M",
+          "nummer": 10
+        },
+        {
+          "naam": "F. Nmecha",
+          "positie": "M",
+          "nummer": 23
+        },
+        {
+          "naam": "A. Pavlovic",
+          "positie": "M",
+          "nummer": 5
+        },
+        {
+          "naam": "L. Sané",
+          "positie": "A",
+          "nummer": 19
+        },
+        {
+          "naam": "A. Stiller",
+          "positie": "M",
+          "nummer": 16
+        },
+        {
+          "naam": "F. Wirtz",
+          "positie": "M",
+          "nummer": 17
+        },
+        {
+          "naam": "K. Havertz",
+          "positie": "A",
+          "nummer": 7
+        },
+        {
+          "naam": "M. Beier",
+          "positie": "A",
+          "nummer": 14
+        },
+        {
+          "naam": "D. Undav",
+          "positie": "A",
+          "nummer": 26
+        },
+        {
+          "naam": "N. Woltemade",
+          "positie": "A",
+          "nummer": 11
+        }
+      ]
+    },
+    {
+      "naam": "Curaçao",
+      "code": "CUW",
+      "vlag": "🇨🇼",
+      "confederatie": "CONCACAF",
+      "groep": "E",
+      "selectie": [
+        {
+          "naam": "T. Bodak",
+          "positie": "K",
+          "nummer": 25
+        },
+        {
+          "naam": "T. Doornbusch",
+          "positie": "K",
+          "nummer": 26
+        },
+        {
+          "naam": "E. Room",
+          "positie": "K",
+          "nummer": 1
+        },
+        {
+          "naam": "R. Bazoer",
+          "positie": "V",
+          "nummer": 23
+        },
+        {
+          "naam": "J. Brenet",
+          "positie": "V",
+          "nummer": 20
+        },
+        {
+          "naam": "S. Floranus",
+          "positie": "V",
+          "nummer": 5
+        },
+        {
+          "naam": "Deveron Fonville",
+          "positie": "V",
+          "nummer": 24
+        },
+        {
+          "naam": "J. Gaari",
+          "positie": "V",
+          "nummer": 3
+        },
+        {
+          "naam": "S. Sambo",
+          "positie": "V",
+          "nummer": 2
+        },
+        {
+          "naam": "R. van Eijma",
+          "positie": "V",
+          "nummer": 4
+        },
+        {
+          "naam": "A. Obispo",
+          "positie": "V",
+          "nummer": 18
+        },
+        {
+          "naam": "L. Bacuna",
+          "positie": "M",
+          "nummer": 10
+        },
+        {
+          "naam": "A. Martha",
+          "positie": "M",
+          "nummer": 15
+        },
+        {
+          "naam": "T. Noslin",
+          "positie": "M",
+          "nummer": 13
+        },
+        {
+          "naam": "L. Comenencia",
+          "positie": "M",
+          "nummer": 8
+        },
+        {
+          "naam": "K. Felida",
+          "positie": "M",
+          "nummer": 22
+        },
+        {
+          "naam": "T. Chong",
+          "positie": "M",
+          "nummer": 21
+        },
+        {
+          "naam": "G. Roemeratoe",
+          "positie": "M",
+          "nummer": 6
+        },
+        {
+          "naam": "J. Bacuna",
+          "positie": "M",
+          "nummer": 7
+        },
+        {
+          "naam": "J. Antonisse",
+          "positie": "A",
+          "nummer": 11
+        },
+        {
+          "naam": "B. Kuwas",
+          "positie": "A",
+          "nummer": 17
+        },
+        {
+          "naam": "K. Gorré",
+          "positie": "A",
+          "nummer": 14
+        },
+        {
+          "naam": "S. Hansen",
+          "positie": "A",
+          "nummer": 12
+        },
+        {
+          "naam": "G. Kastaneer",
+          "positie": "A",
+          "nummer": 19
+        },
+        {
+          "naam": "J. Locadia",
+          "positie": "A",
+          "nummer": 9
+        },
+        {
+          "naam": "J. Margaritha",
+          "positie": "A",
+          "nummer": 16
+        }
+      ]
+    },
+    {
+      "naam": "Ivoorkust",
+      "code": "CIV",
+      "vlag": "🇨🇮",
+      "confederatie": "CAF",
+      "groep": "E",
+      "selectie": [
+        {
+          "naam": "Y. Fofana",
+          "positie": "K",
+          "nummer": 1
+        },
+        {
+          "naam": "M. Koné",
+          "positie": "K",
+          "nummer": 16
+        },
+        {
+          "naam": "A. Lafont",
+          "positie": "K",
+          "nummer": 23
+        },
+        {
+          "naam": "E. Agbadou",
+          "positie": "V",
+          "nummer": 20
+        },
+        {
+          "naam": "O. Diomande",
+          "positie": "V",
+          "nummer": 2
+        },
+        {
+          "naam": "G. Doué",
+          "positie": "V",
+          "nummer": 17
+        },
+        {
+          "naam": "G. Konan",
+          "positie": "V",
+          "nummer": 3
+        },
+        {
+          "naam": "O. Kossounou",
+          "positie": "V",
+          "nummer": 7
+        },
+        {
+          "naam": "E. Ndicka",
+          "positie": "V",
+          "nummer": 21
+        },
+        {
+          "naam": "C. Operi",
+          "positie": "V",
+          "nummer": 13
+        },
+        {
+          "naam": "W. Singo",
+          "positie": "V",
+          "nummer": 5
+        },
+        {
+          "naam": "S. Fofana",
+          "positie": "M",
+          "nummer": 6
+        },
+        {
+          "naam": "C. Inao Oulai",
+          "positie": "M",
+          "nummer": 26
+        },
+        {
+          "naam": "F. Kessié",
+          "positie": "M",
+          "nummer": 8
+        },
+        {
+          "naam": "I. Sangaré",
+          "positie": "M",
+          "nummer": 18
+        },
+        {
+          "naam": "J. Seri",
+          "positie": "M",
+          "nummer": 4
+        },
+        {
+          "naam": "P. Guiagon",
+          "positie": "M",
+          "nummer": 25
+        },
+        {
+          "naam": "B. Touré",
+          "positie": "A",
+          "nummer": 24
+        },
+        {
+          "naam": "S. Adingra",
+          "positie": "A",
+          "nummer": 10
+        },
+        {
+          "naam": "A. Bonny",
+          "positie": "A",
+          "nummer": 9
+        },
+        {
+          "naam": "O. Diakité",
+          "positie": "M",
+          "nummer": 14
+        },
+        {
+          "naam": "A. Diallo",
+          "positie": "A",
+          "nummer": 15
+        },
+        {
+          "naam": "Y. Diomande",
+          "positie": "M",
+          "nummer": 11
+        },
+        {
+          "naam": "E. Guessand",
+          "positie": "A",
+          "nummer": 22
+        },
+        {
+          "naam": "N. Pépé",
+          "positie": "A",
+          "nummer": 19
+        },
+        {
+          "naam": "E. Wahi",
+          "positie": "A",
+          "nummer": 12
+        }
+      ]
+    },
+    {
+      "naam": "Ecuador",
+      "code": "ECU",
+      "vlag": "🇪🇨",
+      "confederatie": "CONMEBOL",
+      "groep": "E",
+      "selectie": [
+        {
+          "naam": "H. Galíndez",
+          "positie": "K",
+          "nummer": 1
+        },
+        {
+          "naam": "M. Ramírez",
+          "positie": "K",
+          "nummer": 12
+        },
+        {
+          "naam": "G. Valle",
+          "positie": "K",
+          "nummer": 22
+        },
+        {
+          "naam": "P. Estupiñán",
+          "positie": "V",
+          "nummer": 7
+        },
+        {
+          "naam": "P. Hincapié",
+          "positie": "V",
+          "nummer": 3
+        },
+        {
+          "naam": "Y. Medina",
+          "positie": "V",
+          "nummer": 26
+        },
+        {
+          "naam": "J. Ordoñez",
+          "positie": "V",
+          "nummer": 4
+        },
+        {
+          "naam": "W. Pacho",
+          "positie": "V",
+          "nummer": 6
+        },
+        {
+          "naam": "J. Porozo",
+          "positie": "V",
+          "nummer": 25
+        },
+        {
+          "naam": "A. Preciado",
+          "positie": "V",
+          "nummer": 17
+        },
+        {
+          "naam": "F. Torres",
+          "positie": "V",
+          "nummer": 2
+        },
+        {
+          "naam": "J. Alcívar",
+          "positie": "M",
+          "nummer": 5
+        },
+        {
+          "naam": "M. Caicedo",
+          "positie": "M",
+          "nummer": 23
+        },
+        {
+          "naam": "D. Castillo",
+          "positie": "M",
+          "nummer": 6
+        },
+        {
+          "naam": "A. Franco",
+          "positie": "M",
+          "nummer": 21
+        },
+        {
+          "naam": "K. Páez",
+          "positie": "M",
+          "nummer": 10
+        },
+        {
+          "naam": "A. Minda",
+          "positie": "M",
+          "nummer": 14
+        },
+        {
+          "naam": "A. Valencia",
+          "positie": "M",
+          "nummer": 8
+        },
+        {
+          "naam": "P. Vite",
+          "positie": "M",
+          "nummer": 15
+        },
+        {
+          "naam": "K. Rodríguez",
+          "positie": "A",
+          "nummer": 11
+        },
+        {
+          "naam": "J. Yeboah",
+          "positie": "M",
+          "nummer": 9
+        },
+        {
+          "naam": "N. Angulo",
+          "positie": "M",
+          "nummer": 20
+        },
+        {
+          "naam": "J. Caicedo",
+          "positie": "A",
+          "nummer": 16
+        },
+        {
+          "naam": "Jeremy Arévalo",
+          "positie": "A",
+          "nummer": 24
+        },
+        {
+          "naam": "G. Plata",
+          "positie": "A",
+          "nummer": 19
+        },
+        {
+          "naam": "E. Valencia",
+          "positie": "A",
+          "nummer": 13
+        }
+      ]
+    },
+    {
+      "naam": "Nederland",
+      "code": "NED",
+      "vlag": "🇳🇱",
+      "confederatie": "UEFA",
+      "groep": "F",
+      "selectie": [
+        {
+          "naam": "M. Flekken",
+          "positie": "K",
+          "nummer": 23
+        },
+        {
+          "naam": "R. Roefs",
+          "positie": "K",
+          "nummer": 13
+        },
+        {
+          "naam": "B. Verbruggen",
+          "positie": "K",
+          "nummer": 1
+        },
+        {
+          "naam": "N. Aké",
+          "positie": "V",
+          "nummer": 5
+        },
+        {
+          "naam": "D. Dumfries",
+          "positie": "V",
+          "nummer": 22
+        },
+        {
+          "naam": "J. Hato",
+          "positie": "V",
+          "nummer": 25
+        },
+        {
+          "naam": "J. Timber",
+          "positie": "V",
+          "nummer": 2
+        },
+        {
+          "naam": "V. van Dijk",
+          "positie": "V",
+          "nummer": 4
+        },
+        {
+          "naam": "J. van Hecke",
+          "positie": "V",
+          "nummer": 6
+        },
+        {
+          "naam": "M. van de Ven",
+          "positie": "V",
+          "nummer": 15
+        },
+        {
+          "naam": "M. Wieffer",
+          "positie": "V",
+          "nummer": 12
+        },
+        {
+          "naam": "R. Gravenberch",
+          "positie": "M",
+          "nummer": 8
+        },
+        {
+          "naam": "T. Koopmeiners",
+          "positie": "M",
+          "nummer": 20
+        },
+        {
+          "naam": "T. Reijnders",
+          "positie": "M",
+          "nummer": 14
+        },
+        {
+          "naam": "G. Til",
+          "positie": "M",
+          "nummer": 16
+        },
+        {
+          "naam": "Q. Timber",
+          "positie": "M",
+          "nummer": 26
+        },
+        {
+          "naam": "F. de Jong",
+          "positie": "M",
+          "nummer": 21
+        },
+        {
+          "naam": "M. de Roon",
+          "positie": "M",
+          "nummer": 3
+        },
+        {
+          "naam": "J. Kluivert",
+          "positie": "A",
+          "nummer": 7
+        },
+        {
+          "naam": "B. Brobbey",
+          "positie": "A",
+          "nummer": 19
+        },
+        {
+          "naam": "M. Depay",
+          "positie": "A",
+          "nummer": 10
+        },
+        {
+          "naam": "C. Gakpo",
+          "positie": "A",
+          "nummer": 11
+        },
+        {
+          "naam": "N. Lang",
+          "positie": "A",
+          "nummer": 17
+        },
+        {
+          "naam": "D. Malen",
+          "positie": "A",
+          "nummer": 18
+        },
+        {
+          "naam": "C. Summerville",
+          "positie": "A",
+          "nummer": 24
+        },
+        {
+          "naam": "W. Weghorst",
+          "positie": "A",
+          "nummer": 9
+        }
+      ]
+    },
+    {
+      "naam": "Japan",
+      "code": "JPN",
+      "vlag": "🇯🇵",
+      "confederatie": "AFC",
+      "groep": "F",
+      "selectie": [
+        {
+          "naam": "T. Hayakawa",
+          "positie": "K",
+          "nummer": 23
+        },
+        {
+          "naam": "K. Osako",
+          "positie": "K",
+          "nummer": 12
+        },
+        {
+          "naam": "Z. Suzuki",
+          "positie": "K",
+          "nummer": 1
+        },
+        {
+          "naam": "K. Itakura",
+          "positie": "V",
+          "nummer": 4
+        },
+        {
+          "naam": "H. Ito",
+          "positie": "V",
+          "nummer": 21
+        },
+        {
+          "naam": "Y. Nagatomo",
+          "positie": "V",
+          "nummer": 5
+        },
+        {
+          "naam": "A. Seko",
+          "positie": "V",
+          "nummer": 20
+        },
+        {
+          "naam": "Y. Sugawara",
+          "positie": "V",
+          "nummer": 2
+        },
+        {
+          "naam": "J. Suzuki",
+          "positie": "V",
+          "nummer": 25
+        },
+        {
+          "naam": "S. Taniguchi",
+          "positie": "V",
+          "nummer": 3
+        },
+        {
+          "naam": "T. Tomiyasu",
+          "positie": "V",
+          "nummer": 15
+        },
+        {
+          "naam": "T. Watanabe",
+          "positie": "V",
+          "nummer": 16
+        },
+        {
+          "naam": "R. Doan",
+          "positie": "M",
+          "nummer": 10
+        },
+        {
+          "naam": "W. Endo",
+          "positie": "M",
+          "nummer": 6
+        },
+        {
+          "naam": "D. Kamada",
+          "positie": "M",
+          "nummer": 15
+        },
+        {
+          "naam": "K. Sano",
+          "positie": "M",
+          "nummer": 24
+        },
+        {
+          "naam": "A. Tanaka",
+          "positie": "M",
+          "nummer": 7
+        },
+        {
+          "naam": "J. Ito",
+          "positie": "A",
+          "nummer": 14
+        },
+        {
+          "naam": "T. Kubo",
+          "positie": "A",
+          "nummer": 8
+        },
+        {
+          "naam": "D. Maeda",
+          "positie": "A",
+          "nummer": 11
+        },
+        {
+          "naam": "Keito Nakamura",
+          "positie": "M",
+          "nummer": 13
+        },
+        {
+          "naam": "Y. Suzuki",
+          "positie": "M",
+          "nummer": 17
+        },
+        {
+          "naam": "K. Goto",
+          "positie": "A",
+          "nummer": 9
+        },
+        {
+          "naam": "Koki Ogawa",
+          "positie": "A",
+          "nummer": 19
+        },
+        {
+          "naam": "K. Shiogai",
+          "positie": "A",
+          "nummer": 26
+        },
+        {
+          "naam": "A. Ueda",
+          "positie": "A",
+          "nummer": 18
+        }
+      ]
+    },
+    {
+      "naam": "Zweden",
+      "code": "SWE",
+      "vlag": "🇸🇪",
+      "confederatie": "UEFA",
+      "groep": "F",
+      "selectie": [
+        {
+          "naam": "V. Johansson",
+          "positie": "K",
+          "nummer": 12
+        },
+        {
+          "naam": "K. Nordfeldt",
+          "positie": "K",
+          "nummer": 23
+        },
+        {
+          "naam": "J. Widell Zetterström",
+          "positie": "K",
+          "nummer": 1
+        },
+        {
+          "naam": "H. Ekdal",
+          "positie": "V",
+          "nummer": 14
+        },
+        {
+          "naam": "G. Gudmundsson",
+          "positie": "M",
+          "nummer": 5
+        },
+        {
+          "naam": "I. Hien",
+          "positie": "V",
+          "nummer": 4
+        },
+        {
+          "naam": "G. Lagerbielke",
+          "positie": "V",
+          "nummer": 2
+        },
+        {
+          "naam": "V. Lindelöf",
+          "positie": "V",
+          "nummer": 3
+        },
+        {
+          "naam": "C. Starfelt",
+          "positie": "V",
+          "nummer": 15
+        },
+        {
+          "naam": "H. Johansson",
+          "positie": "M",
+          "nummer": 6
+        },
+        {
+          "naam": "E. Smith",
+          "positie": "V",
+          "nummer": 20
+        },
+        {
+          "naam": "E. Stroud",
+          "positie": "M",
+          "nummer": 24
+        },
+        {
+          "naam": "D. Svensson",
+          "positie": "V",
+          "nummer": 8
+        },
+        {
+          "naam": "A. Bernhardsson",
+          "positie": "M",
+          "nummer": 21
+        },
+        {
+          "naam": "Y. Ayari",
+          "positie": "M",
+          "nummer": 18
+        },
+        {
+          "naam": "L. Bergvall",
+          "positie": "M",
+          "nummer": 7
+        },
+        {
+          "naam": "B. Nygren",
+          "positie": "A",
+          "nummer": 10
+        },
+        {
+          "naam": "J. Karlström",
+          "positie": "M",
+          "nummer": 16
+        },
+        {
+          "naam": "K. Sema",
+          "positie": "M",
+          "nummer": 13
+        },
+        {
+          "naam": "M. Svanberg",
+          "positie": "M",
+          "nummer": 19
+        },
+        {
+          "naam": "B. Zeneli",
+          "positie": "M",
+          "nummer": 22
+        },
+        {
+          "naam": "T. Ali",
+          "positie": "M",
+          "nummer": 26
+        },
+        {
+          "naam": "A. Elanga",
+          "positie": "A",
+          "nummer": 11
+        },
+        {
+          "naam": "V. Gyökeres",
+          "positie": "A",
+          "nummer": 17
+        },
+        {
+          "naam": "A. Isak",
+          "positie": "A",
+          "nummer": 9
+        },
+        {
+          "naam": "G. Nilsson",
+          "positie": "A",
+          "nummer": 25
+        }
+      ]
+    },
+    {
+      "naam": "Tunesië",
+      "code": "TUN",
+      "vlag": "🇹🇳",
+      "confederatie": "CAF",
+      "groep": "F",
+      "selectie": [
+        {
+          "naam": "S. Ben Hsan",
+          "positie": "K",
+          "nummer": 22
+        },
+        {
+          "naam": "C. Abdelmouhib",
+          "positie": "K",
+          "nummer": 1
+        },
+        {
+          "naam": "A. Dahmen",
+          "positie": "K",
+          "nummer": 16
+        },
+        {
+          "naam": "A. Abdi",
+          "positie": "V",
+          "nummer": 2
+        },
+        {
+          "naam": "A. Arous",
+          "positie": "V",
+          "nummer": 5
+        },
+        {
+          "naam": "A. Ben Hmida",
+          "positie": "V",
+          "nummer": 21
+        },
+        {
+          "naam": "D. Bronn",
+          "positie": "V",
+          "nummer": 6
+        },
+        {
+          "naam": "R. Chikhaoui",
+          "positie": "V",
+          "nummer": 24
+        },
+        {
+          "naam": "M. Neffati",
+          "positie": "V",
+          "nummer": 23
+        },
+        {
+          "naam": "O. Rekik",
+          "positie": "V",
+          "nummer": 4
+        },
+        {
+          "naam": "M. Talbi",
+          "positie": "V",
+          "nummer": 3
+        },
+        {
+          "naam": "Y. Valery",
+          "positie": "V",
+          "nummer": 20
+        },
+        {
+          "naam": "M. Ben Ouanes",
+          "positie": "M",
+          "nummer": 12
+        },
+        {
+          "naam": "K. Ayari",
+          "positie": "A",
+          "nummer": 14
+        },
+        {
+          "naam": "Ismaël Gharbi",
+          "positie": "M",
+          "nummer": 11
+        },
+        {
+          "naam": "R. Khedira",
+          "positie": "M",
+          "nummer": 13
+        },
+        {
+          "naam": "H. Mejbri",
+          "positie": "M",
+          "nummer": 10
+        },
+        {
+          "naam": "E. Skhiri",
+          "positie": "M",
+          "nummer": 17
+        },
+        {
+          "naam": "A. Ben Slimane",
+          "positie": "M",
+          "nummer": 25
+        },
+        {
+          "naam": "H. Mahmoud",
+          "positie": "M",
+          "nummer": 15
+        },
+        {
+          "naam": "S. Tounekti",
+          "positie": "A",
+          "nummer": 26
+        },
+        {
+          "naam": "E. Achouri",
+          "positie": "M",
+          "nummer": 7
+        },
+        {
+          "naam": "F. Chaouat",
+          "positie": "A",
+          "nummer": 19
+        },
+        {
+          "naam": "R. Elloumi",
+          "positie": "A",
+          "nummer": 18
+        },
+        {
+          "naam": "H. Mastouri",
+          "positie": "A",
+          "nummer": 9
+        },
+        {
+          "naam": "E. Saad",
+          "positie": "A",
+          "nummer": 8
+        }
+      ]
+    },
+    {
+      "naam": "België",
+      "code": "BEL",
+      "vlag": "🇧🇪",
+      "confederatie": "UEFA",
+      "groep": "G",
+      "selectie": [
+        {
+          "naam": "T. Courtois",
+          "positie": "K",
+          "nummer": 1
+        },
+        {
+          "naam": "S. Lammens",
+          "positie": "K",
+          "nummer": 12
+        },
+        {
+          "naam": "M. Penders",
+          "positie": "K",
+          "nummer": 13
+        },
+        {
+          "naam": "T. Castagne",
+          "positie": "V",
+          "nummer": 21
+        },
+        {
+          "naam": "M. De Cuyper",
+          "positie": "M",
+          "nummer": 5
+        },
+        {
+          "naam": "K. De Winter",
+          "positie": "V",
+          "nummer": 16
+        },
+        {
+          "naam": "Z. Debast",
+          "positie": "V",
+          "nummer": 2
+        },
+        {
+          "naam": "B. Mechele",
+          "positie": "V",
+          "nummer": 4
+        },
+        {
+          "naam": "T. Meunier",
+          "positie": "V",
+          "nummer": 15
+        },
+        {
+          "naam": "N. Ngoy",
+          "positie": "V",
+          "nummer": 25
+        },
+        {
+          "naam": "J. Seys",
+          "positie": "V",
+          "nummer": 18
+        },
+        {
+          "naam": "A. Theate",
+          "positie": "V",
+          "nummer": 3
+        },
+        {
+          "naam": "K. De Bruyne",
+          "positie": "A",
+          "nummer": 7
+        },
+        {
+          "naam": "A. Onana",
+          "positie": "V",
+          "nummer": 24
+        },
+        {
+          "naam": "N. Raskin",
+          "positie": "M",
+          "nummer": 23
+        },
+        {
+          "naam": "A. Saelemaekers",
+          "positie": "M",
+          "nummer": 22
+        },
+        {
+          "naam": "Y. Tielemans",
+          "positie": "M",
+          "nummer": 8
+        },
+        {
+          "naam": "D. Moreira",
+          "positie": "A",
+          "nummer": 19
+        },
+        {
+          "naam": "H. Vanaken",
+          "positie": "M",
+          "nummer": 20
+        },
+        {
+          "naam": "A. Witsel",
+          "positie": "M",
+          "nummer": 6
+        },
+        {
+          "naam": "J. Doku",
+          "positie": "A",
+          "nummer": 11
+        },
+        {
+          "naam": "M. Fernandez-Pardo",
+          "positie": "A",
+          "nummer": 26
+        },
+        {
+          "naam": "R. Lukaku",
+          "positie": "A",
+          "nummer": 9
+        },
+        {
+          "naam": "D. Lukebakio",
+          "positie": "A",
+          "nummer": 14
+        },
+        {
+          "naam": "C. De Ketelaere",
+          "positie": "A",
+          "nummer": 17
+        },
+        {
+          "naam": "L. Trossard",
+          "positie": "A",
+          "nummer": 10
+        }
+      ]
+    },
+    {
+      "naam": "Egypte",
+      "code": "EGY",
+      "vlag": "🇪🇬",
+      "confederatie": "CAF",
+      "groep": "G",
+      "selectie": [
+        {
+          "naam": "M. Alaa",
+          "positie": "K",
+          "nummer": 26
+        },
+        {
+          "naam": "Mohamed El Shenawy",
+          "positie": "K",
+          "nummer": 1
+        },
+        {
+          "naam": "Mostafa Shobeir",
+          "positie": "K",
+          "nummer": 23
+        },
+        {
+          "naam": "Al Mahdi Soliman",
+          "positie": "K",
+          "nummer": 16
+        },
+        {
+          "naam": "Hossam Abdelmaguid",
+          "positie": "V",
+          "nummer": 4
+        },
+        {
+          "naam": "Mohamed Abdelmonem",
+          "positie": "V",
+          "nummer": 6
+        },
+        {
+          "naam": "Ahmed Fatouh",
+          "positie": "V",
+          "nummer": 13
+        },
+        {
+          "naam": "Karim Hafez",
+          "positie": "V",
+          "nummer": 15
+        },
+        {
+          "naam": "Mohamed Hany",
+          "positie": "V",
+          "nummer": 3
+        },
+        {
+          "naam": "Yasser Ibrahim",
+          "positie": "V",
+          "nummer": 2
+        },
+        {
+          "naam": "Rami Rabia",
+          "positie": "V",
+          "nummer": 5
+        },
+        {
+          "naam": "T. Alaa",
+          "positie": "V",
+          "nummer": 24
+        },
+        {
+          "naam": "Emam Ashour",
+          "positie": "M",
+          "nummer": 8
+        },
+        {
+          "naam": "Marwan Attia",
+          "positie": "M",
+          "nummer": 19
+        },
+        {
+          "naam": "Nabil Emad Dunga",
+          "positie": "M",
+          "nummer": 18
+        },
+        {
+          "naam": "Hamdi Fathy",
+          "positie": "M",
+          "nummer": 14
+        },
+        {
+          "naam": "Mohanad Lasheen",
+          "positie": "M",
+          "nummer": 17
+        },
+        {
+          "naam": "Mahmoud Saber",
+          "positie": "M",
+          "nummer": 21
+        },
+        {
+          "naam": "Mostafa Zico",
+          "positie": "A",
+          "nummer": 11
+        },
+        {
+          "naam": "Trézéguet",
+          "positie": "M",
+          "nummer": 7
+        },
+        {
+          "naam": "H. Hassan",
+          "positie": "A",
+          "nummer": 12
+        },
+        {
+          "naam": "Ahmed Zizo",
+          "positie": "A",
+          "nummer": 25
+        },
+        {
+          "naam": "H. Abdelkarim",
+          "positie": "A",
+          "nummer": 27
+        },
+        {
+          "naam": "Ibrahim Adel",
+          "positie": "M",
+          "nummer": 20
+        },
+        {
+          "naam": "Omar Marmoush",
+          "positie": "A",
+          "nummer": 22
+        },
+        {
+          "naam": "Mohamed Salah",
+          "positie": "A",
+          "nummer": 10
+        }
+      ]
+    },
+    {
+      "naam": "Iran",
+      "code": "IRN",
+      "vlag": "🇮🇷",
+      "confederatie": "AFC",
+      "groep": "G",
+      "selectie": [
+        {
+          "naam": "A. Beiranvand",
+          "positie": "K",
+          "nummer": 1
+        },
+        {
+          "naam": "H. Hosseini",
+          "positie": "K",
+          "nummer": 22
+        },
+        {
+          "naam": "P. Niazmand",
+          "positie": "K",
+          "nummer": 12
+        },
+        {
+          "naam": "D. Eiri",
+          "positie": "V",
+          "nummer": 25
+        },
+        {
+          "naam": "R. Rezaeian",
+          "positie": "V",
+          "nummer": 23
+        },
+        {
+          "naam": "E. Hajisafi",
+          "positie": "V",
+          "nummer": 3
+        },
+        {
+          "naam": "Saleh Hardani",
+          "positie": "V",
+          "nummer": 2
+        },
+        {
+          "naam": "H. Kanani",
+          "positie": "V",
+          "nummer": 13
+        },
+        {
+          "naam": "S. Khalilzadeh",
+          "positie": "V",
+          "nummer": 4
+        },
+        {
+          "naam": "M. Mohammadi",
+          "positie": "V",
+          "nummer": 5
+        },
+        {
+          "naam": "A. Nemati",
+          "positie": "V",
+          "nummer": 19
+        },
+        {
+          "naam": "A. Yousefi",
+          "positie": "V",
+          "nummer": 17
+        },
+        {
+          "naam": "A. Jahanbakhsh",
+          "positie": "M",
+          "nummer": 7
+        },
+        {
+          "naam": "R. Cheshmi",
+          "positie": "M",
+          "nummer": 15
+        },
+        {
+          "naam": "S. Ezatolahi",
+          "positie": "M",
+          "nummer": 6
+        },
+        {
+          "naam": "S. Ghoddos",
+          "positie": "M",
+          "nummer": 14
+        },
+        {
+          "naam": "A. Razzaghinia",
+          "positie": "M",
+          "nummer": 28
+        },
+        {
+          "naam": "M. Ghorbani",
+          "positie": "M",
+          "nummer": 11
+        },
+        {
+          "naam": "M. Mohebi",
+          "positie": "A",
+          "nummer": 8
+        },
+        {
+          "naam": "M. Torabi",
+          "positie": "M",
+          "nummer": 16
+        },
+        {
+          "naam": "M. Ghaedi",
+          "positie": "A",
+          "nummer": 10
+        },
+        {
+          "naam": "A. Hosseinzadeh",
+          "positie": "A",
+          "nummer": 18
+        },
+        {
+          "naam": "A. Alipour",
+          "positie": "A",
+          "nummer": 20
+        },
+        {
+          "naam": "S. Moghanlou",
+          "positie": "A",
+          "nummer": 31
+        },
+        {
+          "naam": "D. Eckert Ayensa",
+          "positie": "A",
+          "nummer": 24
+        },
+        {
+          "naam": "M. Taremi",
+          "positie": "A",
+          "nummer": 9
+        }
+      ]
+    },
+    {
+      "naam": "Nieuw-Zeeland",
+      "code": "NZL",
+      "vlag": "🇳🇿",
+      "confederatie": "OFC",
+      "groep": "G",
+      "selectie": [
+        {
+          "naam": "M. Crocombe",
+          "positie": "K",
+          "nummer": 1
+        },
+        {
+          "naam": "A. Paulsen",
+          "positie": "K",
+          "nummer": 12
+        },
+        {
+          "naam": "M. Woud",
+          "positie": "K",
+          "nummer": 22
+        },
+        {
+          "naam": "Tyler Bindon",
+          "positie": "V",
+          "nummer": 4
+        },
+        {
+          "naam": "M. Boxall",
+          "positie": "V",
+          "nummer": 5
+        },
+        {
+          "naam": "L. Cacace",
+          "positie": "M",
+          "nummer": 13
+        },
+        {
+          "naam": "F. de Vries",
+          "positie": "V",
+          "nummer": 3
+        },
+        {
+          "naam": "C. Elliot",
+          "positie": "V",
+          "nummer": 24
+        },
+        {
+          "naam": "T. Payne",
+          "positie": "V",
+          "nummer": 2
+        },
+        {
+          "naam": "N. Pijnaker",
+          "positie": "V",
+          "nummer": 15
+        },
+        {
+          "naam": "T. Smith",
+          "positie": "V",
+          "nummer": 26
+        },
+        {
+          "naam": "F. Surman",
+          "positie": "V",
+          "nummer": 16
+        },
+        {
+          "naam": "L. Bayliss",
+          "positie": "M",
+          "nummer": 25
+        },
+        {
+          "naam": "J. Bell",
+          "positie": "M",
+          "nummer": 6
+        },
+        {
+          "naam": "M. Garbett",
+          "positie": "M",
+          "nummer": 7
+        },
+        {
+          "naam": "C. McCowatt",
+          "positie": "M",
+          "nummer": 20
+        },
+        {
+          "naam": "A. Rufer",
+          "positie": "M",
+          "nummer": 14
+        },
+        {
+          "naam": "S. Singh",
+          "positie": "M",
+          "nummer": 10
+        },
+        {
+          "naam": "M. Stamenic",
+          "positie": "M",
+          "nummer": 8
+        },
+        {
+          "naam": "R. Thomas",
+          "positie": "M",
+          "nummer": 23
+        },
+        {
+          "naam": "E. Just",
+          "positie": "M",
+          "nummer": 11
+        },
+        {
+          "naam": "B. Old",
+          "positie": "M",
+          "nummer": 19
+        },
+        {
+          "naam": "K. Barbarouses",
+          "positie": "A",
+          "nummer": 17
+        },
+        {
+          "naam": "J. Randall",
+          "positie": "M",
+          "nummer": 21
+        },
+        {
+          "naam": "B. Waine",
+          "positie": "A",
+          "nummer": 18
+        },
+        {
+          "naam": "C. Wood",
+          "positie": "A",
+          "nummer": 9
+        }
+      ]
+    },
+    {
+      "naam": "Spanje",
+      "code": "ESP",
+      "vlag": "🇪🇸",
+      "confederatie": "UEFA",
+      "groep": "H",
+      "selectie": [
+        {
+          "naam": "Joan García",
+          "positie": "K",
+          "nummer": 13
+        },
+        {
+          "naam": "David Raya",
+          "positie": "K",
+          "nummer": 1
+        },
+        {
+          "naam": "Unai Simón",
+          "positie": "K",
+          "nummer": 23
+        },
+        {
+          "naam": "Pau Cubarsí Paredes",
+          "positie": "V",
+          "nummer": 22
+        },
+        {
+          "naam": "Marc Cucurella",
+          "positie": "V",
+          "nummer": 24
+        },
+        {
+          "naam": "Eric García",
+          "positie": "V",
+          "nummer": 4
+        },
+        {
+          "naam": "Álex Grimaldo",
+          "positie": "V",
+          "nummer": 3
+        },
+        {
+          "naam": "Aymeric Laporte",
+          "positie": "V",
+          "nummer": 14
+        },
+        {
+          "naam": "Marcos Llorente",
+          "positie": "M",
+          "nummer": 5
+        },
+        {
+          "naam": "Pedro Porro",
+          "positie": "V",
+          "nummer": 12
+        },
+        {
+          "naam": "Marc Pubill",
+          "positie": "V",
+          "nummer": 2
+        },
+        {
+          "naam": "Gavi",
+          "positie": "M",
+          "nummer": 9
+        },
+        {
+          "naam": "Mikel Merino",
+          "positie": "M",
+          "nummer": 6
+        },
+        {
+          "naam": "Pedri",
+          "positie": "M",
+          "nummer": 20
+        },
+        {
+          "naam": "Rodri",
+          "positie": "M",
+          "nummer": 16
+        },
+        {
+          "naam": "Fabián Ruiz",
+          "positie": "M",
+          "nummer": 8
+        },
+        {
+          "naam": "Martín Zubimendi",
+          "positie": "M",
+          "nummer": 18
+        },
+        {
+          "naam": "Álex Baena",
+          "positie": "M",
+          "nummer": 15
+        },
+        {
+          "naam": "Dani Olmo",
+          "positie": "M",
+          "nummer": 10
+        },
+        {
+          "naam": "Borja Iglesias",
+          "positie": "A",
+          "nummer": 26
+        },
+        {
+          "naam": "Lamine Yamal",
+          "positie": "A",
+          "nummer": 19
+        },
+        {
+          "naam": "Víctor Muñoz",
+          "positie": "A",
+          "nummer": 25
+        },
+        {
+          "naam": "Mikel Oyarzabal",
+          "positie": "A",
+          "nummer": 21
+        },
+        {
+          "naam": "Yeremy Pino",
+          "positie": "M",
+          "nummer": 11
+        },
+        {
+          "naam": "Ferran Torres",
+          "positie": "M",
+          "nummer": 7
+        },
+        {
+          "naam": "Nico Williams",
+          "positie": "A",
+          "nummer": 17
+        }
+      ]
+    },
+    {
+      "naam": "Kaapverdië",
+      "code": "CPV",
+      "vlag": "🇨🇻",
+      "confederatie": "CAF",
+      "groep": "H",
+      "selectie": [
+        {
+          "naam": "Márcio Rosa",
+          "positie": "K",
+          "nummer": 12
+        },
+        {
+          "naam": "Vózinha",
+          "positie": "K",
+          "nummer": 1
+        },
+        {
+          "naam": "C. dos Santos",
+          "positie": "K",
+          "nummer": 23
+        },
+        {
+          "naam": "Diney Borges",
+          "positie": "V",
+          "nummer": 3
+        },
+        {
+          "naam": "Logan Costa",
+          "positie": "V",
+          "nummer": 5
+        },
+        {
+          "naam": "S. Lopes Cabral",
+          "positie": "V",
+          "nummer": 13
+        },
+        {
+          "naam": "Pico",
+          "positie": "V",
+          "nummer": 4
+        },
+        {
+          "naam": "S. Moreira",
+          "positie": "V",
+          "nummer": 22
+        },
+        {
+          "naam": "Wagner Pina",
+          "positie": "V",
+          "nummer": 24
+        },
+        {
+          "naam": "Kelvin Pires",
+          "positie": "V",
+          "nummer": 25
+        },
+        {
+          "naam": "Stopira",
+          "positie": "V",
+          "nummer": 2
+        },
+        {
+          "naam": "Telmo Arcanjo",
+          "positie": "M",
+          "nummer": 18
+        },
+        {
+          "naam": "Deroy Duarte",
+          "positie": "M",
+          "nummer": 14
+        },
+        {
+          "naam": "L. Duarte",
+          "positie": "M",
+          "nummer": 15
+        },
+        {
+          "naam": "João Paulo",
+          "positie": "M",
+          "nummer": 8
+        },
+        {
+          "naam": "Kevin Pina",
+          "positie": "M",
+          "nummer": 6
+        },
+        {
+          "naam": "Jamiro Monteiro",
+          "positie": "M",
+          "nummer": 10
+        },
+        {
+          "naam": "Yannick Semedo",
+          "positie": "M",
+          "nummer": 16
+        },
+        {
+          "naam": "Garry Rodrigues",
+          "positie": "M",
+          "nummer": 11
+        },
+        {
+          "naam": "Nuno da Costa",
+          "positie": "A",
+          "nummer": 21
+        },
+        {
+          "naam": "Jovane Cabral",
+          "positie": "A",
+          "nummer": 7
+        },
+        {
+          "naam": "Willy Semedo",
+          "positie": "M",
+          "nummer": 17
+        },
+        {
+          "naam": "Hélio Varela",
+          "positie": "M",
+          "nummer": 26
+        },
+        {
+          "naam": "Ryan Mendes",
+          "positie": "M",
+          "nummer": 20
+        },
+        {
+          "naam": "Gilson Benchimol",
+          "positie": "A",
+          "nummer": 9
+        },
+        {
+          "naam": "D. Livramento",
+          "positie": "A",
+          "nummer": 19
+        }
+      ]
+    },
+    {
+      "naam": "Saudi-Arabië",
+      "code": "KSA",
+      "vlag": "🇸🇦",
+      "confederatie": "AFC",
+      "groep": "H",
+      "selectie": [
+        {
+          "naam": "Nawaf Al Aqidi",
+          "positie": "K",
+          "nummer": 1
+        },
+        {
+          "naam": "Ahmed Al Kassar",
+          "positie": "K",
+          "nummer": 22
+        },
+        {
+          "naam": "Mohammed Al Owais",
+          "positie": "K",
+          "nummer": 21
+        },
+        {
+          "naam": "Saud Abdulhamid",
+          "positie": "V",
+          "nummer": 12
+        },
+        {
+          "naam": "Mohammed Abu Al Shamat",
+          "positie": "M",
+          "nummer": 26
+        },
+        {
+          "naam": "Nawaf Boushal",
+          "positie": "V",
+          "nummer": 13
+        },
+        {
+          "naam": "Abdulelah Al Amri",
+          "positie": "V",
+          "nummer": 4
+        },
+        {
+          "naam": "Moteb Al Harbi",
+          "positie": "V",
+          "nummer": 24
+        },
+        {
+          "naam": "Hassan Kadesh",
+          "positie": "V",
+          "nummer": 14
+        },
+        {
+          "naam": "Ali Lajami",
+          "positie": "V",
+          "nummer": 3
+        },
+        {
+          "naam": "Ali Majrashi",
+          "positie": "V",
+          "nummer": 2
+        },
+        {
+          "naam": "Hassan Tambakti",
+          "positie": "V",
+          "nummer": 5
+        },
+        {
+          "naam": "J. Thakri",
+          "positie": "V",
+          "nummer": 25
+        },
+        {
+          "naam": "Nasser Al Dawsari",
+          "positie": "M",
+          "nummer": 6
+        },
+        {
+          "naam": "Mohamed Kanno",
+          "positie": "M",
+          "nummer": 28
+        },
+        {
+          "naam": "Ziyad Al Johani",
+          "positie": "M",
+          "nummer": 16
+        },
+        {
+          "naam": "Musab Al Juwayr",
+          "positie": "A",
+          "nummer": 7
+        },
+        {
+          "naam": "Abdullah Al Khaibari",
+          "positie": "M",
+          "nummer": 15
+        },
+        {
+          "naam": "Ala Al Haji",
+          "positie": "M",
+          "nummer": 30
+        },
+        {
+          "naam": "Khalid Al Ghannam",
+          "positie": "A",
+          "nummer": 17
+        },
+        {
+          "naam": "Sultan Mandash",
+          "positie": "A",
+          "nummer": 27
+        },
+        {
+          "naam": "Ayman Yahya",
+          "positie": "A",
+          "nummer": 8
+        },
+        {
+          "naam": "Feras Al Brikan",
+          "positie": "A",
+          "nummer": 9
+        },
+        {
+          "naam": "Abdullah Al Hamdan",
+          "positie": "A",
+          "nummer": 19
+        },
+        {
+          "naam": "Saleh Al Shehri",
+          "positie": "A",
+          "nummer": 11
+        },
+        {
+          "naam": "Salem Al Dawsari",
+          "positie": "M",
+          "nummer": 10
+        }
+      ]
+    },
+    {
+      "naam": "Uruguay",
+      "code": "URU",
+      "vlag": "🇺🇾",
+      "confederatie": "CONMEBOL",
+      "groep": "H",
+      "selectie": [
+        {
+          "naam": "S. Mele",
+          "positie": "K",
+          "nummer": 12
+        },
+        {
+          "naam": "F. Muslera",
+          "positie": "K",
+          "nummer": 23
+        },
+        {
+          "naam": "S. Rochet",
+          "positie": "K",
+          "nummer": 1
+        },
+        {
+          "naam": "R. Araújo",
+          "positie": "V",
+          "nummer": 4
+        },
+        {
+          "naam": "S. Bueno",
+          "positie": "V",
+          "nummer": 24
+        },
+        {
+          "naam": "S. Cáceres",
+          "positie": "V",
+          "nummer": 3
+        },
+        {
+          "naam": "J. Giménez",
+          "positie": "V",
+          "nummer": 2
+        },
+        {
+          "naam": "M. Olivera",
+          "positie": "V",
+          "nummer": 16
+        },
+        {
+          "naam": "G. Varela",
+          "positie": "V",
+          "nummer": 13
+        },
+        {
+          "naam": "M. Viña",
+          "positie": "V",
+          "nummer": 17
+        },
+        {
+          "naam": "R. Bentancur",
+          "positie": "M",
+          "nummer": 6
+        },
+        {
+          "naam": "E. Martínez",
+          "positie": "M",
+          "nummer": 15
+        },
+        {
+          "naam": "J. Sanabria",
+          "positie": "M",
+          "nummer": 25
+        },
+        {
+          "naam": "M. Ugarte",
+          "positie": "M",
+          "nummer": 5
+        },
+        {
+          "naam": "F. Valverde",
+          "positie": "M",
+          "nummer": 8
+        },
+        {
+          "naam": "R. Zalazar",
+          "positie": "M",
+          "nummer": 26
+        },
+        {
+          "naam": "G. de Arrascaeta",
+          "positie": "M",
+          "nummer": 10
+        },
+        {
+          "naam": "N. de la Cruz",
+          "positie": "M",
+          "nummer": 7
+        },
+        {
+          "naam": "M. Araújo",
+          "positie": "M",
+          "nummer": 20
+        },
+        {
+          "naam": "A. Canobbio",
+          "positie": "M",
+          "nummer": 14
+        },
+        {
+          "naam": "R. Aguirre",
+          "positie": "A",
+          "nummer": 19
+        },
+        {
+          "naam": "J. Piquerez",
+          "positie": "A",
+          "nummer": 22
+        },
+        {
+          "naam": "D. Núñez",
+          "positie": "A",
+          "nummer": 9
+        },
+        {
+          "naam": "F. Pellistri",
+          "positie": "A",
+          "nummer": 11
+        },
+        {
+          "naam": "B. Rodríguez",
+          "positie": "A",
+          "nummer": 18
+        },
+        {
+          "naam": "F. Viñas",
+          "positie": "A",
+          "nummer": 21
+        }
+      ]
+    },
+    {
+      "naam": "Frankrijk",
+      "code": "FRA",
+      "vlag": "🇫🇷",
+      "confederatie": "UEFA",
+      "groep": "I",
+      "selectie": [
+        {
+          "naam": "M. Maignan",
+          "positie": "K",
+          "nummer": 16
+        },
+        {
+          "naam": "R. Risser",
+          "positie": "K",
+          "nummer": 23
+        },
+        {
+          "naam": "B. Samba",
+          "positie": "K",
+          "nummer": 1
+        },
+        {
+          "naam": "L. Digne",
+          "positie": "V",
+          "nummer": 3
+        },
+        {
+          "naam": "M. Gusto",
+          "positie": "V",
+          "nummer": 2
+        },
+        {
+          "naam": "L. Hernández",
+          "positie": "V",
+          "nummer": 21
+        },
+        {
+          "naam": "T. Hernández",
+          "positie": "V",
+          "nummer": 19
+        },
+        {
+          "naam": "I. Konaté",
+          "positie": "V",
+          "nummer": 15
+        },
+        {
+          "naam": "J. Koundé",
+          "positie": "V",
+          "nummer": 5
+        },
+        {
+          "naam": "M. Lacroix",
+          "positie": "V",
+          "nummer": 26
+        },
+        {
+          "naam": "W. Saliba",
+          "positie": "V",
+          "nummer": 17
+        },
+        {
+          "naam": "D. Upamecano",
+          "positie": "V",
+          "nummer": 4
+        },
+        {
+          "naam": "R. Cherki",
+          "positie": "M",
+          "nummer": 24
+        },
+        {
+          "naam": "N. Kanté",
+          "positie": "M",
+          "nummer": 13
+        },
+        {
+          "naam": "M. Koné",
+          "positie": "M",
+          "nummer": 6
+        },
+        {
+          "naam": "A. Rabiot",
+          "positie": "M",
+          "nummer": 14
+        },
+        {
+          "naam": "A. Tchouaméni",
+          "positie": "M",
+          "nummer": 8
+        },
+        {
+          "naam": "W. Zaïre-Emery",
+          "positie": "M",
+          "nummer": 18
+        },
+        {
+          "naam": "M. Akliouche",
+          "positie": "M",
+          "nummer": 25
+        },
+        {
+          "naam": "B. Barcola",
+          "positie": "A",
+          "nummer": 12
+        },
+        {
+          "naam": "J. Mateta",
+          "positie": "A",
+          "nummer": 22
+        },
+        {
+          "naam": "O. Dembélé",
+          "positie": "A",
+          "nummer": 7
+        },
+        {
+          "naam": "D. Doué",
+          "positie": "A",
+          "nummer": 20
+        },
+        {
+          "naam": "Kylian Mbappé",
+          "positie": "A",
+          "nummer": 10
+        },
+        {
+          "naam": "M. Thuram",
+          "positie": "M",
+          "nummer": 9
+        },
+        {
+          "naam": "M. Olise",
+          "positie": "M",
+          "nummer": 11
+        }
+      ]
+    },
+    {
+      "naam": "Senegal",
+      "code": "SEN",
+      "vlag": "🇸🇳",
+      "confederatie": "CAF",
+      "groep": "I",
+      "selectie": [
+        {
+          "naam": "M. Diaw",
+          "positie": "K",
+          "nummer": 23
+        },
+        {
+          "naam": "Y. Diouf",
+          "positie": "K",
+          "nummer": 1
+        },
+        {
+          "naam": "É. Mendy",
+          "positie": "K",
+          "nummer": 16
+        },
+        {
+          "naam": "E. Diouf",
+          "positie": "V",
+          "nummer": 25
+        },
+        {
+          "naam": "I. Jakobs",
+          "positie": "M",
+          "nummer": 14
+        },
+        {
+          "naam": "K. Koulibaly",
+          "positie": "V",
+          "nummer": 3
+        },
+        {
+          "naam": "A. Mendy",
+          "positie": "V",
+          "nummer": 24
+        },
+        {
+          "naam": "M. Niakhaté",
+          "positie": "V",
+          "nummer": 19
+        },
+        {
+          "naam": "M. Sarr",
+          "positie": "V",
+          "nummer": 2
+        },
+        {
+          "naam": "A. Seck",
+          "positie": "V",
+          "nummer": 4
+        },
+        {
+          "naam": "K. Diatta",
+          "positie": "V",
+          "nummer": 15
+        },
+        {
+          "naam": "L. Camara",
+          "positie": "M",
+          "nummer": 8
+        },
+        {
+          "naam": "P. Ciss",
+          "positie": "M",
+          "nummer": 6
+        },
+        {
+          "naam": "H. Diarra",
+          "positie": "A",
+          "nummer": 21
+        },
+        {
+          "naam": "I. Gueye",
+          "positie": "M",
+          "nummer": 5
+        },
+        {
+          "naam": "P. Gueye",
+          "positie": "M",
+          "nummer": 26
+        },
+        {
+          "naam": "Bara Ndiaye",
+          "positie": "M",
+          "nummer": 27
+        },
+        {
+          "naam": "P. Sarr",
+          "positie": "M",
+          "nummer": 17
+        },
+        {
+          "naam": "Assane Diao",
+          "positie": "A",
+          "nummer": 7
+        },
+        {
+          "naam": "B. Dieng",
+          "positie": "A",
+          "nummer": 9
+        },
+        {
+          "naam": "N. Jackson",
+          "positie": "A",
+          "nummer": 11
+        },
+        {
+          "naam": "S. Mané",
+          "positie": "A",
+          "nummer": 10
+        },
+        {
+          "naam": "I. Mbaye",
+          "positie": "A",
+          "nummer": 27
+        },
+        {
+          "naam": "C. Ndiaye",
+          "positie": "A",
+          "nummer": 12
+        },
+        {
+          "naam": "I. Ndiaye",
+          "positie": "M",
+          "nummer": 13
+        },
+        {
+          "naam": "I. Sarr",
+          "positie": "A",
+          "nummer": 18
+        }
+      ]
+    },
+    {
+      "naam": "Irak",
+      "code": "IRQ",
+      "vlag": "🇮🇶",
+      "confederatie": "AFC",
+      "groep": "I",
+      "selectie": [
+        {
+          "naam": "Ahmed Basil",
+          "positie": "K",
+          "nummer": 22
+        },
+        {
+          "naam": "Jalal Hassan Hachim",
+          "positie": "K",
+          "nummer": 12
+        },
+        {
+          "naam": "Fahad Talib",
+          "positie": "K",
+          "nummer": 1
+        },
+        {
+          "naam": "Hussein Ali",
+          "positie": "V",
+          "nummer": 3
+        },
+        {
+          "naam": "Merchas Doski",
+          "positie": "V",
+          "nummer": 23
+        },
+        {
+          "naam": "Frans Putros",
+          "positie": "V",
+          "nummer": 26
+        },
+        {
+          "naam": "Mustafa Saadoun",
+          "positie": "V",
+          "nummer": 25
+        },
+        {
+          "naam": "Rebin Solaka",
+          "positie": "V",
+          "nummer": 2
+        },
+        {
+          "naam": "Zayed Tahseen",
+          "positie": "V",
+          "nummer": 4
+        },
+        {
+          "naam": "A. Yahya",
+          "positie": "V",
+          "nummer": 15
+        },
+        {
+          "naam": "Munaf Younus",
+          "positie": "V",
+          "nummer": 6
+        },
+        {
+          "naam": "Akam Rahman",
+          "positie": "V",
+          "nummer": 5
+        },
+        {
+          "naam": "Amir Al Ammari",
+          "positie": "M",
+          "nummer": 16
+        },
+        {
+          "naam": "Youssef Amyn",
+          "positie": "A",
+          "nummer": 7
+        },
+        {
+          "naam": "Ibraheem Bayesh",
+          "positie": "M",
+          "nummer": 8
+        },
+        {
+          "naam": "Zidane Iqbal",
+          "positie": "M",
+          "nummer": 14
+        },
+        {
+          "naam": "Z. Ismaeel",
+          "positie": "M",
+          "nummer": 24
+        },
+        {
+          "naam": "A. Sher",
+          "positie": "M",
+          "nummer": 20
+        },
+        {
+          "naam": "Kevin Yakob",
+          "positie": "M",
+          "nummer": 19
+        },
+        {
+          "naam": "A. Jasim",
+          "positie": "A",
+          "nummer": 17
+        },
+        {
+          "naam": "Ali Al Hamadi",
+          "positie": "A",
+          "nummer": 9
+        },
+        {
+          "naam": "M. Farji",
+          "positie": "M",
+          "nummer": 21
+        },
+        {
+          "naam": "Aymen Hussein",
+          "positie": "A",
+          "nummer": 18
+        },
+        {
+          "naam": "Meme",
+          "positie": "A",
+          "nummer": 10
+        },
+        {
+          "naam": "A. Qasem",
+          "positie": "A",
+          "nummer": 11
+        },
+        {
+          "naam": "A. Y. Hashim",
+          "positie": "A",
+          "nummer": 13
+        }
+      ]
+    },
+    {
+      "naam": "Noorwegen",
+      "code": "NOR",
+      "vlag": "🇳🇴",
+      "confederatie": "UEFA",
+      "groep": "I",
+      "selectie": [
+        {
+          "naam": "Ø. Nyland",
+          "positie": "K",
+          "nummer": 1
+        },
+        {
+          "naam": "E. Selvik",
+          "positie": "K",
+          "nummer": 13
+        },
+        {
+          "naam": "S. Tangvik",
+          "positie": "K",
+          "nummer": 12
+        },
+        {
+          "naam": "K. Ajer",
+          "positie": "V",
+          "nummer": 3
+        },
+        {
+          "naam": "F. Bjørkan",
+          "positie": "V",
+          "nummer": 15
+        },
+        {
+          "naam": "H. Falchener",
+          "positie": "V",
+          "nummer": 25
+        },
+        {
+          "naam": "S. Langås",
+          "positie": "V",
+          "nummer": 24
+        },
+        {
+          "naam": "T. Heggem",
+          "positie": "V",
+          "nummer": 17
+        },
+        {
+          "naam": "L. Østigård",
+          "positie": "V",
+          "nummer": 4
+        },
+        {
+          "naam": "M. Pedersen",
+          "positie": "V",
+          "nummer": 16
+        },
+        {
+          "naam": "D. Møller Wolfe",
+          "positie": "V",
+          "nummer": 5
+        },
+        {
+          "naam": "T. Aasgaard",
+          "positie": "M",
+          "nummer": 19
+        },
+        {
+          "naam": "F. Aursnes",
+          "positie": "M",
+          "nummer": 14
+        },
+        {
+          "naam": "P. Berg",
+          "positie": "M",
+          "nummer": 6
+        },
+        {
+          "naam": "S. Berge",
+          "positie": "M",
+          "nummer": 8
+        },
+        {
+          "naam": "Oscar Bobb",
+          "positie": "M",
+          "nummer": 22
+        },
+        {
+          "naam": "M. Ødegaard",
+          "positie": "M",
+          "nummer": 10
+        },
+        {
+          "naam": "M. Thorsby",
+          "positie": "M",
+          "nummer": 2
+        },
+        {
+          "naam": "K. Thorstvedt",
+          "positie": "M",
+          "nummer": 18
+        },
+        {
+          "naam": "A. Schjelderup",
+          "positie": "A",
+          "nummer": 21
+        },
+        {
+          "naam": "J. Hauge",
+          "positie": "M",
+          "nummer": 23
+        },
+        {
+          "naam": "E. Haaland",
+          "positie": "A",
+          "nummer": 9
+        },
+        {
+          "naam": "J. Strand Larsen",
+          "positie": "A",
+          "nummer": 11
+        },
+        {
+          "naam": "A. Nusa",
+          "positie": "M",
+          "nummer": 20
+        },
+        {
+          "naam": "A. Sørloth",
+          "positie": "A",
+          "nummer": 7
+        },
+        {
+          "naam": "J. Ryerson",
+          "positie": "V",
+          "nummer": 26
+        }
+      ]
+    },
+    {
+      "naam": "Argentinië",
+      "code": "ARG",
+      "vlag": "🇦🇷",
+      "confederatie": "CONMEBOL",
+      "groep": "J",
+      "selectie": [
+        {
+          "naam": "E. Martínez",
+          "positie": "K",
+          "nummer": 23
+        },
+        {
+          "naam": "J. Musso",
+          "positie": "K",
+          "nummer": 1
+        },
+        {
+          "naam": "G. Rulli",
+          "positie": "K",
+          "nummer": 12
+        },
+        {
+          "naam": "L. Balerdi",
+          "positie": "V",
+          "nummer": 2
+        },
+        {
+          "naam": "Lisandro Martínez",
+          "positie": "V",
+          "nummer": 6
+        },
+        {
+          "naam": "F. Medina",
+          "positie": "V",
+          "nummer": 25
+        },
+        {
+          "naam": "N. Molina",
+          "positie": "V",
+          "nummer": 26
+        },
+        {
+          "naam": "G. Montiel",
+          "positie": "V",
+          "nummer": 4
+        },
+        {
+          "naam": "N. Otamendi",
+          "positie": "V",
+          "nummer": 19
+        },
+        {
+          "naam": "C. Romero",
+          "positie": "V",
+          "nummer": 13
+        },
+        {
+          "naam": "N. Tagliafico",
+          "positie": "V",
+          "nummer": 3
+        },
+        {
+          "naam": "V. Barco",
+          "positie": "M",
+          "nummer": 8
+        },
+        {
+          "naam": "E. Fernández",
+          "positie": "M",
+          "nummer": 24
+        },
+        {
+          "naam": "G. Lo Celso",
+          "positie": "M",
+          "nummer": 11
+        },
+        {
+          "naam": "A. Mac Allister",
+          "positie": "M",
+          "nummer": 20
+        },
+        {
+          "naam": "E. Palacios",
+          "positie": "M",
+          "nummer": 14
+        },
+        {
+          "naam": "L. Paredes",
+          "positie": "M",
+          "nummer": 5
+        },
+        {
+          "naam": "N. González",
+          "positie": "M",
+          "nummer": 15
+        },
+        {
+          "naam": "R. De Paul",
+          "positie": "M",
+          "nummer": 7
+        },
+        {
+          "naam": "T. Almada",
+          "positie": "A",
+          "nummer": 16
+        },
+        {
+          "naam": "J. Álvarez",
+          "positie": "A",
+          "nummer": 9
+        },
+        {
+          "naam": "N. Paz",
+          "positie": "A",
+          "nummer": 18
+        },
+        {
+          "naam": "J. López",
+          "positie": "A",
+          "nummer": 21
+        },
+        {
+          "naam": "Lautaro Martínez",
+          "positie": "A",
+          "nummer": 22
+        },
+        {
+          "naam": "L. Messi",
+          "positie": "A",
+          "nummer": 10
+        },
+        {
+          "naam": "G. Simeone",
+          "positie": "A",
+          "nummer": 17
+        }
+      ]
+    },
+    {
+      "naam": "Algerije",
+      "code": "ALG",
+      "vlag": "🇩🇿",
+      "confederatie": "CAF",
+      "groep": "J",
+      "selectie": [
+        {
+          "naam": "O. Benbot",
+          "positie": "K",
+          "nummer": 16
+        },
+        {
+          "naam": "M. Mastil",
+          "positie": "K",
+          "nummer": 1
+        },
+        {
+          "naam": "L. Zidane",
+          "positie": "K",
+          "nummer": 23
+        },
+        {
+          "naam": "A. Abada",
+          "positie": "V",
+          "nummer": 3
+        },
+        {
+          "naam": "R. Aït-Nouri",
+          "positie": "V",
+          "nummer": 15
+        },
+        {
+          "naam": "Z. Belaïd",
+          "positie": "V",
+          "nummer": 5
+        },
+        {
+          "naam": "R. Belghali",
+          "positie": "V",
+          "nummer": 17
+        },
+        {
+          "naam": "R. Bensebaïni",
+          "positie": "V",
+          "nummer": 21
+        },
+        {
+          "naam": "S. Chergui",
+          "positie": "V",
+          "nummer": 26
+        },
+        {
+          "naam": "J. Hadjam",
+          "positie": "V",
+          "nummer": 13
+        },
+        {
+          "naam": "A. Mandi",
+          "positie": "V",
+          "nummer": 2
+        },
+        {
+          "naam": "M. Tougai",
+          "positie": "V",
+          "nummer": 4
+        },
+        {
+          "naam": "H. Aouar",
+          "positie": "M",
+          "nummer": 8
+        },
+        {
+          "naam": "N. Bentaleb",
+          "positie": "M",
+          "nummer": 19
+        },
+        {
+          "naam": "H. Boudaoui",
+          "positie": "M",
+          "nummer": 14
+        },
+        {
+          "naam": "I. Maza",
+          "positie": "M",
+          "nummer": 22
+        },
+        {
+          "naam": "Y. Titraoui",
+          "positie": "M",
+          "nummer": 24
+        },
+        {
+          "naam": "R. Zerrouki",
+          "positie": "M",
+          "nummer": 6
+        },
+        {
+          "naam": "F. Chaïbi",
+          "positie": "M",
+          "nummer": 10
+        },
+        {
+          "naam": "M. Amoura",
+          "positie": "A",
+          "nummer": 18
+        },
+        {
+          "naam": "A. Benbouali",
+          "positie": "A",
+          "nummer": 12
+        },
+        {
+          "naam": "A. Boulbina",
+          "positie": "A",
+          "nummer": 20
+        },
+        {
+          "naam": "F. Ghedjemis",
+          "positie": "A",
+          "nummer": 25
+        },
+        {
+          "naam": "A. Gouiri",
+          "positie": "A",
+          "nummer": 9
+        },
+        {
+          "naam": "A. Hadj-Moussa",
+          "positie": "A",
+          "nummer": 11
+        },
+        {
+          "naam": "R. Mahrez",
+          "positie": "A",
+          "nummer": 7
+        }
+      ]
+    },
+    {
+      "naam": "Oostenrijk",
+      "code": "AUT",
+      "vlag": "🇦🇹",
+      "confederatie": "UEFA",
+      "groep": "J",
+      "selectie": [
+        {
+          "naam": "P. Pentz",
+          "positie": "K",
+          "nummer": 13
+        },
+        {
+          "naam": "A. Schlager",
+          "positie": "K",
+          "nummer": 1
+        },
+        {
+          "naam": "F. Wiegele",
+          "positie": "K",
+          "nummer": 12
+        },
+        {
+          "naam": "D. Affengruber",
+          "positie": "V",
+          "nummer": 2
+        },
+        {
+          "naam": "D. Alaba",
+          "positie": "V",
+          "nummer": 8
+        },
+        {
+          "naam": "K. Danso",
+          "positie": "V",
+          "nummer": 3
+        },
+        {
+          "naam": "M. Friedl",
+          "positie": "V",
+          "nummer": 23
+        },
+        {
+          "naam": "P. Lienhart",
+          "positie": "V",
+          "nummer": 15
+        },
+        {
+          "naam": "P. Mwene",
+          "positie": "V",
+          "nummer": 16
+        },
+        {
+          "naam": "S. Posch",
+          "positie": "V",
+          "nummer": 5
+        },
+        {
+          "naam": "M. Svoboda",
+          "positie": "V",
+          "nummer": 25
+        },
+        {
+          "naam": "C. Baumgartner",
+          "positie": "M",
+          "nummer": 19
+        },
+        {
+          "naam": "C. Chukwuemeka",
+          "positie": "M",
+          "nummer": 17
+        },
+        {
+          "naam": "F. Grillitsch",
+          "positie": "M",
+          "nummer": 10
+        },
+        {
+          "naam": "K. Laimer",
+          "positie": "V",
+          "nummer": 20
+        },
+        {
+          "naam": "A. Prass",
+          "positie": "V",
+          "nummer": 22
+        },
+        {
+          "naam": "M. Sabitzer",
+          "positie": "M",
+          "nummer": 9
+        },
+        {
+          "naam": "X. Schlager",
+          "positie": "M",
+          "nummer": 4
+        },
+        {
+          "naam": "R. Schmid",
+          "positie": "M",
+          "nummer": 18
+        },
+        {
+          "naam": "A. Schöpf",
+          "positie": "M",
+          "nummer": 26
+        },
+        {
+          "naam": "N. Seiwald",
+          "positie": "M",
+          "nummer": 6
+        },
+        {
+          "naam": "P. Wanner",
+          "positie": "M",
+          "nummer": 24
+        },
+        {
+          "naam": "P. Wimmer",
+          "positie": "M",
+          "nummer": 21
+        },
+        {
+          "naam": "M. Arnautovic",
+          "positie": "A",
+          "nummer": 7
+        },
+        {
+          "naam": "M. Gregoritsch",
+          "positie": "M",
+          "nummer": 11
+        },
+        {
+          "naam": "S. Kalajdzic",
+          "positie": "A",
+          "nummer": 14
+        }
+      ]
+    },
+    {
+      "naam": "Jordanië",
+      "code": "JOR",
+      "vlag": "🇯🇴",
+      "confederatie": "AFC",
+      "groep": "J",
+      "selectie": [
+        {
+          "naam": "Yazid Abu Layla",
+          "positie": "K",
+          "nummer": 1
+        },
+        {
+          "naam": "Abdallah Al Fakhouri",
+          "positie": "K",
+          "nummer": 22
+        },
+        {
+          "naam": "Noureddin Zaid",
+          "positie": "K",
+          "nummer": 12
+        },
+        {
+          "naam": "H. Abu Al Dahab",
+          "positie": "V",
+          "nummer": 4
+        },
+        {
+          "naam": "M. Abu Hasheesh",
+          "positie": "V",
+          "nummer": 2
+        },
+        {
+          "naam": "M. Abualnadi",
+          "positie": "V",
+          "nummer": 16
+        },
+        {
+          "naam": "Yazan Al Arab",
+          "positie": "V",
+          "nummer": 5
+        },
+        {
+          "naam": "Saed Al Rosan",
+          "positie": "V",
+          "nummer": 19
+        },
+        {
+          "naam": "A. Badawi",
+          "positie": "V",
+          "nummer": 28
+        },
+        {
+          "naam": "Abdallah Naseeb",
+          "positie": "V",
+          "nummer": 3
+        },
+        {
+          "naam": "Saleem Obaid",
+          "positie": "V",
+          "nummer": 17
+        },
+        {
+          "naam": "Ehsan Haddad",
+          "positie": "V",
+          "nummer": 23
+        },
+        {
+          "naam": "Mohannad Abu Taha",
+          "positie": "V",
+          "nummer": 20
+        },
+        {
+          "naam": "M. Al Daoud",
+          "positie": "M",
+          "nummer": 25
+        },
+        {
+          "naam": "Ibrahim Sa'deh",
+          "positie": "M",
+          "nummer": 15
+        },
+        {
+          "naam": "Nizar Al Rashdan",
+          "positie": "M",
+          "nummer": 21
+        },
+        {
+          "naam": "Noor Al Rawabdeh",
+          "positie": "M",
+          "nummer": 8
+        },
+        {
+          "naam": "Rajaei Ayed",
+          "positie": "M",
+          "nummer": 14
+        },
+        {
+          "naam": "Amer Jamous",
+          "positie": "M",
+          "nummer": 6
+        },
+        {
+          "naam": "Mahmoud Al Mardi",
+          "positie": "M",
+          "nummer": 13
+        },
+        {
+          "naam": "Mohammed Abu Zurayq",
+          "positie": "A",
+          "nummer": 7
+        },
+        {
+          "naam": "O. Al Fakhouri",
+          "positie": "A",
+          "nummer": 11
+        },
+        {
+          "naam": "A. Azaizeh",
+          "positie": "A",
+          "nummer": 24
+        },
+        {
+          "naam": "Ali Olwan",
+          "positie": "A",
+          "nummer": 9
+        },
+        {
+          "naam": "Ibrahim Sabra",
+          "positie": "A",
+          "nummer": 18
+        },
+        {
+          "naam": "Mousa Tamari",
+          "positie": "A",
+          "nummer": 10
+        }
+      ]
+    },
+    {
+      "naam": "Portugal",
+      "code": "POR",
+      "vlag": "🇵🇹",
+      "confederatie": "UEFA",
+      "groep": "K",
+      "selectie": [
+        {
+          "naam": "Diogo Costa",
+          "positie": "K",
+          "nummer": 1
+        },
+        {
+          "naam": "José Sá",
+          "positie": "K",
+          "nummer": 12
+        },
+        {
+          "naam": "Rui Silva",
+          "positie": "K",
+          "nummer": 22
+        },
+        {
+          "naam": "Tomás Araújo",
+          "positie": "V",
+          "nummer": 4
+        },
+        {
+          "naam": "João Cancelo",
+          "positie": "V",
+          "nummer": 20
+        },
+        {
+          "naam": "Diogo Dalot",
+          "positie": "V",
+          "nummer": 5
+        },
+        {
+          "naam": "Rúben Dias",
+          "positie": "V",
+          "nummer": 3
+        },
+        {
+          "naam": "Gonçalo Inácio",
+          "positie": "V",
+          "nummer": 14
+        },
+        {
+          "naam": "Nuno Mendes",
+          "positie": "V",
+          "nummer": 25
+        },
+        {
+          "naam": "Nélson Semedo",
+          "positie": "V",
+          "nummer": 2
+        },
+        {
+          "naam": "Renato Veiga",
+          "positie": "V",
+          "nummer": 13
+        },
+        {
+          "naam": "Samú Costa",
+          "positie": "V",
+          "nummer": 24
+        },
+        {
+          "naam": "Bruno Fernandes",
+          "positie": "M",
+          "nummer": 8
+        },
+        {
+          "naam": "João Neves",
+          "positie": "M",
+          "nummer": 15
+        },
+        {
+          "naam": "Rúben Neves",
+          "positie": "M",
+          "nummer": 21
+        },
+        {
+          "naam": "Matheus Nunes",
+          "positie": "M",
+          "nummer": 6
+        },
+        {
+          "naam": "Bernardo Silva",
+          "positie": "M",
+          "nummer": 10
+        },
+        {
+          "naam": "Vitinha",
+          "positie": "M",
+          "nummer": 23
+        },
+        {
+          "naam": "Francisco Conceição",
+          "positie": "A",
+          "nummer": 26
+        },
+        {
+          "naam": "Gonçalo Guedes",
+          "positie": "A",
+          "nummer": 19
+        },
+        {
+          "naam": "João Félix",
+          "positie": "A",
+          "nummer": 11
+        },
+        {
+          "naam": "Rafael Leão",
+          "positie": "A",
+          "nummer": 17
+        },
+        {
+          "naam": "Pedro Neto",
+          "positie": "A",
+          "nummer": 18
+        },
+        {
+          "naam": "Gonçalo Ramos",
+          "positie": "A",
+          "nummer": 9
+        },
+        {
+          "naam": "Cristiano Ronaldo",
+          "positie": "A",
+          "nummer": 7
+        },
+        {
+          "naam": "Trincão",
+          "positie": "A",
+          "nummer": 16
+        }
+      ]
+    },
+    {
+      "naam": "Congo-Kinshasa",
+      "code": "COD",
+      "vlag": "🇨🇩",
+      "confederatie": "CAF",
+      "groep": "K",
+      "selectie": [
+        {
+          "naam": "M. Epolo",
+          "positie": "K",
+          "nummer": 21
+        },
+        {
+          "naam": "T. Fayulu",
+          "positie": "K",
+          "nummer": 16
+        },
+        {
+          "naam": "L. Mpasi",
+          "positie": "K",
+          "nummer": 1
+        },
+        {
+          "naam": "D. Batubinsika",
+          "positie": "V",
+          "nummer": 5
+        },
+        {
+          "naam": "G. Kalulu",
+          "positie": "V",
+          "nummer": 24
+        },
+        {
+          "naam": "S. Kapuadi",
+          "positie": "V",
+          "nummer": 3
+        },
+        {
+          "naam": "J. Kayembe",
+          "positie": "V",
+          "nummer": 12
+        },
+        {
+          "naam": "A. Masuaku",
+          "positie": "V",
+          "nummer": 26
+        },
+        {
+          "naam": "C. Mbemba",
+          "positie": "V",
+          "nummer": 22
+        },
+        {
+          "naam": "A. Tuanzebe",
+          "positie": "V",
+          "nummer": 4
+        },
+        {
+          "naam": "A. Wan-Bissaka",
+          "positie": "V",
+          "nummer": 2
+        },
+        {
+          "naam": "E. Kayembe",
+          "positie": "M",
+          "nummer": 25
+        },
+        {
+          "naam": "S. Moutoussamy",
+          "positie": "M",
+          "nummer": 8
+        },
+        {
+          "naam": "N. Mukau",
+          "positie": "M",
+          "nummer": 6
+        },
+        {
+          "naam": "C. Pickel",
+          "positie": "M",
+          "nummer": 18
+        },
+        {
+          "naam": "N. Sadiki",
+          "positie": "M",
+          "nummer": 14
+        },
+        {
+          "naam": "A. Tshibola",
+          "positie": "M",
+          "nummer": 15
+        },
+        {
+          "naam": "N. Mbuku",
+          "positie": "M",
+          "nummer": 7
+        },
+        {
+          "naam": "T. Bongonda",
+          "positie": "M",
+          "nummer": 10
+        },
+        {
+          "naam": "C. Bakambu",
+          "positie": "A",
+          "nummer": 17
+        },
+        {
+          "naam": "S. Banza",
+          "positie": "A",
+          "nummer": 23
+        },
+        {
+          "naam": "B. Cipenga",
+          "positie": "A",
+          "nummer": 9
+        },
+        {
+          "naam": "M. Elia",
+          "positie": "A",
+          "nummer": 13
+        },
+        {
+          "naam": "G. Kakuta",
+          "positie": "A",
+          "nummer": 11
+        },
+        {
+          "naam": "F. Mayele",
+          "positie": "A",
+          "nummer": 19
+        },
+        {
+          "naam": "Y. Wissa",
+          "positie": "A",
+          "nummer": 20
+        }
+      ]
+    },
+    {
+      "naam": "Oezbekistan",
+      "code": "UZB",
+      "vlag": "🇺🇿",
+      "confederatie": "AFC",
+      "groep": "K",
+      "selectie": [
+        {
+          "naam": "B. Ergashev",
+          "positie": "K",
+          "nummer": 16
+        },
+        {
+          "naam": "A. Nematov",
+          "positie": "K",
+          "nummer": 12
+        },
+        {
+          "naam": "U. Yusupov",
+          "positie": "K",
+          "nummer": 1
+        },
+        {
+          "naam": "K. Alijonov",
+          "positie": "V",
+          "nummer": 3
+        },
+        {
+          "naam": "R. Ashurmatov",
+          "positie": "V",
+          "nummer": 5
+        },
+        {
+          "naam": "U. Eshmurodov",
+          "positie": "V",
+          "nummer": 15
+        },
+        {
+          "naam": "B. Karimov",
+          "positie": "V",
+          "nummer": 24
+        },
+        {
+          "naam": "A. Khusanov",
+          "positie": "V",
+          "nummer": 2
+        },
+        {
+          "naam": "S. Nasrullayev",
+          "positie": "M",
+          "nummer": 13
+        },
+        {
+          "naam": "F. Sayfiev",
+          "positie": "V",
+          "nummer": 4
+        },
+        {
+          "naam": "J. Urozov",
+          "positie": "V",
+          "nummer": 27
+        },
+        {
+          "naam": "A. Abdullaev",
+          "positie": "V",
+          "nummer": 18
+        },
+        {
+          "naam": "A. Ulmasaliev",
+          "positie": "V",
+          "nummer": 25
+        },
+        {
+          "naam": "J. Masharipov",
+          "positie": "M",
+          "nummer": 10
+        },
+        {
+          "naam": "A. Ganiyev",
+          "positie": "A",
+          "nummer": 19
+        },
+        {
+          "naam": "J. Iskanderov",
+          "positie": "M",
+          "nummer": 8
+        },
+        {
+          "naam": "O. Hamrobekov",
+          "positie": "M",
+          "nummer": 9
+        },
+        {
+          "naam": "A. Mozgovoy",
+          "positie": "M",
+          "nummer": 6
+        },
+        {
+          "naam": "O. Shukurov",
+          "positie": "M",
+          "nummer": 7
+        },
+        {
+          "naam": "A. Fayzullaev",
+          "positie": "M",
+          "nummer": 22
+        },
+        {
+          "naam": "S. Esanov",
+          "positie": "M",
+          "nummer": 23
+        },
+        {
+          "naam": "O. Orunov",
+          "positie": "A",
+          "nummer": 11
+        },
+        {
+          "naam": "D. Khamdamov",
+          "positie": "M",
+          "nummer": 17
+        },
+        {
+          "naam": "A. Amonov",
+          "positie": "A",
+          "nummer": 28
+        },
+        {
+          "naam": "I. Sergeev",
+          "positie": "A",
+          "nummer": 21
+        },
+        {
+          "naam": "E. Shomurodov",
+          "positie": "A",
+          "nummer": 14
+        }
+      ]
+    },
+    {
+      "naam": "Colombia",
+      "code": "COL",
+      "vlag": "🇨🇴",
+      "confederatie": "CONMEBOL",
+      "groep": "K",
+      "selectie": [
+        {
+          "naam": "Á. Montero",
+          "positie": "K",
+          "nummer": 24
+        },
+        {
+          "naam": "D. Ospina",
+          "positie": "K",
+          "nummer": 1
+        },
+        {
+          "naam": "C. Vargas",
+          "positie": "K",
+          "nummer": 12
+        },
+        {
+          "naam": "S. Arias",
+          "positie": "V",
+          "nummer": 4
+        },
+        {
+          "naam": "W. Ditta",
+          "positie": "V",
+          "nummer": 18
+        },
+        {
+          "naam": "J. Lucumí",
+          "positie": "V",
+          "nummer": 3
+        },
+        {
+          "naam": "D. Machado",
+          "positie": "V",
+          "nummer": 22
+        },
+        {
+          "naam": "Y. Mina",
+          "positie": "V",
+          "nummer": 13
+        },
+        {
+          "naam": "J. Mojica",
+          "positie": "V",
+          "nummer": 17
+        },
+        {
+          "naam": "D. Muñoz",
+          "positie": "V",
+          "nummer": 2
+        },
+        {
+          "naam": "G. Puerta",
+          "positie": "M",
+          "nummer": 14
+        },
+        {
+          "naam": "D. Sánchez",
+          "positie": "V",
+          "nummer": 23
+        },
+        {
+          "naam": "K. Castaño",
+          "positie": "M",
+          "nummer": 5
+        },
+        {
+          "naam": "J. Lerma",
+          "positie": "M",
+          "nummer": 16
+        },
+        {
+          "naam": "J. Portilla",
+          "positie": "M",
+          "nummer": 15
+        },
+        {
+          "naam": "J. Arias",
+          "positie": "M",
+          "nummer": 11
+        },
+        {
+          "naam": "J. Carrascal",
+          "positie": "M",
+          "nummer": 8
+        },
+        {
+          "naam": "J. Quintero",
+          "positie": "M",
+          "nummer": 20
+        },
+        {
+          "naam": "R. Rios",
+          "positie": "M",
+          "nummer": 6
+        },
+        {
+          "naam": "J. Rodríguez",
+          "positie": "M",
+          "nummer": 10
+        },
+        {
+          "naam": "J. Campaz",
+          "positie": "M",
+          "nummer": 21
+        },
+        {
+          "naam": "J. Córdoba",
+          "positie": "A",
+          "nummer": 9
+        },
+        {
+          "naam": "C. Hernández",
+          "positie": "A",
+          "nummer": 19
+        },
+        {
+          "naam": "L. Díaz",
+          "positie": "M",
+          "nummer": 7
+        },
+        {
+          "naam": "A. Gómez",
+          "positie": "M",
+          "nummer": 26
+        },
+        {
+          "naam": "L. Suárez",
+          "positie": "A",
+          "nummer": 25
+        }
+      ]
+    },
+    {
+      "naam": "Engeland",
+      "code": "ENG",
+      "vlag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+      "confederatie": "UEFA",
+      "groep": "L",
+      "selectie": [
+        {
+          "naam": "D. Henderson",
+          "positie": "K",
+          "nummer": 13
+        },
+        {
+          "naam": "J. Pickford",
+          "positie": "K",
+          "nummer": 1
+        },
+        {
+          "naam": "J. Trafford",
+          "positie": "K",
+          "nummer": 23
+        },
+        {
+          "naam": "D. Burn",
+          "positie": "V",
+          "nummer": 15
+        },
+        {
+          "naam": "M. Guéhi",
+          "positie": "V",
+          "nummer": 6
+        },
+        {
+          "naam": "R. James",
+          "positie": "V",
+          "nummer": 24
+        },
+        {
+          "naam": "E. Konsa",
+          "positie": "V",
+          "nummer": 2
+        },
+        {
+          "naam": "T. Livramento",
+          "positie": "V",
+          "nummer": 12
+        },
+        {
+          "naam": "N. Oreilly",
+          "positie": "V",
+          "nummer": 3
+        },
+        {
+          "naam": "J. Quansah",
+          "positie": "V",
+          "nummer": 26
+        },
+        {
+          "naam": "D. Spence",
+          "positie": "V",
+          "nummer": 25
+        },
+        {
+          "naam": "J. Stones",
+          "positie": "V",
+          "nummer": 5
+        },
+        {
+          "naam": "E. Anderson",
+          "positie": "M",
+          "nummer": 8
+        },
+        {
+          "naam": "J. Bellingham",
+          "positie": "M",
+          "nummer": 10
+        },
+        {
+          "naam": "E. Eze",
+          "positie": "M",
+          "nummer": 21
+        },
+        {
+          "naam": "J. Henderson",
+          "positie": "M",
+          "nummer": 14
+        },
+        {
+          "naam": "K. Mainoo",
+          "positie": "M",
+          "nummer": 16
+        },
+        {
+          "naam": "D. Rice",
+          "positie": "M",
+          "nummer": 4
+        },
+        {
+          "naam": "M. Rogers",
+          "positie": "M",
+          "nummer": 17
+        },
+        {
+          "naam": "A. Gordon",
+          "positie": "A",
+          "nummer": 18
+        },
+        {
+          "naam": "H. Kane",
+          "positie": "A",
+          "nummer": 9
+        },
+        {
+          "naam": "N. Madueke",
+          "positie": "A",
+          "nummer": 20
+        },
+        {
+          "naam": "M. Rashford",
+          "positie": "A",
+          "nummer": 11
+        },
+        {
+          "naam": "B. Saka",
+          "positie": "A",
+          "nummer": 7
+        },
+        {
+          "naam": "I. Toney",
+          "positie": "A",
+          "nummer": 22
+        },
+        {
+          "naam": "O. Watkins",
+          "positie": "A",
+          "nummer": 19
+        }
+      ]
+    },
+    {
+      "naam": "Kroatië",
+      "code": "CRO",
+      "vlag": "🇭🇷",
+      "confederatie": "UEFA",
+      "groep": "L",
+      "selectie": [
+        {
+          "naam": "D. Kotarski",
+          "positie": "K",
+          "nummer": 23
+        },
+        {
+          "naam": "D. Livakovic",
+          "positie": "K",
+          "nummer": 1
+        },
+        {
+          "naam": "I. Pandur",
+          "positie": "K",
+          "nummer": 12
+        },
+        {
+          "naam": "D. Caleta-Car",
+          "positie": "V",
+          "nummer": 5
+        },
+        {
+          "naam": "M. Erlic",
+          "positie": "V",
+          "nummer": 25
+        },
+        {
+          "naam": "J. Gvardiol",
+          "positie": "V",
+          "nummer": 4
+        },
+        {
+          "naam": "M. Pongracic",
+          "positie": "V",
+          "nummer": 3
+        },
+        {
+          "naam": "J. Stanisic",
+          "positie": "M",
+          "nummer": 2
+        },
+        {
+          "naam": "J. Sutalo",
+          "positie": "V",
+          "nummer": 6
+        },
+        {
+          "naam": "L. Vuskovic",
+          "positie": "V",
+          "nummer": 22
+        },
+        {
+          "naam": "M. Baturina",
+          "positie": "A",
+          "nummer": 16
+        },
+        {
+          "naam": "T. Fruk",
+          "positie": "M",
+          "nummer": 19
+        },
+        {
+          "naam": "K. Jakic",
+          "positie": "M",
+          "nummer": 18
+        },
+        {
+          "naam": "M. Kovacic",
+          "positie": "M",
+          "nummer": 8
+        },
+        {
+          "naam": "L. Modric",
+          "positie": "M",
+          "nummer": 10
+        },
+        {
+          "naam": "N. Moro",
+          "positie": "M",
+          "nummer": 7
+        },
+        {
+          "naam": "M. Pasalic",
+          "positie": "M",
+          "nummer": 15
+        },
+        {
+          "naam": "L. Sucic",
+          "positie": "M",
+          "nummer": 21
+        },
+        {
+          "naam": "P. Sucic",
+          "positie": "A",
+          "nummer": 17
+        },
+        {
+          "naam": "N. Vlasic",
+          "positie": "M",
+          "nummer": 13
+        },
+        {
+          "naam": "A. Budimir",
+          "positie": "A",
+          "nummer": 11
+        },
+        {
+          "naam": "A. Kramaric",
+          "positie": "A",
+          "nummer": 9
+        },
+        {
+          "naam": "I. Matanovic",
+          "positie": "A",
+          "nummer": 20
+        },
+        {
+          "naam": "P. Musa",
+          "positie": "A",
+          "nummer": 26
+        },
+        {
+          "naam": "M. Pasalic",
+          "positie": "A",
+          "nummer": 24
+        },
+        {
+          "naam": "I. Perisic",
+          "positie": "M",
+          "nummer": 14
+        }
+      ]
+    },
+    {
+      "naam": "Ghana",
+      "code": "GHA",
+      "vlag": "🇬🇭",
+      "confederatie": "CAF",
+      "groep": "L",
+      "selectie": [
+        {
+          "naam": "B. Asare",
+          "positie": "K",
+          "nummer": 16
+        },
+        {
+          "naam": "J. Anang",
+          "positie": "K",
+          "nummer": 12
+        },
+        {
+          "naam": "L. Zigi",
+          "positie": "K",
+          "nummer": 1
+        },
+        {
+          "naam": "J. Adjetey",
+          "positie": "V",
+          "nummer": 4
+        },
+        {
+          "naam": "D. Luckassen",
+          "positie": "V",
+          "nummer": 23
+        },
+        {
+          "naam": "G. Mensah",
+          "positie": "V",
+          "nummer": 14
+        },
+        {
+          "naam": "A. Seidu",
+          "positie": "V",
+          "nummer": 2
+        },
+        {
+          "naam": "J. Opoku",
+          "positie": "V",
+          "nummer": 18
+        },
+        {
+          "naam": "K. Peprah Oppong",
+          "positie": "V",
+          "nummer": 21
+        },
+        {
+          "naam": "A. Mumin",
+          "positie": "V",
+          "nummer": 6
+        },
+        {
+          "naam": "M. Senaya",
+          "positie": "V",
+          "nummer": 26
+        },
+        {
+          "naam": "A. Baba",
+          "positie": "V",
+          "nummer": 17
+        },
+        {
+          "naam": "E. Owusu",
+          "positie": "M",
+          "nummer": 15
+        },
+        {
+          "naam": "T. Partey",
+          "positie": "M",
+          "nummer": 5
+        },
+        {
+          "naam": "K. Sibo",
+          "positie": "M",
+          "nummer": 8
+        },
+        {
+          "naam": "Caleb Marfo Yirenkyi",
+          "positie": "M",
+          "nummer": 3
+        },
+        {
+          "naam": "A. Semenyo",
+          "positie": "A",
+          "nummer": 11
+        },
+        {
+          "naam": "A. Boakye",
+          "positie": "M",
+          "nummer": 20
+        },
+        {
+          "naam": "A. Fatawu",
+          "positie": "M",
+          "nummer": 7
+        },
+        {
+          "naam": "P. Adu",
+          "positie": "M",
+          "nummer": 25
+        },
+        {
+          "naam": "B. Thomas-Asante",
+          "positie": "A",
+          "nummer": 10
+        },
+        {
+          "naam": "J. Ayew",
+          "positie": "A",
+          "nummer": 9
+        },
+        {
+          "naam": "C. Bonsu Baah",
+          "positie": "A",
+          "nummer": 13
+        },
+        {
+          "naam": "I. Williams",
+          "positie": "A",
+          "nummer": 19
+        },
+        {
+          "naam": "E. Nuamah",
+          "positie": "A",
+          "nummer": 24
+        },
+        {
+          "naam": "K. Sulemana",
+          "positie": "A",
+          "nummer": 22
+        }
+      ]
+    },
+    {
+      "naam": "Panama",
+      "code": "PAN",
+      "vlag": "🇵🇦",
+      "confederatie": "CONCACAF",
+      "groep": "L",
+      "selectie": [
+        {
+          "naam": "L. Mejía",
+          "positie": "K",
+          "nummer": 1
+        },
+        {
+          "naam": "O. Mosquera",
+          "positie": "K",
+          "nummer": 22
+        },
+        {
+          "naam": "C. Samudio",
+          "positie": "K",
+          "nummer": 12
+        },
+        {
+          "naam": "A. Andrade",
+          "positie": "V",
+          "nummer": 16
+        },
+        {
+          "naam": "C. Blackman",
+          "positie": "V",
+          "nummer": 2
+        },
+        {
+          "naam": "J. Córdoba",
+          "positie": "V",
+          "nummer": 3
+        },
+        {
+          "naam": "É. Davis",
+          "positie": "V",
+          "nummer": 15
+        },
+        {
+          "naam": "F. Escobar",
+          "positie": "V",
+          "nummer": 4
+        },
+        {
+          "naam": "E. Fariña",
+          "positie": "V",
+          "nummer": 5
+        },
+        {
+          "naam": "J. Gutiérrez",
+          "positie": "V",
+          "nummer": 26
+        },
+        {
+          "naam": "C. Harvey",
+          "positie": "M",
+          "nummer": 14
+        },
+        {
+          "naam": "R. Miller",
+          "positie": "V",
+          "nummer": 25
+        },
+        {
+          "naam": "A. Murillo",
+          "positie": "V",
+          "nummer": 23
+        },
+        {
+          "naam": "J. Ramos",
+          "positie": "V",
+          "nummer": 13
+        },
+        {
+          "naam": "A. Carrasquilla",
+          "positie": "M",
+          "nummer": 8
+        },
+        {
+          "naam": "A. Godoy",
+          "positie": "M",
+          "nummer": 20
+        },
+        {
+          "naam": "C. Martinez",
+          "positie": "M",
+          "nummer": 6
+        },
+        {
+          "naam": "J. Rodríguez",
+          "positie": "M",
+          "nummer": 7
+        },
+        {
+          "naam": "Y. Bárcenas",
+          "positie": "M",
+          "nummer": 11
+        },
+        {
+          "naam": "I. Díaz",
+          "positie": "M",
+          "nummer": 10
+        },
+        {
+          "naam": "A. Quintero",
+          "positie": "A",
+          "nummer": 19
+        },
+        {
+          "naam": "C. Yanis",
+          "positie": "A",
+          "nummer": 21
+        },
+        {
+          "naam": "J. Fajardo",
+          "positie": "A",
+          "nummer": 17
+        },
+        {
+          "naam": "A. Londoño",
+          "positie": "M",
+          "nummer": 24
+        },
+        {
+          "naam": "T. Rodríguez",
+          "positie": "A",
+          "nummer": 9
+        },
+        {
+          "naam": "C. Waterman",
+          "positie": "A",
+          "nummer": 18
+        }
+      ]
+    }
   ]
 }

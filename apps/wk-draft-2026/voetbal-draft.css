@@ -2021,3 +2021,502 @@ a:focus-visible {
   outline: 2px solid var(--red);
   outline-offset: 2px;
 }
+
+/* ═══════════════════════════════════════════════════════════════════
+   SIMULATOR — tab VI
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* Stap-indicatoren bovenaan */
+.sim-steps-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+.sim-step-ind {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  background: var(--paper-card);
+  opacity: 0.45;
+  font-size: 0.82rem;
+  font-family: var(--font-mono);
+}
+.sim-step-ind.is-active {
+  opacity: 1;
+  border-color: var(--pitch);
+  background: var(--pitch);
+  color: #fff;
+}
+.sim-step-ind.is-done {
+  opacity: 1;
+  border-color: var(--pitch);
+  color: var(--pitch);
+}
+.sim-step-num { font-weight: 700; font-size: 0.78rem; }
+.sim-step-arrow { color: var(--ink-mute); font-size: 1.1rem; }
+
+/* Stap container */
+.sim-stap { padding-bottom: 48px; }
+.sim-stap__intro {
+  margin-bottom: 24px;
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+}
+.sim-stap__intro p { margin: 0 0 8px; }
+
+/* ── Stap 1: Groepen grid ──────────────────────────────────────── */
+.sim-groepen-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
+  gap: 12px;
+  margin-bottom: 28px;
+}
+.sim-groep-card {
+  background: var(--paper-card);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+.sim-groep-header {
+  padding: 6px 10px;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.sim-team-row {
+  display: grid;
+  grid-template-columns: 22px 22px 1fr auto;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 8px;
+  border-bottom: 1px solid var(--rule-soft);
+  transition: background 0.1s;
+}
+.sim-team-row:last-child { border-bottom: none; }
+.sim-team-row--door  { background: rgba(11, 91, 62, 0.06); }
+.sim-team-row--derde { background: rgba(190, 155, 68, 0.06); }
+.sim-team-row--uit   { background: transparent; opacity: 0.75; }
+
+.sim-pos-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 3px;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+.sim-pos-badge--door  { background: var(--pitch);  color: #fff; }
+.sim-pos-badge--derde { background: var(--gold);   color: #fff; }
+.sim-pos-badge--uit   { background: var(--rule);   color: var(--ink-mute); }
+
+.sim-team-flag  { font-size: 1rem; line-height: 1; }
+.sim-team-naam  { font-size: 0.75rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.sim-drag-handle {
+  font-size: 1rem;
+  color: var(--ink-mute);
+  cursor: grab;
+  padding: 0 4px 0 0;
+  line-height: 1;
+  user-select: none;
+  flex-shrink: 0;
+  opacity: 0.35;
+  transition: opacity 0.1s;
+}
+.sim-team-row:hover .sim-drag-handle { opacity: 0.75; }
+.sim-team-row[draggable]:active { cursor: grabbing; }
+.sim-team-row.is-dragging {
+  opacity: 0.3;
+}
+.sim-team-row.is-drag-over {
+  background: rgba(11, 91, 62, 0.1);
+  outline: 2px dashed var(--pitch);
+  outline-offset: -2px;
+  border-radius: 3px;
+}
+
+/* ── Stap 2: Derden chips ─────────────────────────────────────── */
+/* Derde-slot toewijzingsrij */
+.sim-derden-slots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 10px 0 6px;
+}
+.sim-derde-slot {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border: 1px dashed var(--rule);
+  border-radius: 4px;
+  background: var(--paper);
+  font-size: 0.72rem;
+  color: var(--ink-mute);
+}
+.sim-derde-slot--filled {
+  border-style: solid;
+  border-color: var(--pitch);
+  background: rgba(11,91,62,0.06);
+  color: var(--ink);
+}
+.sim-derde-slot__num {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.68rem;
+  color: var(--ink-mute);
+  min-width: 12px;
+}
+.sim-derde-slot__vs {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--pitch);
+}
+.sim-derde-slot__land { font-size: 0.75rem; }
+
+.sim-derden-teller {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 3px 10px;
+  background: var(--paper-deep);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+.sim-derden-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 28px;
+}
+.sim-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  border: 1.5px solid var(--rule);
+  border-radius: 999px;
+  background: var(--paper-card);
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-family: var(--font-body);
+  transition: border-color 0.15s, background 0.15s, transform 0.1s;
+}
+.sim-chip:hover:not([disabled]) {
+  border-color: var(--pitch);
+  transform: translateY(-1px);
+}
+.sim-chip--selected {
+  border-color: var(--pitch);
+  background: rgba(11, 91, 62, 0.1);
+  font-weight: 600;
+}
+.sim-chip--disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+.sim-chip-groep {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--ink-mute);
+  font-weight: 600;
+}
+.sim-chip-flag  { font-size: 1rem; }
+.sim-chip-naam  { font-size: 0.8rem; }
+
+/* ── Stap 3: Bracket ──────────────────────────────────────────── */
+.sim-bracket-actions {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.sim-bracket-btns { display: flex; gap: 8px; flex-shrink: 0; }
+
+/* Winnaar banner */
+.sim-winnaar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  background: linear-gradient(135deg, rgba(190,155,68,0.15) 0%, rgba(190,155,68,0.05) 100%);
+  border: 1.5px solid var(--gold);
+  border-radius: 8px;
+}
+.sim-winnaar__trophy { font-size: 2rem; }
+.sim-winnaar__naam   { font-family: var(--font-display); font-size: 1.4rem; font-weight: 700; }
+.sim-winnaar__titel  { font-size: 0.78rem; color: var(--ink-mute); font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.08em; }
+
+/* Bracket scroll container */
+.bracket-scroll {
+  overflow-x: auto;
+  padding-bottom: 16px;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ── Bracket — swim-lane redesign ────────────────────────────── */
+/*
+  Basisprincipe:
+  · Elke ronde is een kolom; match-hoogte verdubbelt per ronde (64 / 128 / 256 / 512 / 1024 px)
+  · De twee slots zitten in een .bracket__match-card die GECENTREERD is in de container
+    → de kaart blijft compact; ruimte erboven/onder is de uitlijningsruimte
+  · Connector-lijnen:
+      R32 odd  ::after  → verticale lijn, van midden naar beneden (50%→100%)
+      R32 even ::before → verticale lijn, van boven naar midden  (0→50%)
+      R32 even ::after  → horizontale lijn op top:0 (de "elbow" naar volgende ronde)
+      R16+     ::before → horizontale lijn op top:50% (de binnenkomende brug)
+  · Swim lanes: repeating-linear-gradient elke 256px (= 4 R32 matches),
+      kleur wisselt per paar, loopt door over alle ronden
+*/
+
+.bracket {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+  min-width: max-content;
+}
+
+/* ── Kolom per ronde ── */
+.bracket__round {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  width: 188px;
+}
+
+.bracket__round-label {
+  padding: 7px 10px 6px;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink-mute);
+  border-bottom: 1px solid var(--rule);
+  white-space: nowrap;
+  background: var(--paper);
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+/* ── Swim-lane achtergrond ──
+   Periode 256px = 4 R32 wedstrijden = 2 R16 wedstrijden = 1 QF wedstrijd.
+   Kleur A (gold-tint): 0–128px  = paar 1,2  in R32 / match 1 in R16
+   Kleur B (neutraal):  128–256px = paar 3,4 in R32 / match 2 in R16
+   Doorlopen over alle ronden → ogen zien de "baan" direct.        */
+.bracket__matches {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(190, 155, 68, 0.07) 0px,
+    rgba(190, 155, 68, 0.07) 128px,
+    rgba(26, 25, 24, 0.025)  128px,
+    rgba(26, 25, 24, 0.025)  256px
+  );
+}
+
+/* Zachte scheidingslijn om elke vierde R32 match (= einde van een lane-groep) */
+.bracket__round--1_16 .bracket__match:nth-child(4n) {
+  border-bottom: 1px solid rgba(26,25,24,0.14);
+}
+
+/* ── Match-container hoogte verdubbelt per ronde ──
+   Basis 64px × 16 = 1024px totale kolomhoogte, consistent door alle ronden. */
+.bracket__round--1_16 .bracket__match { height: 64px; }
+.bracket__round--1_8  .bracket__match { height: 128px; }
+.bracket__round--1_4  .bracket__match { height: 256px; }
+.bracket__round--1_2  .bracket__match { height: 512px; }
+.bracket__round--F    .bracket__match { height: 1024px; }
+
+.bracket__match {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;   /* kaart gecentreerd in container */
+  position: relative;
+  box-sizing: border-box;
+}
+
+/* ── Match-kaart: beide slots samen in één kader ── */
+.bracket__match-card {
+  background: var(--paper-card);
+  border: 1px solid var(--rule);
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(26,25,24,0.08);
+  margin: 0 10px;
+  flex-shrink: 0;
+}
+
+/* Scheidingslijn tussen de twee slots */
+.bracket__sep {
+  height: 1px;
+  background: var(--rule-soft);
+  margin: 0;
+}
+
+/* ── Connector-lijnen ──
+   Logica: odd = 1e van een paar, even = 2e van een paar.
+   Verticale lijn rechts van de kaart verbindt de twee match-centra.
+   Horizontale "elbow" op de grens tussen paar (= top van even match).
+   Binnenkomende brug links van elke R16+ match op 50% hoogte.           */
+
+/* R32 odd: vertikale lijn van midden naar beneden */
+.bracket__round--1_16 .bracket__match:nth-child(odd)::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  height: 50%;
+  width: 1.5px;
+  background: var(--rule);
+}
+
+/* R32 even: vertikale lijn van boven naar midden */
+.bracket__round--1_16 .bracket__match:nth-child(even)::before {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 50%;
+  width: 1.5px;
+  background: var(--rule);
+}
+
+/* R32 even: horizontale elbow op de grens (top:0 van de even match = midden van het paar) */
+.bracket__round--1_16 .bracket__match:nth-child(even)::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 1.5px;
+  width: 10px;
+  background: var(--rule);
+  transform: translateY(-0.75px);
+}
+
+/* R16 / QF / SF / F: binnenkomende brug links op 50% van de container */
+.bracket__round--1_8  .bracket__match::before,
+.bracket__round--1_4  .bracket__match::before,
+.bracket__round--1_2  .bracket__match::before,
+.bracket__round--F    .bracket__match::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: calc(50% - 0.75px);
+  height: 1.5px;
+  width: 10px;
+  background: var(--rule);
+  z-index: 1;
+}
+
+/* ── Team slots ── */
+.bracket__slot {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 8px;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  cursor: default;
+  font-size: 0.78rem;
+  font-family: var(--font-body);
+  text-align: left;
+  min-height: 28px;
+  width: 100%;
+  transition: background 0.1s;
+}
+.bracket__slot--empty {
+  color: var(--ink-mute);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-style: italic;
+}
+.bracket__slot--pickable {
+  cursor: pointer;
+}
+.bracket__slot--pickable:hover {
+  background: var(--paper-deep);
+}
+.bracket__slot--winner {
+  background: rgba(11, 91, 62, 0.1);
+  font-weight: 600;
+  cursor: pointer;
+}
+.bracket__slot--winner:hover {
+  background: rgba(199, 62, 29, 0.07);
+}
+.bracket__slot--loser {
+  opacity: 0.32;
+  text-decoration: line-through;
+}
+.bracket__flag   { font-size: 0.92rem; flex-shrink: 0; line-height: 1; }
+.bracket__naam   { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.76rem; }
+.bracket__check  { flex-shrink: 0; color: var(--pitch); font-weight: 700; font-size: 0.75rem; margin-left: 2px; }
+
+/* ── Gedeelde buttons & footer ────────────────────────────────── */
+.sim-footer {
+  display: flex;
+  gap: 10px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+.sim-btn {
+  padding: 9px 20px;
+  border-radius: 4px;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  transition: background 0.15s, border-color 0.15s, transform 0.08s;
+}
+.sim-btn:active { transform: translateY(1px); }
+.sim-btn--primary {
+  background: var(--pitch);
+  color: #fff;
+  border-color: var(--pitch);
+}
+.sim-btn--primary:hover:not([disabled]) { background: #0a4d34; }
+.sim-btn--primary[disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.sim-btn--secondary {
+  background: var(--paper-card);
+  color: var(--ink);
+  border-color: var(--rule);
+}
+.sim-btn--secondary:hover { background: var(--paper-deep); }
+.sim-btn--ghost {
+  background: transparent;
+  color: var(--ink-soft);
+  border-color: var(--rule);
+}
+.sim-btn--ghost:hover { background: var(--paper-deep); }
+.sim-btn--danger {
+  background: transparent;
+  color: var(--red);
+  border-color: var(--red);
+}
+.sim-btn--danger:hover { background: rgba(199,62,29,0.08); }
