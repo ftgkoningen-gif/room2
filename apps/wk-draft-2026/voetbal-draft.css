@@ -2095,12 +2095,15 @@ a:focus-visible {
 }
 .sim-team-row {
   display: grid;
-  grid-template-columns: 22px 22px 1fr auto;
+  grid-template-columns: 24px 22px 22px 1fr;
   align-items: center;
   gap: 4px;
-  padding: 5px 8px;
+  padding: 7px 8px;           /* iets hoger voor touch-gemak */
   border-bottom: 1px solid var(--rule-soft);
   transition: background 0.1s;
+  touch-action: pan-y;         /* laat normaal scrollen toe; touchmove-handler overschrijft dit tijdens drag */
+  -webkit-user-select: none;
+  user-select: none;
 }
 .sim-team-row:last-child { border-bottom: none; }
 .sim-team-row--door  { background: rgba(11, 91, 62, 0.06); }
@@ -2126,17 +2129,20 @@ a:focus-visible {
 .sim-team-naam  { font-size: 0.75rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
 .sim-drag-handle {
-  font-size: 1rem;
+  font-size: 1.1rem;
   color: var(--ink-mute);
   cursor: grab;
-  padding: 0 4px 0 0;
   line-height: 1;
   user-select: none;
   flex-shrink: 0;
   opacity: 0.35;
   transition: opacity 0.1s;
+  /* groter touch-target zonder layout te verbreden */
+  padding: 6px 4px;
+  margin: -6px 0;
 }
-.sim-team-row:hover .sim-drag-handle { opacity: 0.75; }
+.sim-team-row:hover .sim-drag-handle,
+.sim-team-row:focus-within .sim-drag-handle { opacity: 0.75; }
 .sim-team-row[draggable]:active { cursor: grabbing; }
 .sim-team-row.is-dragging {
   opacity: 0.3;

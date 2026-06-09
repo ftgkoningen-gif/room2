@@ -348,10 +348,37 @@
     const el = document.getElementById('sim-content');
     if (!el) return;
 
-    // Drag-and-drop stap 1
-    let dragSrc = null;
+    // Drag-and-drop stap 1 (muis + touch)
+    let dragSrc     = null;
+    let touchClone  = null;
+    let touchOffY   = 0;
+
+    function clearDragOver() {
+      el.querySelectorAll('.sim-team-row.is-drag-over')
+        .forEach(r => r.classList.remove('is-drag-over'));
+    }
+
+    function doSwap(g, fromI, toI) {
+      if (fromI === toI) return;
+      const teams = SIM.groepen[g];
+      const [item] = teams.splice(fromI, 1);
+      teams.splice(toI, 0, item);
+      clearGroupWinners(g);
+      saveState();
+      renderSim();
+    }
+
+    function rowFromPoint(x, y) {
+      // tijdelijk clone verbergen zodat elementFromPoint de echte rij ziet
+      if (touchClone) touchClone.style.visibility = 'hidden';
+      const under = document.elementFromPoint(x, y);
+      if (touchClone) touchClone.style.visibility = '';
+      return under ? under.closest('.sim-team-row[draggable]') : null;
+    }
 
     el.querySelectorAll('.sim-team-row[draggable]').forEach(row => {
+
+      // ── Muis (desktop) ──────────────────────────────────────────────
       row.addEventListener('dragstart', e => {
         dragSrc = { g: row.dataset.g, i: parseInt(row.dataset.i) };
         e.dataTransfer.effectAllowed = 'move';
@@ -360,7 +387,7 @@
 
       row.addEventListener('dragend', () => {
         row.classList.remove('is-dragging');
-        el.querySelectorAll('.sim-team-row.is-drag-over').forEach(r => r.classList.remove('is-drag-over'));
+        clearDragOver();
         dragSrc = null;
       });
 
@@ -368,7 +395,7 @@
         e.preventDefault();
         if (!dragSrc || row.dataset.g !== dragSrc.g) return;
         e.dataTransfer.dropEffect = 'move';
-        el.querySelectorAll('.sim-team-row.is-drag-over').forEach(r => r.classList.remove('is-drag-over'));
+        clearDragOver();
         row.classList.add('is-drag-over');
       });
 
@@ -380,16 +407,66 @@
         e.preventDefault();
         row.classList.remove('is-drag-over');
         if (!dragSrc || row.dataset.g !== dragSrc.g) return;
-        const fromI = dragSrc.i;
-        const toI   = parseInt(row.dataset.i);
-        if (fromI === toI) return;
-        const teams = SIM.groepen[dragSrc.g];
-        const [item] = teams.splice(fromI, 1);
-        teams.splice(toI, 0, item);
-        clearGroupWinners(dragSrc.g);
-        saveState();
-        renderSim();
+        doSwap(dragSrc.g, dragSrc.i, parseInt(row.dataset.i));
       });
+
+      // ── Touch (mobiel) ──────────────────────────────────────────────
+      row.addEventListener('touchstart', e => {
+        const t    = e.touches[0];
+        const rect = row.getBoundingClientRect();
+        dragSrc    = { g: row.dataset.g, i: parseInt(row.dataset.i) };
+        touchOffY  = t.clientY - rect.top;
+
+        // Zwevende kopie die de vinger volgt
+        touchClone = row.cloneNode(true);
+        Object.assign(touchClone.style, {
+          position:      'fixed',
+          left:          rect.left + 'px',
+          top:           rect.top  + 'px',
+          width:         rect.width + 'px',
+          pointerEvents: 'none',
+          opacity:       '0.88',
+          zIndex:        '9999',
+          boxShadow:     '0 8px 24px rgba(0,0,0,0.22)',
+          transform:     'scale(1.03)',
+          borderRadius:  '4px',
+          transition:    'none',
+        });
+        document.body.appendChild(touchClone);
+        row.classList.add('is-dragging');
+      }, { passive: true });
+
+      row.addEventListener('touchmove', e => {
+        if (!dragSrc || !touchClone) return;
+        e.preventDefault();                          // voorkomt scrollen tijdens slepen
+        const t = e.touches[0];
+        touchClone.style.top = (t.clientY - touchOffY) + 'px';
+
+        const target = rowFromPoint(t.clientX, t.clientY);
+        clearDragOver();
+        if (target && target !== row && target.dataset.g === dragSrc.g) {
+          target.classList.add('is-drag-over');
+        }
+      }, { passive: false });
+
+      function endTouch(e) {
+        if (!dragSrc) return;
+        const t = (e.changedTouches || [])[0];
+        if (touchClone) { touchClone.remove(); touchClone = null; }
+        row.classList.remove('is-dragging');
+        clearDragOver();
+        const saved = dragSrc;
+        dragSrc = null;
+        if (t) {
+          const target = rowFromPoint(t.clientX, t.clientY);
+          if (target && target.dataset.g === saved.g) {
+            doSwap(saved.g, saved.i, parseInt(target.dataset.i));
+          }
+        }
+      }
+
+      row.addEventListener('touchend',    endTouch);
+      row.addEventListener('touchcancel', endTouch);
     });
 
     // Stap 1 → 2
