@@ -778,8 +778,10 @@ function renderTeams() {
 
   grid.innerHTML = ranked.map((d, i) => {
     const rank = i + 1;
-    const playersByPos = groupBy(d.spelers || [], s => s.positie);
-    const ordered = ["K","V","M","A"].flatMap(pos => (playersByPos[pos] || []));
+    const posOrder = { K: 0, V: 1, M: 2, A: 3 };
+    const ordered = [...(d.spelers || [])].sort((a, b) =>
+      a.land.localeCompare(b.land, "nl") || (posOrder[a.positie] ?? 9) - (posOrder[b.positie] ?? 9)
+    );
 
     const playerRows = ordered.map(sp => {
       const vlag = findVlag(sp.land);
@@ -787,10 +789,9 @@ function renderTeams() {
       const ptsStr = spPts === 0 ? "0" : (spPts > 0 ? `+${spPts}` : `${spPts}`);
       return `
         <li class="player-line" data-speler="${escapeHtml(sp.naam)}" data-land="${escapeHtml(sp.land)}" tabindex="0" role="button">
-          <span class="player-line__pos player-line__pos--${sp.positie}" title="${escapeHtml(POS_LABEL[sp.positie] || sp.positie)}">${sp.positie}</span>
           <span class="player-line__flag">${vlag}</span>
+          <span class="player-line__pos player-line__pos--${sp.positie}" title="${escapeHtml(POS_LABEL[sp.positie] || sp.positie)}">${sp.positie}</span>
           <span class="player-line__name">${escapeHtml(sp.naam)}</span>
-          <span class="player-line__meta">${escapeHtml(sp.land)}</span>
           <span class="player-line__pts ${spPts < 0 ? 'is-neg' : ''}">${ptsStr}</span>
           <span class="player-line__chev" aria-hidden="true">→</span>
         </li>
