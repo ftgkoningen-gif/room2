@@ -97,80 +97,22 @@
         <div>
           <div class="section__kicker">Welkom</div>
           <h2 class="section__title">Het <em>Overzicht</em></h2>
-          <p class="section__intro">Op weg naar de zesde editie. Speelschema, deelnemende landen en straks de actuele stand.</p>
+          <p class="section__intro">Het WK is begonnen. Bekijk de eerstvolgende wedstrijden, de actuele stand en het volledige wedstrijdoverzicht.</p>
         </div>
       </div>
 
-      <div class="overzicht__intro">
-        <p>We organiseren opnieuw onze draft-pool, nu rond het <strong>WK 2026</strong> in Canada, Mexico en de Verenigde Staten. <strong>48 landen</strong>, 26-koppige selectie per land — in totaal <strong>1.248 beschikbare spelers</strong>. Elke deelnemer kiest 11 spelers (max 3 per land), €20 inleg, prijzenpot 60/30/10 %. De aftrap van het toernooi is <strong>11 juni 2026</strong> in Mexico-Stad; dezelfde avond draften we bij O'Donnells.</p>
-      </div>
+      <div id="vandaagBlock"></div>
 
-      <aside class="draft-event">
-        <div class="draft-event__kicker">Draft-avond</div>
-        <h3 class="draft-event__headline">Donderdag 11 juni <span class="draft-event__sep">—</span> O'Donnells</h3>
-        <div class="draft-event__meta">
-          <span><strong>19:00 – 20:30</strong></span>
-          <span class="draft-event__dot">·</span>
-          <span>Marie Heinekenplein, Amsterdam</span>
-          <span class="draft-event__dot">·</span>
-          <span>Aansluitend openingswedstrijd</span>
-        </div>
-        <p class="draft-event__rsvp">Ook dit WK organiseren we weer een draft. Doe je mee? Laat het even weten in de WhatsApp-groep of je mee doet!</p>
-      </aside>
-
-      <div class="overzicht__stats" id="overzichtStats">
-        <!-- JS: 4 tegeltjes -->
-      </div>
-
-      <h3 class="overzicht__h3">De top drie</h3>
-      <div id="overzichtPodium" class="podium">
-        <!-- JS: podium of empty-state -->
-      </div>
+      <h3 class="overzicht__h3">De stand</h3>
+      <div id="ranglijstBlock"></div>
 
       <h3 class="overzicht__h3">Speelschema</h3>
       <div id="speelschema" class="speelschema">
         <!-- JS: fase-tijdlijn -->
       </div>
 
-      <h3 class="overzicht__h3">Deelnemende landen</h3>
-      <p class="overzicht__sub">De 48 gekwalificeerde landen, gesorteerd per confederatie. Groepsaanduiding (A–L) volgens FIFA-loting.</p>
-      <div id="landenGrid" class="landen-grid">
-        <!-- JS: per confederatie een blok met land-pills -->
-      </div>
-
-      <h3 class="overzicht__h3">Selecties</h3>
-      <p class="overzicht__sub">FIFA hanteert een 26-koppige selectie per land. Zodra de selecties bekend zijn (vanaf eind mei), verschijnen ze automatisch op een eigen pagina.</p>
-      <div id="selectiesTeaser" class="selecties-teaser">
-        <!-- JS: compacte teaser met progress + link -->
-      </div>
-
-      <h3 class="overzicht__h3">Hoe werkt deze app?</h3>
-      <div class="overzicht__howto">
-        <article class="howto">
-          <div class="howto__num">01</div>
-          <div class="howto__label">Reglement</div>
-          <p>De complete spelregels, puntenverdeling per positie en fase-bonussen.</p>
-          <button class="howto__link" type="button" data-goto="reglement">Naar reglement →</button>
-        </article>
-        <article class="howto">
-          <div class="howto__num">02</div>
-          <div class="howto__label">Teams</div>
-          <p>Zodra de draft-avond is geweest, verschijnen hier alle deelnemers met hun 11 spelers, gesorteerd op actuele punten.</p>
-          <button class="howto__link" type="button" data-goto="teams">Naar teams →</button>
-        </article>
-        <article class="howto">
-          <div class="howto__num">03</div>
-          <div class="howto__label">Wedstrijden</div>
-          <p>Alle WK 2026-matches. Na elke fluitsignaal haalt de scheidsrechter-bot scores, goals en kaarten binnen; de stand wordt direct bijgewerkt.</p>
-          <button class="howto__link" type="button" data-goto="wedstrijden">Naar wedstrijden →</button>
-        </article>
-        <article class="howto">
-          <div class="howto__num">04</div>
-          <div class="howto__label">Selecties</div>
-          <p>De 26-koppige selectie per land verschijnt op een eigen pagina zodra FIFA de squads vrijgeeft (4 juni 2026).</p>
-          <button class="howto__link" type="button" data-goto="selecties">Naar selecties →</button>
-        </article>
-      </div>
+      <h3 class="overzicht__h3">Alle wedstrijden</h3>
+      <div id="alleWedstrijdenBlock"></div>
     </section>
 
     <!-- ═══════════════════════════════════════════════════════════════════
@@ -266,6 +208,10 @@
           <h2 class="section__title">De <em>Teams</em></h2>
           <p class="section__intro">Alle deelnemers met hun elftal, gesorteerd op actuele punten.</p>
         </div>
+      </div>
+
+      <div class="overzicht__stats" id="statsBlock">
+        <!-- JS: tegeltjes -->
       </div>
 
       <div class="teams-toolbar">

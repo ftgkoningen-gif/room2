@@ -166,11 +166,17 @@ async function upsertFixture(supabase: any, f: any) {
   const thuis = toNL(f.teams.home.name);
   const uit   = toNL(f.teams.away.name);
 
+  const cdtDatum = (() => {
+    const utc = new Date(f.fixture.date ?? 0);
+    const cdtMs = utc.getTime() - 5 * 60 * 60 * 1000;
+    return new Date(cdtMs).toISOString().slice(0, 10);
+  })();
+
   const wedstrijd = {
     api_fixture_id: id,
-    datum: (f.fixture.date ?? "").slice(0, 10) || null,
+    datum: cdtDatum || null,
     fase,
-    poule: fase === "groep",
+    poule: null,
     thuis, uit,
     uitslag_thuis: f.goals?.home ?? null,
     uitslag_uit:   f.goals?.away ?? null,

@@ -462,13 +462,157 @@ function renderAll() {
 // Overzicht (landing)
 // ──────────────────────────────────────────────────────────────────
 function renderOverzicht() {
-  renderStats();
-  renderPodium();
+  renderVandaag();
+  renderRanglijst();
   renderSpeelschema();
-  renderLandenGrid();
-  renderSelectiesTeaser();
-  renderSelecties();
+  renderAlleWedstrijden();
   renderCountdown();
+}
+
+function formatNlTijd(datum) {
+  // datum opgeslagen als CDT datetime "2026-06-12T14:00" (CDT = UTC-5)
+  // CEST = CDT + 7h
+  if (!datum || datum.length <= 10) return null;
+  const [h, m] = datum.slice(11, 16).split(":").map(Number);
+  const cestH = (h + 7) % 24;
+  return `${String(cestH).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
+}
+
+function getActiveSpeeldagDate() {
+  // Mexico City CDT = UTC-5.
+  // Speeldag wisselt om 00:00 CDMX = 05:00 UTC = 07:00 Amsterdam CEST.
+  const cdtMs = Date.now() - 5 * 60 * 60 * 1000;
+  return new Date(cdtMs).toISOString().slice(0, 10);
+}
+
+function renderVandaag() {
+  const el = document.getElementById("vandaagBlock");
+  if (!el) return;
+  if (!state.wedstrijden.length) { el.innerHTML = ""; return; }
+
+  const normDatum = iso => (iso || "").slice(0, 10);
+  const activeDatum = getActiveSpeeldagDate();
+
+  // Huidige speeldag — toon ook al gespeelde matches van vandaag
+  let toonMatches = state.wedstrijden.filter(w => normDatum(w.datum) === activeDatum);
+  let kicker = "Vandaag";
+
+  if (!toonMatches.length) {
+    // Eerstvolgende speeldag met ongeplande matches
+    const komend = state.wedstrijden
+      .filter(w => !w.uitslag && normDatum(w.datum) > activeDatum)
+      .sort((a, b) => normDatum(a.datum).localeCompare(normDatum(b.datum)));
+    if (!komend.length) { el.innerHTML = ""; return; }
+    const eersteDag = normDatum(komend[0].datum);
+    toonMatches = komend.filter(w => normDatum(w.datum) === eersteDag);
+    kicker = "Eerstvolgende speeldag";
+  }
+
+  // Sorteer: vroegste wedstrijd bovenaan
+  toonMatches = [...toonMatches].sort((a, b) => (a.datum || "").localeCompare(b.datum || ""));
+
+  const dagLabel = (() => {
+    if (kicker === "Vandaag") return "Vandaag";
+    const displayDatum = toonMatches[0].datum;
+    const d = new Date(normDatum(displayDatum) + "T12:00:00Z");
+    return d.toLocaleDateString("nl-NL", { weekday: "long", day: "numeric", month: "long" });
+  })();
+
+  el.innerHTML = `
+    <div class="vandaag-blok">
+      <div class="vandaag-blok__kicker">${kicker}</div>
+      <h3 class="vandaag-blok__dag">${dagLabel}</h3>
+      ${toonMatches.map(w => {
+        const thuisVlag = findVlag(w.thuis);
+        const uitVlag = findVlag(w.uit);
+        const scoreStr = w.uitslag ? `<span class="vandaag-score">${w.uitslag.thuis}–${w.uitslag.uit}</span>` : `<span class="vs">vs</span>`;
+        const tijdStr = formatNlTijd(w.datum);
+        const bijdragen = state.deelnemers
+          .map(d => ({
+            naam: d.naam,
+            spelers: (d.spelers || []).filter(sp => sp.land === w.thuis || sp.land === w.uit)
+          }))
+          .filter(x => x.spelers.length > 0);
+        const spelerHtml = bijdragen.length
+          ? bijdragen.map(b =>
+              `<div class="vandaag-deelnemer">
+                <span class="vandaag-deelnemer__naam">${escapeHtml(b.naam)}</span>
+                <span class="vandaag-deelnemer__spelers">${b.spelers.map(sp =>
+                  `${findVlag(sp.land)} ${escapeHtml(sp.naam)} <span class="player-line__pos player-line__pos--${sp.positie}" style="display:inline-block;padding:1px 5px;border-radius:3px;font-size:0.65rem;font-weight:700;color:#fff;vertical-align:middle;">${sp.positie}</span>`
+                ).join(" &middot; ")}</span>
+              </div>`
+            ).join("")
+          : `<div class="vandaag-deelnemer vandaag-deelnemer--leeg">Geen gedraftte spelers actief</div>`;
+        return `
+          <div class="vandaag-wedstrijd">
+            <div class="vandaag-wedstrijd__header">
+              <span class="vandaag-wedstrijd__teams">${thuisVlag} ${escapeHtml(w.thuis)} ${scoreStr} ${escapeHtml(w.uit)} ${uitVlag}</span>
+              ${tijdStr ? `<span class="vandaag-wedstrijd__tijd">${tijdStr}</span>` : ""}
+              ${typeof w.poule === 'string' ? `<span class="vandaag-wedstrijd__groep">Groep ${w.poule}</span>` : ""}
+            </div>
+            <div class="vandaag-wedstrijd__spelers">${spelerHtml}</div>
+          </div>
+        `;
+      }).join("")}
+    </div>
+  `;
+}
+
+function renderRanglijst() {
+  const el = document.getElementById("ranglijstBlock");
+  if (!el) return;
+  if (!state.deelnemers.length) { el.innerHTML = ""; return; }
+  const ranked = [...state.deelnemers]
+    .map(d => ({ ...d, _pts: deelnemerPunten(d) }))
+    .sort((a, b) => b._pts - a._pts);
+  const top = ranked[0]?._pts ?? 0;
+  el.innerHTML = `<ol class="ranglijst">` +
+    ranked.map((d, i) => {
+      const achter = d._pts - top;
+      return `<li class="ranglijst__rij ${i === 0 ? 'ranglijst__rij--1' : i === 1 ? 'ranglijst__rij--2' : i === 2 ? 'ranglijst__rij--3' : ''}">
+        <span class="ranglijst__rank">${i + 1}</span>
+        <span class="ranglijst__naam">${escapeHtml(d.naam)}</span>
+        <span class="ranglijst__pts mono">${d._pts}</span>
+        <span class="ranglijst__achter mono">${achter === 0 ? "—" : achter}</span>
+      </li>`;
+    }).join("") + `</ol>`;
+}
+
+function renderAlleWedstrijden() {
+  const el = document.getElementById("alleWedstrijdenBlock");
+  if (!el) return;
+  if (!state.wedstrijden.length) { el.innerHTML = ""; return; }
+  const sorted = [...state.wedstrijden].sort((a, b) =>
+    (a.datum || "").localeCompare(b.datum || "") || (a.apiFixtureId || 0) - (b.apiFixtureId || 0)
+  );
+  // Groepeer op datum
+  const perDag = {};
+  for (const w of sorted) {
+    const d = w.datum || "?";
+    (perDag[d] = perDag[d] || []).push(w);
+  }
+  el.innerHTML = Object.entries(perDag).map(([datum, wedstrijden]) => {
+    const dagStr = (() => {
+      const d = new Date(datum);
+      return isNaN(d) ? datum : d.toLocaleDateString("nl-NL", { weekday: "short", day: "numeric", month: "short" });
+    })();
+    return `
+      <div class="aw-dag">
+        <div class="aw-dag__label">${dagStr}</div>
+        <ol class="aw-lijst">
+          ${wedstrijden.map(w => {
+            const gespeeld = !!w.uitslag;
+            const score = gespeeld ? `<b class="aw-score">${w.uitslag.thuis}–${w.uitslag.uit}</b>` : `<span class="aw-vs">vs</span>`;
+            return `<li class="aw-rij${gespeeld ? " is-gespeeld" : ""}">
+              <span class="aw-rij__icon">${gespeeld ? "✓" : "·"}</span>
+              <span class="aw-rij__teams">${findVlag(w.thuis)} ${escapeHtml(w.thuis)} ${score} ${escapeHtml(w.uit)} ${findVlag(w.uit)}</span>
+              ${typeof w.poule === 'string' ? `<span class="aw-rij__groep">Gr. ${w.poule}</span>` : ""}
+            </li>`;
+          }).join("")}
+        </ol>
+      </div>
+    `;
+  }).join("");
 }
 
 function renderSelectiesTeaser() {
@@ -503,7 +647,7 @@ function renderCountdown() {
 }
 
 function renderStats() {
-  const stats = document.getElementById("overzichtStats");
+  const stats = document.getElementById("statsBlock");
   if (!stats) return;
 
   const pot = state.deelnemers.length * INLEG_PER_DEELNEMER;
