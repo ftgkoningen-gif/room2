@@ -523,8 +523,6 @@ function renderVandaag() {
       <div class="vandaag-blok__kicker">${kicker}</div>
       <h3 class="vandaag-blok__dag">${dagLabel}</h3>
       ${toonMatches.map(w => {
-        const thuisVlag = findVlag(w.thuis);
-        const uitVlag = findVlag(w.uit);
         const scoreStr = w.uitslag ? `<span class="vandaag-score">${w.uitslag.thuis}–${w.uitslag.uit}</span>` : `<span class="vs">vs</span>`;
         const tijdStr = formatNlTijd(w.datum);
         const bijdragen = state.deelnemers
@@ -538,7 +536,7 @@ function renderVandaag() {
               `<div class="vandaag-deelnemer">
                 <span class="vandaag-deelnemer__naam">${escapeHtml(b.naam)}</span>
                 <span class="vandaag-deelnemer__spelers">${b.spelers.map(sp =>
-                  `${findVlag(sp.land)} ${escapeHtml(sp.naam)} <span class="player-line__pos player-line__pos--${sp.positie}" style="display:inline-block;padding:1px 5px;border-radius:3px;font-size:0.65rem;font-weight:700;color:#fff;vertical-align:middle;">${sp.positie}</span>`
+                  `${escapeHtml(sp.naam)} <span class="player-line__pos player-line__pos--${sp.positie}" style="display:inline-block;padding:1px 5px;border-radius:3px;font-size:0.65rem;font-weight:700;color:#fff;vertical-align:middle;">${sp.positie}</span>`
                 ).join(" &middot; ")}</span>
               </div>`
             ).join("")
@@ -546,8 +544,8 @@ function renderVandaag() {
         return `
           <div class="vandaag-wedstrijd">
             <div class="vandaag-wedstrijd__header">
-              <span class="vandaag-wedstrijd__teams">${thuisVlag} ${escapeHtml(w.thuis)} ${scoreStr} ${escapeHtml(w.uit)} ${uitVlag}</span>
               ${tijdStr ? `<span class="vandaag-wedstrijd__tijd">${tijdStr}</span>` : ""}
+              <span class="vandaag-wedstrijd__teams">${escapeHtml(w.thuis)} ${scoreStr} ${escapeHtml(w.uit)}</span>
               ${typeof w.poule === 'string' ? `<span class="vandaag-wedstrijd__groep">Groep ${w.poule}</span>` : ""}
             </div>
             <div class="vandaag-wedstrijd__spelers">${spelerHtml}</div>
