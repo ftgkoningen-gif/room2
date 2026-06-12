@@ -44,6 +44,9 @@ const state = {
   awards: { topscorer: null, besteSpeler: null }
 };
 
+// Stack voor modal-terug-navigatie: elk item = { type: "team"|"speler", ... }
+let _modalStack = [];
+
 const LS_KEYS = {
   deelnemers: "wk26.deelnemers",
   wedstrijden: "wk26.wedstrijden",
@@ -1156,14 +1159,24 @@ function wireEvents() {
     const trigger = e.target.closest("[data-speler]");
     if (trigger) {
       e.preventDefault();
+      if (trigger.closest("#spelerModal")) {
+        // Geopend vanuit team-modal — sla team op voor terug-navigatie
+        const teamNaam = document.querySelector("#modalContent .modal__title")?.textContent;
+        if (teamNaam) _modalStack.push({ type: "team", naam: teamNaam });
+      }
       openSpelerModal(trigger.dataset.speler, trigger.dataset.land);
     }
     if (e.target.closest(".modal__close") || e.target.classList?.contains("modal__backdrop")) {
-      closeSpelerModal();
+      if (_modalStack.length > 0) {
+        const back = _modalStack.pop();
+        if (back.type === "team") openTeamModal(back.naam);
+      } else {
+        closeSpelerModal();
+      }
     }
   });
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") closeSpelerModal();
+    if (e.key === "Escape") { _modalStack = []; closeSpelerModal(); }
     if (e.key === "Enter" || e.key === " ") {
       const active = document.activeElement;
       if (active?.matches("[data-speler]")) {
@@ -1267,6 +1280,7 @@ function closeSpelerModal() {
 // Team-modal
 // ──────────────────────────────────────────────────────────────────
 function openTeamModal(naam) {
+  _modalStack = [];
   const deelnemer = state.deelnemers.find(d => d.naam === naam);
   if (!deelnemer) return;
 
