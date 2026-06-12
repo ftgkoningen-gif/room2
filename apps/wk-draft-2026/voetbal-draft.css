@@ -1461,7 +1461,7 @@ code {
 }
 .match-row__teams {
   display: grid;
-  grid-template-columns: auto 1fr auto 1fr auto;
+  grid-template-columns: 1fr 64px 1fr;
   align-items: center;
   gap: 10px;
   font-family: var(--font-display);
@@ -1484,6 +1484,8 @@ code {
   background: var(--paper-deep);
   border: 1px solid var(--rule);
   white-space: nowrap;
+  text-align: center;
+  display: block;
 }
 .match-row__dpts {
   font-family: var(--font-mono);
@@ -1586,7 +1588,7 @@ code {
     gap: 8px;
   }
   .match-row__fase { display: none; }
-  .match-row__teams { font-size: 13px; grid-template-columns: auto 1fr auto 1fr auto; gap: 6px; }
+  .match-row__teams { font-size: 13px; grid-template-columns: 1fr 56px 1fr; gap: 6px; }
   .match-row__score { padding: 2px 6px; font-size: 14px; }
   .match-row__body { padding: 4px 8px 16px 16px; }
   .contrib {
@@ -2621,6 +2623,12 @@ a:focus-visible {
 .tm-row__pts.is-neg { color: var(--red, #c0392b); }
 .tm-row__chev { color: var(--ink-faint, #ccc); font-size: 0.8rem; text-align: right; }
 
+.vandaag-wedstrijd__venue {
+  font-size: 0.74rem;
+  color: var(--ink-mid, #888);
+  margin-top: 3px;
+  padding: 0 2px;
+}
 .vandaag-speler {
   cursor: pointer;
   text-decoration: underline;

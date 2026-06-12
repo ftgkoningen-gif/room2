@@ -33,6 +33,103 @@ const INLEG_PER_DEELNEMER = 20;
 
 const POS_LABEL = { K: "Keeper", V: "Verdediger", M: "Middenvelder", A: "Aanvaller" };
 
+const VENUE = {
+  1489369: { stadion: "Estadio Azteca", stad: "Mexico City" },
+  1538999: { stadion: "Estadio Akron", stad: "Guadalajara" },
+  1539000: { stadion: "BMO Field", stad: "Toronto" },
+  1489370: { stadion: "SoFi Stadium", stad: "Los Angeles" },
+  1489373: { stadion: "Levi's Stadium", stad: "San Francisco Bay Area" },
+  1489371: { stadion: "MetLife Stadium", stad: "New York New Jersey" },
+  1489372: { stadion: "Gillette Stadium", stad: "Boston" },
+  1539001: { stadion: "BC Place", stad: "Vancouver" },
+  1489374: { stadion: "NRG Stadium", stad: "Houston" },
+  1489376: { stadion: "AT&T Stadium", stad: "Dallas" },
+  1489375: { stadion: "Lincoln Financial Field", stad: "Philadelphia" },
+  1539002: { stadion: "Estadio BBVA", stad: "Monterrey" },
+  1489380: { stadion: "Mercedes-Benz Stadium", stad: "Atlanta" },
+  1489377: { stadion: "Lumen Field", stad: "Seattle" },
+  1489379: { stadion: "Hard Rock Stadium", stad: "Miami" },
+  1489378: { stadion: "SoFi Stadium", stad: "Los Angeles" },
+  1489383: { stadion: "MetLife Stadium", stad: "New York New Jersey" },
+  1539016: { stadion: "Gillette Stadium", stad: "Boston" },
+  1489381: { stadion: "Arrowhead Stadium", stad: "Kansas City" },
+  1489382: { stadion: "Levi's Stadium", stad: "San Francisco Bay Area" },
+  1539003: { stadion: "NRG Stadium", stad: "Houston" },
+  1489384: { stadion: "AT&T Stadium", stad: "Dallas" },
+  1489385: { stadion: "BMO Field", stad: "Toronto" },
+  1489386: { stadion: "Estadio Azteca", stad: "Mexico City" },
+  1539004: { stadion: "Mercedes-Benz Stadium", stad: "Atlanta" },
+  1539005: { stadion: "SoFi Stadium", stad: "Los Angeles" },
+  1489387: { stadion: "BC Place", stad: "Vancouver" },
+  1489388: { stadion: "Estadio Akron", stad: "Guadalajara" },
+  1489391: { stadion: "Lumen Field", stad: "Seattle" },
+  1489390: { stadion: "Gillette Stadium", stad: "Boston" },
+  1489389: { stadion: "Lincoln Financial Field", stad: "Philadelphia" },
+  1539006: { stadion: "Levi's Stadium", stad: "San Francisco Bay Area" },
+  1539007: { stadion: "NRG Stadium", stad: "Houston" },
+  1489393: { stadion: "BMO Field", stad: "Toronto" },
+  1489392: { stadion: "Arrowhead Stadium", stad: "Kansas City" },
+  1489394: { stadion: "Estadio BBVA", stad: "Monterrey" },
+  1489397: { stadion: "Mercedes-Benz Stadium", stad: "Atlanta" },
+  1489395: { stadion: "SoFi Stadium", stad: "Los Angeles" },
+  1489398: { stadion: "Hard Rock Stadium", stad: "Miami" },
+  1489396: { stadion: "BC Place", stad: "Vancouver" },
+  1489399: { stadion: "AT&T Stadium", stad: "Dallas" },
+  1539017: { stadion: "Lincoln Financial Field", stad: "Philadelphia" },
+  1489401: { stadion: "MetLife Stadium", stad: "New York New Jersey" },
+  1489400: { stadion: "Levi's Stadium", stad: "San Francisco Bay Area" },
+  1489404: { stadion: "NRG Stadium", stad: "Houston" },
+  1489402: { stadion: "Gillette Stadium", stad: "Boston" },
+  1489403: { stadion: "BMO Field", stad: "Toronto" },
+  1539008: { stadion: "Estadio Akron", stad: "Guadalajara" },
+  1489408: { stadion: "BC Place", stad: "Vancouver" },
+  1539009: { stadion: "Lumen Field", stad: "Seattle" },
+  1489405: { stadion: "Mercedes-Benz Stadium", stad: "Atlanta" },
+  1489406: { stadion: "Hard Rock Stadium", stad: "Miami" },
+  1539010: { stadion: "Estadio Azteca", stad: "Mexico City" },
+  1489407: { stadion: "Estadio BBVA", stad: "Monterrey" },
+  1489410: { stadion: "MetLife Stadium", stad: "New York New Jersey" },
+  1489409: { stadion: "Lincoln Financial Field", stad: "Philadelphia" },
+  1539011: { stadion: "AT&T Stadium", stad: "Dallas" },
+  1489412: { stadion: "Arrowhead Stadium", stad: "Kansas City" },
+  1539012: { stadion: "SoFi Stadium", stad: "Los Angeles" },
+  1489411: { stadion: "Levi's Stadium", stad: "San Francisco Bay Area" },
+  1539074: { stadion: "BMO Field", stad: "Toronto" },
+  1489416: { stadion: "Gillette Stadium", stad: "Boston" },
+  1489417: { stadion: "Estadio Akron", stad: "Guadalajara" },
+  1489413: { stadion: "NRG Stadium", stad: "Houston" },
+  1489414: { stadion: "Lumen Field", stad: "Seattle" },
+  1489415: { stadion: "BC Place", stad: "Vancouver" },
+  1489420: { stadion: "Lincoln Financial Field", stad: "Philadelphia" },
+  1489422: { stadion: "MetLife Stadium", stad: "New York New Jersey" },
+  1489419: { stadion: "Hard Rock Stadium", stad: "Miami" },
+  1539013: { stadion: "Mercedes-Benz Stadium", stad: "Atlanta" },
+  1489418: { stadion: "Arrowhead Stadium", stad: "Kansas City" },
+  1489421: { stadion: "AT&T Stadium", stad: "Dallas" }
+};
+
+// Nederlandse aanvangstijden (CEST = UTC+2) — statisch uit API cache
+const KICKOFF = {
+  1489369: "21:00", 1538999: "04:00", 1539000: "21:00", 1489370: "03:00",
+  1489373: "21:00", 1489371: "00:00", 1489372: "03:00", 1539001: "06:00",
+  1489374: "19:00", 1489376: "22:00", 1489375: "01:00", 1539002: "04:00",
+  1489380: "18:00", 1489377: "21:00", 1489379: "00:00", 1489378: "03:00",
+  1489383: "21:00", 1539016: "00:00", 1489381: "03:00", 1489382: "06:00",
+  1539003: "19:00", 1489384: "22:00", 1489385: "01:00", 1489386: "04:00",
+  1539004: "18:00", 1539005: "21:00", 1489387: "00:00", 1489388: "03:00",
+  1489391: "21:00", 1489390: "00:00", 1489389: "02:30", 1539006: "05:00",
+  1539007: "19:00", 1489393: "22:00", 1489392: "02:00", 1489394: "06:00",
+  1489397: "18:00", 1489395: "21:00", 1489398: "00:00", 1489396: "03:00",
+  1489399: "19:00", 1539017: "23:00", 1489401: "02:00", 1489400: "05:00",
+  1489404: "19:00", 1489402: "22:00", 1489403: "01:00", 1539008: "04:00",
+  1489408: "21:00", 1539009: "21:00", 1489405: "00:00", 1489406: "00:00",
+  1539010: "03:00", 1489407: "03:00", 1489410: "22:00", 1489409: "22:00",
+  1539011: "01:00", 1489412: "01:00", 1539012: "04:00", 1489411: "04:00",
+  1539074: "21:00", 1489416: "21:00", 1489417: "02:00", 1489413: "02:00",
+  1489414: "05:00", 1489415: "05:00", 1489420: "23:00", 1489422: "23:00",
+  1489419: "01:30", 1539013: "01:30", 1489418: "04:00", 1489421: "04:00"
+};
+
 // ──────────────────────────────────────────────────────────────────
 // State
 // ──────────────────────────────────────────────────────────────────
@@ -467,8 +564,7 @@ function renderAll() {
 function renderOverzicht() {
   renderVandaag();
   renderRanglijst();
-  renderSpeelschema();
-  renderAlleWedstrijden();
+  renderWedstrijden("overzichtWedstrijdenList", "overzichtWedstrijdenEmpty");
   renderCountdown();
 }
 
@@ -527,7 +623,8 @@ function renderVandaag() {
       <h3 class="vandaag-blok__dag">${dagLabel}</h3>
       ${toonMatches.map(w => {
         const scoreStr = w.uitslag ? `<span class="vandaag-score">${w.uitslag.thuis}–${w.uitslag.uit}</span>` : `<span class="vs">vs</span>`;
-        const tijdStr = formatNlTijd(w.datum);
+        const tijdStr = KICKOFF[w.apiFixtureId] ?? null;
+        const venue = VENUE[w.apiFixtureId] ?? null;
         const bijdragen = state.deelnemers
           .map(d => ({
             naam: d.naam,
@@ -551,6 +648,7 @@ function renderVandaag() {
               <span class="vandaag-wedstrijd__teams">${escapeHtml(w.thuis)} ${scoreStr} ${escapeHtml(w.uit)}</span>
               ${typeof w.poule === 'string' ? `<span class="vandaag-wedstrijd__groep">Groep ${w.poule}</span>` : ""}
             </div>
+            ${venue ? `<div class="vandaag-wedstrijd__venue">${escapeHtml(venue.stadion)} · ${escapeHtml(venue.stad)}</div>` : ""}
             <div class="vandaag-wedstrijd__spelers">${spelerHtml}</div>
           </div>
         `;
@@ -968,9 +1066,9 @@ function renderTeams() {
 // ──────────────────────────────────────────────────────────────────
 // Wedstrijden
 // ──────────────────────────────────────────────────────────────────
-function renderWedstrijden() {
-  const list = document.getElementById("wedstrijdenList");
-  const empty = document.getElementById("wedstrijdenEmpty");
+function renderWedstrijden(listId = "wedstrijdenList", emptyId = "wedstrijdenEmpty") {
+  const list = document.getElementById(listId);
+  const empty = document.getElementById(emptyId);
 
   if (!state.wedstrijden.length) {
     list.innerHTML = "";
@@ -993,8 +1091,6 @@ function renderWedstrijden() {
 
   list.innerHTML = sorted.map(w => {
     const datum = formatShortDate(w.datum);
-    const thuisVlag = findVlag(w.thuis);
-    const uitVlag = findVlag(w.uit);
     const score = w.uitslag ? `${w.uitslag.thuis}–${w.uitslag.uit}` : "";
     const pensLabel = w.pens ? ` (${w.pens.thuis}–${w.pens.uit} pen)` : "";
     const faseLabelStr = {
@@ -1013,13 +1109,11 @@ function renderWedstrijden() {
     const rows = matchPts
       .sort((a, b) => b.subtotal - a.subtotal)
       .map(c => {
-        const vlag = findVlag(c.speler.land);
         const lineStr = c.lines.map(l => `${l.label} <b>${l.pts > 0 ? '+' : ''}${l.pts}</b>`).join(" · ");
         const ptsCls = c.subtotal < 0 ? "is-neg" : (c.subtotal > 0 ? "is-pos" : "");
         return `
           <li class="contrib">
             <span class="contrib__pos contrib__pos--${c.speler.positie}">${c.speler.positie}</span>
-            <span class="contrib__flag">${vlag}</span>
             <span class="contrib__name" data-speler="${escapeHtml(c.speler.naam)}" data-land="${escapeHtml(c.speler.land)}" tabindex="0" role="button">${escapeHtml(c.speler.naam)}</span>
             <span class="contrib__owner">— ${escapeHtml(c.deelnemer)}</span>
             <span class="contrib__lines">${lineStr}</span>
@@ -1034,11 +1128,9 @@ function renderWedstrijden() {
           <span class="match-row__date">${datum}</span>
           <span class="match-row__fase">${faseLabelStr}</span>
           <span class="match-row__teams">
-            <span class="match-row__flag">${thuisVlag}</span>
             <span class="match-row__team">${escapeHtml(w.thuis)}</span>
             <span class="match-row__score mono">${score}${pensLabel}</span>
             <span class="match-row__team">${escapeHtml(w.uit)}</span>
-            <span class="match-row__flag">${uitVlag}</span>
           </span>
           <span class="match-row__dpts mono">${totalPts >= 0 ? '+' : ''}${totalPts} pt</span>
           <span class="match-row__chev" aria-hidden="true">▾</span>
