@@ -534,9 +534,9 @@ function renderVandaag() {
         const spelerHtml = bijdragen.length
           ? bijdragen.map(b =>
               `<div class="vandaag-deelnemer">
-                <span class="vandaag-deelnemer__naam">${escapeHtml(b.naam)}</span>
+                <span class="vandaag-deelnemer__naam" data-goto-team="${escapeHtml(b.naam)}" tabindex="0" role="button">${escapeHtml(b.naam)}</span>
                 <span class="vandaag-deelnemer__spelers">${b.spelers.map(sp =>
-                  `${escapeHtml(sp.naam)} <span class="player-line__pos player-line__pos--${sp.positie}" style="display:inline-block;padding:1px 5px;border-radius:3px;font-size:0.65rem;font-weight:700;color:#fff;vertical-align:middle;">${sp.positie}</span>`
+                  `<span class="vandaag-speler" data-speler="${escapeHtml(sp.naam)}" data-land="${escapeHtml(sp.land)}" tabindex="0" role="button">${escapeHtml(sp.naam)}</span> <span class="player-line__pos player-line__pos--${sp.positie}" style="display:inline-block;padding:1px 5px;border-radius:3px;font-size:0.65rem;font-weight:700;color:#fff;vertical-align:middle;">${sp.positie}</span>`
                 ).join(" &middot; ")}</span>
               </div>`
             ).join("")
@@ -569,7 +569,7 @@ function renderRanglijst() {
       const achter = d._pts - top;
       return `<li class="ranglijst__rij ${i === 0 ? 'ranglijst__rij--1' : i === 1 ? 'ranglijst__rij--2' : i === 2 ? 'ranglijst__rij--3' : ''}">
         <span class="ranglijst__rank">${i + 1}</span>
-        <span class="ranglijst__naam">${escapeHtml(d.naam)}</span>
+        <span class="ranglijst__naam" data-goto-team="${escapeHtml(d.naam)}" tabindex="0" role="button">${escapeHtml(d.naam)}</span>
         <span class="ranglijst__pts mono">${d._pts}</span>
         <span class="ranglijst__achter mono">${achter === 0 ? "—" : achter}</span>
       </li>`;
@@ -940,8 +940,9 @@ function renderTeams() {
       `;
     }).join("");
 
+    const teamId = "team-" + d.naam.toLowerCase().replace(/[^a-z0-9]/g, "-");
     return `
-      <article class="team-row">
+      <article class="team-row" id="${teamId}">
         <header class="team-row__head">
           <div class="team-row__rank">${rank}</div>
           <div class="team-row__name">
@@ -1144,8 +1145,14 @@ function wireEvents() {
     btn.addEventListener("click", () => switchTab(btn.dataset.goto));
   });
 
-  // Global click / keyboard delegate for opening player modal
+  // Global click / keyboard delegate for opening player modal + team nav
   document.addEventListener("click", (e) => {
+    const teamTrigger = e.target.closest("[data-goto-team]");
+    if (teamTrigger) {
+      e.preventDefault();
+      openTeamModal(teamTrigger.dataset.gotoTeam);
+      return;
+    }
     const trigger = e.target.closest("[data-speler]");
     if (trigger) {
       e.preventDefault();
@@ -1157,10 +1164,16 @@ function wireEvents() {
   });
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") closeSpelerModal();
-    if ((e.key === "Enter" || e.key === " ") && document.activeElement?.matches("[data-speler]")) {
-      e.preventDefault();
-      const t = document.activeElement;
-      openSpelerModal(t.dataset.speler, t.dataset.land);
+    if (e.key === "Enter" || e.key === " ") {
+      const active = document.activeElement;
+      if (active?.matches("[data-speler]")) {
+        e.preventDefault();
+        openSpelerModal(active.dataset.speler, active.dataset.land);
+      }
+      if (active?.matches("[data-goto-team]")) {
+        e.preventDefault();
+        openTeamModal(active.dataset.gotoTeam);
+      }
     }
   });
 }
@@ -1248,6 +1261,59 @@ function openSpelerModal(naam, land) {
 function closeSpelerModal() {
   document.getElementById("spelerModal")?.classList.add("hidden");
   document.body.style.overflow = "";
+}
+
+// ──────────────────────────────────────────────────────────────────
+// Team-modal
+// ──────────────────────────────────────────────────────────────────
+function openTeamModal(naam) {
+  const deelnemer = state.deelnemers.find(d => d.naam === naam);
+  if (!deelnemer) return;
+
+  const ranked = [...state.deelnemers]
+    .map(d => ({ naam: d.naam, pts: deelnemerPunten(d) }))
+    .sort((a, b) => b.pts - a.pts);
+  const rank = ranked.findIndex(d => d.naam === naam) + 1;
+  const totPts = deelnemerPunten(deelnemer);
+  const totStr = totPts > 0 ? `+${totPts}` : `${totPts}`;
+
+  const posOrder = { K: 0, V: 1, M: 2, A: 3 };
+  const spelers = [...(deelnemer.spelers || [])]
+    .map(sp => ({ ...sp, _pts: spelerPunten(sp) }))
+    .sort((a, b) => b._pts - a._pts || (posOrder[a.positie] ?? 9) - (posOrder[b.positie] ?? 9));
+
+  const spelerRows = spelers.map(sp => {
+    const ptsStr = sp._pts > 0 ? `+${sp._pts}` : `${sp._pts}`;
+    return `
+      <li class="tm-row" data-speler="${escapeHtml(sp.naam)}" data-land="${escapeHtml(sp.land)}" tabindex="0" role="button">
+        <span class="player-line__pos player-line__pos--${sp.positie}">${sp.positie}</span>
+        <span class="tm-row__name">${escapeHtml(sp.naam)}</span>
+        <span class="tm-row__land">${escapeHtml(sp.land)}</span>
+        <span class="tm-row__pts ${sp._pts < 0 ? 'is-neg' : ''}">${ptsStr}</span>
+        <span class="tm-row__chev" aria-hidden="true">→</span>
+      </li>`;
+  }).join("");
+
+  document.getElementById("modalContent").innerHTML = `
+    <button class="modal__close" type="button" aria-label="Sluiten">✕</button>
+    <header class="modal__header">
+      <div class="modal__flag modal__flag--rank">#${rank}</div>
+      <div class="modal__titleblock">
+        <div class="modal__kicker">Team · ${spelers.length} spelers</div>
+        <h2 class="modal__title">${escapeHtml(deelnemer.naam)}</h2>
+      </div>
+      <div class="modal__total">
+        <div class="modal__total-num">${totStr}</div>
+        <div class="modal__total-label">Punten</div>
+      </div>
+    </header>
+    <div class="modal__body">
+      <h3 class="modal__subtitle">Spelers — klik voor puntenbreakdown</h3>
+      <ol class="tm-list">${spelerRows}</ol>
+    </div>
+  `;
+  document.getElementById("spelerModal").classList.remove("hidden");
+  document.body.style.overflow = "hidden";
 }
 
 function findSpelerInTeams(naam, land) {

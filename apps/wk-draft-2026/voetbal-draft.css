@@ -2586,6 +2586,55 @@ a:focus-visible {
   padding: 2px 7px;
   flex-shrink: 0;
 }
+/* ── Team-modal ── */
+.modal__flag--rank {
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  font-weight: 700;
+  min-width: 2.5rem;
+  text-align: center;
+  color: var(--accent);
+}
+.tm-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.tm-row {
+  display: grid;
+  grid-template-columns: 28px 1fr auto auto 18px;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  background: var(--paper-deep, #f7f5f0);
+  transition: background 120ms;
+}
+.tm-row:hover { background: var(--paper-hover, #eeebe4); }
+.tm-row__name { font-weight: 500; }
+.tm-row__land { font-size: 0.78rem; color: var(--ink-mid, #888); }
+.tm-row__pts { font-family: var(--font-mono); font-weight: 600; font-size: 0.9rem; }
+.tm-row__pts.is-neg { color: var(--red, #c0392b); }
+.tm-row__chev { color: var(--ink-faint, #ccc); font-size: 0.8rem; text-align: right; }
+
+.vandaag-speler {
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: var(--ink-faint, #ccc);
+  text-underline-offset: 2px;
+}
+.vandaag-speler:hover { color: var(--accent); text-decoration-color: var(--accent); }
+.vandaag-deelnemer__naam[data-goto-team] {
+  cursor: pointer;
+  font-weight: 600;
+}
+.vandaag-deelnemer__naam[data-goto-team]:hover { color: var(--accent); }
+.ranglijst__naam[data-goto-team] { cursor: pointer; }
+.ranglijst__naam[data-goto-team]:hover { color: var(--accent); }
 .vandaag-wedstrijd__groep {
   font-family: var(--font-mono);
   font-size: 0.68rem;
