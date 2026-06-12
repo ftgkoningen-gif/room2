@@ -205,6 +205,34 @@ function switchTab(name) {
 }
 
 // ──────────────────────────────────────────────────────────────────
+// Naam-normalisatie: matcht API-namen ("Tomáš Souček") met draft-namen
+// ("T. Soucek") en varianten in hoofdlettergebruik ("Son Heung-min").
+// ──────────────────────────────────────────────────────────────────
+function normNaam(s) {
+  return String(s ?? '').normalize('NFD')
+    .replace(/\p{Diacritic}/gu, '')
+    .toLowerCase()
+    .replace(/[.''`\-]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function naammatch(eventNaam, spelerNaam) {
+  if (!eventNaam || !spelerNaam) return false;
+  if (eventNaam === spelerNaam) return true;
+  const ne = normNaam(eventNaam);
+  const ns = normNaam(spelerNaam);
+  if (ne === ns) return true;
+  // "Edson Álvarez" → probeer afkorting "E. Álvarez"
+  const parts = eventNaam.trim().split(/\s+/);
+  if (parts.length >= 2) {
+    const abbreviated = parts[0][0] + '. ' + parts.slice(1).join(' ');
+    if (normNaam(abbreviated) === ns) return true;
+  }
+  return false;
+}
+
+// ──────────────────────────────────────────────────────────────────
 // Puntenberekening (de scheidsrechter in code)
 // ──────────────────────────────────────────────────────────────────
 function berekenSpelerPunten(spelerNaam, deelnemerSpelers) {
@@ -220,17 +248,19 @@ function spelerPunten(speler) {
   // Events per wedstrijd
   for (const w of state.wedstrijden) {
     if (w.status !== "verwerkt" || !Array.isArray(w.events)) continue;
-    const evs = w.events.filter(e => e.speler === speler.naam);
+    const evs = w.events.filter(e => naammatch(e.speler, speler.naam));
     if (evs.length === 0) continue;
 
-    // Uitslag-afhankelijke punten (gespeeld 45+, winst, gelijk, cleansheet, tegendoelpunten)
-    const gespeeld45 = evs.some(e => e.type === "gespeeld45");
-    const cleanSheet = evs.some(e => e.type === "cleanSheet45");
+    const gespeeld45  = evs.some(e => e.type === "gespeeld45");
+    const ingevallen  = evs.some(e => e.type === "ingevallen");  // invaller <45 min
+    const cleanSheet  = evs.some(e => e.type === "cleanSheet45");
     const tegendoelpunten = evs.filter(e => e.type === "tegendoelpunt").length;
 
-    // Bepaal winst/gelijk/verlies uit uitslag + speler's land
-    if (gespeeld45 && w.uitslag) {
-      pts += POINTS.gespeeld45[pos] ?? 0;
+    // Gespeeld ≥45 min bonus (+2 K/V/M, +1 A)
+    if (gespeeld45 && w.uitslag) pts += POINTS.gespeeld45[pos] ?? 0;
+
+    // Poulewinst/gelijkspel: geldt voor iedereen die deelnam (ook invaller <45 min)
+    if ((gespeeld45 || ingevallen) && w.uitslag) {
       const { poule } = w;
       const isThuis = w.thuis === speler.land;
       const isUit = w.uit === speler.land;
@@ -288,12 +318,13 @@ function spelerBreakdown(speler) {
 
   for (const w of state.wedstrijden) {
     if (w.status !== "verwerkt" || !Array.isArray(w.events)) continue;
-    const evs = w.events.filter(e => e.speler === speler.naam);
+    const evs = w.events.filter(e => naammatch(e.speler, speler.naam));
     if (evs.length === 0) continue;
 
     const lines = [];
     let subtotal = 0;
     const gespeeld45 = evs.some(e => e.type === "gespeeld45");
+    const ingevallen  = evs.some(e => e.type === "ingevallen");
     const cleanSheet = evs.some(e => e.type === "cleanSheet45");
     const tegenCount = evs.filter(e => e.type === "tegendoelpunt").length;
 
@@ -301,21 +332,21 @@ function spelerBreakdown(speler) {
       const p = POINTS.gespeeld45[pos] ?? 0;
       lines.push({ label: `Gespeeld ≥45 min`, pts: p });
       subtotal += p;
-      if (w.poule) {
-        const isThuis = w.thuis === speler.land;
-        const isUit = w.uit === speler.land;
-        if (isThuis || isUit) {
-          const eigen = isThuis ? w.uitslag.thuis : w.uitslag.uit;
-          const tegen = isThuis ? w.uitslag.uit : w.uitslag.thuis;
-          if (eigen > tegen) {
-            const p = POINTS.poulewinst[pos] ?? 0;
-            lines.push({ label: `Gewonnen poule`, pts: p });
-            subtotal += p;
-          } else if (eigen === tegen) {
-            const p = POINTS.gelijkspel[pos] ?? 0;
-            lines.push({ label: `Gelijkspel`, pts: p });
-            subtotal += p;
-          }
+    }
+    if ((gespeeld45 || ingevallen) && w.uitslag && w.poule) {
+      const isThuis = w.thuis === speler.land;
+      const isUit = w.uit === speler.land;
+      if (isThuis || isUit) {
+        const eigen = isThuis ? w.uitslag.thuis : w.uitslag.uit;
+        const tegen = isThuis ? w.uitslag.uit : w.uitslag.thuis;
+        if (eigen > tegen) {
+          const p = POINTS.poulewinst[pos] ?? 0;
+          lines.push({ label: ingevallen && !gespeeld45 ? `Gewonnen poule (invaller)` : `Gewonnen poule`, pts: p });
+          subtotal += p;
+        } else if (eigen === tegen) {
+          const p = POINTS.gelijkspel[pos] ?? 0;
+          lines.push({ label: ingevallen && !gespeeld45 ? `Gelijkspel (invaller)` : `Gelijkspel`, pts: p });
+          subtotal += p;
         }
       }
     }

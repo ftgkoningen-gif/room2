@@ -137,6 +137,9 @@ function buildEventsFromPlayers(playersData: any, f: any, thuisNL: string) {
             events.push({ api_fixture_id: f.fixture.id, speler: naam, type: "tegendoelpunt", detail: posHint });
           }
         }
+      } else if (minuten >= 1) {
+        // Invaller <45 min: geen gespeeld-bonus, maar wel recht op poulewinst/gelijkspel
+        events.push({ api_fixture_id: f.fixture.id, speler: naam, type: "ingevallen", detail: posHint });
       }
 
       const total = s.goals?.total ?? 0;
