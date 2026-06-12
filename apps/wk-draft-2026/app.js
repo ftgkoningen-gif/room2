@@ -907,23 +907,23 @@ function renderWedstrijden() {
   }).join("");
 }
 
-// Compute per-match contribution for every drafted player who had events
+// Compute per-match contribution for every drafted player who had events.
+// Iterates over drafted players and uses naammatch() to handle API-naam ↔ draft-naam
+// verschillen (bijv. "Tomáš Souček" ↔ "T. Soucek", "Son Heung-min" ↔ "Son Heung-Min").
 function computeMatchContribs(w, lookup) {
   if (!w.events || w.events.length === 0) return [];
-  const bySpeler = {};
-  for (const ev of w.events) {
-    (bySpeler[ev.speler] = bySpeler[ev.speler] || []).push(ev);
-  }
 
   const results = [];
-  for (const [spelerNaam, evs] of Object.entries(bySpeler)) {
-    const info = lookup[spelerNaam];
-    if (!info) continue;
+  for (const [draftNaam, info] of Object.entries(lookup)) {
+    const evs = w.events.filter(e => naammatch(e.speler, draftNaam));
+    if (evs.length === 0) continue;
+
     const pos = info.positie;
     const lines = [];
     let subtotal = 0;
 
     const gespeeld45 = evs.some(e => e.type === "gespeeld45");
+    const ingevallen = evs.some(e => e.type === "ingevallen");
     const cleanSheet = evs.some(e => e.type === "cleanSheet45");
     const tegenCount = evs.filter(e => e.type === "tegendoelpunt").length;
 
@@ -931,21 +931,21 @@ function computeMatchContribs(w, lookup) {
       const p = POINTS.gespeeld45[pos] ?? 0;
       lines.push({ label: "Gespeeld", pts: p });
       subtotal += p;
-      if (w.poule) {
-        const isThuis = w.thuis === info.land;
-        const isUit = w.uit === info.land;
-        if (isThuis || isUit) {
-          const eigen = isThuis ? w.uitslag.thuis : w.uitslag.uit;
-          const tegen = isThuis ? w.uitslag.uit : w.uitslag.thuis;
-          if (eigen > tegen) {
-            const pp = POINTS.poulewinst[pos] ?? 0;
-            lines.push({ label: "Winst", pts: pp });
-            subtotal += pp;
-          } else if (eigen === tegen) {
-            const pp = POINTS.gelijkspel[pos] ?? 0;
-            lines.push({ label: "Gelijk", pts: pp });
-            subtotal += pp;
-          }
+    }
+    if ((gespeeld45 || ingevallen) && w.uitslag && w.poule) {
+      const isThuis = w.thuis === info.land;
+      const isUit = w.uit === info.land;
+      if (isThuis || isUit) {
+        const eigen = isThuis ? w.uitslag.thuis : w.uitslag.uit;
+        const tegen = isThuis ? w.uitslag.uit : w.uitslag.thuis;
+        if (eigen > tegen) {
+          const pp = POINTS.poulewinst[pos] ?? 0;
+          lines.push({ label: ingevallen && !gespeeld45 ? "Winst (inv)" : "Winst", pts: pp });
+          subtotal += pp;
+        } else if (eigen === tegen) {
+          const pp = POINTS.gelijkspel[pos] ?? 0;
+          lines.push({ label: ingevallen && !gespeeld45 ? "Gelijk (inv)" : "Gelijk", pts: pp });
+          subtotal += pp;
         }
       }
     }
