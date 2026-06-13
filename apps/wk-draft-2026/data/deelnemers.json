@@ -207,6 +207,17 @@
         { "naam": "S. Arias", "land": "Colombia", "positie": "V" },
         { "naam": "D. Muñoz", "land": "Colombia", "positie": "V" },
         { "naam": "R. Rios", "land": "Colombia", "positie": "M" }
+      ],
+      "wissels": [
+        {
+          "uit": "S. Giménez",
+          "land_uit": "Mexico",
+          "positie_uit": "A",
+          "in": "J. Quiñones",
+          "land_in": "Mexico",
+          "positie_in": "M",
+          "vanaf": "2026-06-18"
+        }
       ]
     }
   ]

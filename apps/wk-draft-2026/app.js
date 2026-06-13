@@ -30,6 +30,63 @@ const FASEBONUS = {
 
 const AWARD_BONUS = 10;
 const INLEG_PER_DEELNEMER = 20;
+const GB_CACHE_KEY = 'wk26.glazenbol';
+// KO-wedstrijden per ronde: als een team de halve finale haalt, heeft het 4 KO-matches gespeeld
+const GB_KO_MATCHES = { '1/16': 1, '1/8': 2, '1/4': 3, '1/2': 4, 'F': 5, 'Winnaar': 5 };
+
+// ──────────────────────────────────────────────────────────────────
+// De Glazen Bol — teamsterkte op basis van pre-toernooi bettingmarkt
+// ──────────────────────────────────────────────────────────────────
+const TEAM_KRACHT = {
+  "Argentinië": 92, "Brazilië": 88, "Frankrijk": 87, "Engeland": 84,
+  "Spanje": 83, "Portugal": 79, "Duitsland": 77, "Nederland": 73,
+  "België": 70, "Uruguay": 70, "Colombia": 67, "Kroatië": 65,
+  "Marokko": 63, "Senegal": 62, "Japan": 60, "Zweden": 59,
+  "Noorwegen": 58, "Zwitserland": 56, "Turkije": 55, "Mexico": 54,
+  "Australië": 53, "Ivoorkust": 53, "Ecuador": 52, "Verenigde Staten": 52,
+  "Schotland": 51, "Zuid-Korea": 51, "Tsjechië": 50, "Oostenrijk": 51,
+  "Canada": 49, "Paraguay": 46, "Egypte": 47, "Tunesië": 45,
+  "Ghana": 44, "Algerije": 45, "Saudi-Arabië": 43, "Iran": 42,
+  "Bosnië en Herzegovina": 41, "Irak": 38, "Congo-Kinshasa": 38,
+  "Zuid-Afrika": 38, "Panama": 34, "Qatar": 35, "Haïti": 29,
+  "Curaçao": 29, "Oezbekistan": 32, "Nieuw-Zeeland": 29,
+  "Kaapverdië": 36, "Jordanië": 33
+};
+
+// Bracket definitie (WK 2026, officieel FIFA-schema)
+const GLAZENBOL_BRACKET = [
+  { id: 'm74',  round: '1/16', s1: 'E1',     s2: '3rd:0'  },
+  { id: 'm77',  round: '1/16', s1: 'I1',     s2: '3rd:1'  },
+  { id: 'm73',  round: '1/16', s1: 'A2',     s2: 'B2'     },
+  { id: 'm75',  round: '1/16', s1: 'F1',     s2: 'C2'     },
+  { id: 'm83',  round: '1/16', s1: 'K2',     s2: 'L2'     },
+  { id: 'm84',  round: '1/16', s1: 'H1',     s2: 'J2'     },
+  { id: 'm81',  round: '1/16', s1: 'D1',     s2: '3rd:2'  },
+  { id: 'm82',  round: '1/16', s1: 'G1',     s2: '3rd:3'  },
+  { id: 'm76',  round: '1/16', s1: 'C1',     s2: 'F2'     },
+  { id: 'm78',  round: '1/16', s1: 'E2',     s2: 'I2'     },
+  { id: 'm79',  round: '1/16', s1: 'A1',     s2: '3rd:4'  },
+  { id: 'm80',  round: '1/16', s1: 'L1',     s2: '3rd:5'  },
+  { id: 'm86',  round: '1/16', s1: 'J1',     s2: 'H2'     },
+  { id: 'm88',  round: '1/16', s1: 'D2',     s2: 'G2'     },
+  { id: 'm85',  round: '1/16', s1: 'B1',     s2: '3rd:6'  },
+  { id: 'm87',  round: '1/16', s1: 'K1',     s2: '3rd:7'  },
+  { id: 'm89',  round: '1/8',  s1: 'w:m74',  s2: 'w:m77'  },
+  { id: 'm90',  round: '1/8',  s1: 'w:m73',  s2: 'w:m75'  },
+  { id: 'm93',  round: '1/8',  s1: 'w:m83',  s2: 'w:m84'  },
+  { id: 'm94',  round: '1/8',  s1: 'w:m81',  s2: 'w:m82'  },
+  { id: 'm91',  round: '1/8',  s1: 'w:m76',  s2: 'w:m78'  },
+  { id: 'm92',  round: '1/8',  s1: 'w:m79',  s2: 'w:m80'  },
+  { id: 'm95',  round: '1/8',  s1: 'w:m86',  s2: 'w:m88'  },
+  { id: 'm96',  round: '1/8',  s1: 'w:m85',  s2: 'w:m87'  },
+  { id: 'm97',  round: '1/4',  s1: 'w:m89',  s2: 'w:m90'  },
+  { id: 'm98',  round: '1/4',  s1: 'w:m93',  s2: 'w:m94'  },
+  { id: 'm99',  round: '1/4',  s1: 'w:m91',  s2: 'w:m92'  },
+  { id: 'm100', round: '1/4',  s1: 'w:m95',  s2: 'w:m96'  },
+  { id: 'm101', round: '1/2',  s1: 'w:m97',  s2: 'w:m98'  },
+  { id: 'm102', round: '1/2',  s1: 'w:m99',  s2: 'w:m100' },
+  { id: 'm104', round: 'F',    s1: 'w:m101', s2: 'w:m102' },
+];
 
 const POS_LABEL = { K: "Keeper", V: "Verdediger", M: "Middenvelder", A: "Aanvaller" };
 
@@ -138,7 +195,8 @@ const state = {
   deelnemers: [],
   wedstrijden: [],
   fases: { landenPerFase: { "1/16": [], "1/8": [], "1/4": [], "1/2": [], "F": [], "Winnaar": [] } },
-  awards: { topscorer: null, besteSpeler: null }
+  awards: { topscorer: null, besteSpeler: null },
+  kansen: {}   // { [apiFixtureId]: { kans_thuis, kans_gelijk, kans_uit } }
 };
 
 // Stack voor modal-terug-navigatie: elk item = { type: "team"|"speler", ... }
@@ -216,7 +274,7 @@ async function loadFromSupabase() {
   try {
     const client = window.supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY);
 
-    const [wRes, eRes, sRes] = await Promise.all([
+    const [wRes, eRes, sRes, kRes] = await Promise.all([
       client.from("wk2026_wedstrijden").select("*"),
       client.from("wk2026_events").select("*"),
       (async () => {
@@ -225,7 +283,8 @@ async function loadFromSupabase() {
           client.from("wk2026_selecties").select("*").range(1000, 1999),
         ]);
         return { data: [...(p1.data||[]), ...(p2.data||[])], error: p1.error || p2.error };
-      })()
+      })(),
+      client.from("wk2026_kansen").select("*"),
     ]);
 
     if (!wRes.error && Array.isArray(wRes.data) && wRes.data.length) {
@@ -250,6 +309,17 @@ async function loadFromSupabase() {
         status: w.status,
         events: eventsByFix[w.api_fixture_id] || []
       }));
+    }
+
+    if (!kRes.error && Array.isArray(kRes.data)) {
+      state.kansen = {};
+      kRes.data.forEach(k => {
+        state.kansen[k.api_fixture_id] = {
+          kans_thuis:  k.kans_thuis,
+          kans_gelijk: k.kans_gelijk,
+          kans_uit:    k.kans_uit
+        };
+      });
     }
 
     if (!sRes.error && Array.isArray(sRes.data)) {
@@ -302,6 +372,10 @@ function switchTab(name) {
     p.classList.toggle("hidden", p.dataset.tabPanel !== name);
   });
   window.scrollTo({ top: 0, behavior: "smooth" });
+  if (name === 'glazenbol') {
+    const r = document.getElementById("glazenbolResult");
+    if (r && !r.querySelector('.glazenbol__list')) runGlazenBol(false);
+  }
 }
 
 // ──────────────────────────────────────────────────────────────────
@@ -341,13 +415,15 @@ function berekenSpelerPunten(spelerNaam, deelnemerSpelers) {
   return spelerPunten(speler);
 }
 
-function spelerPunten(speler) {
+function spelerPunten(speler, opts = {}) {
   const pos = speler.positie;
   let pts = 0;
 
   // Events per wedstrijd
   for (const w of state.wedstrijden) {
     if (w.status !== "verwerkt" || !Array.isArray(w.events)) continue;
+    if (opts.voor && w.datum >= opts.voor) continue;
+    if (opts.vanaf && w.datum < opts.vanaf) continue;
     const evs = w.events.filter(e => naammatch(e.speler, speler.naam));
     if (evs.length === 0) continue;
 
@@ -408,7 +484,15 @@ function spelerPunten(speler) {
 
 function deelnemerPunten(deelnemer) {
   if (!deelnemer.spelers) return 0;
-  return deelnemer.spelers.reduce((sum, sp) => sum + spelerPunten(sp), 0);
+  let total = deelnemer.spelers.reduce((sum, sp) => {
+    const wissel = (deelnemer.wissels || []).find(w => w.uit === sp.naam);
+    return sum + spelerPunten(sp, wissel ? { voor: wissel.vanaf } : {});
+  }, 0);
+  for (const wissel of (deelnemer.wissels || [])) {
+    const sp = { naam: wissel.in, land: wissel.land_in, positie: wissel.positie_in };
+    total += spelerPunten(sp, { vanaf: wissel.vanaf });
+  }
+  return total;
 }
 
 // Detailed breakdown: per-match contributions + fase + awards
@@ -534,10 +618,26 @@ function deelnemerStats(deelnemer) {
   if (!deelnemer.spelers) return { goals, assists, kaarten, actief };
 
   for (const sp of deelnemer.spelers) {
+    const wissel = (deelnemer.wissels || []).find(w => w.uit === sp.naam);
     let spelerActief = false;
     for (const w of state.wedstrijden) {
       if (w.status !== "verwerkt" || !Array.isArray(w.events)) continue;
-      const evs = w.events.filter(e => e.speler === sp.naam);
+      if (wissel && w.datum >= wissel.vanaf) continue;
+      const evs = w.events.filter(e => naammatch(e.speler, sp.naam));
+      if (evs.length > 0) spelerActief = true;
+      goals   += evs.filter(e => e.type === "velddoelpunt" || e.type === "strafschop").length;
+      assists += evs.filter(e => e.type === "assist").length;
+      kaarten += evs.filter(e => e.type === "geleKaart" || e.type === "directeRood").length;
+    }
+    if (spelerActief) actief += 1;
+  }
+  for (const wissel of (deelnemer.wissels || [])) {
+    const sp = { naam: wissel.in, land: wissel.land_in, positie: wissel.positie_in };
+    let spelerActief = false;
+    for (const w of state.wedstrijden) {
+      if (w.status !== "verwerkt" || !Array.isArray(w.events)) continue;
+      if (w.datum < wissel.vanaf) continue;
+      const evs = w.events.filter(e => naammatch(e.speler, sp.naam));
       if (evs.length > 0) spelerActief = true;
       goals   += evs.filter(e => e.type === "velddoelpunt" || e.type === "strafschop").length;
       assists += evs.filter(e => e.type === "assist").length;
@@ -555,7 +655,100 @@ function renderAll() {
   renderOverzicht();
   renderTeams();
   renderWedstrijden();
+  renderGlazenBol();
   renderFooter();
+  if (typeof twemoji !== "undefined") twemoji.parse(document.body, { folder: "svg", ext: ".svg" });
+}
+
+// ──────────────────────────────────────────────────────────────────
+// De Glazen Bol — UI
+// ──────────────────────────────────────────────────────────────────
+function renderGlazenBol() {
+  const container = document.getElementById("glazenbolBlock");
+  if (!container) return;
+
+  if (!state.deelnemers.length) {
+    container.innerHTML = '<p class="overzicht__sub italic">Geen deelnemers gevonden.</p>';
+    return;
+  }
+
+  container.innerHTML = `
+    <div class="glazenbol__intro">
+      <p class="glazenbol__tekst">Simuleert het resterende toernooi 1.000× met actuele marktodds (Pinnacle/Bet365, dagelijks 05:30). Houdt rekening met het volledige knockout-bracket — als twee sterke landen tegenover elkaar komen, schakelen ze elkaar uit.</p>
+      <button class="btn glazenbol__btn" id="glazenbolBtn">🔮 Herbereken</button>
+    </div>
+    <div id="glazenbolResult"></div>
+    <p class="glazenbol__disclaimer">1.000 simulaties · actuele marktodds per wedstrijd · knockout-bracket met wederzijdse uitschakeling</p>
+  `;
+
+  document.getElementById("glazenbolBtn").addEventListener("click", () => runGlazenBol(true));
+
+  // Toon gecachede stand van vandaag direct zonder herberekening
+  const today = new Date().toISOString().slice(0, 10);
+  try {
+    const cached = JSON.parse(localStorage.getItem(GB_CACHE_KEY) || 'null');
+    if (cached?.datum === today && Array.isArray(cached.kansen)) {
+      renderGlazenBolResult(cached.kansen);
+      return;
+    }
+  } catch {}
+  // Geen cache: auto-run zodra de tab geopend wordt (via switchTab)
+}
+
+function runGlazenBol(forceFresh = false) {
+  const btn    = document.getElementById("glazenbolBtn");
+  const result = document.getElementById("glazenbolResult");
+  if (!result) return;
+
+  if (btn) { btn.disabled = true; btn.textContent = "Simuleren..."; }
+  if (forceFresh) result.innerHTML = '<p class="glazenbol__loading" style="color:var(--ink-mute);padding:12px 0">Berekenen…</p>';
+
+  setTimeout(() => {
+    const kansen = berekenGlazenBol(1000);
+
+    // Sla op in localStorage voor de rest van de dag
+    const today = new Date().toISOString().slice(0, 10);
+    try { localStorage.setItem(GB_CACHE_KEY, JSON.stringify({ datum: today, kansen })); } catch {}
+
+    renderGlazenBolResult(kansen);
+    if (btn) { btn.disabled = false; btn.textContent = "🔮 Herbereken"; }
+  }, 10);
+}
+
+function renderGlazenBolResult(kansen) {
+  const result = document.getElementById("glazenbolResult");
+  if (!result) return;
+  const maxKans = Math.max(...kansen.map(k => k.kans));
+
+  result.innerHTML = `<div class="glazenbol__list">${kansen.map((k, i) => {
+    const breedte = maxKans > 0 ? (k.kans / maxKans * 100) : 0;
+    let label = '';
+    if (i === 0 && k.kans > 0)      label = '<span class="glazenbol__badge glazenbol__badge--goud">🏆 Topfavoriet</span>';
+    else if (k.kans === 0)           label = '<span class="glazenbol__badge glazenbol__badge--grijs">Kansloos</span>';
+    else if (k.kans < 3)             label = '<span class="glazenbol__badge glazenbol__badge--paars">🐴 Dark horse</span>';
+
+    const hue = Math.round(40 * (k.kans / (maxKans || 1)));
+    const balkKleur = k.kans === 0
+      ? 'var(--paper-deep)'
+      : `hsl(${35 + hue}, ${40 + hue}%, ${30 + Math.round(10 * (1 - k.kans / (maxKans || 1)))}%)`;
+
+    const comp = gbTeamComp(k.naam);
+
+    return `<div class="glazenbol__item">
+      <div class="glazenbol__rij-top">
+        <span class="glazenbol__rank">${i + 1}</span>
+        <span class="glazenbol__naam">${escapeHtml(k.naam)}</span>
+        <span class="glazenbol__score mono">${k.huidigePunten} pt nu</span>
+        <span class="glazenbol__gem mono" title="Gemiddeld verwachte eindstand over 1.000 simulaties">~${k.gemPunten} pt</span>
+        <span class="glazenbol__kans">${k.kans}%</span>
+      </div>
+      <div class="glazenbol__bar-wrap">
+        <div class="glazenbol__bar" style="width:${breedte.toFixed(1)}%;background:${balkKleur}"></div>
+      </div>
+      <div class="glazenbol__comp">${comp}</div>
+      ${label ? `<div class="glazenbol__label-wrap">${label}</div>` : ''}
+    </div>`;
+  }).join('')}</div>`;
 }
 
 // ──────────────────────────────────────────────────────────────────
@@ -1022,19 +1215,43 @@ function renderTeams() {
   grid.innerHTML = ranked.map((d, i) => {
     const rank = i + 1;
     const posOrder = { K: 0, V: 1, M: 2, A: 3 };
-    const ordered = [...(d.spelers || [])].sort((a, b) =>
+
+    // Build combined player list: regular spelers + incoming wissels spelers
+    const wisselUitNamen = new Set((d.wissels || []).map(w => w.uit));
+    const inkomendSpelers = (d.wissels || []).map(w => ({
+      naam: w.in, land: w.land_in, positie: w.positie_in, _wisselVanaf: w.vanaf
+    }));
+    const alleSpelers = [
+      ...(d.spelers || []).map(sp => ({
+        ...sp,
+        _wisselVoor: wisselUitNamen.has(sp.naam)
+          ? (d.wissels || []).find(w => w.uit === sp.naam).vanaf
+          : null
+      })),
+      ...inkomendSpelers
+    ].sort((a, b) =>
       a.land.localeCompare(b.land, "nl") || (posOrder[a.positie] ?? 9) - (posOrder[b.positie] ?? 9)
     );
 
-    const playerRows = ordered.map(sp => {
+    const playerRows = alleSpelers.map(sp => {
       const vlag = findVlag(sp.land);
-      const spPts = spelerPunten(sp);
+      const code = findCode(sp.land);
+      const opts = sp._wisselVoor ? { voor: sp._wisselVoor } : sp._wisselVanaf ? { vanaf: sp._wisselVanaf } : {};
+      const spPts = spelerPunten(sp, opts);
       const ptsStr = spPts === 0 ? "0" : (spPts > 0 ? `+${spPts}` : `${spPts}`);
+      const isUit = !!sp._wisselVoor;
+      const isIn  = !!sp._wisselVanaf;
+      const wisselBadge = isUit
+        ? `<span class="player-line__wissel-badge player-line__wissel-badge--uit">↓ uit</span>`
+        : isIn
+        ? `<span class="player-line__wissel-badge player-line__wissel-badge--in">↑ in</span>`
+        : '';
       return `
-        <li class="player-line" data-speler="${escapeHtml(sp.naam)}" data-land="${escapeHtml(sp.land)}" tabindex="0" role="button">
+        <li class="player-line${isUit ? ' player-line--wissel-uit' : isIn ? ' player-line--wissel-in' : ''}" data-speler="${escapeHtml(sp.naam)}" data-land="${escapeHtml(sp.land)}" tabindex="0" role="button">
           <span class="player-line__flag">${vlag}</span>
           <span class="player-line__pos player-line__pos--${sp.positie}" title="${escapeHtml(POS_LABEL[sp.positie] || sp.positie)}">${sp.positie}</span>
-          <span class="player-line__name">${escapeHtml(sp.naam)}</span>
+          <span class="player-line__name">${escapeHtml(sp.naam)}${wisselBadge}</span>
+          <span class="player-line__meta">${code}</span>
           <span class="player-line__pts ${spPts < 0 ? 'is-neg' : ''}">${ptsStr}</span>
           <span class="player-line__chev" aria-hidden="true">→</span>
         </li>
@@ -1085,7 +1302,11 @@ function renderWedstrijden(listId = "wedstrijdenList", emptyId = "wedstrijdenEmp
   const lookup = {};
   for (const d of state.deelnemers) {
     for (const sp of d.spelers) {
-      lookup[sp.naam] = { ...sp, deelnemer: d.naam };
+      const wissel = (d.wissels || []).find(w => w.uit === sp.naam);
+      lookup[sp.naam] = { ...sp, deelnemer: d.naam, ...(wissel ? { wisselVoor: wissel.vanaf } : {}) };
+    }
+    for (const wissel of (d.wissels || [])) {
+      lookup[wissel.in] = { naam: wissel.in, land: wissel.land_in, positie: wissel.positie_in, deelnemer: d.naam, wisselVanaf: wissel.vanaf };
     }
   }
 
@@ -1154,6 +1375,8 @@ function computeMatchContribs(w, lookup) {
 
   const results = [];
   for (const [draftNaam, info] of Object.entries(lookup)) {
+    if (info.wisselVoor && w.datum >= info.wisselVoor) continue;
+    if (info.wisselVanaf && w.datum < info.wisselVanaf) continue;
     const evs = w.events.filter(e => naammatch(e.speler, draftNaam));
     if (evs.length === 0) continue;
 
@@ -1496,6 +1719,334 @@ function loadSampleDeelnemers() {
 }
 
 // ──────────────────────────────────────────────────────────────────
+// De Glazen Bol — Monte Carlo simulatie
+// ──────────────────────────────────────────────────────────────────
+
+// Simuleer één wedstrijd. Als odds beschikbaar zijn (van bettingmarkt) → gebruik die.
+// Fallback: relatieve TEAM_KRACHT (pre-toernooi bettingmarkt).
+function gbSimMatch(team1, team2, allowDraw, odds = null) {
+  const r = Math.random();
+  if (odds) {
+    if (!allowDraw) {
+      const tot = odds.kans_thuis + odds.kans_uit;
+      return r < odds.kans_thuis / tot ? team1 : team2;
+    }
+    if (r < odds.kans_thuis) return team1;
+    if (r < odds.kans_thuis + odds.kans_gelijk) return 'draw';
+    return team2;
+  }
+  // Fallback: TEAM_KRACHT
+  const k1 = TEAM_KRACHT[team1] || 50;
+  const k2 = TEAM_KRACHT[team2] || 50;
+  const rv = Math.random() * (k1 + k2);
+  if (!allowDraw) return rv < k1 ? team1 : team2;
+  if (rv < 0.75 * k1) return team1;
+  if (rv < 0.75 * k1 + 0.25 * (k1 + k2)) return 'draw';
+  return team2;
+}
+
+// Huidige groepsstanden op basis van gespeelde wedstrijden
+function gbGroepStanden() {
+  const standen = {};
+  state.landen.forEach(l => {
+    if (!standen[l.groep]) standen[l.groep] = {};
+    standen[l.groep][l.naam] = { pts: 0, gd: 0, gs: 0 };
+  });
+  state.wedstrijden.filter(w => w.uitslag && w.poule).forEach(w => {
+    const g = standen[w.poule];
+    if (!g) return;
+    const th = w.uitslag.thuis, tu = w.uitslag.uit;
+    if (g[w.thuis]) { g[w.thuis].gs += th; g[w.thuis].gd += th - tu; }
+    if (g[w.uit])   { g[w.uit].gs   += tu; g[w.uit].gd   += tu - th; }
+    if      (th > tu) { if (g[w.thuis]) g[w.thuis].pts += 3; }
+    else if (th < tu) { if (g[w.uit])   g[w.uit].pts   += 3; }
+    else              { if (g[w.thuis]) g[w.thuis].pts += 1; if (g[w.uit]) g[w.uit].pts += 1; }
+  });
+  return standen;
+}
+
+// Simuleer resterende groepswedstrijden — gebruik marktodds als beschikbaar
+function gbSimRestGroepsfase(basisStanden) {
+  const standen = JSON.parse(JSON.stringify(basisStanden));
+  state.wedstrijden.filter(w => !w.uitslag && w.poule && w.thuis && w.uit).forEach(w => {
+    const g = standen[w.poule];
+    if (!g || !g[w.thuis] || !g[w.uit]) return;
+    const odds = w.apiFixtureId ? (state.kansen[w.apiFixtureId] || null) : null;
+    const res = gbSimMatch(w.thuis, w.uit, true, odds);
+    if      (res === w.thuis) { g[w.thuis].pts += 3; g[w.thuis].gd += 1; g[w.uit].gd   -= 1; }
+    else if (res === 'draw')  { g[w.thuis].pts += 1; g[w.uit].pts  += 1; }
+    else                      { g[w.uit].pts   += 3; g[w.uit].gd   += 1; g[w.thuis].gd -= 1; }
+  });
+  return standen;
+}
+
+// Sorteer een groep op punten → doelsaldo → goals
+function gbSortGroep(groepData) {
+  return Object.entries(groepData)
+    .sort(([, a], [, b]) => b.pts - a.pts || b.gd - a.gd || b.gs - a.gs)
+    .map(([naam]) => naam);
+}
+
+// Bepaal bracket-slots na groepsfase (A1, A2, 3rd:0..7)
+function gbBepaalSlots(standen) {
+  const slots = {};
+  const thirds = [];
+  for (const [groep, data] of Object.entries(standen)) {
+    const sorted = gbSortGroep(data);
+    slots[groep + '1'] = sorted[0];
+    slots[groep + '2'] = sorted[1];
+    const t = data[sorted[2]];
+    thirds.push({ naam: sorted[2], pts: t?.pts || 0, gd: t?.gd || 0, gs: t?.gs || 0 });
+  }
+  // Beste 8 derden
+  thirds.sort((a, b) => b.pts - a.pts || b.gd - a.gd || b.gs - a.gs);
+  thirds.slice(0, 8).forEach((t, i) => { slots['3rd:' + i] = t.naam; });
+  return slots;
+}
+
+// Simuleer knockout-rondes; geeft terug hoe ver elk land komt
+function gbSimKnockout(slots) {
+  const faseGehaald = {};
+  const winners = {};
+  const nextFase = { '1/16': '1/8', '1/8': '1/4', '1/4': '1/2', '1/2': 'F', 'F': 'Winnaar' };
+
+  Object.values(slots).forEach(naam => { if (naam) faseGehaald[naam] = '1/16'; });
+
+  for (const match of GLAZENBOL_BRACKET) {
+    const resolve = s => s.startsWith('w:') ? winners[s.slice(2)] : slots[s];
+    const team1 = resolve(match.s1);
+    const team2 = resolve(match.s2);
+    if (!team1 || !team2) continue;
+    const winner = gbSimMatch(team1, team2, false);
+    winners[match.id] = winner;
+    const next = nextFase[match.round];
+    if (next) faseGehaald[winner] = next;
+  }
+  return faseGehaald;
+}
+
+// Speelkans van een speler op basis van gespeelde WK-wedstrijden.
+// Fallback: keeper #1 = vrijwel zekere basisspeler; veldspelers: team-kracht-afhankelijk.
+function gbSpeelkans(speler) {
+  // 1. Historische match-data (meest accuraat zodra wedstrijden gespeeld zijn)
+  const gespeeld = state.wedstrijden.filter(w =>
+    w.uitslag && (w.thuis === speler.land || w.uit === speler.land)
+  );
+  if (gespeeld.length) {
+    const norm = normNaam(speler.naam);
+    const g45 = gespeeld.filter(w =>
+      w.events?.some(e => e.type === 'gespeeld45' && normNaam(e.speler) === norm)
+    ).length;
+    return g45 / gespeeld.length;
+  }
+
+  // 2. Selectie-shirtnummer als proxy (shirt #1 = basiskeeper, hoge nummers = bankzitter)
+  const land = state.landen.find(l => l.naam === speler.land);
+  const sel = (land?.selectie || []).find(s => normNaam(s.naam) === normNaam(speler.naam));
+  if (sel?.nummer != null) {
+    if (speler.positie === 'K') {
+      return sel.nummer === 1 ? 0.90 : 0.08;
+    }
+    // Veldspeler: shirtnummer 2-11 = waarschijnlijk basisspeler (klassieke WK-nummering)
+    if (sel.nummer <= 11) return 0.82;
+    if (sel.nummer <= 18) return 0.62;
+    return 0.42;
+  }
+
+  // 3. Teamsterkte-gebaseerd: topteams (kracht ≥ 80) roteren minder in cruciale wedstrijden
+  const k = TEAM_KRACHT[speler.land] || 50;
+  if (k >= 80) return 0.75;
+  if (k >= 65) return 0.70;
+  return 0.62;
+}
+
+// Gemiddelde event-punten per wedstrijd dat de speler speelde.
+// Fallback: basispunten per positie + verwachte resultaatpunten op basis van teamsterkte.
+// Argentijnse middenvelder (~75% winrate) verwacht structureel meer poulewinst-punten
+// dan een Belgische middenvelder (~47% winrate), zelfs als we geen matchdata hebben.
+function gbGemEventPts(speler) {
+  const norm = normNaam(speler.naam);
+  const pos  = speler.positie;
+  const gespeeldeMatches = state.wedstrijden.filter(w =>
+    w.uitslag &&
+    (w.thuis === speler.land || w.uit === speler.land) &&
+    w.events?.some(e => e.type === 'gespeeld45' && normNaam(e.speler) === norm)
+  );
+  if (!gespeeldeMatches.length) {
+    const k = TEAM_KRACHT[speler.land] || 50;
+    // Puur event-bijdrage (goals, assists, cards) — positie-afhankelijk
+    const baseEvt = { K: 1.5, V: 1.8, M: 2.0, A: 2.5 }[pos] || 2.0;
+    // Verwachte resultaatpunten: teamsterkte → geschatte winrate → poulewinst + gelijkspel
+    const winRate  = Math.min(0.78, Math.max(0.15, (k - 28) / 88));
+    const drawRate = 0.22;
+    const resultPts = winRate * (POINTS.poulewinst[pos] || 3)
+                    + drawRate * (POINTS.gelijkspel[pos] || 1);
+    return baseEvt + resultPts;
+  }
+  const totaal = gespeeldeMatches.reduce((sum, w) => {
+    let pts = 0;
+    (w.events || []).filter(e => normNaam(e.speler) === norm).forEach(e => {
+      if (POINTS[e.type]) pts += POINTS[e.type][pos] || 0;
+    });
+    const thuis = w.thuis === speler.land;
+    const won  = thuis ? w.uitslag.thuis > w.uitslag.uit : w.uitslag.uit > w.uitslag.thuis;
+    const draw = w.uitslag.thuis === w.uitslag.uit;
+    if (won)  pts += POINTS.poulewinst[pos]  || 0;
+    if (draw) pts += POINTS.gelijkspel[pos]  || 0;
+    return sum + pts;
+  }, 0);
+  return totaal / gespeeldeMatches.length;
+}
+
+// Simuleer awards als ze nog niet zijn vastgesteld
+function gbSimAward() {
+  const spelers = state.deelnemers.flatMap(d => d.spelers);
+  function pick(weightFn) {
+    const ws = spelers.map(weightFn);
+    const tot = ws.reduce((a, b) => a + b, 0);
+    let r = Math.random() * tot;
+    for (let i = 0; i < spelers.length; i++) { r -= ws[i]; if (r <= 0) return spelers[i]; }
+    return spelers[spelers.length - 1];
+  }
+  const goalCount = {};
+  spelers.forEach(sp => {
+    const n = normNaam(sp.naam);
+    goalCount[n] = state.wedstrijden.reduce((cnt, w) =>
+      cnt + (w.events?.filter(e => e.type === 'velddoelpunt' && normNaam(e.speler) === n).length || 0), 0);
+  });
+  return {
+    topscorer:   state.awards.topscorer   || pick(sp => (goalCount[normNaam(sp.naam)] || 0) + 1),
+    besteSpeler: state.awards.besteSpeler || pick(sp => Math.max(1, spelerPunten(sp)))
+  };
+}
+
+// Bereken gesimuleerde totaalpunten per deelnemer
+function gbPuntenDeelnemer(deelnemer, faseGehaald, simAward) {
+  const faseVolgorde = ['1/16', '1/8', '1/4', '1/2', 'F', 'Winnaar'];
+  return deelnemer.spelers.reduce((total, speler) => {
+    // 1. Huidige punten (inclusief al verdiende bonussen)
+    let pts = spelerPunten(speler);
+
+    const speelkans = gbSpeelkans(speler);
+    const gemEvt    = gbGemEventPts(speler);
+
+    // 2a. Verwachte event-punten voor resterende groepswedstrijden
+    const resterend = state.wedstrijden.filter(w =>
+      !w.uitslag && (w.thuis === speler.land || w.uit === speler.land)
+    ).length;
+    // Rotatiekorting: bij sterke teams (kracht ≥ 65) hun laatste groepsmatch
+    let effectiefKans = speelkans;
+    const isLaatsteGroep = resterend === 1 &&
+      state.wedstrijden.some(w => !w.uitslag && w.poule &&
+        (w.thuis === speler.land || w.uit === speler.land));
+    if (isLaatsteGroep && speelkans > 0.60 && (TEAM_KRACHT[speler.land] || 0) >= 65) {
+      effectiefKans = Math.max(0.40, speelkans - 0.15);
+    }
+    pts += effectiefKans * gemEvt * resterend;
+
+    // 2b. Verwachte event-punten voor knockout-wedstrijden
+    // Elk team speelt 1 wedstrijd per KO-ronde. faseGehaald bepaalt hoeveel rondes.
+    // Al verwerkte KO-rondes zijn al meegenomen in spelerPunten() — die tellen we NIET opnieuw.
+    const gesimFase = faseGehaald[speler.land];
+    if (gesimFase) {
+      let vastKO = 0;
+      let vastIdx = -1;
+      for (const [fase, teams] of Object.entries(state.fases.landenPerFase)) {
+        if (teams.includes(speler.land)) {
+          vastKO = Math.max(vastKO, GB_KO_MATCHES[fase] || 0);
+          const idx = faseVolgorde.indexOf(fase);
+          if (idx > vastIdx) vastIdx = idx;
+        }
+      }
+      const restKO = Math.max(0, (GB_KO_MATCHES[gesimFase] || 0) - vastKO);
+      pts += speelkans * gemEvt * restKO;
+
+      // 3. Toekomstige fase-bonussen (boven al verdiend niveau)
+      const gesimIdx = faseVolgorde.indexOf(gesimFase);
+      for (let i = Math.max(0, vastIdx + 1); i <= gesimIdx; i++) {
+        pts += FASEBONUS[faseVolgorde[i]] || 0;
+      }
+    }
+
+    // 4. Award-bonus (alleen als nog niet vastgesteld)
+    const normSp = normNaam(speler.naam);
+    if (!state.awards.topscorer &&
+        simAward.topscorer?.land === speler.land &&
+        normNaam(simAward.topscorer.naam) === normSp) {
+      pts += AWARD_BONUS;
+    }
+    if (!state.awards.besteSpeler &&
+        simAward.besteSpeler?.land === speler.land &&
+        normNaam(simAward.besteSpeler.naam) === normSp) {
+      pts += AWARD_BONUS;
+    }
+
+    return total + pts;
+  }, 0);
+}
+
+// Hoofd-functie: berekenGlazenBol(nSims) → gesorteerde kansen per deelnemer
+function berekenGlazenBol(nSims = 1000) {
+  const winTeller = {};
+  const totaalPts = {};
+  state.deelnemers.forEach(d => { winTeller[d.naam] = 0; totaalPts[d.naam] = 0; });
+
+  const basisStanden = gbGroepStanden();
+  const faseVolgorde = ['1/16', '1/8', '1/4', '1/2', 'F', 'Winnaar'];
+
+  for (let i = 0; i < nSims; i++) {
+    const standen     = gbSimRestGroepsfase(basisStanden);
+    const slots       = gbBepaalSlots(standen);
+    const faseGehaald = gbSimKnockout(slots);
+
+    // Zeker vastgestelde fases overschrijven de simulatie (al bevestigd)
+    for (const [fase, teams] of Object.entries(state.fases.landenPerFase)) {
+      teams.forEach(naam => {
+        const huidig = faseGehaald[naam];
+        if (!huidig || faseVolgorde.indexOf(fase) > faseVolgorde.indexOf(huidig)) {
+          faseGehaald[naam] = fase;
+        }
+      });
+    }
+
+    const simAward = gbSimAward();
+    const scores   = state.deelnemers.map(d => ({
+      naam:   d.naam,
+      punten: gbPuntenDeelnemer(d, faseGehaald, simAward)
+    }));
+    scores.forEach(s => { totaalPts[s.naam] += s.punten; });
+    const max    = Math.max(...scores.map(s => s.punten));
+    const gewin  = scores.filter(s => s.punten === max);
+    gewin.forEach(w => { winTeller[w.naam] += 1 / gewin.length; });
+  }
+
+  return state.deelnemers.map(d => ({
+    naam:          d.naam,
+    huidigePunten: deelnemerPunten(d),
+    gemPunten:     Math.round(totaalPts[d.naam] / nSims),
+    kans:          +(winTeller[d.naam] / nSims * 100).toFixed(1)
+  })).sort((a, b) => b.kans - a.kans);
+}
+
+// Teamsamenstelling per deelnemer: gesorteerd op kracht, voor toelichting
+function gbTeamComp(deelnemerNaam) {
+  const d = state.deelnemers.find(x => x.naam === deelnemerNaam);
+  if (!d) return '';
+  const byLand = {};
+  for (const sp of d.spelers) {
+    byLand[sp.land] = (byLand[sp.land] || 0) + 1;
+  }
+  return Object.entries(byLand)
+    .sort(([la], [lb]) => (TEAM_KRACHT[lb] || 50) - (TEAM_KRACHT[la] || 50))
+    .map(([land, n]) => {
+      const k = TEAM_KRACHT[land] || 50;
+      const vlag = findVlag(land);
+      const kleur = k >= 80 ? '#b49222' : k >= 65 ? '#888' : '#555';
+      return `<span class="gb-land" title="${land} (kracht ${k})">${vlag}&nbsp;<span style="color:${kleur};font-size:0.7rem;font-weight:600">${k}</span>&thinsp;<span style="opacity:.7">×${n}</span></span>`;
+    }).join('<span style="opacity:.3;padding:0 3px">·</span>');
+}
+
+// ──────────────────────────────────────────────────────────────────
 // Footer
 // ──────────────────────────────────────────────────────────────────
 function renderFooter() {
@@ -1512,6 +2063,12 @@ function findVlag(landNaam) {
   const l = state.landen.find(x => x.naam === landNaam);
   return l ? l.vlag : "🏳️";
 }
+
+function findCode(landNaam) {
+  const l = state.landen.find(x => x.naam === landNaam);
+  return l ? l.code : landNaam.slice(0, 3).toUpperCase();
+}
+
 
 function groupBy(arr, fn) {
   return arr.reduce((acc, x) => {
