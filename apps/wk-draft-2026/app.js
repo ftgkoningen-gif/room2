@@ -1652,6 +1652,11 @@ function findSpelerInTeams(naam, land) {
         return { ...sp, _deelnemer: d.naam };
       }
     }
+    for (const w of (d.wissels || [])) {
+      if (w.in === naam && (!land || w.land_in === land)) {
+        return { naam: w.in, land: w.land_in, positie: w.positie_in, _deelnemer: d.naam };
+      }
+    }
   }
   return null;
 }
