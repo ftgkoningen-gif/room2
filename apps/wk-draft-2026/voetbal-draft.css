@@ -1193,7 +1193,6 @@ code {
 /* Wissel-stijlen */
 .player-line--wissel-uit {
   opacity: 0.45;
-  pointer-events: none;
 }
 .player-line--wissel-uit .player-line__name {
   text-decoration: line-through;
