@@ -214,6 +214,11 @@ const DATA_VERSION = "wk2026.1";
 
 const WK_START = new Date("2026-06-11T18:00:00Z");
 
+// Wisselwindows (zie reglement):
+// Window 1: vrij te gebruiken tot vlak vóór de knockoutfase — iedereen 1×
+// Window 2: alleen de onderste helft van het klassement ná de groepsfase — 1×
+const KNOCKOUT_START = "2026-06-27"; // exclusief — groepsfase eindigt ~26 juni
+
 // ──────────────────────────────────────────────────────────────────
 // Init
 // ──────────────────────────────────────────────────────────────────
@@ -222,6 +227,7 @@ document.addEventListener("DOMContentLoaded", init);
 async function init() {
   await loadAllData();
   renderAll();
+  valideerWissels();
   wireNav();
   wireEvents();
 
@@ -1645,6 +1651,84 @@ function openTeamModal(naam) {
   document.body.style.overflow = "hidden";
 }
 
+// ──────────────────────────────────────────────────────────────────
+// Wissel-validatie
+// Controleert of alle wissels in deelnemers.json voldoen aan het reglement.
+// Resultaat wordt gelogd in de console + getoond als toast bij overtredingen.
+// ──────────────────────────────────────────────────────────────────
+function valideerWissels() {
+  const overtredingen = [];
+
+  // Ranglijst NA de groepsfase: tel alleen punten van wedstrijden vóór de knockout.
+  // Dit is de maatstaf voor wie window 2 mag gebruiken.
+  const gesorteerd = [...state.deelnemers]
+    .map(d => {
+      const ptsGroepsfase = (d.spelers || []).reduce((sum, sp) => {
+        const wissel = (d.wissels || []).find(w => w.uit === sp.naam);
+        return sum + spelerPunten(sp, { voor: KNOCKOUT_START, ...(wissel ? { voor: wissel.vanaf < KNOCKOUT_START ? wissel.vanaf : KNOCKOUT_START } : {}) });
+      }, 0) + (d.wissels || []).reduce((sum, w) => {
+        const sp = { naam: w.in, land: w.land_in, positie: w.positie_in };
+        return sum + spelerPunten(sp, { vanaf: w.vanaf, voor: KNOCKOUT_START });
+      }, 0);
+      return { naam: d.naam, pts: ptsGroepsfase };
+    })
+    .sort((a, b) => b.pts - a.pts);
+  const totaal = gesorteerd.length;
+  // Onderste helft = posities vanaf Math.ceil(totaal/2) + 1
+  const onderstHelft = new Set(
+    gesorteerd.slice(Math.ceil(totaal / 2)).map(d => d.naam)
+  );
+
+  for (const d of state.deelnemers) {
+    const wissels = d.wissels || [];
+    const gebruiktW1 = wissels.filter(w => w.window === 1);
+    const gebruiktW2 = wissels.filter(w => w.window === 2);
+
+    for (const w of wissels) {
+      const prefix = `[Wissel] ${d.naam}: ${w.uit} → ${w.in}`;
+
+      // Ontbrekend window-veld
+      if (!w.window) {
+        overtredingen.push(`${prefix} — ontbreekt 'window' veld (1 of 2)`);
+        continue;
+      }
+
+      // Window 1: wissel moet ingaan vóór start knockoutfase
+      if (w.window === 1 && w.vanaf >= KNOCKOUT_START) {
+        overtredingen.push(`${prefix} — window 1 maar datum ${w.vanaf} valt ná de groepsfase (knockoutfase start ${KNOCKOUT_START})`);
+      }
+
+      // Window 2: wissel moet ingaan ná start knockoutfase
+      if (w.window === 2 && w.vanaf < KNOCKOUT_START) {
+        overtredingen.push(`${prefix} — window 2 maar datum ${w.vanaf} valt nog in de groepsfase (knockoutfase start ${KNOCKOUT_START})`);
+      }
+
+      // Window 2: alleen toegestaan voor onderste helft na groepsfase
+      if (w.window === 2 && !onderstHelft.has(d.naam)) {
+        const positie = gesorteerd.findIndex(x => x.naam === d.naam) + 1;
+        overtredingen.push(`${prefix} — window 2 niet toegestaan: ${d.naam} staat ${positie}e na de groepsfase (alleen onderste helft mag window 2 gebruiken)`);
+      }
+    }
+
+    // Max 1× per window
+    if (gebruiktW1.length > 1) {
+      overtredingen.push(`[Wissel] ${d.naam} — heeft ${gebruiktW1.length}× window 1 gebruikt (max 1×)`);
+    }
+    if (gebruiktW2.length > 1) {
+      overtredingen.push(`[Wissel] ${d.naam} — heeft ${gebruiktW2.length}× window 2 gebruikt (max 1×)`);
+    }
+  }
+
+  if (overtredingen.length === 0) {
+    console.log("[Wissels] ✓ Alle wissels zijn geldig volgens het reglement.");
+  } else {
+    overtredingen.forEach(o => console.warn(o));
+    toast(`⚠ ${overtredingen.length} wissel-overtreding(en) — zie console`, 6000);
+  }
+
+  return overtredingen;
+}
+
 function findSpelerInTeams(naam, land) {
   for (const d of state.deelnemers) {
     for (const sp of (d.spelers || [])) {
@@ -2098,11 +2182,11 @@ function escapeHtml(s) {
   }[c]));
 }
 
-function toast(msg) {
+function toast(msg, duur = 2200) {
   const el = document.getElementById("toast");
   if (!el) return;
   el.textContent = msg;
   el.classList.add("is-visible");
   clearTimeout(toast._t);
-  toast._t = setTimeout(() => el.classList.remove("is-visible"), 2200);
+  toast._t = setTimeout(() => el.classList.remove("is-visible"), duur);
 }
