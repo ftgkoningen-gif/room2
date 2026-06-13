@@ -502,7 +502,9 @@ function deelnemerPunten(deelnemer) {
 }
 
 // Detailed breakdown: per-match contributions + fase + awards
-function spelerBreakdown(speler) {
+// opts.voor / opts.vanaf: zelfde datumfilter als spelerPunten — matches buiten het
+// venster krijgen teltMee:false en worden doorstreept in de modal.
+function spelerBreakdown(speler, opts = {}) {
   const pos = speler.positie;
   const perMatch = [];
 
@@ -510,6 +512,7 @@ function spelerBreakdown(speler) {
     if (w.status !== "verwerkt" || !Array.isArray(w.events)) continue;
     const evs = w.events.filter(e => naammatch(e.speler, speler.naam));
     if (evs.length === 0) continue;
+    const teltMee = !(opts.voor && w.datum >= opts.voor) && !(opts.vanaf && w.datum < opts.vanaf);
 
     const lines = [];
     let subtotal = 0;
@@ -575,7 +578,7 @@ function spelerBreakdown(speler) {
     }
 
     if (lines.length > 0) {
-      perMatch.push({ wedstrijd: w, lines, subtotal });
+      perMatch.push({ wedstrijd: w, lines, subtotal, teltMee });
     }
   }
 
@@ -601,7 +604,7 @@ function spelerBreakdown(speler) {
   }
 
   const total =
-    perMatch.reduce((s, m) => s + m.subtotal, 0) +
+    perMatch.filter(m => m.teltMee).reduce((s, m) => s + m.subtotal, 0) +
     fase.reduce((s, f) => s + f.pts, 0) +
     awardLines.reduce((s, a) => s + a.pts, 0);
 
@@ -1519,7 +1522,19 @@ function openSpelerModal(naam, land) {
   const speler = findSpelerInTeams(naam, land);
   if (!speler) { toast(`Speler ${naam} niet gevonden`); return; }
 
-  const bd = spelerBreakdown(speler);
+  // Bepaal wissel-opts zodat irrelevante wedstrijden worden doorstreept
+  const wisselOpts = (() => {
+    if (!speler._deelnemer) return {};
+    const d = state.deelnemers.find(x => x.naam === speler._deelnemer);
+    if (!d) return {};
+    const uitWissel = (d.wissels || []).find(w => w.uit === naam);
+    if (uitWissel) return { voor: uitWissel.vanaf };
+    const inWissel  = (d.wissels || []).find(w => w.in  === naam);
+    if (inWissel)  return { vanaf: inWissel.vanaf };
+    return {};
+  })();
+
+  const bd = spelerBreakdown(speler, wisselOpts);
   const vlag = findVlag(speler.land);
   const posLbl = POS_LABEL[speler.positie] || speler.positie;
   const deelnemer = speler._deelnemer;
@@ -1536,8 +1551,9 @@ function openSpelerModal(naam, land) {
         const linesHtml = m.lines.map(l =>
           `<span class="bd-line__label">${escapeHtml(l.label)}</span><span class="bd-line__pts ${l.pts < 0 ? 'is-neg' : ''}">${l.pts > 0 ? '+' : ''}${l.pts}</span>`
         ).join("");
+        const rowCls = m.teltMee ? '' : ' class="bd-row--niet-relevant"';
         return `
-          <tr>
+          <tr${rowCls}>
             <td class="bd-date mono">${datum}</td>
             <td class="bd-match">${vs}</td>
             <td class="bd-lines">${linesHtml}</td>

@@ -1977,6 +1977,12 @@ code {
   color: var(--ink);
 }
 .bd-sub.is-neg { color: var(--red); }
+.bd-row--niet-relevant td {
+  opacity: 0.35;
+  text-decoration: line-through;
+  text-decoration-color: var(--ink-mute);
+}
+.bd-row--niet-relevant:hover td { background: transparent; }
 .bd-empty {
   text-align: center;
   color: var(--ink-mute);
