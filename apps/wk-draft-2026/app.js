@@ -443,10 +443,10 @@ function spelerPunten(speler, opts = {}) {
 
     // Poulewinst/gelijkspel: geldt voor iedereen die deelnam (ook invaller <45 min)
     if ((gespeeld45 || ingevallen) && w.uitslag) {
-      const { poule } = w;
+      const isGroep = w.poule || w.fase === "groep";
       const isThuis = w.thuis === speler.land;
       const isUit = w.uit === speler.land;
-      if (poule && (isThuis || isUit)) {
+      if (isGroep && (isThuis || isUit)) {
         const eigen = isThuis ? w.uitslag.thuis : w.uitslag.uit;
         const tegen = isThuis ? w.uitslag.uit : w.uitslag.thuis;
         if (eigen > tegen) pts += POINTS.poulewinst[pos] ?? 0;
@@ -526,7 +526,7 @@ function spelerBreakdown(speler, opts = {}) {
       lines.push({ label: `Gespeeld ≥45 min`, pts: p });
       subtotal += p;
     }
-    if ((gespeeld45 || ingevallen) && w.uitslag && w.poule) {
+    if ((gespeeld45 || ingevallen) && w.uitslag && (w.poule || w.fase === "groep")) {
       const isThuis = w.thuis === speler.land;
       const isUit = w.uit === speler.land;
       if (isThuis || isUit) {
@@ -1403,7 +1403,7 @@ function computeMatchContribs(w, lookup) {
       lines.push({ label: "Gespeeld", pts: p });
       subtotal += p;
     }
-    if ((gespeeld45 || ingevallen) && w.uitslag && w.poule) {
+    if ((gespeeld45 || ingevallen) && w.uitslag && (w.poule || w.fase === "groep")) {
       const isThuis = w.thuis === info.land;
       const isUit = w.uit === info.land;
       if (isThuis || isUit) {

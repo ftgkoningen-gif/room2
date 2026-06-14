@@ -72,7 +72,7 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 // ─── Land-naam mapping (API → Nederlands) ────────────────────────────
 const TEAM_NL: Record<string, string> = {
-  Mexico: "Mexico", Canada: "Canada", USA: "Verenigde Staten",
+  Mexico: "Mexico", Canada: "Canada", USA: "Verenigde Staten", "United States": "Verenigde Staten",
   Argentina: "Argentinië", Brazil: "Brazilië", Paraguay: "Paraguay",
   Uruguay: "Uruguay", Ecuador: "Ecuador", Colombia: "Colombia", Bolivia: "Bolivia",
   Panama: "Panama", Haiti: "Haïti", Curacao: "Curaçao", "Curaçao": "Curaçao",
@@ -305,7 +305,106 @@ export const wk2026Scheduler = schedules.task({
   },
 });
 
-// ─── 3. SQUADS-SYNC: wk2026-squads-sync ──────────────────────────────
+// ─── 3. ODDS-SYNC: wk2026-odds-sync ──────────────────────────────────
+
+export const wk2026OddsSync = schedules.task({
+  id: "wk2026-odds-sync",
+  cron: {
+    pattern: "30 5 * * *",              // dagelijks 05:30 Amsterdam
+    timezone: "Europe/Amsterdam",
+  },
+  maxDuration: 600,
+  run: async () => {
+    const now = new Date();
+    if (now < MATCHES_WINDOW_START || now > MATCHES_WINDOW_END) {
+      logger.info(`Buiten WK-venster, odds-sync slaat over`);
+      return { skipped: "outside-window" };
+    }
+
+    const supabase = getSupabase();
+
+    // Haal ongespeelde fixtures op binnen het komende 7-dagenvenster.
+    // Odds voor wedstrijden ver in de toekomst zijn weinig liquide en nauwelijks
+    // informatief; de simulatie valt dan terug op TEAM_KRACHT. Zo blijven we
+    // ruim binnen de API-Football free tier van 100 calls/dag.
+    const todayStr = now.toISOString().slice(0, 10);
+    const in7Days = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+
+    const { data: openFixtures, error: dbErr } = await supabase
+      .from("wk2026_wedstrijden")
+      .select("api_fixture_id")
+      .neq("status", "verwerkt")
+      .gte("datum", todayStr)
+      .lte("datum", in7Days);
+    if (dbErr) throw dbErr;
+    const fixtureIds: number[] = (openFixtures ?? []).map((r: any) => r.api_fixture_id);
+    logger.info(`odds-sync: ${fixtureIds.length} ongespeelde fixtures (venster ${todayStr}..${in7Days})`);
+
+    let verwerkt = 0, overgeslagen = 0, fouten = 0;
+
+    for (const fixtureId of fixtureIds) {
+      try {
+        const kansen = await fetchOddsVoorFixture(fixtureId);
+        if (!kansen) { overgeslagen++; await sleep(200); continue; }
+
+        const { error } = await supabase
+          .from("wk2026_kansen")
+          .upsert({ api_fixture_id: fixtureId, ...kansen, bijgewerkt: new Date().toISOString() },
+                   { onConflict: "api_fixture_id" });
+        if (error) throw error;
+
+        verwerkt++;
+        logger.info(`odds: fixture ${fixtureId} → thuis ${kansen.kans_thuis.toFixed(3)} gelijk ${kansen.kans_gelijk.toFixed(3)} uit ${kansen.kans_uit.toFixed(3)}`);
+      } catch (err) {
+        logger.error(`odds: fixture ${fixtureId} mislukt`, { err: String(err) });
+        fouten++;
+      }
+      await sleep(200);
+    }
+
+    logger.info(`odds-sync klaar: ${verwerkt} verwerkt, ${overgeslagen} overgeslagen, ${fouten} fouten`);
+    return { verwerkt, overgeslagen, fouten };
+  },
+});
+
+// Haal odds op voor één fixture — Pinnacle (8) met Bet365 (1) als fallback.
+// Geeft genormaliseerde kansen (som = 1.0) of null als er geen data is.
+async function fetchOddsVoorFixture(fixtureId: number): Promise<{
+  kans_thuis: number; kans_gelijk: number; kans_uit: number
+} | null> {
+  for (const bookmakerId of [8, 1]) {
+    try {
+      const data = await apiFetch(`/odds?fixture=${fixtureId}&bookmaker=${bookmakerId}`);
+      const bets = data.response?.[0]?.bookmakers?.[0]?.bets ?? [];
+      const matchWinner = bets.find((b: any) => b.name === "Match Winner");
+      if (!matchWinner) continue;
+
+      const home = matchWinner.values?.find((v: any) => v.value === "Home");
+      const draw = matchWinner.values?.find((v: any) => v.value === "Draw");
+      const away = matchWinner.values?.find((v: any) => v.value === "Away");
+      if (!home || !draw || !away) continue;
+
+      const oddH = parseFloat(home.odd);
+      const oddD = parseFloat(draw.odd);
+      const oddA = parseFloat(away.odd);
+      if (!oddH || !oddD || !oddA) continue;
+
+      // Normaliseer: verwijder bookmaker-marge (vig)
+      const rawH = 1 / oddH, rawD = 1 / oddD, rawA = 1 / oddA;
+      const tot = rawH + rawD + rawA;
+      return {
+        kans_thuis:  rawH / tot,
+        kans_gelijk: rawD / tot,
+        kans_uit:    rawA / tot,
+      };
+    } catch {
+      continue;
+    }
+  }
+  return null;
+}
+
+// ─── 4. SQUADS-SYNC: wk2026-squads-sync ──────────────────────────────
 
 export const wk2026SquadsSync = schedules.task({
   id: "wk2026-squads-sync",
