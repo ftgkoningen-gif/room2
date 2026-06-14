@@ -112,6 +112,8 @@ function faseOf(round: string): string {
 function buildEventsFromPlayers(playersData: any, f: any, thuisNL: string) {
   const eigen = { thuis: f.goals?.home ?? 0, uit: f.goals?.away ?? 0 };
   const events: any[] = [];
+  // Voorkom dubbele verwerking als de API dezelfde speler in meerdere blokken teruggeeft
+  const gezien = new Set<string>();
 
   for (const teamBlok of (playersData.response ?? [])) {
     const teamNL = toNL(teamBlok.team.name);
@@ -122,6 +124,8 @@ function buildEventsFromPlayers(playersData: any, f: any, thuisNL: string) {
       const naam = p.player?.name;
       const s = p.statistics?.[0];
       if (!naam || !s) continue;
+      if (gezien.has(naam)) continue;
+      gezien.add(naam);
       const minuten = s.games?.minutes ?? 0;
       if (minuten < 1) continue;
 
