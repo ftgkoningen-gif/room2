@@ -282,7 +282,14 @@ async function loadFromSupabase() {
 
     const [wRes, eRes, sRes, kRes] = await Promise.all([
       client.from("wk2026_wedstrijden").select("*"),
-      client.from("wk2026_events").select("*"),
+      (async () => {
+        const [e1, e2, e3] = await Promise.all([
+          client.from("wk2026_events").select("*").range(0, 999),
+          client.from("wk2026_events").select("*").range(1000, 1999),
+          client.from("wk2026_events").select("*").range(2000, 2999),
+        ]);
+        return { data: [...(e1.data||[]), ...(e2.data||[]), ...(e3.data||[])], error: e1.error || e2.error || e3.error };
+      })(),
       (async () => {
         const [p1, p2] = await Promise.all([
           client.from("wk2026_selecties").select("*").range(0, 999),
@@ -299,6 +306,31 @@ async function loadFromSupabase() {
         (eventsByFix[ev.api_fixture_id] = eventsByFix[ev.api_fixture_id] || []).push({
           speler: ev.speler, type: ev.type, detail: ev.detail
         });
+      }
+      // Dedupliceer events per fixture: als de sync meerdere keren liep of de API
+      // meerdere teamblokken teruggeeft, zitten events er 2x/3x/Nx in.
+      // Multiplier wordt afgeleid uit gespeeld45 (per speler altijd 1 per wedstrijd).
+      for (const fixId of Object.keys(eventsByFix)) {
+        const evs = eventsByFix[fixId];
+        const groups = {};
+        for (const ev of evs) {
+          const k = ev.speler + '|' + ev.type;
+          (groups[k] = groups[k] || []).push(ev);
+        }
+        const g45counts = Object.entries(groups)
+          .filter(([k]) => k.endsWith('|gespeeld45'))
+          .map(([, g]) => g.length);
+        if (!g45counts.length) continue;
+        const freq = {};
+        g45counts.forEach(n => freq[n] = (freq[n] || 0) + 1);
+        const multiplier = parseInt(Object.entries(freq).sort((a, b) => b[1] - a[1])[0][0]);
+        if (multiplier <= 1) continue;
+        const deduped = [];
+        for (const [, g] of Object.entries(groups)) {
+          const keep = Math.max(1, Math.round(g.length / multiplier));
+          deduped.push(...g.slice(0, keep));
+        }
+        eventsByFix[fixId] = deduped;
       }
       state.wedstrijden = wRes.data.map(w => ({
         id: `wk26-${w.api_fixture_id}`,
