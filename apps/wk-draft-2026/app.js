@@ -435,11 +435,14 @@ function naammatch(eventNaam, spelerNaam) {
   const ne = normNaam(eventNaam);
   const ns = normNaam(spelerNaam);
   if (ne === ns) return true;
-  // "Edson Álvarez" → probeer afkorting "E. Álvarez"
+  // "Edson Álvarez" → "E. Álvarez"; "Jan Paul van Hecke" → "J. van Hecke" etc.
+  // Probeer initiaal + elk mogelijk suffix (slaat tussenvoegsel/middelste namen over)
   const parts = eventNaam.trim().split(/\s+/);
   if (parts.length >= 2) {
-    const abbreviated = parts[0][0] + '. ' + parts.slice(1).join(' ');
-    if (normNaam(abbreviated) === ns) return true;
+    for (let i = 1; i < parts.length; i++) {
+      const abbreviated = parts[0][0] + '. ' + parts.slice(i).join(' ');
+      if (normNaam(abbreviated) === ns) return true;
+    }
   }
   return false;
 }
