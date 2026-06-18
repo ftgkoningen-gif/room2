@@ -202,6 +202,9 @@ const state = {
 // Stack voor modal-terug-navigatie: elk item = { type: "team"|"speler", ... }
 let _modalStack = [];
 
+// Draft board filter-state
+let _draftFilter = { zoek: '', pos: '', verbergGekozen: false, verbergUitgeschakeld: false };
+
 const LS_KEYS = {
   deelnemers: "wk26.deelnemers",
   wedstrijden: "wk26.wedstrijden",
@@ -415,6 +418,14 @@ function switchTab(name) {
   if (name === 'glazenbol') {
     const r = document.getElementById("glazenbolResult");
     if (r && !r.querySelector('.glazenbol__list')) runGlazenBol(false);
+  }
+  if (name === 'selecties') {
+    const activeView = document.querySelector('[data-selecties-view].is-active');
+    if (activeView?.dataset.selectiesView === 'draft-board') {
+      if (!document.querySelector('#draftBoardBlock .draft-board')) renderDraftBoard();
+    } else {
+      renderSelecties();
+    }
   }
 }
 
@@ -1504,6 +1515,26 @@ function computeMatchContribs(w, lookup) {
 function wireEvents() {
   document.getElementById("loadSampleBtn")?.addEventListener("click", loadSampleDeelnemers);
 
+  // Selecties view toggle
+  document.querySelectorAll('[data-selecties-view]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const view = btn.dataset.selectiesView;
+      document.querySelectorAll('[data-selecties-view]').forEach(b => b.classList.toggle('is-active', b === btn));
+      const overzichtEl = document.getElementById('selectiesBlock');
+      const boardEl = document.getElementById('draftBoardBlock');
+      if (view === 'draft-board') {
+        overzichtEl?.classList.add('hidden');
+        boardEl?.classList.remove('hidden');
+        if (!boardEl?.querySelector('.draft-board')) renderDraftBoard();
+        else refreshDraftBoardGroups();
+      } else {
+        overzichtEl?.classList.remove('hidden');
+        boardEl?.classList.add('hidden');
+        renderSelecties();
+      }
+    });
+  });
+
   // Howto-kaartjes op Overzicht → switchTab
   document.querySelectorAll("[data-goto]").forEach(btn => {
     btn.addEventListener("click", () => switchTab(btn.dataset.goto));
@@ -2233,6 +2264,207 @@ function escapeHtml(s) {
   return String(s ?? "").replace(/[&<>"']/g, c => ({
     "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
   }[c]));
+}
+
+// ──────────────────────────────────────────────────────────────────
+// Draft Board
+// ──────────────────────────────────────────────────────────────────
+
+function buildGekozenMap() {
+  const map = new Map();
+  state.deelnemers.forEach(d => {
+    // Begin met de originele spelerslijst
+    const actief = [...(d.spelers || [])];
+    // Verwerk wissels: verwijder 'uit', voeg 'in' toe
+    (d.wissels || []).forEach(w => {
+      if (w.uit && w.land_uit) {
+        const idx = actief.findIndex(s => naammatch(s.naam, w.uit) && s.land === w.land_uit);
+        if (idx !== -1) actief.splice(idx, 1);
+      }
+      if (w.in && w.land_in) {
+        actief.push({ naam: w.in, land: w.land_in, positie: w.positie_in });
+      }
+    });
+    actief.forEach(s => {
+      const key = normNaam(s.naam) + '|' + normNaam(s.land || '');
+      map.set(key, d.naam);
+    });
+  });
+  return map;
+}
+
+function buildUitgeschakeldSet() {
+  const set = new Set();
+  const { landenPerFase } = state.fases;
+  const inKnockout = new Set();
+  for (const namen of Object.values(landenPerFase)) {
+    for (const n of namen) inKnockout.add(n);
+  }
+  // Als de knockout gestart is: iedereen buiten inKnockout is uitgeschakeld in de groepsfase
+  if (inKnockout.size > 0) {
+    state.landen.forEach(l => { if (!inKnockout.has(l.naam)) set.add(l.naam); });
+  }
+  return set;
+}
+
+function renderDraftBoard() {
+  const el = document.getElementById('draftBoardBlock');
+  if (!el) return;
+
+  const gekozen = buildGekozenMap();
+  const uitgeschakeld = buildUitgeschakeldSet();
+
+  const groepen = {};
+  state.landen.forEach(l => {
+    const g = l.groep || '?';
+    if (!groepen[g]) groepen[g] = [];
+    groepen[g].push(l);
+  });
+
+  const aantalGekozen = gekozen.size;
+  const totaalSpelers = state.landen.reduce((s, l) => s + (l.selectie?.length || 0), 0);
+  const sortedGroepen = Object.keys(groepen).sort();
+
+  el.innerHTML = `
+    <div class="draft-board">
+      <div class="draft-controls" id="draftControls">
+        <input class="draft-search" id="draftSearch" type="search" placeholder="Zoek speler of land…" autocomplete="off" value="${escapeHtml(_draftFilter.zoek)}" />
+        <div class="draft-filter-pos">
+          ${['', 'K', 'V', 'M', 'A'].map(p => `<button class="draft-filter-btn${_draftFilter.pos === p ? ' is-active' : ''}" data-pos="${escapeHtml(p)}">${p || 'Alle'}</button>`).join('')}
+        </div>
+        <label class="draft-filter-label">
+          <input type="checkbox" id="verbergGekozen"${_draftFilter.verbergGekozen ? ' checked' : ''} />
+          Verberg gekozen
+        </label>
+        <label class="draft-filter-label">
+          <input type="checkbox" id="verbergUitgeschakeld"${_draftFilter.verbergUitgeschakeld ? ' checked' : ''} />
+          Verberg uitgeschakeld
+        </label>
+      </div>
+      <div class="draft-stats">
+        <span class="draft-stat"><strong>${aantalGekozen}</strong> gekozen</span>
+        <span class="draft-stat-sep">·</span>
+        <span class="draft-stat"><strong>${totaalSpelers - aantalGekozen}</strong> beschikbaar</span>
+        ${uitgeschakeld.size > 0 ? `<span class="draft-stat-sep">·</span><span class="draft-stat">${uitgeschakeld.size} landen uitgeschakeld</span>` : ''}
+      </div>
+      <div class="draft-groups" id="draftGroups">
+        ${sortedGroepen.map(g => renderDraftGroep(g, groepen[g], gekozen, uitgeschakeld)).join('')}
+      </div>
+    </div>
+  `;
+
+  wireDraftBoardEvents();
+  if (typeof twemoji !== 'undefined') twemoji.parse(el, { folder: 'svg', ext: '.svg' });
+}
+
+function renderDraftGroep(groep, landen, gekozen, uitgeschakeld) {
+  const filtered = landen.filter(l => {
+    if (_draftFilter.verbergUitgeschakeld && uitgeschakeld.has(l.naam)) return false;
+    // Verberg landen die geen matches hebben op zoekterm (op landniveau)
+    if (_draftFilter.zoek) {
+      const q = normNaam(_draftFilter.zoek);
+      const landMatch = normNaam(l.naam).includes(q);
+      const spelersMatch = (l.selectie || []).some(s =>
+        (!_draftFilter.pos || s.positie === _draftFilter.pos) && normNaam(s.naam).includes(q)
+      );
+      if (!landMatch && !spelersMatch) return false;
+    }
+    return true;
+  });
+  if (filtered.length === 0) return '';
+  return `
+    <div class="draft-group">
+      <h3 class="draft-group__title">Groep ${escapeHtml(groep)}</h3>
+      <div class="draft-group__grid">
+        ${filtered.map(l => renderDraftLandKaart(l, gekozen, uitgeschakeld)).join('')}
+      </div>
+    </div>`;
+}
+
+function renderDraftLandKaart(l, gekozen, uitgeschakeld) {
+  const isUitgeschakeld = uitgeschakeld.has(l.naam);
+  const selectie = l.selectie || [];
+  const q = _draftFilter.zoek ? normNaam(_draftFilter.zoek) : '';
+  const landMatchesSearch = !q || normNaam(l.naam).includes(q);
+
+  const zichtbaar = selectie.filter(s => {
+    if (_draftFilter.pos && s.positie !== _draftFilter.pos) return false;
+    if (q && !normNaam(s.naam).includes(q) && !landMatchesSearch) return false;
+    const key = normNaam(s.naam) + '|' + normNaam(l.naam);
+    if (_draftFilter.verbergGekozen && gekozen.has(key)) return false;
+    return true;
+  });
+
+  // Hoeveel spelers van dit land zijn gekozen?
+  const aantalGekozen = selectie.filter(s => gekozen.has(normNaam(s.naam) + '|' + normNaam(l.naam))).length;
+
+  const POS_VOLGORDE = ['K', 'V', 'M', 'A'];
+  const spelerRows = POS_VOLGORDE.flatMap(pos =>
+    zichtbaar.filter(s => s.positie === pos).map(s => {
+      const key = normNaam(s.naam) + '|' + normNaam(l.naam);
+      const isGekozen = gekozen.has(key);
+      const eigenaar = isGekozen ? gekozen.get(key) : null;
+      return `<li class="draft-player${isGekozen ? ' is-gekozen' : ''}">
+        <span class="draft-player__pos draft-player__pos--${pos.toLowerCase()}">${pos}</span>
+        <span class="draft-player__name">${escapeHtml(s.naam)}</span>
+        ${eigenaar ? `<span class="draft-player__owner">${escapeHtml(eigenaar)}</span>` : ''}
+      </li>`;
+    })
+  );
+
+  if (spelerRows.length === 0 && !landMatchesSearch) return '';
+
+  return `
+    <div class="draft-country${isUitgeschakeld ? ' is-eliminated' : ''}">
+      <div class="draft-country__header">
+        <span class="draft-country__flag">${l.vlag || ''}</span>
+        <span class="draft-country__name">${escapeHtml(l.naam)}</span>
+        ${isUitgeschakeld ? '<span class="draft-country__elim-badge">Uit</span>' : ''}
+        <span class="draft-country__count">${aantalGekozen}/${selectie.length}</span>
+      </div>
+      ${spelerRows.length > 0
+        ? `<ul class="draft-player-list">${spelerRows.join('')}</ul>`
+        : `<p class="draft-empty">Geen spelers</p>`}
+    </div>`;
+}
+
+function wireDraftBoardEvents() {
+  document.getElementById('draftSearch')?.addEventListener('input', e => {
+    _draftFilter.zoek = e.target.value;
+    refreshDraftBoardGroups();
+  });
+  document.querySelectorAll('.draft-filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      _draftFilter.pos = btn.dataset.pos;
+      document.querySelectorAll('.draft-filter-btn').forEach(b => b.classList.toggle('is-active', b === btn));
+      refreshDraftBoardGroups();
+    });
+  });
+  document.getElementById('verbergGekozen')?.addEventListener('change', e => {
+    _draftFilter.verbergGekozen = e.target.checked;
+    refreshDraftBoardGroups();
+  });
+  document.getElementById('verbergUitgeschakeld')?.addEventListener('change', e => {
+    _draftFilter.verbergUitgeschakeld = e.target.checked;
+    refreshDraftBoardGroups();
+  });
+}
+
+function refreshDraftBoardGroups() {
+  const gekozen = buildGekozenMap();
+  const uitgeschakeld = buildUitgeschakeldSet();
+  const groepen = {};
+  state.landen.forEach(l => {
+    const g = l.groep || '?';
+    if (!groepen[g]) groepen[g] = [];
+    groepen[g].push(l);
+  });
+  const container = document.getElementById('draftGroups');
+  if (!container) return;
+  container.innerHTML = Object.keys(groepen).sort()
+    .map(g => renderDraftGroep(g, groepen[g], gekozen, uitgeschakeld))
+    .join('');
+  if (typeof twemoji !== 'undefined') twemoji.parse(container, { folder: 'svg', ext: '.svg' });
 }
 
 function toast(msg, duur = 2200) {
