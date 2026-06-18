@@ -81,7 +81,9 @@ const TEAM_NL: Record<string, string> = {
   Croatia: "Kroatië", Switzerland: "Zwitserland", Denmark: "Denemarken",
   Austria: "Oostenrijk", Poland: "Polen", Turkey: "Turkije", Hungary: "Hongarije",
   Scotland: "Schotland", Norway: "Noorwegen", Sweden: "Zweden",
-  "Bosnia and Herzegovina": "Bosnië en Herzegovina", "Czech Republic": "Tsjechië",
+  "Bosnia and Herzegovina": "Bosnië en Herzegovina", "Bosnia & Herzegovina": "Bosnië en Herzegovina",
+  "Czech Republic": "Tsjechië", Czechia: "Tsjechië",
+  Turkey: "Turkije", "Türkiye": "Turkije",
   Japan: "Japan", "South Korea": "Zuid-Korea", "Korea Republic": "Zuid-Korea",
   Iran: "Iran", "Saudi Arabia": "Saudi-Arabië", Australia: "Australië",
   Qatar: "Qatar", Uzbekistan: "Oezbekistan", Jordan: "Jordanië",
@@ -89,7 +91,7 @@ const TEAM_NL: Record<string, string> = {
   Nigeria: "Nigeria", Algeria: "Algerije", "Ivory Coast": "Ivoorkust",
   Ghana: "Ghana", Cameroon: "Kameroen", "South Africa": "Zuid-Afrika",
   "DR Congo": "Congo-Kinshasa", "Congo DR": "Congo-Kinshasa",
-  "Cape Verde": "Kaapverdië", "New Zealand": "Nieuw-Zeeland",
+  "Cape Verde": "Kaapverdië", "Cape Verde Islands": "Kaapverdië", "New Zealand": "Nieuw-Zeeland",
   Iraq: "Irak",
 };
 
