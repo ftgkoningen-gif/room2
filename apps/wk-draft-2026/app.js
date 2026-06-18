@@ -437,7 +437,8 @@ function normNaam(s) {
   return String(s ?? '').normalize('NFD')
     .replace(/\p{Diacritic}/gu, '')
     .toLowerCase()
-    .replace(/[.''`\-]+/g, ' ')
+    .replace(/[''`]+/g, '')          // apostrofs verwijderen: O'Reilly → Oreilly
+    .replace(/[.\-]+/g, ' ')         // punt/koppelteken → spatie
     .replace(/\s+/g, ' ')
     .trim();
 }
@@ -450,7 +451,8 @@ function naammatch(eventNaam, spelerNaam) {
   if (ne === ns) return true;
   // "Edson Álvarez" → "E. Álvarez"; "Jan Paul van Hecke" → "J. van Hecke" etc.
   // Prefix-match: "Pau Cubarsí Paredes" matcht "Pau Cubarsí" (selectie heeft dubbele achternaam)
-  if (ne.startsWith(ns + ' ') || ns.startsWith(ne + ' ')) return true;
+  // Alleen de squad/API-naam mag langer zijn, nooit andersom (valse positieven voorkomen)
+  if (ne.startsWith(ns + ' ')) return true;
   // Probeer initiaal + elk mogelijk suffix (slaat tussenvoegsel/middelste namen over)
   const parts = eventNaam.trim().split(/\s+/);
   if (parts.length >= 2) {

@@ -13,7 +13,8 @@ function normNaam(s) {
   return String(s ?? '').normalize('NFD')
     .replace(/\p{Diacritic}/gu, '')
     .toLowerCase()
-    .replace(/[.''`\-]+/g, ' ')
+    .replace(/[''`]+/g, '')          // apostrofs verwijderen: O'Reilly → Oreilly
+    .replace(/[.\-]+/g, ' ')         // punt/koppelteken → spatie
     .replace(/\s+/g, ' ')
     .trim();
 }
