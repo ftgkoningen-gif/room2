@@ -553,6 +553,31 @@ function deelnemerPunten(deelnemer) {
   return total;
 }
 
+// Browser-console diagnostic: debugSpeler("T. Soucek", "Tsjechië")
+window.debugSpeler = function(naam, land) {
+  console.group(`🔍 debugSpeler: "${naam}" (${land})`);
+  const matches = state.wedstrijden.filter(w => w.thuis === land || w.uit === land);
+  console.log(`Wedstrijden gevonden voor ${land}: ${matches.length}`);
+  matches.forEach(w => {
+    const evs = w.events.filter(e => naammatch(e.speler, naam));
+    const alle = w.events.filter(e => {
+      const tnl = w.thuis === land ? w.thuis : w.uit;
+      return true; // show all for this match
+    });
+    console.group(`  ${w.datum} ${w.thuis} vs ${w.uit} [${w.status}] — ${w.events.length} events totaal`);
+    if (evs.length === 0) {
+      console.warn(`  ⚠️ GEEN events gevonden voor "${naam}" in deze wedstrijd`);
+      const near = w.events.filter(e => normNaam(e.speler).includes(normNaam(naam.split(' ').pop() || naam)));
+      if (near.length) console.log('  Vergelijkbare namen:', near.map(e => e.speler + '|' + e.type));
+    } else {
+      console.log(`  ✓ Events (${evs.length}):`, evs.map(e => e.type + (e.detail ? '/' + e.detail : '')));
+    }
+    console.groupEnd();
+  });
+  if (matches.length === 0) console.warn('⚠️ Geen wedstrijden gevonden — match niet gesynchroniseerd?');
+  console.groupEnd();
+};
+
 // Detailed breakdown: per-match contributions + fase + awards
 // opts.voor / opts.vanaf: zelfde datumfilter als spelerPunten — matches buiten het
 // venster krijgen teltMee:false en worden doorstreept in de modal.

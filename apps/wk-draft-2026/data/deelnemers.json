@@ -47,6 +47,18 @@
         { "naam": "E. Eze", "land": "Engeland", "positie": "M" },
         { "naam": "H. Kane", "land": "Engeland", "positie": "A" },
         { "naam": "N. Madueke", "land": "Engeland", "positie": "A" }
+      ],
+      "wissels": [
+        {
+          "window": 2,
+          "uit": "Gabriel Martinelli",
+          "land_uit": "Brazilië",
+          "positie_uit": "A",
+          "in": "C. Summerville",
+          "land_in": "Nederland",
+          "positie_in": "A",
+          "vanaf": "2026-06-18"
+        }
       ]
     },
     {
@@ -111,6 +123,18 @@
         { "naam": "Cristiano Ronaldo", "land": "Portugal", "positie": "A" },
         { "naam": "D. Burn", "land": "Engeland", "positie": "V" },
         { "naam": "M. Guéhi", "land": "Engeland", "positie": "V" }
+      ],
+      "wissels": [
+        {
+          "window": 2,
+          "uit": "N. Kanté",
+          "land_uit": "Frankrijk",
+          "positie_uit": "M",
+          "in": "N. Schlotterbeck",
+          "land_in": "Duitsland",
+          "positie_in": "V",
+          "vanaf": "2026-06-18"
+        }
       ]
     },
     {
@@ -127,6 +151,18 @@
         { "naam": "N. Paz", "land": "Argentinië", "positie": "A" },
         { "naam": "João Cancelo", "land": "Portugal", "positie": "V" },
         { "naam": "Vitinha", "land": "Portugal", "positie": "M" }
+      ],
+      "wissels": [
+        {
+          "window": 2,
+          "uit": "I. Konaté",
+          "land_uit": "Frankrijk",
+          "positie_uit": "V",
+          "in": "A. Bouaddi",
+          "land_in": "Marokko",
+          "positie_in": "M",
+          "vanaf": "2026-06-18"
+        }
       ]
     },
     {
