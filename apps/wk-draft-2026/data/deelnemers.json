@@ -24,12 +24,12 @@
         { "naam": "K. De Winter", "land": "België", "positie": "V" },
         { "naam": "K. De Bruyne", "land": "België", "positie": "M" },
         { "naam": "Unai Simón", "land": "Spanje", "positie": "K" },
-        { "naam": "Pau Cubarsí Paredes", "land": "Spanje", "positie": "V" },
+        { "naam": "Pau Cubarsí", "land": "Spanje", "positie": "V" },
         { "naam": "Rodri", "land": "Spanje", "positie": "M" },
         { "naam": "E. Fernández", "land": "Argentinië", "positie": "M" },
         { "naam": "R. De Paul", "land": "Argentinië", "positie": "M" },
         { "naam": "T. Almada", "land": "Argentinië", "positie": "A" },
-        { "naam": "N. Oreilly", "land": "Engeland", "positie": "V" },
+        { "naam": "N. O'Reilly", "land": "Engeland", "positie": "V" },
         { "naam": "J. Stones", "land": "Engeland", "positie": "V" }
       ]
     },
