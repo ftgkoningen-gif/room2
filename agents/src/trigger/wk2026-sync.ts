@@ -410,7 +410,63 @@ async function fetchOddsVoorFixture(fixtureId: number): Promise<{
   return null;
 }
 
-// ─── 4. SQUADS-SYNC: wk2026-squads-sync ──────────────────────────────
+// ─── 4. REPAIR: wk2026-repair-missing-events ─────────────────────────
+// Handmatig triggeren via Trigger.dev dashboard wanneer events ontbreken.
+// Zonder payload: detecteert automatisch alle verwerkte matches zonder events.
+// Met payload { fixtureIds: [123, 456] }: herhaalt alleen die fixtures.
+
+type RepairPayload = { fixtureIds?: number[] };
+
+export const wk2026RepairMissingEvents = task({
+  id: "wk2026-repair-missing-events",
+  maxDuration: 600,
+  run: async (payload: RepairPayload = {}) => {
+    const supabase = getSupabase();
+
+    let fixtureIds = payload.fixtureIds;
+
+    if (!fixtureIds) {
+      const [{ data: wedstrijden }, { data: events }] = await Promise.all([
+        supabase.from("wk2026_wedstrijden").select("api_fixture_id").eq("status", "verwerkt"),
+        supabase.from("wk2026_events").select("api_fixture_id"),
+      ]);
+      const metEvents = new Set((events ?? []).map((e: any) => e.api_fixture_id));
+      fixtureIds = (wedstrijden ?? [])
+        .map((w: any) => w.api_fixture_id)
+        .filter((id: number) => !metEvents.has(id));
+    }
+
+    logger.info(`repair: ${fixtureIds.length} fixtures zonder events`);
+
+    const results: any[] = [];
+    for (const fixtureId of fixtureIds) {
+      try {
+        const fixturesData = await apiFetch(`/fixtures?id=${fixtureId}`);
+        const f = fixturesData.response?.[0];
+        if (!f) {
+          results.push({ fixtureId, status: "not-found" });
+          logger.warn(`repair: fixture ${fixtureId} niet gevonden`);
+          await sleep(1500);
+          continue;
+        }
+        const result = await upsertFixture(supabase, f);
+        results.push({ fixtureId, status: "done", events: result.events });
+        logger.info(`repair: fixture ${fixtureId} → ${result.events} events`);
+      } catch (err) {
+        logger.error(`repair: fixture ${fixtureId} mislukt`, { err: String(err) });
+        results.push({ fixtureId, status: "error", err: String(err) });
+      }
+      await sleep(1500); // 1.5s pauze om API-limiet te respecteren
+    }
+
+    const ok = results.filter(r => r.status === "done").length;
+    const fail = results.filter(r => r.status !== "done").length;
+    logger.info(`repair klaar: ${ok} ok, ${fail} mislukt`);
+    return { results, ok, fail };
+  },
+});
+
+// ─── 5. SQUADS-SYNC: wk2026-squads-sync ──────────────────────────────
 
 export const wk2026SquadsSync = schedules.task({
   id: "wk2026-squads-sync",
