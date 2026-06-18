@@ -2272,6 +2272,11 @@ function escapeHtml(s) {
 
 function buildGekozenMap() {
   const map = new Map();
+
+  // Bouw opzoektabel: landnaam → selectiespelers (kanonieke namen uit state.landen/Supabase)
+  const selectiePerLand = {};
+  state.landen.forEach(l => { selectiePerLand[l.naam] = l.selectie || []; });
+
   state.deelnemers.forEach(d => {
     // Begin met de originele spelerslijst
     const actief = [...(d.spelers || [])];
@@ -2286,7 +2291,12 @@ function buildGekozenMap() {
       }
     });
     actief.forEach(s => {
-      const key = normNaam(s.naam) + '|' + normNaam(s.land || '');
+      // Zoek de kanonieke naam uit de landen-selectie via naammatch,
+      // zodat afwijkingen (bv. "Pau Cubarsí" vs "Pau Cubarsí Paredes") altijd matchen.
+      const selectie = selectiePerLand[s.land] || [];
+      const match = selectie.find(k => naammatch(k.naam, s.naam));
+      const canoniek = match ? match.naam : s.naam;
+      const key = normNaam(canoniek) + '|' + normNaam(s.land || '');
       map.set(key, d.naam);
     });
   });
