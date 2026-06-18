@@ -343,8 +343,8 @@ async function loadFromSupabase() {
         datum: w.datum,
         fase: w.fase,
         poule: w.poule,
-        thuis: w.thuis,
-        uit: w.uit,
+        thuis: w.thuis?.normalize('NFC'),
+        uit:   w.uit?.normalize('NFC'),
         uitslag: (w.uitslag_thuis != null && w.uitslag_uit != null)
           ? { thuis: w.uitslag_thuis, uit: w.uitslag_uit } : null,
         pens: (w.pens_thuis != null && w.pens_uit != null)
