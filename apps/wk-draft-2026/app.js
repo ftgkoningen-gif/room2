@@ -449,6 +449,8 @@ function naammatch(eventNaam, spelerNaam) {
   const ns = normNaam(spelerNaam);
   if (ne === ns) return true;
   // "Edson Álvarez" → "E. Álvarez"; "Jan Paul van Hecke" → "J. van Hecke" etc.
+  // Prefix-match: "Pau Cubarsí Paredes" matcht "Pau Cubarsí" (selectie heeft dubbele achternaam)
+  if (ne.startsWith(ns + ' ') || ns.startsWith(ne + ' ')) return true;
   // Probeer initiaal + elk mogelijk suffix (slaat tussenvoegsel/middelste namen over)
   const parts = eventNaam.trim().split(/\s+/);
   if (parts.length >= 2) {
