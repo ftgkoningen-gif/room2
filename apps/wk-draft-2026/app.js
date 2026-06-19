@@ -461,6 +461,12 @@ function naammatch(eventNaam, spelerNaam) {
       if (normNaam(abbreviated) === ns) return true;
     }
   }
+  // Mononym: enkelvoudige draft-naam (geen spatie na normalisatie) matcht laatste woord
+  // van de API-naam. Bijv. "Pablo Gavi" → "Gavi", "Neymar Jr." → "Neymar" via prefix.
+  if (!ns.includes(' ')) {
+    const lastWord = normNaam(parts[parts.length - 1]);
+    if (lastWord === ns) return true;
+  }
   return false;
 }
 
@@ -2306,27 +2312,20 @@ function buildGekozenMap() {
   const selectiePerLand = {};
   state.landen.forEach(l => { selectiePerLand[l.naam] = l.selectie || []; });
 
+  const addToMap = (naam, land, deelnemer) => {
+    const selectie = selectiePerLand[land] || [];
+    const match = selectie.find(k => naammatch(k.naam, naam));
+    const canoniek = match ? match.naam : naam;
+    const key = normNaam(canoniek) + '|' + normNaam(land || '');
+    if (!map.has(key)) map.set(key, deelnemer);
+  };
+
   state.deelnemers.forEach(d => {
-    // Begin met de originele spelerslijst
-    const actief = [...(d.spelers || [])];
-    // Verwerk wissels: verwijder 'uit', voeg 'in' toe
+    // Alle originele picks — ook gewisselde spelers blijven "gekozen" (niet opnieuw beschikbaar)
+    (d.spelers || []).forEach(s => addToMap(s.naam, s.land, d.naam));
+    // Ingekomen wissel-spelers zijn ook gekozen
     (d.wissels || []).forEach(w => {
-      if (w.uit && w.land_uit) {
-        const idx = actief.findIndex(s => naammatch(s.naam, w.uit) && s.land === w.land_uit);
-        if (idx !== -1) actief.splice(idx, 1);
-      }
-      if (w.in && w.land_in) {
-        actief.push({ naam: w.in, land: w.land_in, positie: w.positie_in });
-      }
-    });
-    actief.forEach(s => {
-      // Zoek de kanonieke naam uit de landen-selectie via naammatch,
-      // zodat afwijkingen (bv. "Pau Cubarsí" vs "Pau Cubarsí Paredes") altijd matchen.
-      const selectie = selectiePerLand[s.land] || [];
-      const match = selectie.find(k => naammatch(k.naam, s.naam));
-      const canoniek = match ? match.naam : s.naam;
-      const key = normNaam(canoniek) + '|' + normNaam(s.land || '');
-      map.set(key, d.naam);
+      if (w.in && w.land_in) addToMap(w.in, w.land_in, d.naam);
     });
   });
   return map;

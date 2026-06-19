@@ -34,6 +34,11 @@ function naammatch(eventNaam, spelerNaam) {
       if (normNaam(abbreviated) === ns) return true;
     }
   }
+  // Mononym: "Pablo Gavi" → "Gavi"
+  if (!ns.includes(' ')) {
+    const lastWord = normNaam(parts[parts.length - 1]);
+    if (lastWord === ns) return true;
+  }
   return false;
 }
 
