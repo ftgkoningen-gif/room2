@@ -15,6 +15,19 @@
         { "naam": "E. Konsa", "land": "Engeland", "positie": "V" },
         { "naam": "B. Saka", "land": "Engeland", "positie": "A" },
         { "naam": "J. Gvardiol", "land": "Kroatië", "positie": "V" }
+      ],
+      "wissels": [
+        {
+          "window": 1,
+          "uit": "Q. Timber",
+          "land_uit": "Nederland",
+          "positie_uit": "M",
+          "in": "B. Brobbey",
+          "land_in": "Nederland",
+          "positie_in": "A",
+          "vanaf": "2026-06-20",
+          "correctie": -4
+        }
       ]
     },
     {
@@ -140,7 +153,7 @@
     {
       "naam": "Jordi",
       "spelers": [
-        { "naam": "Alisson Becker", "land": "Brazilië", "positie": "K" },
+        { "naam": "Alisson", "land": "Brazilië", "positie": "K" },
         { "naam": "N. Mazraoui", "land": "Marokko", "positie": "V" },
         { "naam": "J. van Hecke", "land": "Nederland", "positie": "V" },
         { "naam": "T. Reijnders", "land": "Nederland", "positie": "M" },
@@ -195,6 +208,18 @@
         { "naam": "Diogo Costa", "land": "Portugal", "positie": "K" },
         { "naam": "João Neves", "land": "Portugal", "positie": "M" },
         { "naam": "Bernardo Silva", "land": "Portugal", "positie": "M" }
+      ],
+      "wissels": [
+        {
+          "window": 1,
+          "uit": "J. Doku",
+          "land_uit": "België",
+          "positie_uit": "A",
+          "in": "F. Balogun",
+          "land_in": "Verenigde Staten",
+          "positie_in": "A",
+          "vanaf": "2026-06-21"
+        }
       ]
     },
     {

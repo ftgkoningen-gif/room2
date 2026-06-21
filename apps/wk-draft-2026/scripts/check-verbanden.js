@@ -26,6 +26,8 @@ function naammatch(eventNaam, spelerNaam) {
   const ne = normNaam(eventNaam);
   const ns = normNaam(spelerNaam);
   if (ne === ns) return true;
+  // Prefix: "Alisson Becker" matcht draft-naam "Alisson" (API-naam langer)
+  if (ne.startsWith(ns + ' ')) return true;
   // "Edson Álvarez" → "E. Álvarez"; "Jan Paul van Hecke" → "J. van Hecke"
   const parts = eventNaam.trim().split(/\s+/);
   if (parts.length >= 2) {

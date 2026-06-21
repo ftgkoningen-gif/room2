@@ -99,6 +99,16 @@ function toNL(apiName: string): string {
   return TEAM_NL[apiName] ?? apiName;
 }
 
+// Spelersnamen die de API inconsistent schrijft → gestandaardiseerde naam voor DB
+const SPELER_NORM: Record<string, string> = {
+  "Bono":    "Y. Bounou",         // Yassine Bounou (Marokko) — API gebruikt soms "Bono"
+  "Alisson": "Alisson Becker",    // Brazilië keepersnaam varieert per fixture
+};
+
+function normSpeler(apiNaam: string): string {
+  return SPELER_NORM[apiNaam] ?? apiNaam;
+}
+
 function faseOf(round: string): string {
   if (/Final$/.test(round)) return "F";
   if (/Semi/.test(round)) return "1/2";
@@ -123,7 +133,7 @@ function buildEventsFromPlayers(playersData: any, f: any, thuisNL: string) {
     const tegenGoals = isThuis ? eigen.uit : eigen.thuis;
 
     for (const p of (teamBlok.players ?? [])) {
-      const naam = p.player?.name;
+      const naam = normSpeler(p.player?.name ?? "");
       const s = p.statistics?.[0];
       if (!naam || !s) continue;
       if (gezien.has(naam)) continue;
@@ -426,12 +436,17 @@ export const wk2026RepairMissingEvents = task({
     let fixtureIds = payload.fixtureIds;
 
     if (!fixtureIds) {
-      const [{ data: wedstrijden }, { data: events }] = await Promise.all([
+      // Drempel: 2 uur na verwachte aftrap (wedstrijden duren ~2 uur)
+      const drempel = new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString();
+      const [{ data: verwerkt }, { data: gepland }, { data: events }] = await Promise.all([
         supabase.from("wk2026_wedstrijden").select("api_fixture_id").eq("status", "verwerkt"),
+        // "gepland" matches waarvan de datum >2 uur geleden is → waarschijnlijk al gespeeld
+        supabase.from("wk2026_wedstrijden").select("api_fixture_id").eq("status", "gepland").lt("datum", drempel),
         supabase.from("wk2026_events").select("api_fixture_id"),
       ]);
       const metEvents = new Set((events ?? []).map((e: any) => e.api_fixture_id));
-      fixtureIds = (wedstrijden ?? [])
+      const kandidaten = [...(verwerkt ?? []), ...(gepland ?? [])];
+      fixtureIds = kandidaten
         .map((w: any) => w.api_fixture_id)
         .filter((id: number) => !metEvents.has(id));
     }

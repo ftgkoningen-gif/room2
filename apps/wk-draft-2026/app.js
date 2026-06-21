@@ -554,7 +554,7 @@ function deelnemerPunten(deelnemer) {
   }, 0);
   for (const wissel of (deelnemer.wissels || [])) {
     const sp = { naam: wissel.in, land: wissel.land_in, positie: wissel.positie_in };
-    total += spelerPunten(sp, { vanaf: wissel.vanaf });
+    total += spelerPunten(sp, { vanaf: wissel.vanaf }) + (wissel.correctie || 0);
   }
   return total;
 }
