@@ -286,14 +286,15 @@ async function loadFromSupabase() {
     const [wRes, eRes, sRes, kRes] = await Promise.all([
       client.from("wk2026_wedstrijden").select("*"),
       (async () => {
-        const [e1, e2, e3, e4, e5] = await Promise.all([
+        const [e1, e2, e3, e4, e5, e6] = await Promise.all([
           client.from("wk2026_events").select("*").range(0, 999),
           client.from("wk2026_events").select("*").range(1000, 1999),
           client.from("wk2026_events").select("*").range(2000, 2999),
           client.from("wk2026_events").select("*").range(3000, 3999),
           client.from("wk2026_events").select("*").range(4000, 4999),
+          client.from("wk2026_events").select("*").range(5000, 5999),
         ]);
-        return { data: [...(e1.data||[]), ...(e2.data||[]), ...(e3.data||[]), ...(e4.data||[]), ...(e5.data||[])], error: e1.error || e2.error || e3.error || e4.error || e5.error };
+        return { data: [...(e1.data||[]), ...(e2.data||[]), ...(e3.data||[]), ...(e4.data||[]), ...(e5.data||[]), ...(e6.data||[])], error: e1.error || e2.error || e3.error || e4.error || e5.error || e6.error };
       })(),
       (async () => {
         const [p1, p2] = await Promise.all([
