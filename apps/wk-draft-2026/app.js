@@ -203,7 +203,7 @@ const state = {
 let _modalStack = [];
 
 // Draft board filter-state
-let _draftFilter = { zoek: '', pos: '', verbergGekozen: false, verbergUitgeschakeld: false };
+let _draftFilter = { zoek: '', pos: '', verbergGekozen: true, verbergUitgeschakeld: false };
 
 const LS_KEYS = {
   deelnemers: "wk26.deelnemers",
