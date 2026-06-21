@@ -1317,7 +1317,7 @@ function renderTeams() {
     // Build combined player list: regular spelers + incoming wissels spelers
     const wisselUitNamen = new Set((d.wissels || []).map(w => w.uit));
     const inkomendSpelers = (d.wissels || []).map(w => ({
-      naam: w.in, land: w.land_in, positie: w.positie_in, _wisselVanaf: w.vanaf
+      naam: w.in, land: w.land_in, positie: w.positie_in, _wisselVanaf: w.vanaf, _correctie: w.correctie || 0
     }));
     const alleSpelers = [
       ...(d.spelers || []).map(sp => ({
@@ -1335,7 +1335,7 @@ function renderTeams() {
       const vlag = findVlag(sp.land);
       const code = findCode(sp.land);
       const opts = sp._wisselVoor ? { voor: sp._wisselVoor } : sp._wisselVanaf ? { vanaf: sp._wisselVanaf } : {};
-      const spPts = spelerPunten(sp, opts);
+      const spPts = spelerPunten(sp, opts) + (sp._correctie || 0);
       const ptsStr = spPts === 0 ? "0" : (spPts > 0 ? `+${spPts}` : `${spPts}`);
       const isUit = !!sp._wisselVoor;
       const isIn  = !!sp._wisselVanaf;
