@@ -44,6 +44,18 @@
         { "naam": "T. Almada", "land": "Argentinië", "positie": "A" },
         { "naam": "N. O'Reilly", "land": "Engeland", "positie": "V" },
         { "naam": "J. Stones", "land": "Engeland", "positie": "V" }
+      ],
+      "wissels": [
+        {
+          "window": 1,
+          "uit": "K. De Winter",
+          "land_uit": "België",
+          "positie_uit": "V",
+          "in": "T. Meunier",
+          "land_in": "België",
+          "positie_in": "V",
+          "vanaf": "2026-06-21"
+        }
       ]
     },
     {
