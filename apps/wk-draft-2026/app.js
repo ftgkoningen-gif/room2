@@ -1404,7 +1404,7 @@ function renderWedstrijden(listId = "wedstrijdenList", emptyId = "wedstrijdenEmp
       lookup[sp.naam] = { ...sp, deelnemer: d.naam, ...(wissel ? { wisselVoor: wissel.vanaf } : {}) };
     }
     for (const wissel of (d.wissels || [])) {
-      lookup[wissel.in] = { naam: wissel.in, land: wissel.land_in, positie: wissel.positie_in, deelnemer: d.naam, wisselVanaf: wissel.vanaf };
+      lookup[wissel.in] = { naam: wissel.in, land: wissel.land_in, positie: wissel.positie_in, deelnemer: d.naam, wisselVanaf: wissel.vanaf, correctie: wissel.correctie || 0 };
     }
   }
 
@@ -1541,6 +1541,12 @@ function computeMatchContribs(w, lookup) {
         pts: p
       });
       subtotal += p;
+    }
+
+    // Correctie: eenmalig op de eerste wedstrijd van een wissel-speler
+    if (info.correctie && info.wisselVanaf && w.datum === info.wisselVanaf) {
+      lines.push({ label: "Correctie", pts: info.correctie });
+      subtotal += info.correctie;
     }
 
     if (lines.length > 0) {
