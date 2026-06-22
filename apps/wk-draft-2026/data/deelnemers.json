@@ -144,6 +144,18 @@
         { "naam": "M. van de Ven", "land": "Nederland", "positie": "V" },
         { "naam": "R. Gravenberch", "land": "Nederland", "positie": "M" },
         { "naam": "J. Álvarez", "land": "Argentinië", "positie": "A" }
+      ],
+      "wissels": [
+        {
+          "window": 1,
+          "uit": "Raphinha",
+          "land_uit": "Brazilië",
+          "positie_uit": "A",
+          "in": "Matheus Cunha",
+          "land_in": "Brazilië",
+          "positie_in": "A",
+          "vanaf": "2026-06-22"
+        }
       ]
     },
     {
