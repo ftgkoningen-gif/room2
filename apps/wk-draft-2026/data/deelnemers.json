@@ -116,6 +116,18 @@
         { "naam": "R. James", "land": "Engeland", "positie": "V" },
         { "naam": "J. Bellingham", "land": "Engeland", "positie": "M" },
         { "naam": "D. Rice", "land": "Engeland", "positie": "M" }
+      ],
+      "wissels": [
+        {
+          "window": 1,
+          "uit": "A. Onana",
+          "land_uit": "België",
+          "positie_uit": "M",
+          "in": "Ferran Torres",
+          "land_in": "Spanje",
+          "positie_in": "A",
+          "vanaf": "2026-06-22"
+        }
       ]
     },
     {
