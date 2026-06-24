@@ -440,7 +440,9 @@ function switchTab(name) {
 // ("T. Soucek") en varianten in hoofdlettergebruik ("Son Heung-min").
 // ──────────────────────────────────────────────────────────────────
 function normNaam(s) {
-  return String(s ?? '').normalize('NFD')
+  return String(s ?? '')
+    .replace(/&apos;/g, "'").replace(/&amp;/g, '&').replace(/&quot;/g, '"')
+    .normalize('NFD')
     .replace(/\p{Diacritic}/gu, '')
     .toLowerCase()
     .replace(/[''`]+/g, '')          // apostrofs verwijderen: O'Reilly → Oreilly

@@ -228,6 +228,18 @@
         { "naam": "R. Lukaku", "land": "België", "positie": "A" },
         { "naam": "O. Dembélé", "land": "Frankrijk", "positie": "A" },
         { "naam": "L. Messi", "land": "Argentinië", "positie": "A" }
+      ],
+      "wissels": [
+        {
+          "window": 1,
+          "uit": "A. Davies",
+          "land_uit": "Canada",
+          "positie_uit": "V",
+          "in": "Facundo Medina",
+          "land_in": "Argentinië",
+          "positie_in": "V",
+          "vanaf": "2026-06-22"
+        }
       ]
     },
     {
