@@ -70,6 +70,16 @@ async function supabase(method, table, body, query = '') {
   }
 }
 
+function buildEigenGoalEvents(eventsData, fixtureId) {
+  const events = [];
+  for (const e of (eventsData.response ?? [])) {
+    if (e.type === 'Goal' && e.detail === 'Own Goal' && e.player?.name) {
+      events.push({ api_fixture_id: fixtureId, speler: e.player.name, type: 'eigenGoal', detail: null });
+    }
+  }
+  return events;
+}
+
 function buildEvents(playersData, fixtureId, thuisNL, uitslag) {
   const events = [];
   for (const teamBlok of (playersData.response ?? [])) {
@@ -142,9 +152,15 @@ for (const w of fixtures) {
   const id = w.api_fixture_id;
   console.log(`► Fixture ${id}: ${w.thuis} vs ${w.uit} (${w.datum})`);
 
-  const playersData = await apiFetch(`/fixtures/players?fixture=${id}`);
+  const [playersData, eventsData] = await Promise.all([
+    apiFetch(`/fixtures/players?fixture=${id}`),
+    apiFetch(`/fixtures/events?fixture=${id}`),
+  ]);
   const uitslag = { thuis: w.uitslag_thuis, uit: w.uitslag_uit };
-  const events = buildEvents(playersData, id, w.thuis, uitslag);
+  const events = [
+    ...buildEvents(playersData, id, w.thuis, uitslag),
+    ...buildEigenGoalEvents(eventsData, id),
+  ];
 
   // Invallerstabel afdrukken (gespeeld 1-44 min)
   const ingevallen = events.filter(e => e.type === 'ingevallen');
@@ -152,6 +168,11 @@ for (const w of fixtures) {
     console.log(`  Ingevallen (<45 min, ${ingevallen.length} spelers):`);
     const uniq = [...new Set(ingevallen.map(e => e.speler))];
     uniq.forEach(naam => console.log(`    - ${naam}`));
+  }
+  const eigenGoals = events.filter(e => e.type === 'eigenGoal');
+  if (eigenGoals.length) {
+    console.log(`  Eigen doelpunten (${eigenGoals.length}):`);
+    eigenGoals.forEach(e => console.log(`    - ${e.speler}`));
   }
 
   // Verwijder bestaande events en herinsert
