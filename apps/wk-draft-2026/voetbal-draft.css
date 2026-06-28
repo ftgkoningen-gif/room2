@@ -3205,3 +3205,262 @@ a:focus-visible {
 @media (max-width: 360px) {
   .draft-group__grid { grid-template-columns: 1fr; }
 }
+
+/* ── Fase-groepen in wedstrijdenlijst ── */
+.fase-groep {
+  border-bottom: 1px solid var(--rule);
+}
+.fase-groep__hdr {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 16px;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+}
+.fase-groep__hdr::-webkit-details-marker { display: none; }
+.fase-groep__hdr:hover { background: var(--paper-deep, #ede8e0); }
+.fase-groep__label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-mute);
+  flex: 1;
+}
+.fase-groep--current .fase-groep__label {
+  color: var(--pitch);
+}
+.fase-groep--current > .fase-groep__hdr {
+  background: rgba(11, 91, 62, 0.05);
+}
+.fase-groep__meta {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--ink-mute);
+}
+.fase-groep__chev {
+  font-size: 0.75rem;
+  color: var(--ink-mute);
+  transition: transform 120ms;
+}
+.fase-groep[open] > .fase-groep__hdr .fase-groep__chev { transform: rotate(180deg); }
+.fase-groep__body { padding: 0; }
+
+/* ═══════════════════════════════════════════════════════════
+   KNOCKOUTFASE BRACKET
+   ═══════════════════════════════════════════════════════════ */
+
+.ko-wrap { padding: 0 0 40px; }
+
+.ko-page-hdr {
+  padding: 32px 24px 20px;
+  border-bottom: 1px solid var(--rule);
+}
+.ko-page-hdr__eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.63rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  margin-bottom: 6px;
+}
+.ko-page-hdr__title {
+  font-family: var(--font-display);
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0;
+  line-height: 1.1;
+}
+
+.ko-scroll-outer {
+  overflow-x: auto;
+  padding: 28px 24px 28px;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ── Round-name header row ── */
+.ko-hdr-row {
+  display: flex;
+  align-items: flex-end;
+  min-width: max-content;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 0;
+}
+.ko-hdr-cell {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink-mute);
+  padding: 0 4px;
+  text-align: center;
+  flex-shrink: 0;
+}
+.ko-hdr-cell--round { width: 160px; }
+.ko-hdr-cell--conn  { width: 28px; }
+.ko-hdr-cell--fin   { width: 196px; text-align: center; }
+
+/* ── Bracket layout ── */
+.ko-bracket {
+  display: flex;
+  align-items: center;
+  min-width: max-content;
+  gap: 0;
+}
+
+.ko-half {
+  display: flex;
+  align-items: flex-start;
+}
+
+/* ── Round columns ── */
+.ko-round {
+  display: flex;
+  flex-direction: column;
+  width: 160px;
+  flex-shrink: 0;
+}
+
+/* ── Match containers (height doubles per round, 8 R16 × 80px = 640px total) ── */
+.ko-match {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.ko-round--r16 .ko-match { height: 80px; }
+.ko-round--qf  .ko-match { height: 160px; }
+.ko-round--sf  .ko-match { height: 320px; }
+.ko-round--hf  .ko-match { height: 640px; }
+
+/* ── Match card ── */
+.ko-card {
+  width: 148px;
+  border: 1px solid var(--rule);
+  border-radius: 5px;
+  overflow: hidden;
+  background: var(--paper-card);
+}
+.ko-card--tbd {
+  border-style: dashed;
+}
+.ko-card__date {
+  padding: 2px 10px;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.06em;
+  color: var(--gold);
+  background: rgba(190,155,68,0.09);
+  border-bottom: 1px solid var(--rule);
+  text-align: center;
+}
+.ko-team {
+  padding: 6px 8px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.ko-team span { overflow: hidden; text-overflow: ellipsis; }
+.ko-team--tbd {
+  color: var(--ink-mute);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 0.72rem;
+}
+.ko-sep { height: 1px; background: var(--rule); }
+
+/* ── Connectors ── */
+.ko-connectors {
+  display: flex;
+  flex-direction: column;
+  width: 28px;
+  flex-shrink: 0;
+}
+
+.ko-connector {
+  position: relative;
+  flex-shrink: 0;
+}
+
+/* Heights: each connector = one target-round match height */
+.ko-connectors--r16-qf .ko-connector { height: 160px; }
+.ko-connectors--qf-sf  .ko-connector { height: 320px; }
+.ko-connectors--sf-hf  .ko-connector { height: 640px; }
+
+/* Left half: ] bracket (open to the right) */
+.ko-connector::before {
+  content: '';
+  position: absolute;
+  top: 25%;
+  left: 0;
+  width: 14px;
+  height: 50%;
+  border-top: 1px solid var(--rule);
+  border-right: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+.ko-connector::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 14px;
+  right: 0;
+  height: 1px;
+  background: var(--rule);
+  transform: translateY(-50%);
+}
+
+/* Right half: [ bracket (open to the left) */
+.ko-connectors--mirror .ko-connector::before {
+  left: auto;
+  right: 0;
+  border-right: none;
+  border-left: 1px solid var(--rule);
+}
+.ko-connectors--mirror .ko-connector::after {
+  left: 0;
+  right: 14px;
+}
+
+/* ── Finale column (center) ── */
+.ko-finale-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 196px;
+  flex-shrink: 0;
+  padding: 0 12px;
+}
+.ko-finale-trophy { font-size: 2rem; margin-bottom: 8px; line-height: 1; }
+.ko-finale-round {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 4px;
+  letter-spacing: 0.02em;
+}
+.ko-finale-date {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--ink-mute);
+  margin-bottom: 16px;
+}
+.ko-card--finale {
+  width: 168px;
+  border-color: var(--gold);
+  border-width: 2px;
+}
+.ko-card--finale .ko-team { font-size: 0.85rem; }

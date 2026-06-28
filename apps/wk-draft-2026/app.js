@@ -1383,6 +1383,68 @@ function renderTeams() {
 // ──────────────────────────────────────────────────────────────────
 // Wedstrijden
 // ──────────────────────────────────────────────────────────────────
+function buildLookup() {
+  const lookup = {};
+  for (const d of state.deelnemers) {
+    for (const sp of d.spelers) {
+      const wissel = (d.wissels || []).find(w => w.uit === sp.naam);
+      lookup[sp.naam] = { ...sp, deelnemer: d.naam, ...(wissel ? { wisselVoor: wissel.vanaf } : {}) };
+    }
+    for (const wissel of (d.wissels || [])) {
+      lookup[wissel.in] = { naam: wissel.in, land: wissel.land_in, positie: wissel.positie_in, deelnemer: d.naam, wisselVanaf: wissel.vanaf, correctie: wissel.correctie || 0 };
+    }
+  }
+  return lookup;
+}
+
+function renderMatchRow(w, lookup) {
+  const datum = formatShortDate(w.datum);
+  const score = w.uitslag ? `${w.uitslag.thuis}–${w.uitslag.uit}` : "";
+  const pensLabel = w.pens ? ` (${w.pens.thuis}–${w.pens.uit} pen)` : "";
+  const faseLabelStr = {
+    "groep": "Groep", "1/8": "1/8", "1/4": "1/4", "1/2": "1/2", "F": "Finale", "bronze": "Brons"
+  }[w.fase] || w.fase || "—";
+
+  const matchPts = computeMatchContribs(w, lookup);
+  const totalPts = matchPts.reduce((s, x) => s + x.subtotal, 0);
+
+  const rows = matchPts
+    .sort((a, b) => b.subtotal - a.subtotal)
+    .map(c => {
+      const lineStr = c.lines.map(l => `${l.label} <b>${l.pts > 0 ? '+' : ''}${l.pts}</b>`).join(" · ");
+      const ptsCls = c.subtotal < 0 ? "is-neg" : (c.subtotal > 0 ? "is-pos" : "");
+      return `
+        <li class="contrib">
+          <span class="contrib__pos contrib__pos--${c.speler.positie}">${c.speler.positie}</span>
+          <span class="contrib__name" data-speler="${escapeHtml(c.speler.naam)}" data-land="${escapeHtml(c.speler.land)}" tabindex="0" role="button">${escapeHtml(c.speler.naam)}</span>
+          <span class="contrib__owner">— ${escapeHtml(c.deelnemer)}</span>
+          <span class="contrib__lines">${lineStr}</span>
+          <span class="contrib__total ${ptsCls}">${c.subtotal > 0 ? '+' : ''}${c.subtotal}</span>
+        </li>`;
+    }).join("");
+
+  return `
+    <details class="match-row">
+      <summary class="match-row__head">
+        <span class="match-row__date">${datum}</span>
+        <span class="match-row__fase">${faseLabelStr}</span>
+        <span class="match-row__teams">
+          <span class="match-row__team">${escapeHtml(w.thuis)}</span>
+          <span class="match-row__score mono">${score}${pensLabel}</span>
+          <span class="match-row__team">${escapeHtml(w.uit)}</span>
+        </span>
+        <span class="match-row__dpts mono">${totalPts >= 0 ? '+' : ''}${totalPts} pt</span>
+        <span class="match-row__chev" aria-hidden="true">▾</span>
+      </summary>
+      <div class="match-row__body">
+        ${matchPts.length
+          ? `<ul class="contribs">${rows}</ul>`
+          : `<p class="match-row__empty italic">Geen gedrafte spelers actief in deze wedstrijd.</p>`
+        }
+      </div>
+    </details>`;
+}
+
 function renderWedstrijden(listId = "wedstrijdenList", emptyId = "wedstrijdenEmpty") {
   const list = document.getElementById(listId);
   const empty = document.getElementById(emptyId);
@@ -1394,77 +1456,55 @@ function renderWedstrijden(listId = "wedstrijdenList", emptyId = "wedstrijdenEmp
   }
   empty.classList.add("hidden");
 
-  const sorted = [...state.wedstrijden].sort((a, b) =>
-    (a.datum || "").localeCompare(b.datum || "")
-  );
+  const lookup = buildLookup();
 
-  // Pre-bouw speler-lookup: naam → {speler obj, deelnemer naam}
-  const lookup = {};
-  for (const d of state.deelnemers) {
-    for (const sp of d.spelers) {
-      const wissel = (d.wissels || []).find(w => w.uit === sp.naam);
-      lookup[sp.naam] = { ...sp, deelnemer: d.naam, ...(wissel ? { wisselVoor: wissel.vanaf } : {}) };
-    }
-    for (const wissel of (d.wissels || [])) {
-      lookup[wissel.in] = { naam: wissel.in, land: wissel.land_in, positie: wissel.positie_in, deelnemer: d.naam, wisselVanaf: wissel.vanaf, correctie: wissel.correctie || 0 };
-    }
+  // Group by fase (groepsfase = has poule OR fase === 'groep')
+  const KNOCKOUT_ORDER = ['1/8', '1/4', '1/2', 'F'];
+  const byFase = {};
+  for (const w of state.wedstrijden) {
+    const f = (w.poule || w.fase === 'groep' || !w.fase) ? 'groep' : w.fase;
+    if (!byFase[f]) byFase[f] = [];
+    byFase[f].push(w);
   }
+  for (const g of Object.values(byFase)) g.sort((a, b) => (a.datum || '').localeCompare(b.datum || ''));
 
-  list.innerHTML = sorted.map(w => {
-    const datum = formatShortDate(w.datum);
-    const score = w.uitslag ? `${w.uitslag.thuis}–${w.uitslag.uit}` : "";
-    const pensLabel = w.pens ? ` (${w.pens.thuis}–${w.pens.uit} pen)` : "";
-    const faseLabelStr = {
-      "groep": "Groep",
-      "1/8": "1/8 finale",
-      "1/4": "Kwart",
-      "1/2": "Halve",
-      "F": "Finale",
-      "bronze": "Brons"
-    }[w.fase] || w.fase || "—";
+  // Determine current round (first knockout round with upcoming/unfinished matches)
+  const today = new Date().toISOString().slice(0, 10);
+  const presentKnockout = KNOCKOUT_ORDER.filter(f => byFase[f]);
+  let currentFase = null;
+  for (const f of presentKnockout) {
+    if ((byFase[f] || []).some(w => !w.uitslag || w.datum >= today)) { currentFase = f; break; }
+  }
+  if (!currentFase && presentKnockout.length) currentFase = presentKnockout[presentKnockout.length - 1];
+  if (!currentFase) currentFase = 'groep';
 
-    // Bereken per speler in deze wedstrijd de punten
-    const matchPts = computeMatchContribs(w, lookup);
-    const totalPts = matchPts.reduce((s, x) => s + x.subtotal, 0);
+  const FASE_LABELS = { 'groep': 'Groepsfase', '1/8': 'Achtste Finale', '1/4': 'Kwartfinale', '1/2': 'Halve Finale', 'F': 'Finale' };
+  const currentIdx = KNOCKOUT_ORDER.indexOf(currentFase);
 
-    const rows = matchPts
-      .sort((a, b) => b.subtotal - a.subtotal)
-      .map(c => {
-        const lineStr = c.lines.map(l => `${l.label} <b>${l.pts > 0 ? '+' : ''}${l.pts}</b>`).join(" · ");
-        const ptsCls = c.subtotal < 0 ? "is-neg" : (c.subtotal > 0 ? "is-pos" : "");
-        return `
-          <li class="contrib">
-            <span class="contrib__pos contrib__pos--${c.speler.positie}">${c.speler.positie}</span>
-            <span class="contrib__name" data-speler="${escapeHtml(c.speler.naam)}" data-land="${escapeHtml(c.speler.land)}" tabindex="0" role="button">${escapeHtml(c.speler.naam)}</span>
-            <span class="contrib__owner">— ${escapeHtml(c.deelnemer)}</span>
-            <span class="contrib__lines">${lineStr}</span>
-            <span class="contrib__total ${ptsCls}">${c.subtotal > 0 ? '+' : ''}${c.subtotal}</span>
-          </li>
-        `;
-      }).join("");
+  // Display order: current → future knockout → past knockout → groepsfase
+  const sections = [];
+  if (byFase[currentFase]) sections.push({ fase: currentFase, open: true });
+  for (const f of KNOCKOUT_ORDER) {
+    if (byFase[f] && f !== currentFase && KNOCKOUT_ORDER.indexOf(f) > currentIdx) sections.push({ fase: f, open: false });
+  }
+  for (const f of [...KNOCKOUT_ORDER].reverse()) {
+    if (byFase[f] && f !== currentFase && KNOCKOUT_ORDER.indexOf(f) < currentIdx) sections.push({ fase: f, open: false });
+  }
+  if (byFase['groep'] && currentFase !== 'groep') sections.push({ fase: 'groep', open: false });
 
+  list.innerHTML = sections.map(sec => {
+    const matches = byFase[sec.fase] || [];
+    const matchHtml = matches.map(w => renderMatchRow(w, lookup)).join('');
     return `
-      <details class="match-row" ${matchPts.length ? "" : ""}>
-        <summary class="match-row__head">
-          <span class="match-row__date">${datum}</span>
-          <span class="match-row__fase">${faseLabelStr}</span>
-          <span class="match-row__teams">
-            <span class="match-row__team">${escapeHtml(w.thuis)}</span>
-            <span class="match-row__score mono">${score}${pensLabel}</span>
-            <span class="match-row__team">${escapeHtml(w.uit)}</span>
-          </span>
-          <span class="match-row__dpts mono">${totalPts >= 0 ? '+' : ''}${totalPts} pt</span>
-          <span class="match-row__chev" aria-hidden="true">▾</span>
+      <details class="fase-groep${sec.fase === currentFase ? ' fase-groep--current' : ''}" ${sec.open ? 'open' : ''}>
+        <summary class="fase-groep__hdr">
+          <span class="fase-groep__label">${FASE_LABELS[sec.fase] || sec.fase}</span>
+          <span class="fase-groep__meta">${matches.length} wedstr.</span>
+          <span class="fase-groep__chev" aria-hidden="true">▾</span>
         </summary>
-        <div class="match-row__body">
-          ${matchPts.length
-            ? `<ul class="contribs">${rows}</ul>`
-            : `<p class="match-row__empty italic">Geen gedrafte spelers actief in deze wedstrijd.</p>`
-          }
-        </div>
-      </details>
-    `;
-  }).join("");
+        <div class="fase-groep__body">${matchHtml}</div>
+      </details>`;
+  }).join('');
 }
 
 // Compute per-match contribution for every drafted player who had events.
@@ -1792,20 +1832,14 @@ function openTeamModal(naam) {
 function valideerWissels() {
   const overtredingen = [];
 
-  // Ranglijst NA de groepsfase: tel alleen punten van wedstrijden vóór de knockout.
-  // Dit is de maatstaf voor wie window 2 mag gebruiken.
-  const gesorteerd = [...state.deelnemers]
-    .map(d => {
-      const ptsGroepsfase = (d.spelers || []).reduce((sum, sp) => {
-        const wissel = (d.wissels || []).find(w => w.uit === sp.naam);
-        return sum + spelerPunten(sp, { voor: KNOCKOUT_START, ...(wissel ? { voor: wissel.vanaf < KNOCKOUT_START ? wissel.vanaf : KNOCKOUT_START } : {}) });
-      }, 0) + (d.wissels || []).reduce((sum, w) => {
-        const sp = { naam: w.in, land: w.land_in, positie: w.positie_in };
-        return sum + spelerPunten(sp, { vanaf: w.vanaf, voor: KNOCKOUT_START });
-      }, 0);
-      return { naam: d.naam, pts: ptsGroepsfase };
-    })
-    .sort((a, b) => b.pts - a.pts);
+  // Ranglijst NA de groepsfase (handmatig vastgesteld door organisatoren,
+  // omdat niet alle groepswedstrijden reeds verwerkt zijn in Supabase).
+  // Bijwerken zodra alle groepsfase-data compleet is.
+  const GROEPSFASE_EINDSTAND = [
+    'Geert-jan', 'Dave', 'Ferdi', 'Pieter', 'Dimitri', 'Jordi', 'Frank',
+    'Yvette', 'Duuk', 'Richard', 'Rick', 'Geston', 'Rosanne',
+  ];
+  const gesorteerd = GROEPSFASE_EINDSTAND.map((naam, i) => ({ naam, pts: GROEPSFASE_EINDSTAND.length - i }));
   const totaal = gesorteerd.length;
   // Onderste helft = posities vanaf Math.ceil(totaal/2) + 1
   const onderstHelft = new Set(
