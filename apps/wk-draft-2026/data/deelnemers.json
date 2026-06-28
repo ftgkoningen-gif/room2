@@ -870,6 +870,18 @@
           "land": "Portugal",
           "positie": "A"
         }
+      ],
+      "wissels": [
+        {
+          "window": 1,
+          "uit": "Gonçalo Inácio",
+          "land_uit": "Portugal",
+          "positie_uit": "V",
+          "in": "Francisco Conceição",
+          "land_in": "Portugal",
+          "positie_in": "A",
+          "vanaf": "2026-06-28"
+        }
       ]
     },
     {
