@@ -83,6 +83,16 @@
           "land_in": "Nederland",
           "positie_in": "A",
           "vanaf": "2026-06-18"
+        },
+        {
+          "window": 2,
+          "uit": "Neymar",
+          "land_uit": "Brazilië",
+          "positie_uit": "A",
+          "in": "L. Díaz",
+          "land_in": "Colombia",
+          "positie_in": "M",
+          "vanaf": "2026-06-28"
         }
       ]
     },
@@ -183,6 +193,16 @@
           "land_in": "Duitsland",
           "positie_in": "V",
           "vanaf": "2026-06-18"
+        },
+        {
+          "window": 2,
+          "uit": "N. Schlotterbeck",
+          "land_uit": "Duitsland",
+          "positie_uit": "V",
+          "in": "Douglas Santos",
+          "land_in": "Brazilië",
+          "positie_in": "V",
+          "vanaf": "2026-06-28"
         }
       ]
     },
@@ -267,6 +287,16 @@
           "land_in": "Verenigde Staten",
           "positie_in": "A",
           "vanaf": "2026-06-21"
+        },
+        {
+          "window": 2,
+          "uit": "Y. Bounou",
+          "land_uit": "Marokko",
+          "positie_uit": "K",
+          "in": "W. McKennie",
+          "land_in": "Verenigde Staten",
+          "positie_in": "M",
+          "vanaf": "2026-06-28"
         }
       ]
     },
@@ -327,6 +357,16 @@
           "land_in": "Mexico",
           "positie_in": "M",
           "vanaf": "2026-06-18"
+        },
+        {
+          "window": 2,
+          "uit": "S. Arias",
+          "land_uit": "Colombia",
+          "positie_uit": "V",
+          "in": "G. Puerta",
+          "land_in": "Colombia",
+          "positie_in": "M",
+          "vanaf": "2026-06-28"
         }
       ]
     }
