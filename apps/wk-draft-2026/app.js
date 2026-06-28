@@ -220,7 +220,7 @@ const WK_START = new Date("2026-06-11T18:00:00Z");
 // Wisselwindows (zie reglement):
 // Window 1: vrij te gebruiken tot vlak vóór de knockoutfase — iedereen 1×
 // Window 2: alleen de onderste helft van het klassement ná de groepsfase — 1×
-const KNOCKOUT_START = "2026-06-27"; // exclusief — groepsfase eindigt ~26 juni
+const KNOCKOUT_START = "2026-06-28"; // eerste KO-wedstrijd — window 1 geldig t/m deze dag
 
 // ──────────────────────────────────────────────────────────────────
 // Init
@@ -1860,9 +1860,9 @@ function valideerWissels() {
         continue;
       }
 
-      // Window 1: wissel moet ingaan vóór start knockoutfase
-      if (w.window === 1 && w.vanaf >= KNOCKOUT_START) {
-        overtredingen.push(`${prefix} — window 1 maar datum ${w.vanaf} valt ná de groepsfase (knockoutfase start ${KNOCKOUT_START})`);
+      // Window 1: wissel moet ingaan t/m de dag van de eerste KO-wedstrijd
+      if (w.window === 1 && w.vanaf > KNOCKOUT_START) {
+        overtredingen.push(`${prefix} — window 1 maar datum ${w.vanaf} valt ná de eerste KO-wedstrijd (${KNOCKOUT_START})`);
       }
 
       // Window 2: wissel moet ingaan ná start knockoutfase

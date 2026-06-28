@@ -4,17 +4,61 @@
     {
       "naam": "Dave",
       "spelers": [
-        { "naam": "Q. Timber", "land": "Nederland", "positie": "M" },
-        { "naam": "L. Trossard", "land": "België", "positie": "A" },
-        { "naam": "Marcos Llorente", "land": "Spanje", "positie": "M" },
-        { "naam": "T. Hernández", "land": "Frankrijk", "positie": "V" },
-        { "naam": "Kylian Mbappé", "land": "Frankrijk", "positie": "A" },
-        { "naam": "N. Molina", "land": "Argentinië", "positie": "V" },
-        { "naam": "Rafael Leão", "land": "Portugal", "positie": "A" },
-        { "naam": "J. Pickford", "land": "Engeland", "positie": "K" },
-        { "naam": "E. Konsa", "land": "Engeland", "positie": "V" },
-        { "naam": "B. Saka", "land": "Engeland", "positie": "A" },
-        { "naam": "J. Gvardiol", "land": "Kroatië", "positie": "V" }
+        {
+          "naam": "Q. Timber",
+          "land": "Nederland",
+          "positie": "M"
+        },
+        {
+          "naam": "L. Trossard",
+          "land": "België",
+          "positie": "A"
+        },
+        {
+          "naam": "Marcos Llorente",
+          "land": "Spanje",
+          "positie": "M"
+        },
+        {
+          "naam": "T. Hernández",
+          "land": "Frankrijk",
+          "positie": "V"
+        },
+        {
+          "naam": "Kylian Mbappé",
+          "land": "Frankrijk",
+          "positie": "A"
+        },
+        {
+          "naam": "N. Molina",
+          "land": "Argentinië",
+          "positie": "V"
+        },
+        {
+          "naam": "Rafael Leão",
+          "land": "Portugal",
+          "positie": "A"
+        },
+        {
+          "naam": "J. Pickford",
+          "land": "Engeland",
+          "positie": "K"
+        },
+        {
+          "naam": "E. Konsa",
+          "land": "Engeland",
+          "positie": "V"
+        },
+        {
+          "naam": "B. Saka",
+          "land": "Engeland",
+          "positie": "A"
+        },
+        {
+          "naam": "J. Gvardiol",
+          "land": "Kroatië",
+          "positie": "V"
+        }
       ],
       "wissels": [
         {
@@ -33,17 +77,61 @@
     {
       "naam": "Dimitri",
       "spelers": [
-        { "naam": "M. Rashford", "land": "Engeland", "positie": "A" },
-        { "naam": "K. De Winter", "land": "België", "positie": "V" },
-        { "naam": "K. De Bruyne", "land": "België", "positie": "M" },
-        { "naam": "Unai Simón", "land": "Spanje", "positie": "K" },
-        { "naam": "Pau Cubarsí", "land": "Spanje", "positie": "V" },
-        { "naam": "Rodri", "land": "Spanje", "positie": "M" },
-        { "naam": "E. Fernández", "land": "Argentinië", "positie": "M" },
-        { "naam": "R. De Paul", "land": "Argentinië", "positie": "M" },
-        { "naam": "T. Almada", "land": "Argentinië", "positie": "A" },
-        { "naam": "N. O'Reilly", "land": "Engeland", "positie": "V" },
-        { "naam": "J. Stones", "land": "Engeland", "positie": "V" }
+        {
+          "naam": "M. Rashford",
+          "land": "Engeland",
+          "positie": "A"
+        },
+        {
+          "naam": "K. De Winter",
+          "land": "België",
+          "positie": "V"
+        },
+        {
+          "naam": "K. De Bruyne",
+          "land": "België",
+          "positie": "M"
+        },
+        {
+          "naam": "Unai Simón",
+          "land": "Spanje",
+          "positie": "K"
+        },
+        {
+          "naam": "Pau Cubarsí",
+          "land": "Spanje",
+          "positie": "V"
+        },
+        {
+          "naam": "Rodri",
+          "land": "Spanje",
+          "positie": "M"
+        },
+        {
+          "naam": "E. Fernández",
+          "land": "Argentinië",
+          "positie": "M"
+        },
+        {
+          "naam": "R. De Paul",
+          "land": "Argentinië",
+          "positie": "M"
+        },
+        {
+          "naam": "T. Almada",
+          "land": "Argentinië",
+          "positie": "A"
+        },
+        {
+          "naam": "N. O'Reilly",
+          "land": "Engeland",
+          "positie": "V"
+        },
+        {
+          "naam": "J. Stones",
+          "land": "Engeland",
+          "positie": "V"
+        }
       ],
       "wissels": [
         {
@@ -61,17 +149,61 @@
     {
       "naam": "Duuk",
       "spelers": [
-        { "naam": "Marquinhos", "land": "Brazilië", "positie": "V" },
-        { "naam": "Gabriel Martinelli", "land": "Brazilië", "positie": "A" },
-        { "naam": "Neymar", "land": "Brazilië", "positie": "A" },
-        { "naam": "I. Saibari", "land": "Marokko", "positie": "A" },
-        { "naam": "A. Ueda", "land": "Japan", "positie": "A" },
-        { "naam": "Gavi", "land": "Spanje", "positie": "M" },
-        { "naam": "Pedri", "land": "Spanje", "positie": "M" },
-        { "naam": "Nuno Mendes", "land": "Portugal", "positie": "V" },
-        { "naam": "E. Eze", "land": "Engeland", "positie": "M" },
-        { "naam": "H. Kane", "land": "Engeland", "positie": "A" },
-        { "naam": "N. Madueke", "land": "Engeland", "positie": "A" }
+        {
+          "naam": "Marquinhos",
+          "land": "Brazilië",
+          "positie": "V"
+        },
+        {
+          "naam": "Gabriel Martinelli",
+          "land": "Brazilië",
+          "positie": "A"
+        },
+        {
+          "naam": "Neymar",
+          "land": "Brazilië",
+          "positie": "A"
+        },
+        {
+          "naam": "I. Saibari",
+          "land": "Marokko",
+          "positie": "A"
+        },
+        {
+          "naam": "A. Ueda",
+          "land": "Japan",
+          "positie": "A"
+        },
+        {
+          "naam": "Gavi",
+          "land": "Spanje",
+          "positie": "M"
+        },
+        {
+          "naam": "Pedri",
+          "land": "Spanje",
+          "positie": "M"
+        },
+        {
+          "naam": "Nuno Mendes",
+          "land": "Portugal",
+          "positie": "V"
+        },
+        {
+          "naam": "E. Eze",
+          "land": "Engeland",
+          "positie": "M"
+        },
+        {
+          "naam": "H. Kane",
+          "land": "Engeland",
+          "positie": "A"
+        },
+        {
+          "naam": "N. Madueke",
+          "land": "Engeland",
+          "positie": "A"
+        }
       ],
       "wissels": [
         {
@@ -99,33 +231,133 @@
     {
       "naam": "Ferdi",
       "spelers": [
-        { "naam": "Gabriel Magalhães", "land": "Brazilië", "positie": "V" },
-        { "naam": "Lucas Paquetá", "land": "Brazilië", "positie": "M" },
-        { "naam": "Marc Cucurella", "land": "Spanje", "positie": "V" },
-        { "naam": "Nico Williams", "land": "Spanje", "positie": "A" },
-        { "naam": "J. Koundé", "land": "Frankrijk", "positie": "V" },
-        { "naam": "D. Upamecano", "land": "Frankrijk", "positie": "V" },
-        { "naam": "A. Rabiot", "land": "Frankrijk", "positie": "M" },
-        { "naam": "E. Martínez", "land": "Argentinië", "positie": "K" },
-        { "naam": "N. Otamendi", "land": "Argentinië", "positie": "V" },
-        { "naam": "E. Anderson", "land": "Engeland", "positie": "M" },
-        { "naam": "A. Gordon", "land": "Engeland", "positie": "A" }
+        {
+          "naam": "Gabriel Magalhães",
+          "land": "Brazilië",
+          "positie": "V"
+        },
+        {
+          "naam": "Lucas Paquetá",
+          "land": "Brazilië",
+          "positie": "M"
+        },
+        {
+          "naam": "Marc Cucurella",
+          "land": "Spanje",
+          "positie": "V"
+        },
+        {
+          "naam": "Nico Williams",
+          "land": "Spanje",
+          "positie": "A"
+        },
+        {
+          "naam": "J. Koundé",
+          "land": "Frankrijk",
+          "positie": "V"
+        },
+        {
+          "naam": "D. Upamecano",
+          "land": "Frankrijk",
+          "positie": "V"
+        },
+        {
+          "naam": "A. Rabiot",
+          "land": "Frankrijk",
+          "positie": "M"
+        },
+        {
+          "naam": "E. Martínez",
+          "land": "Argentinië",
+          "positie": "K"
+        },
+        {
+          "naam": "N. Otamendi",
+          "land": "Argentinië",
+          "positie": "V"
+        },
+        {
+          "naam": "E. Anderson",
+          "land": "Engeland",
+          "positie": "M"
+        },
+        {
+          "naam": "A. Gordon",
+          "land": "Engeland",
+          "positie": "A"
+        }
+      ],
+      "wissels": [
+        {
+          "window": 1,
+          "uit": "A. Gordon",
+          "land_uit": "Engeland",
+          "positie_uit": "A",
+          "in": "M. Rogers",
+          "land_in": "Engeland",
+          "positie_in": "M",
+          "vanaf": "2026-06-28"
+        }
       ]
     },
     {
       "naam": "Frank",
       "spelers": [
-        { "naam": "A. Onana", "land": "België", "positie": "M" },
-        { "naam": "Y. Tielemans", "land": "België", "positie": "M" },
-        { "naam": "Aymeric Laporte", "land": "Spanje", "positie": "V" },
-        { "naam": "Dani Olmo", "land": "Spanje", "positie": "M" },
-        { "naam": "A. Tchouaméni", "land": "Frankrijk", "positie": "M" },
-        { "naam": "C. Romero", "land": "Argentinië", "positie": "V" },
-        { "naam": "N. Tagliafico", "land": "Argentinië", "positie": "V" },
-        { "naam": "A. Mac Allister", "land": "Argentinië", "positie": "M" },
-        { "naam": "R. James", "land": "Engeland", "positie": "V" },
-        { "naam": "J. Bellingham", "land": "Engeland", "positie": "M" },
-        { "naam": "D. Rice", "land": "Engeland", "positie": "M" }
+        {
+          "naam": "A. Onana",
+          "land": "België",
+          "positie": "M"
+        },
+        {
+          "naam": "Y. Tielemans",
+          "land": "België",
+          "positie": "M"
+        },
+        {
+          "naam": "Aymeric Laporte",
+          "land": "Spanje",
+          "positie": "V"
+        },
+        {
+          "naam": "Dani Olmo",
+          "land": "Spanje",
+          "positie": "M"
+        },
+        {
+          "naam": "A. Tchouaméni",
+          "land": "Frankrijk",
+          "positie": "M"
+        },
+        {
+          "naam": "C. Romero",
+          "land": "Argentinië",
+          "positie": "V"
+        },
+        {
+          "naam": "N. Tagliafico",
+          "land": "Argentinië",
+          "positie": "V"
+        },
+        {
+          "naam": "A. Mac Allister",
+          "land": "Argentinië",
+          "positie": "M"
+        },
+        {
+          "naam": "R. James",
+          "land": "Engeland",
+          "positie": "V"
+        },
+        {
+          "naam": "J. Bellingham",
+          "land": "Engeland",
+          "positie": "M"
+        },
+        {
+          "naam": "D. Rice",
+          "land": "Engeland",
+          "positie": "M"
+        }
       ],
       "wissels": [
         {
@@ -143,17 +375,61 @@
     {
       "naam": "Geert-jan",
       "spelers": [
-        { "naam": "Bruno Guimarães", "land": "Brazilië", "positie": "M" },
-        { "naam": "Raphinha", "land": "Brazilië", "positie": "A" },
-        { "naam": "Vinícius Júnior", "land": "Brazilië", "positie": "A" },
-        { "naam": "Brahim Díaz", "land": "Marokko", "positie": "M" },
-        { "naam": "J. Musiala", "land": "Duitsland", "positie": "M" },
-        { "naam": "A. Pavlovic", "land": "Duitsland", "positie": "M" },
-        { "naam": "F. Wirtz", "land": "Duitsland", "positie": "M" },
-        { "naam": "B. Verbruggen", "land": "Nederland", "positie": "K" },
-        { "naam": "M. van de Ven", "land": "Nederland", "positie": "V" },
-        { "naam": "R. Gravenberch", "land": "Nederland", "positie": "M" },
-        { "naam": "J. Álvarez", "land": "Argentinië", "positie": "A" }
+        {
+          "naam": "Bruno Guimarães",
+          "land": "Brazilië",
+          "positie": "M"
+        },
+        {
+          "naam": "Raphinha",
+          "land": "Brazilië",
+          "positie": "A"
+        },
+        {
+          "naam": "Vinícius Júnior",
+          "land": "Brazilië",
+          "positie": "A"
+        },
+        {
+          "naam": "Brahim Díaz",
+          "land": "Marokko",
+          "positie": "M"
+        },
+        {
+          "naam": "J. Musiala",
+          "land": "Duitsland",
+          "positie": "M"
+        },
+        {
+          "naam": "A. Pavlovic",
+          "land": "Duitsland",
+          "positie": "M"
+        },
+        {
+          "naam": "F. Wirtz",
+          "land": "Duitsland",
+          "positie": "M"
+        },
+        {
+          "naam": "B. Verbruggen",
+          "land": "Nederland",
+          "positie": "K"
+        },
+        {
+          "naam": "M. van de Ven",
+          "land": "Nederland",
+          "positie": "V"
+        },
+        {
+          "naam": "R. Gravenberch",
+          "land": "Nederland",
+          "positie": "M"
+        },
+        {
+          "naam": "J. Álvarez",
+          "land": "Argentinië",
+          "positie": "A"
+        }
       ],
       "wissels": [
         {
@@ -171,17 +447,61 @@
     {
       "naam": "Geston",
       "spelers": [
-        { "naam": "M. Gusto", "land": "Frankrijk", "positie": "V" },
-        { "naam": "Y. Ayari", "land": "Zweden", "positie": "M" },
-        { "naam": "L. Bergvall", "land": "Zweden", "positie": "M" },
-        { "naam": "V. Gyökeres", "land": "Zweden", "positie": "A" },
-        { "naam": "R. Cherki", "land": "Frankrijk", "positie": "M" },
-        { "naam": "N. Kanté", "land": "Frankrijk", "positie": "M" },
-        { "naam": "Rúben Dias", "land": "Portugal", "positie": "V" },
-        { "naam": "Bruno Fernandes", "land": "Portugal", "positie": "M" },
-        { "naam": "Cristiano Ronaldo", "land": "Portugal", "positie": "A" },
-        { "naam": "D. Burn", "land": "Engeland", "positie": "V" },
-        { "naam": "M. Guéhi", "land": "Engeland", "positie": "V" }
+        {
+          "naam": "M. Gusto",
+          "land": "Frankrijk",
+          "positie": "V"
+        },
+        {
+          "naam": "Y. Ayari",
+          "land": "Zweden",
+          "positie": "M"
+        },
+        {
+          "naam": "L. Bergvall",
+          "land": "Zweden",
+          "positie": "M"
+        },
+        {
+          "naam": "V. Gyökeres",
+          "land": "Zweden",
+          "positie": "A"
+        },
+        {
+          "naam": "R. Cherki",
+          "land": "Frankrijk",
+          "positie": "M"
+        },
+        {
+          "naam": "N. Kanté",
+          "land": "Frankrijk",
+          "positie": "M"
+        },
+        {
+          "naam": "Rúben Dias",
+          "land": "Portugal",
+          "positie": "V"
+        },
+        {
+          "naam": "Bruno Fernandes",
+          "land": "Portugal",
+          "positie": "M"
+        },
+        {
+          "naam": "Cristiano Ronaldo",
+          "land": "Portugal",
+          "positie": "A"
+        },
+        {
+          "naam": "D. Burn",
+          "land": "Engeland",
+          "positie": "V"
+        },
+        {
+          "naam": "M. Guéhi",
+          "land": "Engeland",
+          "positie": "V"
+        }
       ],
       "wissels": [
         {
@@ -209,17 +529,61 @@
     {
       "naam": "Jordi",
       "spelers": [
-        { "naam": "Alisson", "land": "Brazilië", "positie": "K" },
-        { "naam": "N. Mazraoui", "land": "Marokko", "positie": "V" },
-        { "naam": "J. van Hecke", "land": "Nederland", "positie": "V" },
-        { "naam": "T. Reijnders", "land": "Nederland", "positie": "M" },
-        { "naam": "F. de Jong", "land": "Nederland", "positie": "M" },
-        { "naam": "Álex Baena", "land": "Spanje", "positie": "M" },
-        { "naam": "I. Konaté", "land": "Frankrijk", "positie": "V" },
-        { "naam": "D. Doué", "land": "Frankrijk", "positie": "A" },
-        { "naam": "N. Paz", "land": "Argentinië", "positie": "A" },
-        { "naam": "João Cancelo", "land": "Portugal", "positie": "V" },
-        { "naam": "Vitinha", "land": "Portugal", "positie": "M" }
+        {
+          "naam": "Alisson",
+          "land": "Brazilië",
+          "positie": "K"
+        },
+        {
+          "naam": "N. Mazraoui",
+          "land": "Marokko",
+          "positie": "V"
+        },
+        {
+          "naam": "J. van Hecke",
+          "land": "Nederland",
+          "positie": "V"
+        },
+        {
+          "naam": "T. Reijnders",
+          "land": "Nederland",
+          "positie": "M"
+        },
+        {
+          "naam": "F. de Jong",
+          "land": "Nederland",
+          "positie": "M"
+        },
+        {
+          "naam": "Álex Baena",
+          "land": "Spanje",
+          "positie": "M"
+        },
+        {
+          "naam": "I. Konaté",
+          "land": "Frankrijk",
+          "positie": "V"
+        },
+        {
+          "naam": "D. Doué",
+          "land": "Frankrijk",
+          "positie": "A"
+        },
+        {
+          "naam": "N. Paz",
+          "land": "Argentinië",
+          "positie": "A"
+        },
+        {
+          "naam": "João Cancelo",
+          "land": "Portugal",
+          "positie": "V"
+        },
+        {
+          "naam": "Vitinha",
+          "land": "Portugal",
+          "positie": "M"
+        }
       ],
       "wissels": [
         {
@@ -237,17 +601,61 @@
     {
       "naam": "Pieter",
       "spelers": [
-        { "naam": "A. Davies", "land": "Canada", "positie": "V" },
-        { "naam": "Thiago", "land": "Brazilië", "positie": "A" },
-        { "naam": "A. Hakimi", "land": "Marokko", "positie": "V" },
-        { "naam": "M. Neuer", "land": "Duitsland", "positie": "K" },
-        { "naam": "A. Rüdiger", "land": "Duitsland", "positie": "V" },
-        { "naam": "V. van Dijk", "land": "Nederland", "positie": "V" },
-        { "naam": "C. Gakpo", "land": "Nederland", "positie": "A" },
-        { "naam": "D. Malen", "land": "Nederland", "positie": "A" },
-        { "naam": "R. Lukaku", "land": "België", "positie": "A" },
-        { "naam": "O. Dembélé", "land": "Frankrijk", "positie": "A" },
-        { "naam": "L. Messi", "land": "Argentinië", "positie": "A" }
+        {
+          "naam": "A. Davies",
+          "land": "Canada",
+          "positie": "V"
+        },
+        {
+          "naam": "Thiago",
+          "land": "Brazilië",
+          "positie": "A"
+        },
+        {
+          "naam": "A. Hakimi",
+          "land": "Marokko",
+          "positie": "V"
+        },
+        {
+          "naam": "M. Neuer",
+          "land": "Duitsland",
+          "positie": "K"
+        },
+        {
+          "naam": "A. Rüdiger",
+          "land": "Duitsland",
+          "positie": "V"
+        },
+        {
+          "naam": "V. van Dijk",
+          "land": "Nederland",
+          "positie": "V"
+        },
+        {
+          "naam": "C. Gakpo",
+          "land": "Nederland",
+          "positie": "A"
+        },
+        {
+          "naam": "D. Malen",
+          "land": "Nederland",
+          "positie": "A"
+        },
+        {
+          "naam": "R. Lukaku",
+          "land": "België",
+          "positie": "A"
+        },
+        {
+          "naam": "O. Dembélé",
+          "land": "Frankrijk",
+          "positie": "A"
+        },
+        {
+          "naam": "L. Messi",
+          "land": "Argentinië",
+          "positie": "A"
+        }
       ],
       "wissels": [
         {
@@ -265,17 +673,61 @@
     {
       "naam": "Richard",
       "spelers": [
-        { "naam": "Y. Bounou", "land": "Marokko", "positie": "K" },
-        { "naam": "J. Tah", "land": "Duitsland", "positie": "V" },
-        { "naam": "J. Doku", "land": "België", "positie": "A" },
-        { "naam": "M. Maignan", "land": "Frankrijk", "positie": "K" },
-        { "naam": "W. Saliba", "land": "Frankrijk", "positie": "V" },
-        { "naam": "M. Olise", "land": "Frankrijk", "positie": "A" },
-        { "naam": "Lisandro Martínez", "land": "Argentinië", "positie": "V" },
-        { "naam": "Lautaro Martínez", "land": "Argentinië", "positie": "A" },
-        { "naam": "Diogo Costa", "land": "Portugal", "positie": "K" },
-        { "naam": "João Neves", "land": "Portugal", "positie": "M" },
-        { "naam": "Bernardo Silva", "land": "Portugal", "positie": "M" }
+        {
+          "naam": "Y. Bounou",
+          "land": "Marokko",
+          "positie": "K"
+        },
+        {
+          "naam": "J. Tah",
+          "land": "Duitsland",
+          "positie": "V"
+        },
+        {
+          "naam": "J. Doku",
+          "land": "België",
+          "positie": "A"
+        },
+        {
+          "naam": "M. Maignan",
+          "land": "Frankrijk",
+          "positie": "K"
+        },
+        {
+          "naam": "W. Saliba",
+          "land": "Frankrijk",
+          "positie": "V"
+        },
+        {
+          "naam": "M. Olise",
+          "land": "Frankrijk",
+          "positie": "A"
+        },
+        {
+          "naam": "Lisandro Martínez",
+          "land": "Argentinië",
+          "positie": "V"
+        },
+        {
+          "naam": "Lautaro Martínez",
+          "land": "Argentinië",
+          "positie": "A"
+        },
+        {
+          "naam": "Diogo Costa",
+          "land": "Portugal",
+          "positie": "K"
+        },
+        {
+          "naam": "João Neves",
+          "land": "Portugal",
+          "positie": "M"
+        },
+        {
+          "naam": "Bernardo Silva",
+          "land": "Portugal",
+          "positie": "M"
+        }
       ],
       "wissels": [
         {
@@ -303,49 +755,181 @@
     {
       "naam": "Rick",
       "spelers": [
-        { "naam": "Son Heung-Min", "land": "Zuid-Korea", "positie": "A" },
-        { "naam": "T. Soucek", "land": "Tsjechië", "positie": "M" },
-        { "naam": "S. McTominay", "land": "Schotland", "positie": "M" },
-        { "naam": "C. Pulisic", "land": "Verenigde Staten", "positie": "A" },
-        { "naam": "K. Havertz", "land": "Duitsland", "positie": "A" },
-        { "naam": "D. Dumfries", "land": "Nederland", "positie": "V" },
-        { "naam": "M. Depay", "land": "Nederland", "positie": "A" },
-        { "naam": "T. Courtois", "land": "België", "positie": "K" },
-        { "naam": "F. Valverde", "land": "Uruguay", "positie": "M" },
-        { "naam": "M. Ødegaard", "land": "Noorwegen", "positie": "M" },
-        { "naam": "E. Haaland", "land": "Noorwegen", "positie": "A" }
+        {
+          "naam": "Son Heung-Min",
+          "land": "Zuid-Korea",
+          "positie": "A"
+        },
+        {
+          "naam": "T. Soucek",
+          "land": "Tsjechië",
+          "positie": "M"
+        },
+        {
+          "naam": "S. McTominay",
+          "land": "Schotland",
+          "positie": "M"
+        },
+        {
+          "naam": "C. Pulisic",
+          "land": "Verenigde Staten",
+          "positie": "A"
+        },
+        {
+          "naam": "K. Havertz",
+          "land": "Duitsland",
+          "positie": "A"
+        },
+        {
+          "naam": "D. Dumfries",
+          "land": "Nederland",
+          "positie": "V"
+        },
+        {
+          "naam": "M. Depay",
+          "land": "Nederland",
+          "positie": "A"
+        },
+        {
+          "naam": "T. Courtois",
+          "land": "België",
+          "positie": "K"
+        },
+        {
+          "naam": "F. Valverde",
+          "land": "Uruguay",
+          "positie": "M"
+        },
+        {
+          "naam": "M. Ødegaard",
+          "land": "Noorwegen",
+          "positie": "M"
+        },
+        {
+          "naam": "E. Haaland",
+          "land": "Noorwegen",
+          "positie": "A"
+        }
       ]
     },
     {
       "naam": "Rosanne",
       "spelers": [
-        { "naam": "Casemiro", "land": "Brazilië", "positie": "M" },
-        { "naam": "Endrick", "land": "Brazilië", "positie": "A" },
-        { "naam": "Pedro Porro", "land": "Spanje", "positie": "V" },
-        { "naam": "Fabián Ruiz", "land": "Spanje", "positie": "M" },
-        { "naam": "Lamine Yamal", "land": "Spanje", "positie": "A" },
-        { "naam": "W. Zaïre-Emery", "land": "Frankrijk", "positie": "M" },
-        { "naam": "B. Barcola", "land": "Frankrijk", "positie": "A" },
-        { "naam": "M. Thuram", "land": "Frankrijk", "positie": "A" },
-        { "naam": "Diogo Dalot", "land": "Portugal", "positie": "V" },
-        { "naam": "Gonçalo Inácio", "land": "Portugal", "positie": "V" },
-        { "naam": "Pedro Neto", "land": "Portugal", "positie": "A" }
+        {
+          "naam": "Casemiro",
+          "land": "Brazilië",
+          "positie": "M"
+        },
+        {
+          "naam": "Endrick",
+          "land": "Brazilië",
+          "positie": "A"
+        },
+        {
+          "naam": "Pedro Porro",
+          "land": "Spanje",
+          "positie": "V"
+        },
+        {
+          "naam": "Fabián Ruiz",
+          "land": "Spanje",
+          "positie": "M"
+        },
+        {
+          "naam": "Lamine Yamal",
+          "land": "Spanje",
+          "positie": "A"
+        },
+        {
+          "naam": "W. Zaïre-Emery",
+          "land": "Frankrijk",
+          "positie": "M"
+        },
+        {
+          "naam": "B. Barcola",
+          "land": "Frankrijk",
+          "positie": "A"
+        },
+        {
+          "naam": "M. Thuram",
+          "land": "Frankrijk",
+          "positie": "A"
+        },
+        {
+          "naam": "Diogo Dalot",
+          "land": "Portugal",
+          "positie": "V"
+        },
+        {
+          "naam": "Gonçalo Inácio",
+          "land": "Portugal",
+          "positie": "V"
+        },
+        {
+          "naam": "Pedro Neto",
+          "land": "Portugal",
+          "positie": "A"
+        }
       ]
     },
     {
       "naam": "Yvette",
       "spelers": [
-        { "naam": "S. Giménez", "land": "Mexico", "positie": "A" },
-        { "naam": "E. Álvarez", "land": "Mexico", "positie": "M" },
-        { "naam": "J. Kimmich", "land": "Duitsland", "positie": "V" },
-        { "naam": "L. Goretzka", "land": "Duitsland", "positie": "M" },
-        { "naam": "L. Sané", "land": "Duitsland", "positie": "A" },
-        { "naam": "R. Doan", "land": "Japan", "positie": "M" },
-        { "naam": "Mikel Merino", "land": "Spanje", "positie": "M" },
-        { "naam": "Mikel Oyarzabal", "land": "Spanje", "positie": "A" },
-        { "naam": "S. Arias", "land": "Colombia", "positie": "V" },
-        { "naam": "D. Muñoz", "land": "Colombia", "positie": "V" },
-        { "naam": "R. Rios", "land": "Colombia", "positie": "M" }
+        {
+          "naam": "S. Giménez",
+          "land": "Mexico",
+          "positie": "A"
+        },
+        {
+          "naam": "E. Álvarez",
+          "land": "Mexico",
+          "positie": "M"
+        },
+        {
+          "naam": "J. Kimmich",
+          "land": "Duitsland",
+          "positie": "V"
+        },
+        {
+          "naam": "L. Goretzka",
+          "land": "Duitsland",
+          "positie": "M"
+        },
+        {
+          "naam": "L. Sané",
+          "land": "Duitsland",
+          "positie": "A"
+        },
+        {
+          "naam": "R. Doan",
+          "land": "Japan",
+          "positie": "M"
+        },
+        {
+          "naam": "Mikel Merino",
+          "land": "Spanje",
+          "positie": "M"
+        },
+        {
+          "naam": "Mikel Oyarzabal",
+          "land": "Spanje",
+          "positie": "A"
+        },
+        {
+          "naam": "S. Arias",
+          "land": "Colombia",
+          "positie": "V"
+        },
+        {
+          "naam": "D. Muñoz",
+          "land": "Colombia",
+          "positie": "V"
+        },
+        {
+          "naam": "R. Rios",
+          "land": "Colombia",
+          "positie": "M"
+        }
       ],
       "wissels": [
         {
