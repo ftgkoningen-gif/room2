@@ -1,150 +1,143 @@
 /* ═══════════════════════════════════════════════════════════════════
-   WK 2026 — knockoutfase.js (vervangt simulator.js)
-   Toont een statisch knockout-bracket voor WK 2026.
+   WK 2026 — knockoutfase (simulator.js)
+   Ronde-voor-ronde grid: leesbaar op mobiel én laptop.
    ═══════════════════════════════════════════════════════════════════ */
 (function () {
   'use strict';
 
-  /* ── Bracket data ─────────────────────────────────────────────── */
-  const LEFT = {
-    r16: [
-      { thuis: { v: '🇩🇪', n: 'Duitsland'  }, uit: { v: '🇵🇾', n: 'Paraguay'   } },
-      { thuis: { v: '🇫🇷', n: 'Frankrijk'  }, uit: { v: '🇸🇪', n: 'Zweden'     } },
-      { thuis: { v: '🇿🇦', n: 'Zuid-Afrika'}, uit: { v: '🇨🇦', n: 'Canada'     } },
-      { thuis: { v: '🇳🇱', n: 'Nederland'  }, uit: { v: '🇲🇦', n: 'Marokko'    } },
-      { thuis: { v: '🇵🇹', n: 'Portugal'   }, uit: { v: '🇭🇷', n: 'Kroatië'    } },
-      { thuis: { v: '🇪🇸', n: 'Spanje'     }, uit: { v: '🇦🇹', n: 'Oostenrijk' } },
-      { thuis: { v: '🇺🇸', n: 'Verenigde Staten' }, uit: { v: '🇧🇦', n: 'Bosnië en Herzegovina' } },
-      { thuis: { v: '🇧🇪', n: 'België'     }, uit: { v: '🇸🇳', n: 'Senegal'    } },
-    ],
-    qfData: ['4 jul', '4 jul', '6 jul', '7 jul'],
-    sfData: ['9 jul', '10 jul'],
-    hfDate: '14 jul',
-  };
+  /* ── Wedstrijddata per ronde ──────────────────────────────────────── */
+  const ROUNDS = [
+    {
+      id: 'r32', label: 'Achtste Finale', badge: '1/16 · R32',
+      dates: '28 jun – 1 jul', current: true,
+      matches: [
+        { t1: { v: '🇩🇪', n: 'Duitsland'            }, t2: { v: '🇵🇾', n: 'Paraguay'              }, datum: '28 jun' },
+        { t1: { v: '🇫🇷', n: 'Frankrijk'            }, t2: { v: '🇸🇪', n: 'Zweden'                }, datum: '28 jun' },
+        { t1: { v: '🇧🇷', n: 'Brazilië'             }, t2: { v: '🇯🇵', n: 'Japan'                 }, datum: '28 jun' },
+        { t1: { v: '🇨🇮', n: 'Ivoorkust'           }, t2: { v: '🇳🇴', n: 'Noorwegen'             }, datum: '28 jun' },
+        { t1: { v: '🇿🇦', n: 'Zuid-Afrika'         }, t2: { v: '🇨🇦', n: 'Canada'                }, datum: '29 jun' },
+        { t1: { v: '🇳🇱', n: 'Nederland'            }, t2: { v: '🇲🇦', n: 'Marokko'               }, datum: '29 jun' },
+        { t1: { v: '🇲🇽', n: 'Mexico'               }, t2: { v: '🇪🇨', n: 'Ecuador'               }, datum: '29 jun' },
+        { t1: { v: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', n: 'Engeland'            }, t2: { v: '🇨🇩', n: 'Congo-Kinshasa'        }, datum: '29 jun' },
+        { t1: { v: '🇵🇹', n: 'Portugal'             }, t2: { v: '🇭🇷', n: 'Kroatië'               }, datum: '30 jun' },
+        { t1: { v: '🇪🇸', n: 'Spanje'               }, t2: { v: '🇦🇹', n: 'Oostenrijk'            }, datum: '30 jun' },
+        { t1: { v: '🇦🇷', n: 'Argentinië'          }, t2: { v: '🇨🇻', n: 'Kaapverdië'            }, datum: '30 jun' },
+        { t1: { v: '🇦🇺', n: 'Australië'           }, t2: { v: '🇪🇬', n: 'Egypte'                }, datum: '30 jun' },
+        { t1: { v: '🇺🇸', n: 'Verenigde Staten'   }, t2: { v: '🇧🇦', n: 'Bosnië en Herzegovina' }, datum: '1 jul'  },
+        { t1: { v: '🇧🇪', n: 'België'              }, t2: { v: '🇸🇳', n: 'Senegal'               }, datum: '1 jul'  },
+        { t1: { v: '🇨🇭', n: 'Zwitserland'        }, t2: { v: '🇩🇿', n: 'Algerije'              }, datum: '1 jul'  },
+        { t1: { v: '🇨🇴', n: 'Colombia'            }, t2: { v: '🇬🇭', n: 'Ghana'                 }, datum: '1 jul'  },
+      ],
+    },
+    {
+      id: 'r16', label: 'Achtste Finale', badge: '1/8',
+      dates: '4–7 jul',
+      matches: [
+        { tbd: true, datum: '4 jul' },
+        { tbd: true, datum: '4 jul' },
+        { tbd: true, datum: '5 jul' },
+        { tbd: true, datum: '5 jul' },
+        { tbd: true, datum: '6 jul' },
+        { tbd: true, datum: '6 jul' },
+        { tbd: true, datum: '7 jul' },
+        { tbd: true, datum: '7 jul' },
+      ],
+    },
+    {
+      id: 'qf', label: 'Kwartfinale', badge: '1/4',
+      dates: '9–12 jul',
+      matches: [
+        { tbd: true, datum: '9 jul'  },
+        { tbd: true, datum: '10 jul' },
+        { tbd: true, datum: '11 jul' },
+        { tbd: true, datum: '12 jul' },
+      ],
+    },
+    {
+      id: 'sf', label: 'Halve Finale', badge: '1/2',
+      dates: '14–15 jul',
+      matches: [
+        { tbd: true, datum: '14 jul' },
+        { tbd: true, datum: '15 jul' },
+      ],
+    },
+    {
+      id: 'f', label: 'Finale', badge: 'Final',
+      dates: '19 jul', finale: true,
+      matches: [
+        { tbd: true, datum: '19 jul', finale: true },
+      ],
+    },
+  ];
 
-  const RIGHT = {
-    r16: [
-      { thuis: { v: '🇧🇷', n: 'Brazilië'    }, uit: { v: '🇯🇵', n: 'Japan'       } },
-      { thuis: { v: '🇨🇮', n: 'Ivoorkust'   }, uit: { v: '🇳🇴', n: 'Noorwegen'  } },
-      { thuis: { v: '🇲🇽', n: 'Mexico'      }, uit: { v: '🇪🇨', n: 'Ecuador'     } },
-      { thuis: { v: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', n: 'Engeland'   }, uit: { v: '🇨🇩', n: 'Congo-Kinshasa' } },
-      { thuis: { v: '🇦🇷', n: 'Argentinië'  }, uit: { v: '🇨🇻', n: 'Kaapverdië'  } },
-      { thuis: { v: '🇦🇺', n: 'Australië'   }, uit: { v: '🇪🇬', n: 'Egypte'      } },
-      { thuis: { v: '🇨🇭', n: 'Zwitserland' }, uit: { v: '🇩🇿', n: 'Algerije'    } },
-      { thuis: { v: '🇨🇴', n: 'Colombia'    }, uit: { v: '🇬🇭', n: 'Ghana'       } },
-    ],
-    qfData: ['5 jul', '6 jul', '7 jul', '7 jul'],
-    sfData: ['11 jul', '12 jul'],
-    hfDate: '15 jul',
-  };
-
-  /* ── HTML builders ─────────────────────────────────────────────── */
-  function r16Card(m) {
-    return `<div class="ko-match">
-      <div class="ko-card">
-        <div class="ko-team"><span class="ko-flag">${m.thuis.v}</span><span>${m.thuis.n}</span></div>
-        <div class="ko-sep"></div>
-        <div class="ko-team"><span class="ko-flag">${m.uit.v}</span><span>${m.uit.n}</span></div>
-      </div>
+  /* ── HTML builders ───────────────────────────────────────────────── */
+  function teamRow(t) {
+    return `<div class="ko-mcard__team">
+      <span class="ko-mcard__flag">${t.v}</span>
+      <span class="ko-mcard__name">${t.n}</span>
     </div>`;
   }
 
-  function tbdCard(date) {
-    return `<div class="ko-match">
-      <div class="ko-card ko-card--tbd">
-        <div class="ko-card__date">${date}</div>
-        <div class="ko-team ko-team--tbd"><span>TBD</span></div>
-        <div class="ko-sep"></div>
-        <div class="ko-team ko-team--tbd"><span>TBD</span></div>
-      </div>
-    </div>`;
-  }
-
-  function connectors(cls, n) {
-    return `<div class="ko-connectors ${cls}">${'<div class="ko-connector"></div>'.repeat(n)}</div>`;
-  }
-
-  function buildLeft() {
-    return `
-      <div class="ko-half ko-half--left">
-        <div class="ko-round ko-round--r16">${LEFT.r16.map(r16Card).join('')}</div>
-        ${connectors('ko-connectors--r16-qf', 4)}
-        <div class="ko-round ko-round--qf">${LEFT.qfData.map(tbdCard).join('')}</div>
-        ${connectors('ko-connectors--qf-sf', 2)}
-        <div class="ko-round ko-round--sf">${LEFT.sfData.map(tbdCard).join('')}</div>
-        ${connectors('ko-connectors--sf-hf', 1)}
-        <div class="ko-round ko-round--hf">${tbdCard(LEFT.hfDate)}</div>
-      </div>`;
-  }
-
-  function buildRight() {
-    return `
-      <div class="ko-half ko-half--right">
-        <div class="ko-round ko-round--hf">${tbdCard(RIGHT.hfDate)}</div>
-        ${connectors('ko-connectors--sf-hf ko-connectors--mirror', 1)}
-        <div class="ko-round ko-round--sf">${RIGHT.sfData.map(tbdCard).join('')}</div>
-        ${connectors('ko-connectors--qf-sf ko-connectors--mirror', 2)}
-        <div class="ko-round ko-round--qf">${RIGHT.qfData.map(tbdCard).join('')}</div>
-        ${connectors('ko-connectors--r16-qf ko-connectors--mirror', 4)}
-        <div class="ko-round ko-round--r16">${RIGHT.r16.map(r16Card).join('')}</div>
-      </div>`;
-  }
-
-  function buildFinale() {
-    return `
-      <div class="ko-finale-col">
-        <div class="ko-finale-trophy">🏆</div>
-        <div class="ko-finale-round">Finale</div>
-        <div class="ko-finale-date">19 juli 2026</div>
-        <div class="ko-card ko-card--tbd ko-card--finale">
-          <div class="ko-team ko-team--tbd"><span>TBD</span></div>
-          <div class="ko-sep"></div>
-          <div class="ko-team ko-team--tbd"><span>TBD</span></div>
+  function matchCard(m, roundId) {
+    if (m.finale && m.tbd) {
+      return `<span class="ko-finale-trophy">🏆</span>
+        <div class="ko-mcard ko-mcard--tbd ko-mcard--finale">
+          <div class="ko-mcard__team ko-mcard__team--tbd"><span class="ko-mcard__name">TBD</span></div>
+          <div class="ko-mcard__sep"></div>
+          <div class="ko-mcard__team ko-mcard__team--tbd"><span class="ko-mcard__name">TBD</span></div>
+          <div class="ko-mcard__meta">19 jul 2026</div>
         </div>
+        <div class="ko-finale-label">Finale</div>`;
+    }
+    if (m.tbd) {
+      return `<div class="ko-mcard ko-mcard--tbd">
+        <div class="ko-mcard__team ko-mcard__team--tbd"><span class="ko-mcard__name">TBD</span></div>
+        <div class="ko-mcard__sep"></div>
+        <div class="ko-mcard__team ko-mcard__team--tbd"><span class="ko-mcard__name">TBD</span></div>
+        <div class="ko-mcard__meta">${m.datum}</div>
       </div>`;
+    }
+    const activeClass = roundId === 'r32' ? ' ko-mcard--active' : '';
+    return `<div class="ko-mcard${activeClass}">
+      ${teamRow(m.t1)}
+      <div class="ko-mcard__sep"></div>
+      ${teamRow(m.t2)}
+      <div class="ko-mcard__meta">${m.datum}</div>
+    </div>`;
   }
 
-  /* Round-name header row, columns must match bracket column widths */
-  function buildHeader() {
-    const LEFT_ROUNDS  = ['Achtste Finale', 'Kwartfinale', 'Halve Finale', 'Halve Finale'];
-    const RIGHT_ROUNDS = ['Halve Finale', 'Kwartfinale', 'Achtste Finale'];
-    const conn = '<div class="ko-hdr-cell ko-hdr-cell--conn"></div>';
+  function roundCol(r) {
+    const cards = r.matches.map(m => matchCard(m, r.id)).join('');
+    const cls = [
+      'ko-col',
+      `ko-col--${r.id}`,
+      r.current ? 'ko-col--current' : '',
+      r.finale  ? 'ko-col--finale'  : '',
+    ].filter(Boolean).join(' ');
 
-    const leftCols = LEFT_ROUNDS.map((r, i) => {
-      const extra = i < LEFT_ROUNDS.length - 1 ? conn : '';
-      return `<div class="ko-hdr-cell ko-hdr-cell--round">${r}</div>${extra}`;
-    }).join('');
-
-    const rightCols = RIGHT_ROUNDS.map(r =>
-      `${conn}<div class="ko-hdr-cell ko-hdr-cell--round">${r}</div>`
-    ).join('');
-
-    return `<div class="ko-hdr-row">
-      ${leftCols}
-      <div class="ko-hdr-cell ko-hdr-cell--fin">Finale</div>
-      ${rightCols}
+    return `<div class="${cls}">
+      <div class="ko-col-hdr">
+        <div class="ko-col-hdr__label">${r.label}</div>
+        <div class="ko-col-hdr__meta">
+          <span class="ko-col-hdr__badge">${r.badge}</span>
+          <span class="ko-col-hdr__dates">${r.dates}</span>
+        </div>${r.current ? '\n        <div class="ko-col-hdr__live">▶ Nu bezig</div>' : ''}
+      </div>
+      <div class="ko-col-matches">${cards}</div>
     </div>`;
   }
 
   function buildKnockout() {
-    return `
-      <div class="ko-wrap">
-        <div class="ko-page-hdr">
-          <div class="ko-page-hdr__eyebrow">WK 2026 — Verenigde Staten, Canada & Mexico</div>
-          <h2 class="ko-page-hdr__title">Knockoutfase</h2>
-        </div>
-        <div class="ko-scroll-outer">
-          ${buildHeader()}
-          <div class="ko-bracket">
-            ${buildLeft()}
-            ${buildFinale()}
-            ${buildRight()}
-          </div>
-        </div>
-      </div>`;
+    return `<div class="ko-wrap">
+      <div class="ko-page-hdr">
+        <div class="ko-page-hdr__eyebrow">WK 2026 — VS · CA · MX</div>
+        <h2 class="ko-page-hdr__title">Knockoutfase</h2>
+      </div>
+      <div class="ko-rounds">${ROUNDS.map(roundCol).join('')}</div>
+    </div>`;
   }
 
-  /* ── Init: render direct bij load ─────────────────────────────── */
+  /* ── Init ────────────────────────────────────────────────────────── */
   function init() {
     const panel = document.getElementById('tab-simulator');
     if (!panel) return;
