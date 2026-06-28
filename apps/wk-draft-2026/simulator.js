@@ -144,24 +144,16 @@
       </div>`;
   }
 
-  /* ── Tab init ──────────────────────────────────────────────────── */
+  /* ── Init: render direct bij load ─────────────────────────────── */
   function init() {
     const panel = document.getElementById('tab-simulator');
-    if (!panel || panel.dataset.koinit) return;
-    panel.dataset.koinit = '1';
+    if (!panel) return;
     panel.innerHTML = buildKnockout();
   }
 
-  /* Render when tab becomes visible */
-  document.addEventListener('DOMContentLoaded', () => {
-    /* If tab is already active on load */
-    const panel = document.getElementById('tab-simulator');
-    if (panel && !panel.classList.contains('hidden')) init();
-
-    /* On tab-click */
-    document.querySelector('.nav')?.addEventListener('click', e => {
-      const btn = e.target.closest('[data-tab]');
-      if (btn?.dataset.tab === 'simulator') setTimeout(init, 0);
-    });
-  });
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
 })();
