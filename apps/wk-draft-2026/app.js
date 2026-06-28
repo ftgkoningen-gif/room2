@@ -283,30 +283,61 @@ async function loadFromSupabase() {
   try {
     const client = window.supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY);
 
-    const [wRes, eRes, sRes, kRes] = await Promise.all([
-      client.from("wk2026_wedstrijden").select("*"),
+    // Stap 1: wedstrijden eerst — nodig om event-filter op te bouwen
+    const wRes = await client.from("wk2026_wedstrijden").select("*");
+
+    // Alleen events ophalen voor verwerkte wedstrijden (gepland = geen events)
+    const verwerktIds = (wRes.data || [])
+      .filter(w => w.status === 'verwerkt')
+      .map(w => w.api_fixture_id);
+
+    // Stap 2: events + selecties + kansen parallel
+    const [eRes, sRes, kRes] = await Promise.all([
+      // Events: alleen benodigde kolommen + filter op verwerkte fixtures
       (async () => {
+        if (!verwerktIds.length) return { data: [], error: null };
         const PAGE = 1000;
-        // Stap 1: totaal aantal events ophalen (HEAD-only, geen data)
-        const { count, error: cErr } = await client.from("wk2026_events").select("*", { count: "exact", head: true });
+        const { count, error: cErr } = await client
+          .from("wk2026_events")
+          .select("api_fixture_id,speler,type,detail", { count: "exact", head: true })
+          .in("api_fixture_id", verwerktIds);
         if (cErr || !count) return { data: [], error: cErr };
-        // Stap 2: alle pagina's parallel ophalen
         const pages = Math.ceil(count / PAGE);
         const batches = await Promise.all(
           Array.from({ length: pages }, (_, i) =>
-            client.from("wk2026_events").select("*").range(i * PAGE, (i + 1) * PAGE - 1)
+            client.from("wk2026_events")
+              .select("api_fixture_id,speler,type,detail")
+              .in("api_fixture_id", verwerktIds)
+              .range(i * PAGE, (i + 1) * PAGE - 1)
           )
         );
         const data = batches.flatMap(b => b.data || []);
         const error = batches.find(b => b.error)?.error || null;
         return { data, error };
       })(),
+      // Selecties: localStorage cache met 24u TTL (wijzigen zelden tijdens toernooi)
       (async () => {
+        const CACHE_KEY = 'wk2026_selecties_v1';
+        const TTL = 24 * 60 * 60 * 1000;
+        try {
+          const cached = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null');
+          if (cached && (Date.now() - cached.ts) < TTL) {
+            return { data: cached.data, error: null, updatedAt: cached.updatedAt };
+          }
+        } catch (_) {}
         const [p1, p2] = await Promise.all([
           client.from("wk2026_selecties").select("*").range(0, 999),
           client.from("wk2026_selecties").select("*").range(1000, 1999),
         ]);
-        return { data: [...(p1.data||[]), ...(p2.data||[])], error: p1.error || p2.error };
+        const data = [...(p1.data||[]), ...(p2.data||[])];
+        const error = p1.error || p2.error;
+        const updatedAt = data.length
+          ? new Date(Math.max(...data.map(r => +new Date(r.updated_at || 0))))
+          : null;
+        if (!error && data.length) {
+          try { localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data, updatedAt })); } catch (_) {}
+        }
+        return { data, error, updatedAt };
       })(),
       client.from("wk2026_kansen").select("*"),
     ]);
@@ -382,9 +413,7 @@ async function loadFromSupabase() {
         ...l,
         selectie: byLand[l.naam] || l.selectie || []
       }));
-      state.selectiesUpdated = sRes.data.length
-        ? new Date(Math.max(...sRes.data.map(r => +new Date(r.updated_at || 0))))
-        : null;
+      state.selectiesUpdated = sRes.updatedAt || null;
     }
   } catch (e) {
     console.warn("Supabase-fetch mislukt:", e);
