@@ -216,6 +216,13 @@ async function upsertFixture(supabase: any, f: any) {
     if (eErr) throw eErr;
   }
 
+  // Verwijder handmatig ingevoerde placeholder-rijen (ID >= 200000) voor hetzelfde duel.
+  // Beide thuisthuis/uit-richtingen worden gecheckt voor het geval de API ze anders sorteert.
+  await supabase.from("wk2026_wedstrijden").delete()
+    .gte("api_fixture_id", 200000).eq("fase", fase).eq("thuis", thuis).eq("uit", uit);
+  await supabase.from("wk2026_wedstrijden").delete()
+    .gte("api_fixture_id", 200000).eq("fase", fase).eq("thuis", uit).eq("uit", thuis);
+
   return { fixtureId: id, events: events.length };
 }
 
@@ -448,7 +455,8 @@ export const wk2026RepairMissingEvents = task({
       const kandidaten = [...(verwerkt ?? []), ...(gepland ?? [])];
       fixtureIds = kandidaten
         .map((w: any) => w.api_fixture_id)
-        .filter((id: number) => !metEvents.has(id));
+        // Sla handmatig ingevoerde placeholders over (ID >= 200000 — geen echte API-fixtures)
+        .filter((id: number) => id < 200000 && !metEvents.has(id));
     }
 
     logger.info(`repair: ${fixtureIds.length} fixtures zonder events`);
@@ -481,7 +489,75 @@ export const wk2026RepairMissingEvents = task({
   },
 });
 
-// ─── 5. SQUADS-SYNC: wk2026-squads-sync ──────────────────────────────
+// ─── 5. BACKFILL: wk2026-backfill ────────────────────────────────────
+// Haalt ALLE WK 2026 fixtures op uit de API en verwerkt die welke
+// al gespeeld zijn (status FT/AET/PEN) maar nog niet in Supabase staan.
+// Gebruik dit om gemiste R32/R16/KO-wedstrijden in één keer bij te werken.
+// Triggeren via Trigger.dev dashboard: geen payload nodig.
+// Optioneel payload: { from: "2026-06-27", to: "2026-07-02" } om te filteren.
+
+type BackfillPayload = { from?: string; to?: string };
+
+export const wk2026Backfill = task({
+  id: "wk2026-backfill",
+  maxDuration: 600,
+  run: async (payload: BackfillPayload = {}) => {
+    const supabase = getSupabase();
+
+    const from = payload.from ?? "2026-06-27";
+    const to   = payload.to   ?? new Date().toISOString().slice(0, 10);
+
+    logger.info(`backfill: fixtures ophalen van ${from} t/m ${to}`);
+
+    const { response: fixtures } = await apiFetch(
+      `/fixtures?league=${LEAGUE_ID}&season=${SEASON}&from=${from}&to=${to}`
+    );
+    if (!fixtures?.length) {
+      logger.info("backfill: geen fixtures gevonden");
+      return { verwerkt: 0, overgeslagen: 0 };
+    }
+
+    logger.info(`backfill: ${fixtures.length} fixtures gevonden`);
+
+    // Welke zijn al verwerkt?
+    const { data: bestaand } = await supabase
+      .from("wk2026_wedstrijden")
+      .select("api_fixture_id, status");
+    const verwerktIds = new Set(
+      (bestaand ?? []).filter((r: any) => r.status === "verwerkt").map((r: any) => r.api_fixture_id)
+    );
+
+    let verwerkt = 0, overgeslagen = 0, fouten = 0;
+
+    for (const f of fixtures) {
+      const id: number = f.fixture.id;
+      const apiStatus = f.fixture.status?.short;
+      const isFinished = ["FT", "AET", "PEN"].includes(apiStatus);
+
+      if (verwerktIds.has(id)) { overgeslagen++; continue; }
+      if (!isFinished) {
+        logger.info(`backfill: fixture ${id} nog niet gespeeld (${apiStatus}), sla over`);
+        overgeslagen++;
+        continue;
+      }
+
+      try {
+        const result = await upsertFixture(supabase, f);
+        logger.info(`backfill: fixture ${id} (${toNL(f.teams.home.name)} vs ${toNL(f.teams.away.name)}) → ${result.events} events`);
+        verwerkt++;
+      } catch (err) {
+        logger.error(`backfill: fixture ${id} mislukt`, { err: String(err) });
+        fouten++;
+      }
+      await sleep(1200); // API-limiet respecteren
+    }
+
+    logger.info(`backfill klaar: ${verwerkt} verwerkt, ${overgeslagen} overgeslagen, ${fouten} fouten`);
+    return { verwerkt, overgeslagen, fouten };
+  },
+});
+
+// ─── 6. SQUADS-SYNC: wk2026-squads-sync ──────────────────────────────
 
 export const wk2026SquadsSync = schedules.task({
   id: "wk2026-squads-sync",
