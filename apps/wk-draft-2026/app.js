@@ -1459,7 +1459,7 @@ function renderWedstrijden(listId = "wedstrijdenList", emptyId = "wedstrijdenEmp
   const lookup = buildLookup();
 
   // Group by fase (groepsfase = has poule OR fase === 'groep')
-  const KNOCKOUT_ORDER = ['1/8', '1/4', '1/2', 'F'];
+  const KNOCKOUT_ORDER = ['1/16', '1/8', '1/4', '1/2', 'F'];
   const byFase = {};
   for (const w of state.wedstrijden) {
     const f = (w.poule || w.fase === 'groep' || !w.fase) ? 'groep' : w.fase;
@@ -1478,7 +1478,7 @@ function renderWedstrijden(listId = "wedstrijdenList", emptyId = "wedstrijdenEmp
   if (!currentFase && presentKnockout.length) currentFase = presentKnockout[presentKnockout.length - 1];
   if (!currentFase) currentFase = 'groep';
 
-  const FASE_LABELS = { 'groep': 'Groepsfase', '1/8': 'Achtste Finale', '1/4': 'Kwartfinale', '1/2': 'Halve Finale', 'F': 'Finale' };
+  const FASE_LABELS = { 'groep': 'Groepsfase', '1/16': 'Achtste Finale (R32)', '1/8': 'Achtste Finale', '1/4': 'Kwartfinale', '1/2': 'Halve Finale', 'F': 'Finale' };
   const currentIdx = KNOCKOUT_ORDER.indexOf(currentFase);
 
   // Display order: current → future knockout → past knockout → groepsfase
