@@ -282,46 +282,58 @@ async function loadFromSupabase() {
   }
   try {
     const client = window.supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY);
+    const _t0 = performance.now();
 
-    // Stap 1: wedstrijden eerst — nodig om event-filter op te bouwen
-    const wRes = await client.from("wk2026_wedstrijden").select("*");
+    // Alles parallel — wedstrijden NIET sequentieel (was de bottleneck).
+    // Events: DB bevat toch alleen verwerkte fixtures, dus geen .in()-filter nodig.
+    // Pagina's direct fetchen zonder vooraf COUNT (spaart 1 round trip).
+    const [wRes, eRes, sRes, kRes] = await Promise.all([
 
-    // Alleen events ophalen voor verwerkte wedstrijden (gepland = geen events)
-    const verwerktIds = (wRes.data || [])
-      .filter(w => w.status === 'verwerkt')
-      .map(w => w.api_fixture_id);
-
-    // Stap 2: events + selecties + kansen parallel
-    const [eRes, sRes, kRes] = await Promise.all([
-      // Events: alleen benodigde kolommen + filter op verwerkte fixtures
+      // 1. Wedstrijden
       (async () => {
-        if (!verwerktIds.length) return { data: [], error: null };
+        const t = performance.now();
+        const r = await client.from("wk2026_wedstrijden").select("*");
+        console.debug(`[perf] wedstrijden: ${(performance.now()-t).toFixed(0)}ms (${(r.data||[]).length} rijen)`);
+        return r;
+      })(),
+
+      // 2. Events: sla COUNT over — directe paginering, alleen benodigde kolommen
+      (async () => {
         const PAGE = 1000;
-        const { count, error: cErr } = await client
-          .from("wk2026_events")
-          .select("api_fixture_id,speler,type,detail", { count: "exact", head: true })
-          .in("api_fixture_id", verwerktIds);
-        if (cErr || !count) return { data: [], error: cErr };
-        const pages = Math.ceil(count / PAGE);
-        const batches = await Promise.all(
-          Array.from({ length: pages }, (_, i) =>
+        const t = performance.now();
+        const first = await client.from("wk2026_events")
+          .select("api_fixture_id,speler,type,detail")
+          .range(0, PAGE - 1);
+        if (first.error || !first.data?.length) return { data: first.data || [], error: first.error };
+        if (first.data.length < PAGE) {
+          console.debug(`[perf] events: ${(performance.now()-t).toFixed(0)}ms (${first.data.length} rijen, 1 call)`);
+          return { data: first.data, error: null };
+        }
+        // Meer dan 1 pagina: haal COUNT op + resterende pagina's parallel
+        const { count } = await client.from("wk2026_events")
+          .select("api_fixture_id", { count: "exact", head: true });
+        const totalPages = Math.ceil((count || PAGE) / PAGE);
+        const rest = await Promise.all(
+          Array.from({ length: totalPages - 1 }, (_, i) =>
             client.from("wk2026_events")
               .select("api_fixture_id,speler,type,detail")
-              .in("api_fixture_id", verwerktIds)
-              .range(i * PAGE, (i + 1) * PAGE - 1)
+              .range((i + 1) * PAGE, (i + 2) * PAGE - 1)
           )
         );
-        const data = batches.flatMap(b => b.data || []);
-        const error = batches.find(b => b.error)?.error || null;
-        return { data, error };
+        const data = [first.data, ...rest.map(r => r.data || [])].flat();
+        console.debug(`[perf] events: ${(performance.now()-t).toFixed(0)}ms (${data.length} rijen, ${totalPages} calls)`);
+        return { data, error: null };
       })(),
-      // Selecties: localStorage cache met 24u TTL (wijzigen zelden tijdens toernooi)
+
+      // 3. Selecties: localStorage cache met 24u TTL (wijzigen zelden tijdens toernooi)
       (async () => {
         const CACHE_KEY = 'wk2026_selecties_v1';
         const TTL = 24 * 60 * 60 * 1000;
+        const t = performance.now();
         try {
           const cached = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null');
           if (cached && (Date.now() - cached.ts) < TTL) {
+            console.debug(`[perf] selecties: ${(performance.now()-t).toFixed(0)}ms (cache hit, ${cached.data.length} rijen)`);
             return { data: cached.data, error: null, updatedAt: cached.updatedAt };
           }
         } catch (_) {}
@@ -337,10 +349,20 @@ async function loadFromSupabase() {
         if (!error && data.length) {
           try { localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data, updatedAt })); } catch (_) {}
         }
+        console.debug(`[perf] selecties: ${(performance.now()-t).toFixed(0)}ms (${data.length} rijen, netwerk)`);
         return { data, error, updatedAt };
       })(),
-      client.from("wk2026_kansen").select("*"),
+
+      // 4. Kansen
+      (async () => {
+        const t = performance.now();
+        const r = await client.from("wk2026_kansen").select("*");
+        console.debug(`[perf] kansen: ${(performance.now()-t).toFixed(0)}ms (${(r.data||[]).length} rijen)`);
+        return r;
+      })(),
     ]);
+
+    console.debug(`[perf] TOTAAL supabase: ${(performance.now()-_t0).toFixed(0)}ms`);
 
     if (!wRes.error && Array.isArray(wRes.data) && wRes.data.length) {
       const eventsByFix = {};
@@ -422,7 +444,7 @@ async function loadFromSupabase() {
 
 async function fetchJSON(path) {
   try {
-    const r = await fetch(path, { cache: "no-cache" });
+    const r = await fetch(path);
     if (!r.ok) throw new Error(r.status);
     return await r.json();
   } catch (e) {
