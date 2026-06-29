@@ -167,6 +167,7 @@ const VENUE = {
 
 // Nederlandse aanvangstijden (CEST = UTC+2) — statisch uit API cache
 const KICKOFF = {
+  // Groepsfase
   1489369: "21:00", 1538999: "04:00", 1539000: "21:00", 1489370: "03:00",
   1489373: "21:00", 1489371: "00:00", 1489372: "03:00", 1539001: "06:00",
   1489374: "19:00", 1489376: "22:00", 1489375: "01:00", 1539002: "04:00",
@@ -184,7 +185,24 @@ const KICKOFF = {
   1539011: "01:00", 1489412: "01:00", 1539012: "04:00", 1489411: "04:00",
   1539074: "21:00", 1489416: "21:00", 1489417: "02:00", 1489413: "02:00",
   1489414: "05:00", 1489415: "05:00", 1489420: "23:00", 1489422: "23:00",
-  1489419: "01:30", 1539013: "01:30", 1489418: "04:00", 1489421: "04:00"
+  1489419: "01:30", 1539013: "01:30", 1489418: "04:00", 1489421: "04:00",
+  // 1/16 (R32) — Amsterdam tijd (CEST = UTC+2)
+  1561329: "21:00", // Zuid-Afrika vs Canada       — 28 jun
+  1562344: "19:00", // Brazilië vs Japan            — 29 jun
+  1565176: "22:30", // Duitsland vs Paraguay        — 29 jun
+  1562345: "03:00", // Nederland vs Marokko         — 30 jun
+  1564789: "19:00", // Ivoorkust vs Noorwegen       — 30 jun
+  1565177: "23:00", // Frankrijk vs Zweden          — 30 jun
+  1567306: "03:00", // Mexico vs Ecuador            — 1 jul
+  1567307: "18:00", // Engeland vs Congo-Kinshasa   — 1 jul
+  1567308: "22:00", // België vs Senegal            — 1 jul
+  1562586: "02:00", // V. Staten vs Bosnië en H.   — 2 jul
+  1567311: "21:00", // Spanje vs Oostenrijk         — 2 jul
+  1567309: "01:00", // Portugal vs Kroatië          — 3 jul
+  1567312: "05:00", // Zwitserland vs Algerije      — 3 jul
+  1565178: "20:00", // Australië vs Egypte          — 3 jul
+  1565179: "00:00", // Argentinië vs Kaapverdië     — 4 jul
+  1567310: "03:30", // Colombia vs Ghana            — 4 jul
 };
 
 // ──────────────────────────────────────────────────────────────────
@@ -1547,10 +1565,23 @@ function renderWedstrijden(listId = "wedstrijdenList", emptyId = "wedstrijdenEmp
   if (byFase['groep'] && currentFase !== 'groep') sections.push({ fase: 'groep', open: false });
 
   list.innerHTML = sections.map(sec => {
-    const matches = byFase[sec.fase] || [];
-    const matchHtml = matches.map(w => renderMatchRow(w, lookup)).join('');
+    const matches  = byFase[sec.fase] || [];
+    const koIdx = KNOCKOUT_ORDER.indexOf(sec.fase);
+    let mode = 'current';
+    if (sec.fase !== 'groep' && sec.fase !== currentFase) {
+      mode = koIdx > currentIdx ? 'future' : 'past';
+    } else if (sec.fase === 'groep') {
+      mode = 'past';
+    }
+
+    const matchHtml = mode === 'current'
+      ? matches.map(w => renderMatchRow(w, lookup)).join('')
+      : mode === 'past'
+        ? matches.map(w => renderMatchRowPast(w)).join('')
+        : matches.map(w => renderMatchRowFuture(w)).join('');
+
     return `
-      <details class="fase-groep${sec.fase === currentFase ? ' fase-groep--current' : ''}" ${sec.open ? 'open' : ''}>
+      <details class="fase-groep fase-groep--${mode}${sec.fase === currentFase ? ' fase-groep--current' : ''}" ${sec.open ? 'open' : ''}>
         <summary class="fase-groep__hdr">
           <span class="fase-groep__label">${FASE_LABELS[sec.fase] || sec.fase}</span>
           <span class="fase-groep__meta">${matches.length} wedstr.</span>
@@ -1559,6 +1590,37 @@ function renderWedstrijden(listId = "wedstrijdenList", emptyId = "wedstrijdenEmp
         <div class="fase-groep__body">${matchHtml}</div>
       </details>`;
   }).join('');
+  if (typeof parseTwemoji === 'function') setTimeout(() => parseTwemoji(list), 50);
+}
+
+function renderMatchRowPast(w) {
+  const vlagThuis = findVlag(w.thuis);
+  const vlagUit   = findVlag(w.uit);
+  const score = w.uitslag ? `${w.uitslag.thuis}–${w.uitslag.uit}` : '–';
+  const pens  = w.pens ? ` <span class="mr-past__pens">(${w.pens.thuis}–${w.pens.uit} pen)</span>` : '';
+  return `
+    <div class="mr-past">
+      <span class="mr-past__flag">${vlagThuis}</span>
+      <span class="mr-past__score mono">${score}${pens}</span>
+      <span class="mr-past__flag">${vlagUit}</span>
+    </div>`;
+}
+
+function renderMatchRowFuture(w) {
+  const datum = w.datum ? formatShortDate(w.datum) : '—';
+  const thuisKnown = w.thuis && !w.thuis.startsWith('?');
+  const uitKnown   = w.uit   && !w.uit.startsWith('?');
+  const teamsHtml = (thuisKnown || uitKnown) ? `
+    <span class="mr-future__teams">
+      ${thuisKnown ? `<span class="mr-future__flag">${findVlag(w.thuis)}</span>` : '<span class="mr-future__unknown">?</span>'}
+      <span class="mr-future__vs">vs</span>
+      ${uitKnown ? `<span class="mr-future__flag">${findVlag(w.uit)}</span>` : '<span class="mr-future__unknown">?</span>'}
+    </span>` : '';
+  return `
+    <div class="mr-future">
+      <span class="mr-future__date">${datum}</span>
+      ${teamsHtml}
+    </div>`;
 }
 
 // Compute per-match contribution for every drafted player who had events.

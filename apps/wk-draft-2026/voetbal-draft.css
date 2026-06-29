@@ -3249,6 +3249,105 @@ a:focus-visible {
 .fase-groep[open] > .fase-groep__hdr .fase-groep__chev { transform: rotate(180deg); }
 .fase-groep__body { padding: 0; }
 
+/* ── Compact past (vlaggen + score) ── */
+.fase-groep--past .fase-groep__body,
+.fase-groep--past.fase-groep[open] .fase-groep__body {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 0;
+  padding: 4px 0 8px;
+}
+
+.mr-past {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 20px;
+  width: 50%;
+  box-sizing: border-box;
+  border-bottom: 1px solid var(--rule);
+}
+.mr-past:last-child,
+.mr-past:nth-last-child(2):nth-child(odd) { border-bottom: none; }
+
+.mr-past__flag {
+  font-size: 20px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.mr-past__flag img.emoji { width: 20px; height: 20px; }
+
+.mr-past__score {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: 0.05em;
+  flex: 1;
+  text-align: center;
+}
+.mr-past__pens {
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--ink-mute);
+}
+
+/* ── Minimal future (datum + eventueel vlaggen) ── */
+.fase-groep--future .fase-groep__body {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  padding: 4px 0 8px;
+}
+
+.mr-future {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 20px;
+  width: 50%;
+  box-sizing: border-box;
+  border-bottom: 1px solid var(--rule);
+}
+.mr-future:nth-last-child(-n+2):nth-child(odd),
+.mr-future:last-child { border-bottom: none; }
+
+.mr-future__date {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-mute);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.03em;
+  min-width: 44px;
+  flex-shrink: 0;
+}
+.mr-future__teams {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.mr-future__flag {
+  font-size: 18px;
+  line-height: 1;
+}
+.mr-future__flag img.emoji { width: 18px; height: 18px; }
+.mr-future__vs {
+  font-size: 10px;
+  color: var(--ink-mute);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.mr-future__unknown {
+  font-size: 13px;
+  color: var(--ink-mute);
+  opacity: 0.4;
+  font-weight: 300;
+}
+
+@media (max-width: 560px) {
+  .mr-past, .mr-future { width: 100%; }
+}
+
 /* ═══════════════════════════════════════════════════════════
    KNOCKOUTFASE — klassieke bracket-boom (referentie-stijl)
    R32 links → verbindingslijnen met datums → Finale midden
