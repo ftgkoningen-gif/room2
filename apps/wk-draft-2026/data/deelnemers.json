@@ -810,6 +810,28 @@
           "land": "Noorwegen",
           "positie": "A"
         }
+      ],
+      "wissels": [
+        {
+          "window": 1,
+          "uit": "Son Heung-Min",
+          "land_uit": "Zuid-Korea",
+          "positie_uit": "A",
+          "in": "J. Lerma",
+          "land_in": "Colombia",
+          "positie_in": "M",
+          "vanaf": "2026-06-28"
+        },
+        {
+          "window": 2,
+          "uit": "T. Soucek",
+          "land_uit": "Tsjechië",
+          "positie_uit": "M",
+          "in": "J. Arias",
+          "land_in": "Colombia",
+          "positie_in": "A",
+          "vanaf": "2026-06-28"
+        }
       ]
     },
     {
