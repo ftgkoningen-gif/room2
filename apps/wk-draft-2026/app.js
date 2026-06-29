@@ -413,7 +413,7 @@ async function loadFromSupabase() {
       }));
       const supabaseIds = new Set(fromSupabase.map(w => w.apiFixtureId));
       const staticOnly = state.wedstrijden.filter(w => !supabaseIds.has(w.apiFixtureId));
-      state.wedstrijden = [...fromSupabase, ...staticOnly];
+      state.wedstrijden = [...staticOnly, ...fromSupabase];
     }
 
     if (!kRes.error && Array.isArray(kRes.data)) {
