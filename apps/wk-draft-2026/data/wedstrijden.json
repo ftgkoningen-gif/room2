@@ -1,4 +1,18 @@
 {
-  "_info": "Primaire bron is Supabase (wk2026_wedstrijden + wk2026_events). Deze file is fallback wanneer Supabase niet bereikbaar is.",
-  "wedstrijden": []
+  "_info": "Primaire bron is Supabase (wk2026_wedstrijden + wk2026_events). Deze file bevat wedstrijden die ontbreken in Supabase en worden samengevoegd met de Supabase-data.",
+  "wedstrijden": [
+    {
+      "id": "wk26-200003",
+      "apiFixtureId": 200003,
+      "datum": "2026-06-28",
+      "fase": "1/16",
+      "poule": null,
+      "thuis": "Zuid-Afrika",
+      "uit": "Canada",
+      "uitslag": null,
+      "pens": null,
+      "status": "gepland",
+      "events": []
+    }
+  ]
 }

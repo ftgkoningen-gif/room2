@@ -396,7 +396,7 @@ async function loadFromSupabase() {
         }
         eventsByFix[fixId] = deduped;
       }
-      state.wedstrijden = wRes.data.map(w => ({
+      const fromSupabase = wRes.data.map(w => ({
         id: `wk26-${w.api_fixture_id}`,
         apiFixtureId: w.api_fixture_id,
         datum: w.datum,
@@ -411,6 +411,9 @@ async function loadFromSupabase() {
         status: w.status,
         events: eventsByFix[w.api_fixture_id] || []
       }));
+      const supabaseIds = new Set(fromSupabase.map(w => w.apiFixtureId));
+      const staticOnly = state.wedstrijden.filter(w => !supabaseIds.has(w.apiFixtureId));
+      state.wedstrijden = [...fromSupabase, ...staticOnly];
     }
 
     if (!kRes.error && Array.isArray(kRes.data)) {
