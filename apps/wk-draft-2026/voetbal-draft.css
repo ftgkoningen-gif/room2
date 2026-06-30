@@ -3467,6 +3467,15 @@ a:focus-visible {
   background: var(--paper);
   box-shadow: none;
 }
+.ko-card--played {
+  border-color: rgba(26,25,24,0.28);
+  box-shadow: 0 2px 6px rgba(26,25,24,0.09);
+}
+.ko-card--partial {
+  border-style: solid;
+  border-color: rgba(26,25,24,0.18);
+  background: var(--paper-card);
+}
 .ko-card--finale {
   border-style: solid;
   border-color: rgba(26,25,24,0.35);
@@ -3491,12 +3500,36 @@ a:focus-visible {
   text-overflow: ellipsis;
   white-space: nowrap;
   color: var(--ink);
+  flex: 1;
+  min-width: 0;
 }
 .ko-team--tbd .ko-name {
   color: var(--ink-mute);
   font-style: italic;
   font-weight: 400;
   font-size: 0.75rem;
+}
+.ko-team--win {
+  background: rgba(11,91,62,0.07);
+}
+.ko-team--win .ko-name {
+  font-weight: 700;
+  color: var(--pitch);
+}
+.ko-team--lost {
+  opacity: 0.38;
+}
+.ko-score {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--ink-mute);
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-left: 4px;
+}
+.ko-team--win .ko-score {
+  color: var(--pitch);
+  font-weight: 600;
 }
 .ko-sep { height: 1px; background: var(--rule); }
 .ko-date-row {
@@ -3612,3 +3645,110 @@ a:focus-visible {
   letter-spacing: 0.04em;
   margin-bottom: 16px;
 }
+
+/* ═══════════════════════════════════════════════════════════════════
+   WK SCHEMA — Responsief (desktop labels + mobiele tabs)
+═══════════════════════════════════════════════════════════════════ */
+
+/* ── Desktop: ronde-labels boven bracket ── */
+.ko-desktop { display: block; }
+.ko-labels-row {
+  display: flex;
+  align-items: center;
+  min-width: max-content;
+  padding: 14px 20px 0;
+}
+.ko-lbl {
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  flex-shrink: 0;
+}
+
+/* ── Mobiel: verborgen op desktop ── */
+.ko-mobile { display: none; }
+
+/* ── Responsief schakelpunt ── */
+@media (max-width: 900px) {
+  .ko-desktop { display: none; }
+  .ko-mobile  { display: block; padding: 0 0 32px; }
+}
+
+/* ── Mobiele tab-navigatie ── */
+.ko-mob-nav {
+  display: flex;
+  gap: 6px;
+  padding: 16px 16px 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.ko-mob-nav::-webkit-scrollbar { display: none; }
+
+.ko-mob-tab {
+  flex-shrink: 0;
+  padding: 6px 14px;
+  border: 1.5px solid var(--rule);
+  border-radius: 99px;
+  background: var(--paper);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--ink-mute);
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
+}
+.ko-mob-tab.is-active {
+  background: var(--pitch);
+  border-color: var(--pitch);
+  color: #fff;
+}
+.ko-mob-tab:hover:not(.is-active) {
+  background: var(--paper-deep);
+  color: var(--ink);
+}
+
+/* ── Mobiele kaartgrid ── */
+.ko-mob-panels { padding: 14px 12px 0; }
+
+.ko-mob-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.ko-mob-grid--single {
+  grid-template-columns: 1fr;
+  max-width: 280px;
+  margin: 0 auto;
+}
+@media (max-width: 480px) {
+  .ko-mob-grid { grid-template-columns: 1fr; }
+}
+
+/* ── Mobiele wedstrijdkaart ── */
+.ko-mob-card {
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--paper-card);
+  box-shadow: 0 1px 3px rgba(26,25,24,0.05);
+}
+.ko-mob-card--played {
+  border-color: rgba(26,25,24,0.28);
+  box-shadow: 0 2px 6px rgba(26,25,24,0.09);
+}
+
+.ko-mob-team {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 11px;
+}
+.ko-mob-team .ko-flag  { font-size: 1.1rem; flex-shrink: 0; line-height: 1; }
+.ko-mob-team .ko-name  { font-size: 0.82rem; font-weight: 500; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ko-mob-team .ko-score { font-size: 0.72rem; }
+.ko-mob-team.ko-team--tbd .ko-name { color: var(--ink-mute); font-style: italic; font-weight: 400; }
