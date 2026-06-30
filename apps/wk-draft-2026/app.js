@@ -651,18 +651,22 @@ function spelerPunten(speler, opts = {}) {
     }
   }
 
-  // Fase-bonussen: speler's land bereikt fase X — alleen als speler zelf heeft gespeeld
+  // Fase-bonussen: alleen voor spelers die speelden in de WINNENDE KO-wedstrijd zelf
   const land = speler.land;
-  const heeftGespeeld = state.wedstrijden.some(w =>
-    w.status === "verwerkt" && Array.isArray(w.events) &&
-    !(opts.voor && w.datum >= opts.voor) &&
-    !(opts.vanaf && w.datum < opts.vanaf) &&
-    w.events.some(e => naammatch(e.speler, speler.naam) && (e.type === "gespeeld45" || e.type === "ingevallen"))
-  );
-  if (heeftGespeeld) {
-    for (const [fase, landen] of Object.entries(state.fases.landenPerFase || {})) {
-      if (landen.includes(land)) pts += FASEBONUS[fase] ?? 0;
-    }
+  const KO_NEXT = { "1/16": "1/8", "1/8": "1/4", "1/4": "1/2", "1/2": "F", "F": "Winnaar" };
+  for (const w of state.wedstrijden) {
+    if (!KO_NEXT[w.fase] || !w.uitslag || w.status !== "verwerkt" || !Array.isArray(w.events)) continue;
+    if (opts.voor && w.datum >= opts.voor) continue;
+    if (opts.vanaf && w.datum < opts.vanaf) continue;
+    const gt = w.uitslag.thuis, gu = w.uitslag.uit;
+    let winnaarLand = null;
+    if (gt > gu)      winnaarLand = w.thuis;
+    else if (gu > gt) winnaarLand = w.uit;
+    else if (w.pens)  winnaarLand = w.pens.thuis > w.pens.uit ? w.thuis : w.uit;
+    if (winnaarLand !== land) continue;
+    const speelde = w.events.some(e => naammatch(e.speler, speler.naam) && (e.type === "gespeeld45" || e.type === "ingevallen"));
+    if (!speelde) continue;
+    pts += FASEBONUS[KO_NEXT[w.fase]] ?? 0;
   }
 
   // Award-bonussen
