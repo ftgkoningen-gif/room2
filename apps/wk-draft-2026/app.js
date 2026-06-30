@@ -1035,8 +1035,12 @@ function renderVandaag() {
     kicker = "Eerstvolgende speeldag";
   }
 
-  // Sorteer: vroegste wedstrijd bovenaan
-  toonMatches = [...toonMatches].sort((a, b) => (a.datum || "").localeCompare(b.datum || ""));
+  // Sorteer: datum → aanvangstijd → fixtureId
+  toonMatches = [...toonMatches].sort((a, b) =>
+    (a.datum || "").localeCompare(b.datum || "") ||
+    (KICKOFF[a.apiFixtureId] || "99:99").localeCompare(KICKOFF[b.apiFixtureId] || "99:99") ||
+    (a.apiFixtureId || 0) - (b.apiFixtureId || 0)
+  );
 
   const dagLabel = (() => {
     if (kicker === "Vandaag") return "Vandaag";
@@ -1150,7 +1154,9 @@ function renderAlleWedstrijden() {
   if (!el) return;
   if (!state.wedstrijden.length) { el.innerHTML = ""; return; }
   const sorted = [...state.wedstrijden].sort((a, b) =>
-    (a.datum || "").localeCompare(b.datum || "") || (a.apiFixtureId || 0) - (b.apiFixtureId || 0)
+    (a.datum || "").localeCompare(b.datum || "") ||
+    (KICKOFF[a.apiFixtureId] || "99:99").localeCompare(KICKOFF[b.apiFixtureId] || "99:99") ||
+    (a.apiFixtureId || 0) - (b.apiFixtureId || 0)
   );
   // Groepeer op datum
   const perDag = {};
