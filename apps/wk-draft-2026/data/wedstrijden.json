@@ -48,9 +48,9 @@
       "poule": null,
       "thuis": "Nederland",
       "uit": "Marokko",
-      "uitslag": null,
-      "pens": null,
-      "status": "gepland",
+      "uitslag": { "thuis": 1, "uit": 1 },
+      "pens": { "thuis": 2, "uit": 3 },
+      "status": "FT",
       "events": []
     },
     {
