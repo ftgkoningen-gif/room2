@@ -1020,8 +1020,8 @@ function renderVandaag() {
   const normDatum = iso => (iso || "").slice(0, 10);
   const activeDatum = getActiveSpeeldagDate();
 
-  // Huidige speeldag — toon ook al gespeelde matches van vandaag
-  let toonMatches = state.wedstrijden.filter(w => normDatum(w.datum) === activeDatum);
+  // Huidige speeldag — alleen nog niet gespeelde matches
+  let toonMatches = state.wedstrijden.filter(w => normDatum(w.datum) === activeDatum && !w.uitslag);
   let kicker = "Vandaag";
 
   if (!toonMatches.length) {
