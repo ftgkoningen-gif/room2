@@ -231,7 +231,7 @@ const LS_KEYS = {
 };
 
 // Bump bij elke data-migratie om oude localStorage te wissen
-const DATA_VERSION = "wk2026.1";
+const DATA_VERSION = "wk2026.2";
 
 const WK_START = new Date("2026-06-11T18:00:00Z");
 
@@ -535,6 +535,9 @@ function switchTab(name) {
   if (name === 'glazenbol') {
     const r = document.getElementById("glazenbolResult");
     if (r && !r.querySelector('.glazenbol__list')) runGlazenBol(false);
+  }
+  if (name === 'simulator') {
+    window.renderKnockoutSchema?.();
   }
   if (name === 'selecties') {
     const activeView = document.querySelector('[data-selecties-view].is-active');
@@ -867,6 +870,7 @@ function renderAll() {
   renderTeams();
   renderWedstrijden();
   renderGlazenBol();
+  window.renderKnockoutSchema?.();
   renderFooter();
   if (typeof twemoji !== "undefined") twemoji.parse(document.body, { folder: "svg", ext: ".svg" });
 }
@@ -1620,7 +1624,14 @@ function renderWedstrijden(listId = "wedstrijdenList", emptyId = "wedstrijdenEmp
     if (!byFase[f]) byFase[f] = [];
     byFase[f].push(w);
   }
-  for (const g of Object.values(byFase)) g.sort((a, b) => (a.datum || '').localeCompare(b.datum || ''));
+  // Sorteer op datum + aanvangstijd; tijden vóór 06:00 (nacht) komen na avondwedstrijden
+  function matchSortKey(w) {
+    const time = KICKOFF[w.apiFixtureId] || "12:00";
+    const [h, m] = time.split(":").map(Number);
+    const adjH = h < 6 ? h + 24 : h;
+    return (w.datum || "") + "T" + String(adjH).padStart(2, "0") + ":" + String(m).padStart(2, "0");
+  }
+  for (const g of Object.values(byFase)) g.sort((a, b) => matchSortKey(a).localeCompare(matchSortKey(b)));
 
   // Determine current round (first knockout round with upcoming/unfinished matches)
   const today = new Date().toISOString().slice(0, 10);
