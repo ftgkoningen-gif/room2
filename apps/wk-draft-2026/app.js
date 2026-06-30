@@ -297,12 +297,13 @@ async function loadAllData() {
 // ──────────────────────────────────────────────────────────────────
 // Auto-derive landenPerFase uit KO-wedstrijden
 // ──────────────────────────────────────────────────────────────────
-// Een team staat in fase X zodra het een wedstrijd speelt in fase X.
-// De winnaar van de finale wordt afgeleid uit de uitslag + pens.
-// Geen handmatig bijhouden nodig — werkt vanzelf zodra de sync nieuwe
-// KO-matches toevoegt aan Supabase.
+// Een team staat in fase X zodra het een wedstrijd SPEELT in fase X.
+// Zodra een team een KO-match wint, wordt het meteen toegevoegd aan
+// de VOLGENDE fase — zodat de fase-bonus telt zodra ze door zijn,
+// niet pas wanneer de volgende wedstrijd in Supabase staat.
 function deriveFasesFromWedstrijden() {
   const KO = ["1/16", "1/8", "1/4", "1/2", "F"];
+  const nextFase = { "1/16": "1/8", "1/8": "1/4", "1/4": "1/2", "1/2": "F", "F": "Winnaar" };
   const derived = { "1/16": [], "1/8": [], "1/4": [], "1/2": [], "F": [], "Winnaar": [] };
 
   for (const w of state.wedstrijden) {
@@ -310,13 +311,17 @@ function deriveFasesFromWedstrijden() {
     if (w.thuis && !derived[w.fase].includes(w.thuis)) derived[w.fase].push(w.thuis);
     if (w.uit   && !derived[w.fase].includes(w.uit))   derived[w.fase].push(w.uit);
 
-    if (w.fase === "F" && w.uitslag) {
+    // Winnaar bereikt de volgende fase — bonus telt direct na de winst
+    if (w.uitslag) {
       const gt = w.uitslag.thuis, gu = w.uitslag.uit;
       let winnaar = null;
       if (gt > gu)      winnaar = w.thuis;
       else if (gu > gt) winnaar = w.uit;
       else if (w.pens)  winnaar = w.pens.thuis > w.pens.uit ? w.thuis : w.uit;
-      if (winnaar && !derived["Winnaar"].includes(winnaar)) derived["Winnaar"].push(winnaar);
+      if (winnaar) {
+        const volgende = nextFase[w.fase];
+        if (volgende && !derived[volgende].includes(winnaar)) derived[volgende].push(winnaar);
+      }
     }
   }
 
@@ -1443,6 +1448,7 @@ function renderTeams() {
       a.land.localeCompare(b.land, "nl") || (posOrder[a.positie] ?? 9) - (posOrder[b.positie] ?? 9)
     );
 
+    const uitgeschakeld = buildUitgeschakeldSet();
     const playerRows = alleSpelers.map(sp => {
       const vlag = findVlag(sp.land);
       const code = findCode(sp.land);
@@ -1451,13 +1457,14 @@ function renderTeams() {
       const ptsStr = spPts === 0 ? "0" : (spPts > 0 ? `+${spPts}` : `${spPts}`);
       const isUit = !!sp._wisselVoor;
       const isIn  = !!sp._wisselVanaf;
+      const isEliminated = !isUit && uitgeschakeld.has(sp.land);
       const wisselBadge = isUit
         ? `<span class="player-line__wissel-badge player-line__wissel-badge--uit">↓ uit</span>`
         : isIn
         ? `<span class="player-line__wissel-badge player-line__wissel-badge--in">↑ in</span>`
         : '';
       return `
-        <li class="player-line${isUit ? ' player-line--wissel-uit' : isIn ? ' player-line--wissel-in' : ''}" data-speler="${escapeHtml(sp.naam)}" data-land="${escapeHtml(sp.land)}" tabindex="0" role="button">
+        <li class="player-line${isUit ? ' player-line--wissel-uit' : isIn ? ' player-line--wissel-in' : ''}${isEliminated ? ' player-line--uitgeschakeld' : ''}" data-speler="${escapeHtml(sp.naam)}" data-land="${escapeHtml(sp.land)}" tabindex="0" role="button">
           <span class="player-line__flag">${vlag}</span>
           <span class="player-line__pos player-line__pos--${sp.positie}" title="${escapeHtml(POS_LABEL[sp.positie] || sp.positie)}">${sp.positie}</span>
           <span class="player-line__name">${escapeHtml(sp.naam)}${wisselBadge}</span>
@@ -2542,6 +2549,17 @@ function buildUitgeschakeldSet() {
   // Als de knockout gestart is: iedereen buiten inKnockout is uitgeschakeld in de groepsfase
   if (inKnockout.size > 0) {
     state.landen.forEach(l => { if (!inKnockout.has(l.naam)) set.add(l.naam); });
+  }
+  // KO-verliezers: teams die een gespeelde KO-wedstrijd verloren
+  const KO_FASES = ["1/16", "1/8", "1/4", "1/2", "F", "bronze"];
+  for (const w of state.wedstrijden) {
+    if (!KO_FASES.includes(w.fase) || !w.uitslag || w.status !== "verwerkt") continue;
+    const gt = w.uitslag.thuis, gu = w.uitslag.uit;
+    let verliezer = null;
+    if (gt > gu)      verliezer = w.uit;
+    else if (gu > gt) verliezer = w.thuis;
+    else if (w.pens)  verliezer = w.pens.thuis > w.pens.uit ? w.uit : w.thuis;
+    if (verliezer) set.add(verliezer);
   }
   return set;
 }

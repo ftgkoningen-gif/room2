@@ -6,8 +6,9 @@
    1. wk2026-scheduler     (cron, dagelijks 04:00 tijdens WK)
       → haalt alle wedstrijden van komende 48u op
       → queued per wedstrijd een one-off wk2026-fetch-match task,
-        gepland 30 min na het verwachte einde van de wedstrijd
-        (135 min na aftrap; houdt rekening met verlenging/pens)
+        gepland 135 min na aftrap (30 min na verwacht einde 90 min);
+        voor KO-wedstrijden ook een backup-trigger op T+200 min
+        zodat verlenging + strafschoppen altijd worden gevangen
 
    2. wk2026-fetch-match   (worker, geen eigen schedule)
       → fetch player-stats van één specifieke fixture
@@ -41,6 +42,10 @@ const SQUADS_WINDOW_END    = new Date("2026-06-12T00:00:00Z");
 
 // Delay-policy: 90 min match + 15 HT + 30 (eventuele ET) = 135 min na aftrap
 const FETCH_DELAY_AFTER_KICKOFF_MIN = 135;
+
+// KO-backup: extra trigger voor KO-wedstrijden die naar verlenging + strafschoppen gaan.
+// 200 min = 90 regulier + 15 HT + 30 ET + ~15 ET-pauze + ~15 strafschoppen + 35 marge.
+const KO_BACKUP_DELAY_MIN = 200;
 
 // Als fixture nog niet FT is bij fetch-moment → retry na 15 min (max 3x)
 const RETRY_DELAY_MIN = 15;
@@ -239,6 +244,17 @@ export const wk2026FetchMatch = task({
 
     logger.info(`fetch-match: fixture ${fixtureId}, poging ${attempt}/${RETRY_MAX}`);
 
+    // Early-exit als de match al verwerkt is (bv. door de primaire trigger of een eerdere retry)
+    const { data: bestaand } = await supabase
+      .from("wk2026_wedstrijden")
+      .select("status")
+      .eq("api_fixture_id", fixtureId)
+      .maybeSingle();
+    if (bestaand?.status === "verwerkt") {
+      logger.info(`Fixture ${fixtureId} al verwerkt door eerdere trigger, skip`);
+      return { fixtureId, status: "already-done" };
+    }
+
     const fixturesData = await apiFetch(`/fixtures?id=${fixtureId}`);
     const f = fixturesData.response?.[0];
     if (!f) {
@@ -305,6 +321,9 @@ export const wk2026Scheduler = schedules.task({
       const id = f.fixture.id;
       if (verwerktIds.has(id)) continue;
 
+      const fase = faseOf(f.league.round ?? "");
+      const isKO = ["1/16", "1/8", "1/4", "1/2", "F", "bronze"].includes(fase);
+
       const kickoff = new Date(f.fixture.date);
       const fetchAt = new Date(kickoff.getTime() + FETCH_DELAY_AFTER_KICKOFF_MIN * 60_000);
       const delaySec = Math.floor((fetchAt.getTime() - Date.now()) / 1000);
@@ -319,6 +338,19 @@ export const wk2026Scheduler = schedules.task({
           { delay: `${delaySec}s` }
         );
         scheduled.push({ fixtureId: id, fetchAt: fetchAt.toISOString() });
+
+        // KO-backup: extra trigger 65 min later voor wedstrijden die naar verlenging gaan
+        if (isKO) {
+          const fetchAt2 = new Date(kickoff.getTime() + KO_BACKUP_DELAY_MIN * 60_000);
+          const delaySec2 = Math.floor((fetchAt2.getTime() - Date.now()) / 1000);
+          if (delaySec2 > 0) {
+            await wk2026FetchMatch.trigger(
+              { fixtureId: id },
+              { delay: `${delaySec2}s` }
+            );
+            scheduled.push({ fixtureId: id, fetchAt: fetchAt2.toISOString(), note: "KO-backup (ET+pen)" });
+          }
+        }
       }
       await sleep(100);
     }

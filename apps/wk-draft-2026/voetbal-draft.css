@@ -1201,6 +1201,15 @@ code {
 .player-line--wissel-in .player-line__name {
   color: var(--pitch);
 }
+
+/* Uitgeschakeld land */
+.player-line--uitgeschakeld {
+  opacity: 0.45;
+}
+.player-line--uitgeschakeld .player-line__name {
+  text-decoration: line-through;
+  text-decoration-color: var(--ink-mute);
+}
 .player-line__wissel-badge {
   display: inline-block;
   font-family: var(--font-mono);
