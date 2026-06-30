@@ -1650,12 +1650,9 @@ function renderWedstrijden(listId = "wedstrijdenList", emptyId = "wedstrijdenEmp
     if (!byFase[f]) byFase[f] = [];
     byFase[f].push(w);
   }
-  // Sorteer op datum + aanvangstijd; tijden vóór 06:00 (nacht) komen na avondwedstrijden
+  // Sorteer op datum + aanvangstijd (chronologisch)
   function matchSortKey(w) {
-    const time = KICKOFF[w.apiFixtureId] || "12:00";
-    const [h, m] = time.split(":").map(Number);
-    const adjH = h < 6 ? h + 24 : h;
-    return (w.datum || "") + "T" + String(adjH).padStart(2, "0") + ":" + String(m).padStart(2, "0");
+    return (w.datum || "") + "T" + (KICKOFF[w.apiFixtureId] || "12:00");
   }
   for (const g of Object.values(byFase)) g.sort((a, b) => matchSortKey(a).localeCompare(matchSortKey(b)));
 
