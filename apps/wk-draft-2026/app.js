@@ -1063,12 +1063,49 @@ function renderVandaag() {
   `;
 }
 
+function uitgeschakeldeLandenVoorTeller() {
+  const { landenPerFase } = state.fases;
+  const inKnockout = new Set();
+  for (const namen of Object.values(landenPerFase)) {
+    for (const n of namen) inKnockout.add(n);
+  }
+  const uit = new Set();
+  if (inKnockout.size > 0) {
+    state.landen.forEach(l => { if (!inKnockout.has(l.naam)) uit.add(l.naam); });
+  }
+  // KO-verliezers op basis van uitslag (ongeacht verwerkingsstatus)
+  const KO_FASES = ["1/16", "1/8", "1/4", "1/2", "F"];
+  for (const w of state.wedstrijden) {
+    if (!KO_FASES.includes(w.fase) || !w.uitslag) continue;
+    const gt = w.uitslag.thuis, gu = w.uitslag.uit;
+    let verliezer = null;
+    if (gt > gu)      verliezer = w.uit;
+    else if (gu > gt) verliezer = w.thuis;
+    else if (w.pens)  verliezer = w.pens.thuis > w.pens.uit ? w.uit : w.thuis;
+    if (verliezer) uit.add(verliezer);
+  }
+  return uit;
+}
+
+function actieveSpelersCount(deelnemer, uitSet) {
+  const geswitchd = new Set((deelnemer.wissels || []).map(w => w.uit));
+  let count = 0;
+  for (const sp of (deelnemer.spelers || [])) {
+    if (!geswitchd.has(sp.naam) && !uitSet.has(sp.land)) count++;
+  }
+  for (const wissel of (deelnemer.wissels || [])) {
+    if (!uitSet.has(wissel.land_in)) count++;
+  }
+  return count;
+}
+
 function renderRanglijst() {
   const el = document.getElementById("ranglijstBlock");
   if (!el) return;
   if (!state.deelnemers.length) { el.innerHTML = ""; return; }
+  const uitSet = uitgeschakeldeLandenVoorTeller();
   const ranked = [...state.deelnemers]
-    .map(d => ({ ...d, _pts: deelnemerPunten(d) }))
+    .map(d => ({ ...d, _pts: deelnemerPunten(d), _actief: actieveSpelersCount(d, uitSet) }))
     .sort((a, b) => b._pts - a._pts);
   const top = ranked[0]?._pts ?? 0;
   el.innerHTML = `<ol class="ranglijst">` +
@@ -1078,6 +1115,7 @@ function renderRanglijst() {
         <span class="ranglijst__rank">${i + 1}</span>
         <span class="ranglijst__naam" data-goto-team="${escapeHtml(d.naam)}" tabindex="0" role="button">${escapeHtml(d.naam)}</span>
         <span class="ranglijst__pts mono">${d._pts}</span>
+        <span class="ranglijst__actief mono" title="Spelers van landen die nog in het toernooi zitten">${d._actief}/11</span>
         <span class="ranglijst__achter mono">${achter === 0 ? "—" : achter}</span>
       </li>`;
     }).join("") + `</ol>`;

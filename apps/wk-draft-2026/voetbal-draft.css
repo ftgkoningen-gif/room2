@@ -2753,7 +2753,7 @@ a:focus-visible {
 }
 .ranglijst__rij {
   display: grid;
-  grid-template-columns: 28px 1fr auto auto;
+  grid-template-columns: 28px 1fr auto auto auto;
   gap: 4px 12px;
   align-items: center;
   padding: 9px 14px;
@@ -2782,6 +2782,12 @@ a:focus-visible {
   font-size: 0.82rem;
   font-weight: 700;
   color: var(--pitch);
+}
+.ranglijst__actief {
+  font-size: 0.75rem;
+  color: var(--ink-mute);
+  text-align: right;
+  white-space: nowrap;
 }
 .ranglijst__achter {
   font-size: 0.75rem;
