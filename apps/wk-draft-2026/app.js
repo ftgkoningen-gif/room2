@@ -651,10 +651,18 @@ function spelerPunten(speler, opts = {}) {
     }
   }
 
-  // Fase-bonussen: speler's land bereikt fase X
+  // Fase-bonussen: speler's land bereikt fase X — alleen als speler zelf heeft gespeeld
   const land = speler.land;
-  for (const [fase, landen] of Object.entries(state.fases.landenPerFase || {})) {
-    if (landen.includes(land)) pts += FASEBONUS[fase] ?? 0;
+  const heeftGespeeld = state.wedstrijden.some(w =>
+    w.status === "verwerkt" && Array.isArray(w.events) &&
+    !(opts.voor && w.datum >= opts.voor) &&
+    !(opts.vanaf && w.datum < opts.vanaf) &&
+    w.events.some(e => naammatch(e.speler, speler.naam) && (e.type === "gespeeld45" || e.type === "ingevallen"))
+  );
+  if (heeftGespeeld) {
+    for (const [fase, landen] of Object.entries(state.fases.landenPerFase || {})) {
+      if (landen.includes(land)) pts += FASEBONUS[fase] ?? 0;
+    }
   }
 
   // Award-bonussen
@@ -787,11 +795,19 @@ function spelerBreakdown(speler, opts = {}) {
     }
   }
 
-  // Fase bonussen
+  // Fase bonussen — alleen als speler zelf heeft gespeeld (gespeeld45 of ingevallen)
   const fase = [];
-  for (const [f, landen] of Object.entries(state.fases.landenPerFase || {})) {
-    if (landen.includes(speler.land) && (FASEBONUS[f] ?? 0) !== 0) {
-      fase.push({ label: `${faseLabel(f)}`, pts: FASEBONUS[f] });
+  const heeftGespeeldBreak = state.wedstrijden.some(w =>
+    w.status === "verwerkt" && Array.isArray(w.events) &&
+    !(opts.voor && w.datum >= opts.voor) &&
+    !(opts.vanaf && w.datum < opts.vanaf) &&
+    w.events.some(e => naammatch(e.speler, speler.naam) && (e.type === "gespeeld45" || e.type === "ingevallen"))
+  );
+  if (heeftGespeeldBreak) {
+    for (const [f, landen] of Object.entries(state.fases.landenPerFase || {})) {
+      if (landen.includes(speler.land) && (FASEBONUS[f] ?? 0) !== 0) {
+        fase.push({ label: `${faseLabel(f)}`, pts: FASEBONUS[f] });
+      }
     }
   }
 
