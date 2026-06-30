@@ -22,9 +22,9 @@
       "poule": null,
       "thuis": "Brazilië",
       "uit": "Japan",
-      "uitslag": null,
+      "uitslag": { "thuis": 2, "uit": 1 },
       "pens": null,
-      "status": "gepland",
+      "status": "FT",
       "events": []
     },
     {
@@ -35,9 +35,9 @@
       "poule": null,
       "thuis": "Duitsland",
       "uit": "Paraguay",
-      "uitslag": null,
-      "pens": null,
-      "status": "gepland",
+      "uitslag": { "thuis": 1, "uit": 1 },
+      "pens": { "thuis": 3, "uit": 4 },
+      "status": "FT",
       "events": []
     },
     {

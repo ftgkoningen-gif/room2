@@ -280,13 +280,47 @@ async function loadAllData() {
   // Supabase-overlay (primaire bron voor wedstrijden + selecties)
   await loadFromSupabase();
 
-  // LocalStorage overlays (alleen lokale mutaties zoals fase-toggle of award-save)
+  // LocalStorage overlays (alleen voor awards — fases worden altijd auto-derived)
   try {
     const lsFases = JSON.parse(localStorage.getItem(LS_KEYS.fases) || "null");
     if (lsFases) state.fases = lsFases;
     const lsAwards = JSON.parse(localStorage.getItem(LS_KEYS.awards) || "null");
     if (lsAwards) state.awards = lsAwards;
   } catch (e) { /* ignore */ }
+
+  // Auto-derive landenPerFase uit KO-wedstrijden — altijd als laatste zodat
+  // stale localStorage-data wordt overschreven. Zodra de sync een 1/8-match
+  // toevoegt aan Supabase weten we automatisch welke 16 teams door zijn.
+  deriveFasesFromWedstrijden();
+}
+
+// ──────────────────────────────────────────────────────────────────
+// Auto-derive landenPerFase uit KO-wedstrijden
+// ──────────────────────────────────────────────────────────────────
+// Een team staat in fase X zodra het een wedstrijd speelt in fase X.
+// De winnaar van de finale wordt afgeleid uit de uitslag + pens.
+// Geen handmatig bijhouden nodig — werkt vanzelf zodra de sync nieuwe
+// KO-matches toevoegt aan Supabase.
+function deriveFasesFromWedstrijden() {
+  const KO = ["1/16", "1/8", "1/4", "1/2", "F"];
+  const derived = { "1/16": [], "1/8": [], "1/4": [], "1/2": [], "F": [], "Winnaar": [] };
+
+  for (const w of state.wedstrijden) {
+    if (!KO.includes(w.fase)) continue;
+    if (w.thuis && !derived[w.fase].includes(w.thuis)) derived[w.fase].push(w.thuis);
+    if (w.uit   && !derived[w.fase].includes(w.uit))   derived[w.fase].push(w.uit);
+
+    if (w.fase === "F" && w.uitslag) {
+      const gt = w.uitslag.thuis, gu = w.uitslag.uit;
+      let winnaar = null;
+      if (gt > gu)      winnaar = w.thuis;
+      else if (gu > gt) winnaar = w.uit;
+      else if (w.pens)  winnaar = w.pens.thuis > w.pens.uit ? w.thuis : w.uit;
+      if (winnaar && !derived["Winnaar"].includes(winnaar)) derived["Winnaar"].push(winnaar);
+    }
+  }
+
+  state.fases.landenPerFase = derived;
 }
 
 // ──────────────────────────────────────────────────────────────────
@@ -987,7 +1021,9 @@ function renderVandaag() {
       <div class="vandaag-blok__kicker">${kicker}</div>
       <h3 class="vandaag-blok__dag">${dagLabel}</h3>
       ${toonMatches.map(w => {
-        const scoreStr = w.uitslag ? `<span class="vandaag-score">${w.uitslag.thuis}–${w.uitslag.uit}</span>` : `<span class="vs">vs</span>`;
+        const scoreStr = w.uitslag
+          ? `<span class="vandaag-score">${w.uitslag.thuis}–${w.uitslag.uit}${w.pens ? `<span class="pens-label">pen. ${w.pens.thuis}–${w.pens.uit}</span>` : ''}</span>`
+          : `<span class="vs">vs</span>`;
         const tijdStr = KICKOFF[w.apiFixtureId] ?? null;
         const venue = VENUE[w.apiFixtureId] ?? null;
         const bijdragen = state.deelnemers
@@ -1066,7 +1102,9 @@ function renderAlleWedstrijden() {
         <ol class="aw-lijst">
           ${wedstrijden.map(w => {
             const gespeeld = !!w.uitslag;
-            const score = gespeeld ? `<b class="aw-score">${w.uitslag.thuis}–${w.uitslag.uit}</b>` : `<span class="aw-vs">vs</span>`;
+            const score = gespeeld
+              ? `<b class="aw-score">${w.uitslag.thuis}–${w.uitslag.uit}${w.pens ? `<span class="pens-label">pen. ${w.pens.thuis}–${w.pens.uit}</span>` : ''}</b>`
+              : `<span class="aw-vs">vs</span>`;
             return `<li class="aw-rij${gespeeld ? " is-gespeeld" : ""}">
               <span class="aw-rij__icon">${gespeeld ? "✓" : "·"}</span>
               <span class="aw-rij__teams">${findVlag(w.thuis)} ${escapeHtml(w.thuis)} ${score} ${escapeHtml(w.uit)} ${findVlag(w.uit)}</span>
@@ -1472,7 +1510,6 @@ function buildLookup() {
 function renderMatchRow(w, lookup) {
   const datum = formatShortDate(w.datum);
   const score = w.uitslag ? `${w.uitslag.thuis}–${w.uitslag.uit}` : "";
-  const pensLabel = w.pens ? ` (${w.pens.thuis}–${w.pens.uit} pen)` : "";
   const faseLabelStr = {
     "groep": "Groep", "1/8": "1/8", "1/4": "1/4", "1/2": "1/2", "F": "Finale", "bronze": "Brons"
   }[w.fase] || w.fase || "—";
@@ -1502,7 +1539,7 @@ function renderMatchRow(w, lookup) {
         <span class="match-row__fase">${faseLabelStr}</span>
         <span class="match-row__teams">
           <span class="match-row__team">${escapeHtml(w.thuis)}</span>
-          <span class="match-row__score mono">${score}${pensLabel}</span>
+          <span class="match-row__score mono">${score}${w.pens ? `<span class="pens-label">pen. ${w.pens.thuis}–${w.pens.uit}</span>` : ''}</span>
           <span class="match-row__team">${escapeHtml(w.uit)}</span>
         </span>
         <span class="match-row__dpts mono">${totalPts >= 0 ? '+' : ''}${totalPts} pt</span>
@@ -1597,7 +1634,7 @@ function renderMatchRowPast(w) {
   const vlagThuis = findVlag(w.thuis);
   const vlagUit   = findVlag(w.uit);
   const score = w.uitslag ? `${w.uitslag.thuis}–${w.uitslag.uit}` : '–';
-  const pens  = w.pens ? ` <span class="mr-past__pens">(${w.pens.thuis}–${w.pens.uit} pen)</span>` : '';
+  const pens  = w.pens ? `<span class="mr-past__pens">pen. ${w.pens.thuis}–${w.pens.uit}</span>` : '';
   return `
     <div class="mr-past">
       <span class="mr-past__flag">${vlagThuis}</span>
