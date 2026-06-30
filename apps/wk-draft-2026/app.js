@@ -1816,6 +1816,26 @@ function computeMatchContribs(w, lookup) {
       subtotal += info.correctie;
     }
 
+    // Fase-bonus: winnaar van een KO-wedstrijd verdient bonus voor bereiken volgende fase.
+    // Wordt alleen getoond in de match waar ze de fase bereikten (niet elke wedstrijd).
+    const KO_BONUS_FASES = ["1/16", "1/8", "1/4", "1/2", "F"];
+    if (KO_BONUS_FASES.includes(w.fase) && w.uitslag && (gespeeld45 || ingevallen)) {
+      const NEXT_FASE = { "1/16": "1/8", "1/8": "1/4", "1/4": "1/2", "1/2": "F", "F": "Winnaar" };
+      const gt = w.uitslag.thuis, gu = w.uitslag.uit;
+      let winnaarLand = null;
+      if (gt > gu)      winnaarLand = w.thuis;
+      else if (gu > gt) winnaarLand = w.uit;
+      else if (w.pens)  winnaarLand = w.pens.thuis > w.pens.uit ? w.thuis : w.uit;
+      if (winnaarLand && info.land === winnaarLand) {
+        const nextFase = NEXT_FASE[w.fase];
+        const fasePts = nextFase ? (FASEBONUS[nextFase] ?? 0) : 0;
+        if (fasePts !== 0) {
+          lines.push({ label: `Fase-bonus ${nextFase}`, pts: fasePts });
+          subtotal += fasePts;
+        }
+      }
+    }
+
     if (lines.length > 0) {
       results.push({ speler: info, deelnemer: info.deelnemer, lines, subtotal });
     }
