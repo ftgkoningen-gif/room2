@@ -210,13 +210,21 @@
   }
 
   // Ronde-labels boven de bracket-kolommen
-  function buildLabelsRow() {
+  function buildLabelsRow(r32Hidden) {
     const L = (t, w) => `<div class="ko-lbl" style="width:${w}px">${t}</div>`;
     const G = w => `<div style="width:${w}px;flex-shrink:0"></div>`;
+    const r32Block = r32Hidden ? '' : `${L('1/16',110)}${G(32)}`;
+    const r32BlockR = r32Hidden ? '' : `${G(32)}${L('1/16',110)}`;
     return `<div class="ko-labels-row">
-      ${L('R32',164)}${G(52)}${L('1/8',158)}${G(52)}${L('1/4',158)}${G(52)}${L('1/2',158)}
-      ${G(184)}
-      ${L('1/2',158)}${G(52)}${L('1/4',158)}${G(52)}${L('1/8',158)}${G(52)}${L('R32',164)}
+      ${r32Block}${L('1/8',100)}${G(32)}${L('1/4',100)}${G(32)}${L('1/2',100)}
+      ${G(130)}
+      ${L('1/2',100)}${G(32)}${L('1/4',100)}${G(32)}${L('1/8',100)}${r32BlockR}
+    </div>`;
+  }
+
+  function buildR32Toggle(hidden) {
+    return `<div class="ko-r32-toggle-row">
+      <button class="ko-r32-toggle" id="koR32Toggle">${hidden ? '1/16 ▶ uitklappen' : '1/16 ◀ inklappen'}</button>
     </div>`;
   }
 
@@ -300,6 +308,7 @@
     buildTeamMap();
     const lp = propagate(LEFT_R32);
     const rp = propagate(RIGHT_R32);
+    const r32Hidden = localStorage.getItem('ko-r32-hidden') === '1';
 
     panel.innerHTML = `<div class="ko-wrap">
       <div class="ko-page-hdr">
@@ -308,9 +317,10 @@
       </div>
 
       <div class="ko-desktop">
-        ${buildLabelsRow()}
+        ${buildR32Toggle(r32Hidden)}
+        ${buildLabelsRow(r32Hidden)}
         <div class="ko-scroll-outer">
-          <div class="ko-bracket">
+          <div class="ko-bracket${r32Hidden ? ' ko-bracket--r32-hidden' : ''}">
             ${buildHalf(LEFT_R32,  LEFT_CONN,  lp, false)}
             ${buildFinale(lp.hfW, rp.hfW)}
             ${buildHalf(RIGHT_R32, RIGHT_CONN, rp, true)}
@@ -320,6 +330,20 @@
 
       ${buildMobile(lp, rp)}
     </div>`;
+
+    // R32 toggle
+    const r32Btn = panel.querySelector('#koR32Toggle');
+    const bracket = panel.querySelector('.ko-bracket');
+    const labelsRow = panel.querySelector('.ko-labels-row');
+    if (r32Btn && bracket) {
+      r32Btn.addEventListener('click', () => {
+        const nowHidden = !bracket.classList.contains('ko-bracket--r32-hidden');
+        bracket.classList.toggle('ko-bracket--r32-hidden', nowHidden);
+        localStorage.setItem('ko-r32-hidden', nowHidden ? '1' : '0');
+        r32Btn.textContent = nowHidden ? '1/16 ▶ uitklappen' : '1/16 ◀ inklappen';
+        if (labelsRow) labelsRow.outerHTML = buildLabelsRow(nowHidden);
+      });
+    }
 
     // Mobiele tab-navigatie
     panel.querySelectorAll('.ko-mob-tab').forEach(btn => {

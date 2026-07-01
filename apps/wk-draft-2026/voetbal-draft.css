@@ -3435,10 +3435,10 @@ a:focus-visible {
   flex-direction: column;
   flex-shrink: 0;
 }
-.ko-round-col--r32 { width: 164px; }
-.ko-round-col--qf  { width: 158px; }
-.ko-round-col--sf  { width: 158px; }
-.ko-round-col--hf  { width: 158px; }
+.ko-round-col--r32 { width: 110px; }
+.ko-round-col--qf  { width: 100px; }
+.ko-round-col--sf  { width: 100px; }
+.ko-round-col--hf  { width: 100px; }
 
 /* ── Match slots (height = 2× per ronde) ── */
 .ko-slot {
@@ -3447,16 +3447,16 @@ a:focus-visible {
   align-items: center;
   justify-content: center;
 }
-.ko-slot--r32 { height: 88px; }
-.ko-slot--qf  { height: 176px; }
-.ko-slot--sf  { height: 352px; }
-.ko-slot--hf  { height: 704px; }
+.ko-slot--r32 { height: 62px; }
+.ko-slot--qf  { height: 124px; }
+.ko-slot--sf  { height: 248px; }
+.ko-slot--hf  { height: 496px; }
 
 /* ── Match card ── */
 .ko-card {
-  width: calc(100% - 12px);
+  width: calc(100% - 6px);
   border: 1px solid rgba(26,25,24,0.2);
-  border-radius: 9px;
+  border-radius: 7px;
   overflow: hidden;
   background: var(--paper-card);
   box-shadow: 0 1px 3px rgba(26,25,24,0.06);
@@ -3481,20 +3481,20 @@ a:focus-visible {
   border-color: rgba(26,25,24,0.35);
   border-width: 1.5px;
   background: var(--paper-card);
-  width: 168px;
+  width: 118px;
 }
 
 .ko-team {
   display: flex;
   align-items: center;
-  gap: 7px;
-  padding: 8px 10px;
+  gap: 5px;
+  padding: 5px 7px;
   min-width: 0;
 }
 .ko-team--tbd { justify-content: center; }
-.ko-flag { font-size: 1.05rem; flex-shrink: 0; line-height: 1; }
+.ko-flag { font-size: 0.9rem; flex-shrink: 0; line-height: 1; }
 .ko-name {
-  font-size: 0.8rem;
+  font-size: 0.72rem;
   font-weight: 500;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -3507,7 +3507,7 @@ a:focus-visible {
   color: var(--ink-mute);
   font-style: italic;
   font-weight: 400;
-  font-size: 0.75rem;
+  font-size: 0.66rem;
 }
 .ko-team--win {
   background: rgba(11,91,62,0.07);
@@ -3521,11 +3521,11 @@ a:focus-visible {
 }
 .ko-score {
   font-family: var(--font-mono);
-  font-size: 0.68rem;
+  font-size: 0.6rem;
   color: var(--ink-mute);
   white-space: nowrap;
   flex-shrink: 0;
-  margin-left: 4px;
+  margin-left: 2px;
 }
 .ko-team--win .ko-score {
   color: var(--pitch);
@@ -3533,9 +3533,9 @@ a:focus-visible {
 }
 .ko-sep { height: 1px; background: var(--rule); }
 .ko-date-row {
-  padding: 3px 10px 4px;
+  padding: 2px 7px 3px;
   font-family: var(--font-mono);
-  font-size: 0.57rem;
+  font-size: 0.52rem;
   color: var(--ink-mute);
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -3548,7 +3548,7 @@ a:focus-visible {
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
-  width: 52px;
+  width: 32px;
 }
 
 .ko-conn {
@@ -3557,9 +3557,9 @@ a:focus-visible {
 }
 
 /* Hoogte = de hoogte van de TARGET ronde-slot */
-.ko-conn-col--r32-qf .ko-conn { height: 176px; }
-.ko-conn-col--qf-sf  .ko-conn { height: 352px; }
-.ko-conn-col--sf-hf  .ko-conn { height: 704px; }
+.ko-conn-col--r32-qf .ko-conn { height: 124px; }
+.ko-conn-col--qf-sf  .ko-conn { height: 248px; }
+.ko-conn-col--sf-hf  .ko-conn { height: 496px; }
 
 /* Linker bracket ] */
 .ko-conn::before {
@@ -3567,21 +3567,21 @@ a:focus-visible {
   position: absolute;
   top: 25%;
   left: 0;
-  width: 18px;
+  width: 12px;
   height: 50%;
-  border-top: 1.5px solid rgba(26,25,24,0.22);
-  border-right: 1.5px solid rgba(26,25,24,0.22);
-  border-bottom: 1.5px solid rgba(26,25,24,0.22);
+  border-top: 2px solid rgba(26,25,24,0.45);
+  border-right: 2px solid rgba(26,25,24,0.45);
+  border-bottom: 2px solid rgba(26,25,24,0.45);
   border-radius: 0 4px 4px 0;
 }
 .ko-conn::after {
   content: '';
   position: absolute;
   top: 50%;
-  left: 18px;
+  left: 12px;
   right: 0;
-  height: 1.5px;
-  background: rgba(26,25,24,0.22);
+  height: 2px;
+  background: rgba(26,25,24,0.45);
   transform: translateY(-50%);
 }
 
@@ -3589,13 +3589,13 @@ a:focus-visible {
 .ko-conn__date {
   position: absolute;
   top: 50%;
-  right: 3px;
+  right: 1px;
   transform: translateY(-50%);
   font-family: var(--font-mono);
-  font-size: 0.6rem;
+  font-size: 0.52rem;
   color: var(--ink-mute);
   background: var(--paper);
-  padding: 1px 4px;
+  padding: 1px 3px;
   border-radius: 2px;
   line-height: 1.6;
   white-space: nowrap;
@@ -3607,16 +3607,45 @@ a:focus-visible {
   left: auto;
   right: 0;
   border-right: none;
-  border-left: 1.5px solid rgba(26,25,24,0.22);
+  border-left: 2px solid rgba(26,25,24,0.45);
   border-radius: 4px 0 0 4px;
 }
 .ko-conn--mirror::after {
   left: 0;
-  right: 18px;
+  right: 12px;
 }
 .ko-conn--mirror .ko-conn__date {
   right: auto;
-  left: 3px;
+  left: 1px;
+}
+
+/* ── R32 inklapbaar ── */
+.ko-bracket--r32-hidden .ko-round-col--r32 { display: none; }
+.ko-bracket--r32-hidden .ko-conn-col--r32-qf { display: none; }
+
+/* ── R32 toggle knop ── */
+.ko-r32-toggle-row {
+  display: flex;
+  justify-content: flex-start;
+  padding: 0 0 8px 4px;
+  min-width: max-content;
+}
+.ko-r32-toggle {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border: 1px solid var(--rule);
+  border-radius: 99px;
+  background: var(--paper);
+  color: var(--ink-mute);
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+}
+.ko-r32-toggle:hover {
+  background: var(--paper-deep);
+  color: var(--ink);
 }
 
 /* ── Finale (midden) ── */
@@ -3625,25 +3654,25 @@ a:focus-visible {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 184px;
+  width: 130px;
   flex-shrink: 0;
-  padding: 0 8px;
+  padding: 0 6px;
   align-self: stretch;
 }
-.ko-finale__trophy { font-size: 2.6rem; line-height: 1; margin-bottom: 8px; }
+.ko-finale__trophy { font-size: 2rem; line-height: 1; margin-bottom: 6px; }
 .ko-finale__label {
   font-family: var(--font-display);
-  font-size: 1.1rem;
+  font-size: 0.95rem;
   font-weight: 700;
   color: var(--ink);
-  margin-bottom: 3px;
+  margin-bottom: 2px;
 }
 .ko-finale__date {
   font-family: var(--font-mono);
-  font-size: 0.6rem;
+  font-size: 0.55rem;
   color: var(--ink-mute);
   letter-spacing: 0.04em;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
 /* ═══════════════════════════════════════════════════════════════════
