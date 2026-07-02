@@ -49,7 +49,7 @@ const KO_BACKUP_DELAY_MIN = 200;
 
 // Als fixture nog niet FT is bij fetch-moment → retry na 15 min (max 3x)
 const RETRY_DELAY_MIN = 15;
-const RETRY_MAX = 3;
+const RETRY_MAX = 5;
 
 // ─── Helpers ─────────────────────────────────────────────────────────
 

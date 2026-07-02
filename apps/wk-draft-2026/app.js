@@ -1006,10 +1006,9 @@ function formatNlTijd(datum) {
 }
 
 function getActiveSpeeldagDate() {
-  // Mexico City CDT = UTC-5.
-  // Speeldag wisselt om 00:00 CDMX = 05:00 UTC = 07:00 Amsterdam CEST.
-  const cdtMs = Date.now() - 5 * 60 * 60 * 1000;
-  return new Date(cdtMs).toISOString().slice(0, 10);
+  // Datums worden opgeslagen in CEST (UTC+2).
+  const cestMs = Date.now() + 2 * 60 * 60 * 1000;
+  return new Date(cestMs).toISOString().slice(0, 10);
 }
 
 function renderVandaag() {
@@ -1020,8 +1019,15 @@ function renderVandaag() {
   const normDatum = iso => (iso || "").slice(0, 10);
   const activeDatum = getActiveSpeeldagDate();
 
-  // Huidige speeldag — alleen nog niet gespeelde matches
-  let toonMatches = state.wedstrijden.filter(w => normDatum(w.datum) === activeDatum && !w.uitslag);
+  // Huidige speeldag + nachtmatches van morgen (vóór 07:00 CEST) — alleen niet gespeeld
+  const morgen = new Date(Date.now() + 2 * 60 * 60 * 1000 + 86400000).toISOString().slice(0, 10);
+  let toonMatches = state.wedstrijden.filter(w => {
+    if (w.uitslag) return false;
+    const d = normDatum(w.datum);
+    if (d === activeDatum) return true;
+    if (d === morgen && (KICKOFF[w.apiFixtureId] || "99:99") < "07:00") return true;
+    return false;
+  });
   let kicker = "Vandaag";
 
   if (!toonMatches.length) {
