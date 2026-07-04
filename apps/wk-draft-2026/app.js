@@ -1703,11 +1703,7 @@ function renderWedstrijden(listId = "wedstrijdenList", emptyId = "wedstrijdenEmp
       mode = 'past';
     }
 
-    const matchHtml = mode === 'current'
-      ? matches.map(w => renderMatchRow(w, lookup)).join('')
-      : mode === 'past'
-        ? matches.map(w => renderMatchRowPast(w)).join('')
-        : matches.map(w => renderMatchRowFuture(w)).join('');
+    const matchHtml = matches.map(w => renderMatchRow(w, lookup)).join('');
 
     return `
       <details class="fase-groep fase-groep--${mode}${sec.fase === currentFase ? ' fase-groep--current' : ''}" ${sec.open ? 'open' : ''}>
