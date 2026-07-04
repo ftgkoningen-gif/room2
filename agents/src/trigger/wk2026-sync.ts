@@ -301,8 +301,9 @@ export const wk2026Scheduler = schedules.task({
       return { scheduled: [], skipped: "outside-window" };
     }
 
-    const from = now.toISOString().slice(0, 10);
-    const toD = new Date(now.getTime() + 2 * 86400000).toISOString().slice(0, 10);
+    // Venster: gisteren t/m overmorgen — vangt ook gemiste matches van de nacht op
+    const from = new Date(now.getTime() - 86_400_000).toISOString().slice(0, 10);
+    const toD  = new Date(now.getTime() + 2 * 86_400_000).toISOString().slice(0, 10);
     const { response } = await apiFetch(
       `/fixtures?league=${LEAGUE_ID}&season=${SEASON}&from=${from}&to=${toD}`
     );
@@ -328,11 +329,11 @@ export const wk2026Scheduler = schedules.task({
       const fetchAt = new Date(kickoff.getTime() + FETCH_DELAY_AFTER_KICKOFF_MIN * 60_000);
       const delaySec = Math.floor((fetchAt.getTime() - Date.now()) / 1000);
 
-      if (delaySec < -60 * 60) {
-        // match eindigde >1u geleden en is nog niet verwerkt — queue nu
+      if (delaySec <= 0) {
+        // fetch-moment is verstreken en match nog niet verwerkt — queue nu
         await wk2026FetchMatch.trigger({ fixtureId: id });
         scheduled.push({ fixtureId: id, fetchAt: "now", note: "match already past" });
-      } else if (delaySec > 0) {
+      } else {
         await wk2026FetchMatch.trigger(
           { fixtureId: id },
           { delay: `${delaySec}s` }
@@ -459,7 +460,70 @@ async function fetchOddsVoorFixture(fixtureId: number): Promise<{
   return null;
 }
 
-// ─── 4. REPAIR: wk2026-repair-missing-events ─────────────────────────
+// ─── 4. RECONCILE: wk2026-reconcile ─────────────────────────────────
+// Draait elk uur en verwerkt gespeelde matches van gisteren/vandaag die
+// om welke reden dan ook nog op "gepland" staan (API-vertraging, mislukte
+// retries, etc.). Vangnet bovenop de primaire fetch-tasks.
+
+export const wk2026Reconcile = schedules.task({
+  id: "wk2026-reconcile",
+  cron: {
+    pattern: "5 * * * *",          // elke dag elk uur op :05
+    timezone: "Europe/Amsterdam",
+  },
+  maxDuration: 300,
+  run: async () => {
+    const now = new Date();
+    if (now < MATCHES_WINDOW_START || now > MATCHES_WINDOW_END) {
+      logger.info("reconcile: buiten WK-venster, skip");
+      return { skipped: "outside-window" };
+    }
+
+    const supabase = getSupabase();
+    // Alle echte gepland-matches (geen datum-filter — vangt ook vergeten nachtmatches op)
+    const { data: kandidaten } = await supabase
+      .from("wk2026_wedstrijden")
+      .select("api_fixture_id, thuis, uit, datum")
+      .eq("status", "gepland")
+      .lt("api_fixture_id", 200_000)
+      .lte("datum", now.toISOString().slice(0, 10));
+
+    if (!kandidaten?.length) {
+      logger.info("reconcile: geen open matches, klaar");
+      return { kandidaten: 0, verwerkt: 0 };
+    }
+
+    logger.info(`reconcile: ${kandidaten.length} open match(es) controleren`);
+    let verwerkt = 0;
+
+    for (const w of kandidaten) {
+      try {
+        const fd = await apiFetch(`/fixtures?id=${w.api_fixture_id}`);
+        const f = fd.response?.[0];
+        if (!f) { await sleep(500); continue; }
+
+        const apiStatus = f.fixture.status?.short;
+        if (!["FT", "AET", "PEN"].includes(apiStatus)) {
+          logger.info(`reconcile: ${w.thuis} vs ${w.uit} → ${apiStatus}, nog bezig`);
+          await sleep(500);
+          continue;
+        }
+
+        const result = await upsertFixture(supabase, f);
+        logger.info(`reconcile: ${w.thuis} vs ${w.uit} verwerkt (${result.events} events)`);
+        verwerkt++;
+      } catch (err) {
+        logger.error(`reconcile: fixture ${w.api_fixture_id} fout`, { err: String(err) });
+      }
+      await sleep(1_200);
+    }
+
+    logger.info(`reconcile klaar: ${verwerkt}/${kandidaten.length} verwerkt`);
+    return { kandidaten: kandidaten.length, verwerkt };
+  },
+});
+
+// ─── 5. REPAIR: wk2026-repair-missing-events ─────────────────────────
 // Handmatig triggeren via Trigger.dev dashboard wanneer events ontbreken.
 // Zonder payload: detecteert automatisch alle verwerkte matches zonder events.
 // Met payload { fixtureIds: [123, 456] }: herhaalt alleen die fixtures.
