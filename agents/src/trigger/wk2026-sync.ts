@@ -325,6 +325,30 @@ export const wk2026Scheduler = schedules.task({
       const fase = faseOf(f.league.round ?? "");
       const isKO = ["1/16", "1/8", "1/4", "1/2", "F", "bronze"].includes(fase);
 
+      // Zorg dat de fixture in de DB staat als "gepland" zodat de app hem kan tonen.
+      // upsert met ignoreDuplicates=false maar zonder "verwerkt" te overschrijven.
+      const cestDatum = (() => {
+        const utcMs = new Date(f.fixture.date ?? 0).getTime();
+        return new Date(utcMs + 2 * 60 * 60 * 1000).toISOString().slice(0, 10);
+      })();
+      await supabase.from("wk2026_wedstrijden").upsert(
+        {
+          api_fixture_id: id,
+          datum: cestDatum,
+          fase,
+          poule: null,
+          thuis: toNL(f.teams.home.name),
+          uit:   toNL(f.teams.away.name),
+          uitslag_thuis: null,
+          uitslag_uit:   null,
+          pens_thuis: null,
+          pens_uit:   null,
+          status: "gepland",
+          updated_at: new Date().toISOString(),
+        },
+        { onConflict: "api_fixture_id", ignoreDuplicates: true }  // bestaande rijen niet overschrijven
+      );
+
       const kickoff = new Date(f.fixture.date);
       const fetchAt = new Date(kickoff.getTime() + FETCH_DELAY_AFTER_KICKOFF_MIN * 60_000);
       const delaySec = Math.floor((fetchAt.getTime() - Date.now()) / 1000);
@@ -485,7 +509,7 @@ export const wk2026Reconcile = schedules.task({
       .from("wk2026_wedstrijden")
       .select("api_fixture_id, thuis, uit, datum")
       .eq("status", "gepland")
-      .lt("api_fixture_id", 200_000)
+      .gte("api_fixture_id", 1_000_000)   // Sla handmatige placeholder-IDs (<200k) over; echte API-fixtures zitten in de miljoenen
       .lte("datum", now.toISOString().slice(0, 10));
 
     if (!kandidaten?.length) {

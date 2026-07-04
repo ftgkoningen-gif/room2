@@ -203,6 +203,13 @@ const KICKOFF = {
   1565178: "20:00", // Australië vs Egypte          — 3 jul
   1565179: "00:00", // Argentinië vs Kaapverdië     — 4 jul
   1567310: "03:30", // Colombia vs Ghana            — 4 jul
+  // 1/8 (R16) — Amsterdam tijd (CEST = UTC+2)
+  1567824: "19:00", // Canada vs Marokko           — 4 jul
+  1569870: "23:00", // Paraguay vs Frankrijk        — 4 jul
+  1568100: "22:00", // Brazilië vs Noorwegen        — 5 jul
+  1570714: "02:00", // Mexico vs Engeland           — 6 jul (nacht)
+  1576756: "21:00", // Portugal vs Spanje           — 6 jul
+  1570715: "02:00", // VS vs België                 — 7 jul (nacht)
 };
 
 // ──────────────────────────────────────────────────────────────────
@@ -1649,7 +1656,7 @@ function renderWedstrijden(listId = "wedstrijdenList", emptyId = "wedstrijdenEmp
   const lookup = buildLookup();
 
   // Group by fase (groepsfase = has poule OR fase === 'groep')
-  const KNOCKOUT_ORDER = ['1/16', '1/8', '1/4', '1/2', 'F'];
+  const KNOCKOUT_ORDER = ['1/16', '1/8', '1/4', '1/2', 'bronze', 'F'];
   const byFase = {};
   for (const w of state.wedstrijden) {
     const f = (w.poule || w.fase === 'groep' || !w.fase) ? 'groep' : w.fase;
@@ -1662,17 +1669,17 @@ function renderWedstrijden(listId = "wedstrijdenList", emptyId = "wedstrijdenEmp
   }
   for (const g of Object.values(byFase)) g.sort((a, b) => matchSortKey(a).localeCompare(matchSortKey(b)));
 
-  // Determine current round (first knockout round with upcoming/unfinished matches)
-  const today = new Date().toISOString().slice(0, 10);
+  // Huidige ronde = eerste KO-ronde met minstens één wedstrijd zonder uitslag.
+  // Let op: NIET op datum checken — verwerkte wedstrijden van vandaag hebben al een uitslag.
   const presentKnockout = KNOCKOUT_ORDER.filter(f => byFase[f]);
   let currentFase = null;
   for (const f of presentKnockout) {
-    if ((byFase[f] || []).some(w => !w.uitslag || w.datum >= today)) { currentFase = f; break; }
+    if ((byFase[f] || []).some(w => !w.uitslag)) { currentFase = f; break; }
   }
   if (!currentFase && presentKnockout.length) currentFase = presentKnockout[presentKnockout.length - 1];
   if (!currentFase) currentFase = 'groep';
 
-  const FASE_LABELS = { 'groep': 'Groepsfase', '1/16': 'Achtste Finale (R32)', '1/8': 'Achtste Finale', '1/4': 'Kwartfinale', '1/2': 'Halve Finale', 'F': 'Finale' };
+  const FASE_LABELS = { 'groep': 'Groepsfase', '1/16': 'Ronde van 32', '1/8': 'Achtste Finale', '1/4': 'Kwartfinale', '1/2': 'Halve Finale', 'bronze': 'Strijd om Brons', 'F': 'Finale' };
   const currentIdx = KNOCKOUT_ORDER.indexOf(currentFase);
 
   // Display order: current → future knockout → past knockout → groepsfase
@@ -1730,17 +1737,22 @@ function renderMatchRowPast(w) {
 
 function renderMatchRowFuture(w) {
   const datum = w.datum ? formatShortDate(w.datum) : '—';
+  const tijd  = KICKOFF[w.apiFixtureId] ?? null;
   const thuisKnown = w.thuis && !w.thuis.startsWith('?');
   const uitKnown   = w.uit   && !w.uit.startsWith('?');
   const teamsHtml = (thuisKnown || uitKnown) ? `
     <span class="mr-future__teams">
-      ${thuisKnown ? `<span class="mr-future__flag">${findVlag(w.thuis)}</span>` : '<span class="mr-future__unknown">?</span>'}
+      ${thuisKnown
+        ? `<span class="mr-future__flag">${findVlag(w.thuis)}</span><span class="mr-future__name">${escapeHtml(w.thuis)}</span>`
+        : '<span class="mr-future__unknown">?</span>'}
       <span class="mr-future__vs">vs</span>
-      ${uitKnown ? `<span class="mr-future__flag">${findVlag(w.uit)}</span>` : '<span class="mr-future__unknown">?</span>'}
+      ${uitKnown
+        ? `<span class="mr-future__name">${escapeHtml(w.uit)}</span><span class="mr-future__flag">${findVlag(w.uit)}</span>`
+        : '<span class="mr-future__unknown">?</span>'}
     </span>` : '';
   return `
     <div class="mr-future">
-      <span class="mr-future__date">${datum}</span>
+      <span class="mr-future__date">${datum}${tijd ? `<span class="mr-future__tijd">${tijd}</span>` : ''}</span>
       ${teamsHtml}
     </div>`;
 }
@@ -2043,20 +2055,48 @@ function openTeamModal(naam) {
   const totPts = deelnemerPunten(deelnemer);
   const totStr = totPts > 0 ? `+${totPts}` : `${totPts}`;
 
+  // Zelfde opbouw als renderTeams: spelers + wissels gecombineerd, per land gesorteerd
   const posOrder = { K: 0, V: 1, M: 2, A: 3 };
-  const spelers = [...(deelnemer.spelers || [])]
-    .map(sp => ({ ...sp, _pts: spelerPunten(sp) }))
-    .sort((a, b) => b._pts - a._pts || (posOrder[a.positie] ?? 9) - (posOrder[b.positie] ?? 9));
+  const wisselUitNamen = new Set((deelnemer.wissels || []).map(w => w.uit));
+  const inkomendSpelers = (deelnemer.wissels || []).map(w => ({
+    naam: w.in, land: w.land_in, positie: w.positie_in, _wisselVanaf: w.vanaf, _correctie: w.correctie || 0
+  }));
+  const alleSpelers = [
+    ...(deelnemer.spelers || []).map(sp => ({
+      ...sp,
+      _wisselVoor: wisselUitNamen.has(sp.naam)
+        ? (deelnemer.wissels || []).find(w => w.uit === sp.naam).vanaf
+        : null
+    })),
+    ...inkomendSpelers
+  ].sort((a, b) =>
+    a.land.localeCompare(b.land, "nl") || (posOrder[a.positie] ?? 9) - (posOrder[b.positie] ?? 9)
+  );
 
-  const spelerRows = spelers.map(sp => {
-    const ptsStr = sp._pts > 0 ? `+${sp._pts}` : `${sp._pts}`;
+  const uitgeschakeld = buildUitgeschakeldSet();
+
+  const spelerRows = alleSpelers.map(sp => {
+    const vlag = findVlag(sp.land);
+    const code = findCode(sp.land);
+    const opts = sp._wisselVoor ? { voor: sp._wisselVoor } : sp._wisselVanaf ? { vanaf: sp._wisselVanaf } : {};
+    const spPts = spelerPunten(sp, opts) + (sp._correctie || 0);
+    const ptsStr = spPts === 0 ? "0" : (spPts > 0 ? `+${spPts}` : `${spPts}`);
+    const isUit = !!sp._wisselVoor;
+    const isIn  = !!sp._wisselVanaf;
+    const isEliminated = !isUit && uitgeschakeld.has(sp.land);
+    const wisselBadge = isUit
+      ? `<span class="player-line__wissel-badge player-line__wissel-badge--uit">↓ uit</span>`
+      : isIn
+      ? `<span class="player-line__wissel-badge player-line__wissel-badge--in">↑ in</span>`
+      : '';
     return `
-      <li class="tm-row" data-speler="${escapeHtml(sp.naam)}" data-land="${escapeHtml(sp.land)}" tabindex="0" role="button">
-        <span class="player-line__pos player-line__pos--${sp.positie}">${sp.positie}</span>
-        <span class="tm-row__name">${escapeHtml(sp.naam)}</span>
-        <span class="tm-row__land">${escapeHtml(sp.land)}</span>
-        <span class="tm-row__pts ${sp._pts < 0 ? 'is-neg' : ''}">${ptsStr}</span>
-        <span class="tm-row__chev" aria-hidden="true">→</span>
+      <li class="player-line${isUit ? ' player-line--wissel-uit' : isIn ? ' player-line--wissel-in' : ''}${isEliminated ? ' player-line--uitgeschakeld' : ''}" data-speler="${escapeHtml(sp.naam)}" data-land="${escapeHtml(sp.land)}" tabindex="0" role="button">
+        <span class="player-line__flag">${vlag}</span>
+        <span class="player-line__pos player-line__pos--${sp.positie}" title="${escapeHtml(POS_LABEL[sp.positie] || sp.positie)}">${sp.positie}</span>
+        <span class="player-line__name">${escapeHtml(sp.naam)}${wisselBadge}</span>
+        <span class="player-line__meta">${code}</span>
+        <span class="player-line__pts ${spPts < 0 ? 'is-neg' : ''}">${ptsStr}</span>
+        <span class="player-line__chev" aria-hidden="true">→</span>
       </li>`;
   }).join("");
 
@@ -2065,7 +2105,7 @@ function openTeamModal(naam) {
     <header class="modal__header">
       <div class="modal__flag modal__flag--rank">#${rank}</div>
       <div class="modal__titleblock">
-        <div class="modal__kicker">Team · ${spelers.length} spelers</div>
+        <div class="modal__kicker">Team · ${alleSpelers.length} spelers</div>
         <h2 class="modal__title">${escapeHtml(deelnemer.naam)}</h2>
       </div>
       <div class="modal__total">
@@ -2074,8 +2114,7 @@ function openTeamModal(naam) {
       </div>
     </header>
     <div class="modal__body">
-      <h3 class="modal__subtitle">Spelers — klik voor puntenbreakdown</h3>
-      <ol class="tm-list">${spelerRows}</ol>
+      <ol class="player-list">${spelerRows}</ol>
     </div>
   `;
   document.getElementById("spelerModal").classList.remove("hidden");

@@ -3376,6 +3376,19 @@ a:focus-visible {
   opacity: 0.4;
   font-weight: 300;
 }
+.mr-future__name {
+  font-size: 12px;
+  color: var(--ink);
+  font-weight: 500;
+}
+.mr-future__tijd {
+  display: inline-block;
+  margin-left: 4px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink-mute);
+  opacity: 0.8;
+}
 
 @media (max-width: 560px) {
   .mr-past, .mr-future { width: 100%; }
