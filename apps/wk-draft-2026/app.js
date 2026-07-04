@@ -373,10 +373,10 @@ async function loadAllData() {
     console.debug("[perf] gerenderd uit snapshot-cache — achtergrond-verversing gestart");
     (async () => {
       const oud = JSON.stringify(snapshotData());
-      // Herstel statische basis zodat rijen die uit Supabase verdwenen zijn
-      // niet via de snapshot blijven hangen
-      state.wedstrijden = statischeWedstrijden;
-      await loadFromSupabase();
+      // Merge op de statische basis (niet de snapshot) zodat rijen die uit
+      // Supabase verdwenen zijn niet blijven hangen. State wordt pas ná het
+      // laden aangepast — de snapshot blijft dus zichtbaar tijdens het laden.
+      await loadFromSupabase(statischeWedstrijden);
       pasOverlaysToe();
       const nieuw = JSON.stringify(snapshotData());
       if (nieuw !== oud) {
@@ -434,7 +434,7 @@ function deriveFasesFromWedstrijden() {
 // ──────────────────────────────────────────────────────────────────
 // Supabase read (wedstrijden + events + selecties per land)
 // ──────────────────────────────────────────────────────────────────
-async function loadFromSupabase() {
+async function loadFromSupabase(wedstrijdenBasis = null) {
   const cfg = window.WK_CONFIG;
   if (!cfg || !cfg.SUPABASE_URL || !cfg.SUPABASE_ANON_KEY || !window.supabase) {
     console.info("Supabase niet geconfigureerd — vallen terug op statische JSON.");
@@ -570,7 +570,8 @@ async function loadFromSupabase() {
         events: eventsByFix[w.api_fixture_id] || []
       }));
       const supabaseIds = new Set(fromSupabase.map(w => w.apiFixtureId));
-      const staticOnly = state.wedstrijden.filter(w => !supabaseIds.has(w.apiFixtureId));
+      const basis = wedstrijdenBasis || state.wedstrijden;
+      const staticOnly = basis.filter(w => !supabaseIds.has(w.apiFixtureId));
       state.wedstrijden = [...staticOnly, ...fromSupabase];
     }
 
