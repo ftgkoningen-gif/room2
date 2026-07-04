@@ -293,10 +293,61 @@ async function init() {
   setInterval(renderCountdown, 60 * 60 * 1000);
 }
 
+// Snapshot-cache: laatste succesvolle Supabase-load wordt integraal bewaard,
+// zodat een herhaalbezoek direct rendert (stale-while-revalidate).
+const SNAPSHOT_KEY = "wk2026_snapshot_v1";
+const SNAPSHOT_MAX_AGE = 48 * 60 * 60 * 1000;
+
+function leesSnapshot() {
+  try {
+    const s = JSON.parse(localStorage.getItem(SNAPSHOT_KEY) || "null");
+    if (!s?.data || (Date.now() - s.ts) > SNAPSHOT_MAX_AGE) return null;
+    return s;
+  } catch (_) { return null; }
+}
+
+function snapshotData() {
+  return {
+    wedstrijden: state.wedstrijden,
+    kansen: state.kansen,
+    landen: state.landen,
+    selectiesUpdated: state.selectiesUpdated || null,
+  };
+}
+
+function bewaarSnapshot() {
+  try {
+    localStorage.setItem(SNAPSHOT_KEY, JSON.stringify({ ts: Date.now(), data: snapshotData() }));
+  } catch (_) { /* quota vol — geen ramp, volgende keer gewoon netwerk */ }
+}
+
+function pasSnapshotToe(s) {
+  state.wedstrijden = s.data.wedstrijden || state.wedstrijden;
+  state.kansen = s.data.kansen || {};
+  state.landen = s.data.landen?.length ? s.data.landen : state.landen;
+  state.selectiesUpdated = s.data.selectiesUpdated ? new Date(s.data.selectiesUpdated) : null;
+}
+
+function pasOverlaysToe() {
+  // LocalStorage overlays (alleen voor awards — fases worden altijd auto-derived)
+  try {
+    const lsFases = JSON.parse(localStorage.getItem(LS_KEYS.fases) || "null");
+    if (lsFases) state.fases = lsFases;
+    const lsAwards = JSON.parse(localStorage.getItem(LS_KEYS.awards) || "null");
+    if (lsAwards) state.awards = lsAwards;
+  } catch (e) { /* ignore */ }
+
+  // Auto-derive landenPerFase uit KO-wedstrijden — altijd als laatste zodat
+  // stale localStorage-data wordt overschreven. Zodra de sync een 1/8-match
+  // toevoegt aan Supabase weten we automatisch welke 16 teams door zijn.
+  deriveFasesFromWedstrijden();
+}
+
 async function loadAllData() {
   // Cache-invalidatie: wis oude localStorage wanneer data-versie bumpt
   if (localStorage.getItem("vd.version") !== DATA_VERSION) {
     for (const k of Object.values(LS_KEYS)) localStorage.removeItem(k);
+    localStorage.removeItem(SNAPSHOT_KEY);
     localStorage.setItem("vd.version", DATA_VERSION);
   }
 
@@ -313,21 +364,37 @@ async function loadAllData() {
   state.fases = fases || state.fases;
   state.awards = awards || state.awards;
 
-  // Supabase-overlay (primaire bron voor wedstrijden + selecties)
+  const snapshot = leesSnapshot();
+  if (snapshot) {
+    // Direct renderen uit de cache; netwerk-verversing draait op de achtergrond
+    const statischeWedstrijden = state.wedstrijden;
+    pasSnapshotToe(snapshot);
+    pasOverlaysToe();
+    console.debug("[perf] gerenderd uit snapshot-cache — achtergrond-verversing gestart");
+    (async () => {
+      const oud = JSON.stringify(snapshotData());
+      // Herstel statische basis zodat rijen die uit Supabase verdwenen zijn
+      // niet via de snapshot blijven hangen
+      state.wedstrijden = statischeWedstrijden;
+      await loadFromSupabase();
+      pasOverlaysToe();
+      const nieuw = JSON.stringify(snapshotData());
+      if (nieuw !== oud) {
+        bewaarSnapshot();
+        renderAll();
+        valideerWissels();
+        console.debug("[perf] verse data geladen — pagina bijgewerkt");
+      } else {
+        console.debug("[perf] verse data identiek aan cache — geen re-render");
+      }
+    })();
+    return;
+  }
+
+  // Geen (bruikbare) snapshot: normaal laden en cache vullen
   await loadFromSupabase();
-
-  // LocalStorage overlays (alleen voor awards — fases worden altijd auto-derived)
-  try {
-    const lsFases = JSON.parse(localStorage.getItem(LS_KEYS.fases) || "null");
-    if (lsFases) state.fases = lsFases;
-    const lsAwards = JSON.parse(localStorage.getItem(LS_KEYS.awards) || "null");
-    if (lsAwards) state.awards = lsAwards;
-  } catch (e) { /* ignore */ }
-
-  // Auto-derive landenPerFase uit KO-wedstrijden — altijd als laatste zodat
-  // stale localStorage-data wordt overschreven. Zodra de sync een 1/8-match
-  // toevoegt aan Supabase weten we automatisch welke 16 teams door zijn.
-  deriveFasesFromWedstrijden();
+  bewaarSnapshot();
+  pasOverlaysToe();
 }
 
 // ──────────────────────────────────────────────────────────────────
@@ -390,22 +457,20 @@ async function loadFromSupabase() {
         return r;
       })(),
 
-      // 2. Events: sla COUNT over — directe paginering, alleen benodigde kolommen
+      // 2. Events: count zit bij pagina 1 in het antwoord (geen aparte
+      //    COUNT-roundtrip) — resterende pagina's meteen parallel.
       (async () => {
         const PAGE = 1000;
         const t = performance.now();
         const first = await client.from("wk2026_events")
-          .select("api_fixture_id,speler,type,detail")
+          .select("api_fixture_id,speler,type,detail", { count: "exact" })
           .range(0, PAGE - 1);
         if (first.error || !first.data?.length) return { data: first.data || [], error: first.error };
         if (first.data.length < PAGE) {
           console.debug(`[perf] events: ${(performance.now()-t).toFixed(0)}ms (${first.data.length} rijen, 1 call)`);
           return { data: first.data, error: null };
         }
-        // Meer dan 1 pagina: haal COUNT op + resterende pagina's parallel
-        const { count } = await client.from("wk2026_events")
-          .select("api_fixture_id", { count: "exact", head: true });
-        const totalPages = Math.ceil((count || PAGE) / PAGE);
+        const totalPages = Math.ceil((first.count || PAGE) / PAGE);
         const rest = await Promise.all(
           Array.from({ length: totalPages - 1 }, (_, i) =>
             client.from("wk2026_events")
