@@ -3280,14 +3280,8 @@ a:focus-visible {
 .fase-groep[open] > .fase-groep__hdr .fase-groep__chev { transform: rotate(180deg); }
 .fase-groep__body { padding: 0; }
 
-/* ── Compact past (vlaggen + score) ── */
-.fase-groep--past .fase-groep__body,
-.fase-groep--past.fase-groep[open] .fase-groep__body {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2px 0;
-  padding: 4px 0 8px;
-}
+/* Alle rondes gebruiken dezelfde volledige match-row weergave;
+   de compacte mr-past/mr-future stijlen hieronder zijn niet meer in gebruik. */
 
 .mr-past {
   display: flex;
@@ -3324,13 +3318,6 @@ a:focus-visible {
   line-height: 1.4;
 }
 
-/* ── Minimal future (datum + eventueel vlaggen) ── */
-.fase-groep--future .fase-groep__body {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0;
-  padding: 4px 0 8px;
-}
 
 .mr-future {
   display: flex;

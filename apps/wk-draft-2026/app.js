@@ -210,6 +210,8 @@ const KICKOFF = {
   1570714: "02:00", // Mexico vs Engeland           — 6 jul (nacht)
   1576756: "21:00", // Portugal vs Spanje           — 6 jul
   1570715: "02:00", // VS vs België                 — 7 jul (nacht)
+  1576804: "18:00", // Argentinië vs Egypte         — 7 jul
+  1576805: "22:00", // Zwitserland vs Colombia      — 7 jul
 };
 
 // ──────────────────────────────────────────────────────────────────
