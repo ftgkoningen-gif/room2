@@ -1542,6 +1542,23 @@ code {
   font-size: 14px;
   text-align: center;
 }
+
+/* Toekomstige (afgeleide) wedstrijden: zelfde grid, gedempte stijl */
+.match-row__head--synth { cursor: default; }
+.match-row__head--synth:hover { background: transparent; }
+.match-row--synth .match-row__teams { font-size: 14px; }
+.match-row__team--tbd {
+  color: var(--ink-mute);
+  font-style: italic;
+  font-size: 13px;
+}
+.match-row__score--tbd {
+  color: var(--ink-mute);
+  font-weight: 400;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
 .match-row[open] .match-row__chev { transform: rotate(180deg); }
 
 .match-row__body {

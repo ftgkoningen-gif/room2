@@ -215,6 +215,33 @@ const KICKOFF = {
 };
 
 // ──────────────────────────────────────────────────────────────────
+// KO-bracket: R32-paren in bracketvolgorde (zelfde als simulator.js).
+// Winnaars paren per twee door naar de volgende ronde — hieruit worden
+// de toekomstige kwartfinales t/m de finale afgeleid, incl. mogelijke
+// tegenstanders zolang de winnaar nog niet bekend is.
+// ──────────────────────────────────────────────────────────────────
+const KO_R32_BRACKET = [
+  // linkerhelft
+  ["Duitsland", "Paraguay"], ["Frankrijk", "Zweden"],
+  ["Zuid-Afrika", "Canada"], ["Nederland", "Marokko"],
+  ["Portugal", "Kroatië"], ["Spanje", "Oostenrijk"],
+  ["Verenigde Staten", "Bosnië en Herzegovina"], ["België", "Senegal"],
+  // rechterhelft
+  ["Brazilië", "Japan"], ["Ivoorkust", "Noorwegen"],
+  ["Mexico", "Ecuador"], ["Engeland", "Congo-Kinshasa"],
+  ["Argentinië", "Kaapverdië"], ["Australië", "Egypte"],
+  ["Zwitserland", "Algerije"], ["Colombia", "Ghana"],
+];
+
+// Speeldata toekomstige rondes (uit het officiële speelschema)
+const KO_RONDE_DATUMS = {
+  "1/4":    ["2026-07-09", "2026-07-10", "2026-07-11", "2026-07-12"],
+  "1/2":    ["2026-07-14", "2026-07-15"],
+  "bronze": ["2026-07-18"],
+  "F":      ["2026-07-19"],
+};
+
+// ──────────────────────────────────────────────────────────────────
 // State
 // ──────────────────────────────────────────────────────────────────
 const state = {
@@ -1644,6 +1671,98 @@ function renderMatchRow(w, lookup) {
     </details>`;
 }
 
+// ──────────────────────────────────────────────────────────────────
+// Toekomstige KO-rondes afleiden uit de bracket (kwartfinale t/m finale).
+// Geeft synthetische match-objecten terug voor rondes die nog niet
+// (volledig) in de database staan. Zodra de echte fixture in Supabase
+// verschijnt, verdwijnt de synthetische rij vanzelf.
+// ──────────────────────────────────────────────────────────────────
+function buildToekomstKO() {
+  const vindInFase = (a, b, fase) => state.wedstrijden.find(w =>
+    w.fase === fase &&
+    ((w.thuis === a && w.uit === b) || (w.thuis === b && w.uit === a)));
+  const winVan = (m) => {
+    if (!m?.uitslag) return null;
+    if (m.uitslag.thuis > m.uitslag.uit) return m.thuis;
+    if (m.uitslag.uit > m.uitslag.thuis) return m.uit;
+    if (m.pens) return m.pens.thuis > m.pens.uit ? m.thuis : m.uit;
+    return null;
+  };
+  const verliesVan = (m) => {
+    const w = winVan(m);
+    return w ? (w === m.thuis ? m.uit : m.thuis) : null;
+  };
+
+  // Slot = doorgekomen team óf de mogelijke kandidaten + leesbaar label
+  const mkSlot = (team, kandidaten, fallbackLabel) => ({
+    team,
+    kandidaten: team ? [team] : kandidaten,
+    label: team ?? (kandidaten.length === 2 ? kandidaten.join(" / ") : fallbackLabel),
+  });
+
+  // R32-winnaars → teams van de achtste finales
+  const r32w = KO_R32_BRACKET.map(([a, b]) => winVan(vindInFase(a, b, "1/16")));
+
+  // Slots ná de achtste finales
+  const naAF = [];
+  for (let i = 0; i < 8; i++) {
+    const t1 = r32w[2 * i], t2 = r32w[2 * i + 1];
+    const m = (t1 && t2) ? vindInFase(t1, t2, "1/8") : null;
+    naAF.push(mkSlot(m ? winVan(m) : null, [t1, t2].filter(Boolean), `Winnaar AF${i + 1}`));
+  }
+
+  const synth = [];
+
+  // Bouwt één ronde uit slot-paren; geeft winnaar- en verliezer-slots terug
+  const bouwRonde = (slots, fase, kort) => {
+    const winnaars = [], verliezers = [];
+    for (let i = 0; i < slots.length; i += 2) {
+      const s1 = slots[i], s2 = slots[i + 1];
+      const idx = i / 2;
+      const echte = (s1.team && s2.team) ? vindInFase(s1.team, s2.team, fase) : null;
+      if (!echte) {
+        synth.push({
+          synthetic: true, fase,
+          datum: KO_RONDE_DATUMS[fase][idx],
+          thuisLabel: s1.label, uitLabel: s2.label,
+          thuisBekend: !!s1.team, uitBekend: !!s2.team,
+        });
+      }
+      const alleKandidaten = [...new Set([...s1.kandidaten, ...s2.kandidaten])];
+      winnaars.push(mkSlot(echte ? winVan(echte) : null, alleKandidaten, `Winnaar ${kort}${idx + 1}`));
+      verliezers.push(mkSlot(echte ? verliesVan(echte) : null, alleKandidaten, `Verliezer ${kort}${idx + 1}`));
+    }
+    return { winnaars, verliezers };
+  };
+
+  const kf = bouwRonde(naAF, "1/4", "KF");
+  const hf = bouwRonde(kf.winnaars, "1/2", "HF");
+  bouwRonde(hf.verliezers, "bronze", "HF");
+  bouwRonde(hf.winnaars, "F", "HF");
+
+  return synth;
+}
+
+function renderMatchRowSynth(w) {
+  const datum = formatShortDate(w.datum);
+  const faseStr = { "1/4": "1/4", "1/2": "1/2", "bronze": "Brons", "F": "Finale" }[w.fase] || w.fase;
+  const teamCls = (bekend) => `match-row__team${bekend ? '' : ' match-row__team--tbd'}`;
+  return `
+    <div class="match-row match-row--synth">
+      <div class="match-row__head match-row__head--synth">
+        <span class="match-row__date">${datum}</span>
+        <span class="match-row__fase">${faseStr}</span>
+        <span class="match-row__teams">
+          <span class="${teamCls(w.thuisBekend)}">${escapeHtml(w.thuisLabel)}</span>
+          <span class="match-row__score match-row__score--tbd mono">vs</span>
+          <span class="${teamCls(w.uitBekend)}">${escapeHtml(w.uitLabel)}</span>
+        </span>
+        <span class="match-row__dpts mono" style="opacity:0.35">—</span>
+        <span></span>
+      </div>
+    </div>`;
+}
+
 function renderWedstrijden(listId = "wedstrijdenList", emptyId = "wedstrijdenEmpty") {
   const list = document.getElementById(listId);
   const empty = document.getElementById(emptyId);
@@ -1664,6 +1783,12 @@ function renderWedstrijden(listId = "wedstrijdenList", emptyId = "wedstrijdenEmp
     const f = (w.poule || w.fase === 'groep' || !w.fase) ? 'groep' : w.fase;
     if (!byFase[f]) byFase[f] = [];
     byFase[f].push(w);
+  }
+
+  // Toekomstige KO-rondes (kwartfinale t/m finale) uit de bracket afleiden
+  for (const sm of buildToekomstKO()) {
+    if (!byFase[sm.fase]) byFase[sm.fase] = [];
+    byFase[sm.fase].push(sm);
   }
   // Sorteer op datum + aanvangstijd (chronologisch)
   function matchSortKey(w) {
@@ -1705,7 +1830,7 @@ function renderWedstrijden(listId = "wedstrijdenList", emptyId = "wedstrijdenEmp
       mode = 'past';
     }
 
-    const matchHtml = matches.map(w => renderMatchRow(w, lookup)).join('');
+    const matchHtml = matches.map(w => w.synthetic ? renderMatchRowSynth(w) : renderMatchRow(w, lookup)).join('');
 
     return `
       <details class="fase-groep fase-groep--${mode}${sec.fase === currentFase ? ' fase-groep--current' : ''}" ${sec.open ? 'open' : ''}>
