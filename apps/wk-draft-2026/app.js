@@ -901,19 +901,26 @@ function spelerBreakdown(speler, opts = {}) {
     }
   }
 
-  // Fase bonussen — alleen als speler zelf heeft gespeeld (gespeeld45 of ingevallen)
+  // Fase bonussen — zelfde regel als spelerPunten(): alleen wie zelf speelde
+  // (gespeeld45 of ingevallen) IN DE WINNENDE KO-WEDSTRIJD ZELF verdient de bonus
+  // voor de volgende fase. Louter meereizen met een team dat doorstoot is niet genoeg.
   const fase = [];
-  const heeftGespeeldBreak = state.wedstrijden.some(w =>
-    w.status === "verwerkt" && Array.isArray(w.events) &&
-    !(opts.voor && w.datum >= opts.voor) &&
-    !(opts.vanaf && w.datum < opts.vanaf) &&
-    w.events.some(e => naammatch(e.speler, speler.naam) && (e.type === "gespeeld45" || e.type === "ingevallen"))
-  );
-  if (heeftGespeeldBreak) {
-    for (const [f, landen] of Object.entries(state.fases.landenPerFase || {})) {
-      if (landen.includes(speler.land) && (FASEBONUS[f] ?? 0) !== 0) {
-        fase.push({ label: `${faseLabel(f)}`, pts: FASEBONUS[f] });
-      }
+  const KO_NEXT = { "1/16": "1/8", "1/8": "1/4", "1/4": "1/2", "1/2": "F", "F": "Winnaar" };
+  for (const w of state.wedstrijden) {
+    if (!KO_NEXT[w.fase] || !w.uitslag || w.status !== "verwerkt" || !Array.isArray(w.events)) continue;
+    if (opts.voor && w.datum >= opts.voor) continue;
+    if (opts.vanaf && w.datum < opts.vanaf) continue;
+    const gt = w.uitslag.thuis, gu = w.uitslag.uit;
+    let winnaarLand = null;
+    if (gt > gu)      winnaarLand = w.thuis;
+    else if (gu > gt) winnaarLand = w.uit;
+    else if (w.pens)  winnaarLand = w.pens.thuis > w.pens.uit ? w.thuis : w.uit;
+    if (winnaarLand !== speler.land) continue;
+    const speelde = w.events.some(e => naammatch(e.speler, speler.naam) && (e.type === "gespeeld45" || e.type === "ingevallen"));
+    if (!speelde) continue;
+    const volgendeFase = KO_NEXT[w.fase];
+    if ((FASEBONUS[volgendeFase] ?? 0) !== 0) {
+      fase.push({ label: faseLabel(volgendeFase), pts: FASEBONUS[volgendeFase] });
     }
   }
 
