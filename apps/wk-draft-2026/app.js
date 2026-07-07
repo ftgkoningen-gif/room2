@@ -1794,11 +1794,18 @@ function buildToekomstKO() {
       const idx = i / 2;
       const echte = (s1.team && s2.team) ? vindInFase(s1.team, s2.team, fase) : null;
       if (!echte) {
+        // Zodra beide teams al bekend zijn (maar de API de fixture nog niet heeft
+        // aangemaakt) renderen we 'm identiek aan een echte "gepland"-wedstrijd —
+        // alleen bij een écht onbekende tegenstander tonen we de kandidatenlijst.
+        const volledigBekend = !!(s1.team && s2.team);
         synth.push({
           synthetic: true, fase,
           datum: KO_RONDE_DATUMS[fase][idx],
-          thuisLabel: s1.label, uitLabel: s2.label,
+          volledigBekend,
+          thuis: volledigBekend ? s1.team : s1.label,
+          uit: volledigBekend ? s2.team : s2.label,
           thuisBekend: !!s1.team, uitBekend: !!s2.team,
+          uitslag: null, pens: null, events: [],
         });
       }
       const alleKandidaten = [...new Set([...s1.kandidaten, ...s2.kandidaten])];
@@ -1826,9 +1833,9 @@ function renderMatchRowSynth(w) {
         <span class="match-row__date">${datum}</span>
         <span class="match-row__fase">${faseStr}</span>
         <span class="match-row__teams">
-          <span class="${teamCls(w.thuisBekend)}">${escapeHtml(w.thuisLabel)}</span>
+          <span class="${teamCls(w.thuisBekend)}">${escapeHtml(w.thuis)}</span>
           <span class="match-row__score match-row__score--tbd mono">vs</span>
-          <span class="${teamCls(w.uitBekend)}">${escapeHtml(w.uitLabel)}</span>
+          <span class="${teamCls(w.uitBekend)}">${escapeHtml(w.uit)}</span>
         </span>
         <span class="match-row__dpts mono" style="opacity:0.35">—</span>
         <span></span>
@@ -1903,7 +1910,9 @@ function renderWedstrijden(listId = "wedstrijdenList", emptyId = "wedstrijdenEmp
       mode = 'past';
     }
 
-    const matchHtml = matches.map(w => w.synthetic ? renderMatchRowSynth(w) : renderMatchRow(w, lookup)).join('');
+    const matchHtml = matches.map(w =>
+      (w.synthetic && !w.volledigBekend) ? renderMatchRowSynth(w) : renderMatchRow(w, lookup)
+    ).join('');
 
     return `
       <details class="fase-groep fase-groep--${mode}${sec.fase === currentFase ? ' fase-groep--current' : ''}" ${sec.open ? 'open' : ''}>
