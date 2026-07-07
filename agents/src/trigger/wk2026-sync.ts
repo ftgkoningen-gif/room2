@@ -51,6 +51,11 @@ const KO_BACKUP_DELAY_MIN = 200;
 const RETRY_DELAY_MIN = 15;
 const RETRY_MAX = 5;
 
+// Na de eerste verwerking nog één keer herbevestigen: API-Football's discipline-data
+// (kaarten) komt soms pas enkele minuten na de uitslag binnen, waardoor een match die
+// vlak na affluiten wordt opgehaald met onvolledige stats wordt vastgelegd.
+const FINAL_CHECK_DELAY_MIN = 60;
+
 // ─── Helpers ─────────────────────────────────────────────────────────
 
 function getSupabase() {
@@ -221,12 +226,16 @@ async function upsertFixture(supabase: any, f: any) {
     if (eErr) throw eErr;
   }
 
-  // Verwijder handmatig ingevoerde placeholder-rijen (ID >= 200000) voor hetzelfde duel.
-  // Beide thuisthuis/uit-richtingen worden gecheckt voor het geval de API ze anders sorteert.
+  // Verwijder handmatig ingevoerde placeholder-rijen (200.000 <= ID < 1.000.000) voor
+  // hetzelfde duel. Bovengrens is cruciaal: echte API-fixtures zitten in de miljoenen en
+  // zouden zonder deze grens hun eigen zojuist geschreven rij weer verwijderen.
+  // Beide thuis/uit-richtingen worden gecheckt voor het geval de API ze anders sorteert.
   await supabase.from("wk2026_wedstrijden").delete()
-    .gte("api_fixture_id", 200000).eq("fase", fase).eq("thuis", thuis).eq("uit", uit);
+    .gte("api_fixture_id", 200000).lt("api_fixture_id", 1_000_000)
+    .eq("fase", fase).eq("thuis", thuis).eq("uit", uit);
   await supabase.from("wk2026_wedstrijden").delete()
-    .gte("api_fixture_id", 200000).eq("fase", fase).eq("thuis", uit).eq("uit", thuis);
+    .gte("api_fixture_id", 200000).lt("api_fixture_id", 1_000_000)
+    .eq("fase", fase).eq("thuis", uit).eq("uit", thuis);
 
   return { fixtureId: id, events: events.length };
 }
@@ -280,6 +289,46 @@ export const wk2026FetchMatch = task({
 
     const result = await upsertFixture(supabase, f);
     logger.info(`Fixture ${fixtureId} verwerkt: ${result.events} events`);
+
+    // Kaarten/discipline-data komt bij API-Football soms pas na de uitslag binnen —
+    // 60 min later nog één keer verifiëren en eventueel corrigeren.
+    await wk2026FinalCheck.trigger({ fixtureId }, { delay: `${FINAL_CHECK_DELAY_MIN}m` });
+
+    return { fixtureId, status: "done", events: result.events };
+  },
+});
+
+// ─── 1b. WORKER: wk2026-final-check ──────────────────────────────────
+// Draait eenmalig, 60 min na de eerste verwerking van een wedstrijd. Haalt de
+// spelersstats opnieuw op en overschrijft de events — vangt late correcties op
+// (met name kaarten, die bij API-Football soms vertraagd binnenkomen).
+
+type FinalCheckPayload = { fixtureId: number };
+
+export const wk2026FinalCheck = task({
+  id: "wk2026-final-check",
+  maxDuration: 120,
+  run: async (payload: FinalCheckPayload) => {
+    const { fixtureId } = payload;
+    const supabase = getSupabase();
+
+    const fixturesData = await apiFetch(`/fixtures?id=${fixtureId}`);
+    const f = fixturesData.response?.[0];
+    if (!f) {
+      logger.warn(`final-check: fixture ${fixtureId} niet gevonden`);
+      return { fixtureId, status: "not-found" };
+    }
+
+    const status = f.fixture.status?.short;
+    const isFinished = status === "FT" || status === "AET" || status === "PEN";
+    if (!isFinished) {
+      // Zou niet moeten voorkomen (match was al verwerkt), maar veiligheidscheck
+      logger.warn(`final-check: fixture ${fixtureId} onverwacht nog niet FT (status=${status})`);
+      return { fixtureId, status: "not-finished", apiStatus: status };
+    }
+
+    const result = await upsertFixture(supabase, f);
+    logger.info(`final-check: fixture ${fixtureId} herbevestigd — ${result.events} events`);
     return { fixtureId, status: "done", events: result.events };
   },
 });
@@ -536,6 +585,10 @@ export const wk2026Reconcile = schedules.task({
         const result = await upsertFixture(supabase, f);
         logger.info(`reconcile: ${w.thuis} vs ${w.uit} verwerkt (${result.events} events)`);
         verwerkt++;
+
+        // Reconcile draait vaak vlak na affluiten — discipline-data kan dan nog
+        // onvolledig zijn. 60 min later nog één keer herbevestigen.
+        await wk2026FinalCheck.trigger({ fixtureId: w.api_fixture_id }, { delay: `${FINAL_CHECK_DELAY_MIN}m` });
       } catch (err) {
         logger.error(`reconcile: fixture ${w.api_fixture_id} fout`, { err: String(err) });
       }
