@@ -959,6 +959,13 @@ code {
   border-top: 2px solid var(--ink);
   border-bottom: 2px solid var(--ink);
 }
+.table-footnote {
+  margin: -12px 0 24px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--ink-mute);
+  font-style: italic;
+}
 .points-table {
   width: 100%;
   border-collapse: collapse;

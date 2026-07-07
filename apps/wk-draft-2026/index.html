@@ -14,7 +14,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js" crossorigin="anonymous"></script>
   <script src="config.js" defer></script>
-  <link rel="stylesheet" href="voetbal-draft.css?v=20260707a" />
+  <link rel="stylesheet" href="voetbal-draft.css?v=20260707b" />
 </head>
 <body class="text-ink">
 
@@ -161,11 +161,15 @@
               <tr><td>Velddoelpunt (incl. vrije trap)</td><td>+6</td><td>+5</td><td>+4</td><td>+4</td></tr>
               <tr><td>Assist</td><td>+4</td><td>+3</td><td>+2</td><td>+2</td></tr>
               <tr><td>Strafschop</td><td>+1</td><td>+1</td><td>+1</td><td>+1</td></tr>
-              <tr><td>De nul houden (≥ 45 min)</td><td>+3</td><td>+2</td><td>+2</td><td class="na">—</td></tr>
-              <tr><td>Elk tegendoelpunt</td><td class="neg">−1</td><td class="neg">−1</td><td class="na">—</td><td class="na">—</td></tr>
+              <tr><td>De nul houden (≥ 45 min)*</td><td>+3</td><td>+2</td><td>+2</td><td class="na">—</td></tr>
+              <tr><td>Elk tegendoelpunt**</td><td class="neg">−1</td><td class="neg">−1</td><td class="na">—</td><td class="na">—</td></tr>
             </tbody>
           </table>
         </div>
+        <p class="table-footnote">
+          * Voor <strong>de nul houden</strong> moeten Keeper, Verdediger én Middenvelder minimaal 45 minuten <strong>reguliere speeltijd</strong> hebben gemaakt — toegevoegde blessuretijd telt niet mee bij het bepalen van deze drempel.<br>
+          ** <strong>Tegendoelpunten</strong> tellen voor Keeper/Verdediger alleen mee als zij op het exacte moment van het doelpunt daadwerkelijk op het veld stonden — dus niet voor goals vóór hun invalbeurt of na hun wissel/rode kaart.
+        </p>
 
         <h3>Fase-bonussen</h3>
         <p>De fase-bonus geldt alleen voor spelers die <em>daadwerkelijk speelden</em> in de winnende KO-wedstrijd (&ge;&nbsp;45&nbsp;min of als invaller). Wint een land de 1/16, dan telt de achtste finale-bonus (+3) voor elke speler van dat land die in díe specifieke wedstrijd speelde.</p>
@@ -331,7 +335,7 @@
   ═══════════════════════════════════════════════════════════════════ -->
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
-  <script src="app.js?v=20260707a" defer></script>
-  <script src="simulator.js?v=20260707a" defer></script>
+  <script src="app.js?v=20260707b" defer></script>
+  <script src="simulator.js?v=20260707b" defer></script>
 </body>
 </html>

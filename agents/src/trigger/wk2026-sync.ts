@@ -129,21 +129,93 @@ function faseOf(round: string): string {
   return "groep";
 }
 
+// ─── Speeltijd-vensters (wisselmomenten + rode kaarten) ───────────────
+// Bepaalt per speler wanneer die daadwerkelijk op het veld stond, in twee
+// varianten:
+//  - "nominaal" (elapsed-only, blessuretijd genegeerd) — voor de 45-min-
+//    drempel van de "nul houden"-bonus (K/V/M).
+//  - "reëel" (elapsed+extra, inclusief blessuretijd) — voor het exacte
+//    moment van tegendoelpunten, om te bepalen of een K/V-speler er
+//    daadwerkelijk bij stond toen de tegenstander scoorde.
+type SpeelVensters = {
+  subInNom: Record<string, number>;  subOutNom: Record<string, number>;
+  subInReal: Record<string, number>; subOutReal: Record<string, number>;
+  redCardNom: Record<string, number>; redCardReal: Record<string, number>;
+  goalsByTeamReal: Record<string, number[]>;
+  nominaalMatchEnd: number; reeelMatchEnd: number;
+};
+
+function buildSpeelVensters(eventsData: any, statusElapsed: number, statusShort: string): SpeelVensters {
+  const events = eventsData?.response ?? [];
+  const subInNom: Record<string, number> = {}, subOutNom: Record<string, number> = {};
+  const subInReal: Record<string, number> = {}, subOutReal: Record<string, number> = {};
+  const redCardNom: Record<string, number> = {}, redCardReal: Record<string, number> = {};
+  const goalsByTeamReal: Record<string, number[]> = {};
+
+  let reeelMatchEnd = statusElapsed || 90;
+  // Bij een strafschoppenreeks (status "PEN") speelt de wedstrijd zelf nooit door
+  // ná de verlenging (elapsed 120) — alles daarna in de events-feed is de
+  // shootout, die API-Football (verwarrend) ook als type "Goal" logt, zowel
+  // gescoord ("Penalty") als gemist ("Missed Penalty"). Die tellen niet mee
+  // voor de officiële uitslag en dus ook niet voor tegendoelpunten.
+  const isPenaltyReeks = statusShort === "PEN";
+
+  for (const e of events) {
+    const t = (e.time?.elapsed ?? 0) + (e.time?.extra ?? 0);
+    const isShootoutKick = isPenaltyReeks && (e.time?.elapsed ?? 0) >= 120;
+    if (!isShootoutKick && t > reeelMatchEnd) reeelMatchEnd = t;
+
+    if (e.type === "subst") {
+      // API-Football-conventie: "player" is de speler die het veld VERLAAT,
+      // "assist" is de invaller die erin komt — dus omgekeerd aan wat de
+      // veldnamen doen vermoeden. Sleutel op player-ID (niet naam): de
+      // events-endpoint gebruikt vaak afgekorte namen ("N. Tagliafico") die niet
+      // letterlijk overeenkomen met de volledige naam in de players-endpoint
+      // ("Nicolás Tagliafico") — de numerieke ID is bij beide identiek.
+      const teamId = e.team?.id;
+      const nomT = e.time?.elapsed ?? 0;
+      if (e.player?.id) { subOutNom[`${teamId}|${e.player.id}`] = nomT; subOutReal[`${teamId}|${e.player.id}`] = t; }
+      if (e.assist?.id) { subInNom[`${teamId}|${e.assist.id}`] = nomT; subInReal[`${teamId}|${e.assist.id}`] = t; }
+    } else if (e.type === "Card" && e.detail === "Red Card") {
+      const teamId = e.team?.id;
+      redCardNom[`${teamId}|${e.player?.id}`] = e.time?.elapsed ?? 0;
+      redCardReal[`${teamId}|${e.player?.id}`] = t;
+    } else if (e.type === "Goal" && e.detail !== "Missed Penalty" && !isShootoutKick) {
+      // "Missed Penalty" is geen doelpunt — API-Football logt 'm toch als type "Goal"
+      const teamId = e.team?.id;
+      (goalsByTeamReal[`${teamId}`] = goalsByTeamReal[`${teamId}`] || []).push(t);
+    }
+  }
+
+  return {
+    subInNom, subOutNom, subInReal, subOutReal, redCardNom, redCardReal, goalsByTeamReal,
+    nominaalMatchEnd: statusElapsed || 90,
+    reeelMatchEnd,
+  };
+}
+
 // ─── Event-parser ────────────────────────────────────────────────────
 
-function buildEventsFromPlayers(playersData: any, f: any, thuisNL: string) {
+function buildEventsFromPlayers(playersData: any, f: any, thuisNL: string, vensters: SpeelVensters | null) {
   const eigen = { thuis: f.goals?.home ?? 0, uit: f.goals?.away ?? 0 };
   const events: any[] = [];
   // Voorkom dubbele verwerking als de API dezelfde speler in meerdere blokken teruggeeft
   const gezien = new Set<string>();
 
+  const thuisTeamId = f.teams?.home?.id;
+  const uitTeamId   = f.teams?.away?.id;
+
   for (const teamBlok of (playersData.response ?? [])) {
     const teamNL = toNL(teamBlok.team.name);
     const isThuis = teamNL === thuisNL;
+    const teamId = teamBlok.team?.id;
+    const tegenTeamId = isThuis ? uitTeamId : thuisTeamId;
     const tegenGoals = isThuis ? eigen.uit : eigen.thuis;
+    const tegenGoalsMinuten = vensters?.goalsByTeamReal[`${tegenTeamId}`] ?? [];
 
     for (const p of (teamBlok.players ?? [])) {
-      const naam = normSpeler(p.player?.name ?? "");
+      const rawNaam = p.player?.name ?? "";
+      const naam = normSpeler(rawNaam);
       const s = p.statistics?.[0];
       if (!naam || !s) continue;
       if (gezien.has(naam)) continue;
@@ -156,10 +228,28 @@ function buildEventsFromPlayers(playersData: any, f: any, thuisNL: string) {
 
       if (minuten >= 45) {
         events.push({ api_fixture_id: f.fixture.id, speler: naam, type: "gespeeld45", detail: posHint });
+
+        // Nominale (excl. blessuretijd) speeltijd t.b.v. de 45-min-drempel voor "nul houden"
+        const isSub = !!s.games?.substitute;
+        const key = `${teamId}|${p.player?.id}`;
+        const nomOn  = vensters ? (isSub ? (vensters.subInNom[key] ?? 0) : 0) : 0;
+        const nomOff = vensters ? (vensters.subOutNom[key] ?? vensters.redCardNom[key] ?? vensters.nominaalMatchEnd) : 90;
+        const nomMinuten = nomOff - nomOn;
+        const magNulHouden = (posHint === "K" || posHint === "V" || posHint === "M") ? nomMinuten >= 45 : true;
+
         if (tegenGoals === 0) {
-          events.push({ api_fixture_id: f.fixture.id, speler: naam, type: "cleanSheet45", detail: posHint });
-        } else {
-          for (let i = 0; i < tegenGoals; i++) {
+          if (magNulHouden) {
+            events.push({ api_fixture_id: f.fixture.id, speler: naam, type: "cleanSheet45", detail: posHint });
+          }
+        } else if (posHint === "K" || posHint === "V") {
+          // Tegendoelpunt telt alleen mee als de speler op dát moment (reëel, incl.
+          // blessuretijd) daadwerkelijk op het veld stond.
+          const realOn  = vensters ? (isSub ? (vensters.subInReal[key] ?? 0) : 0) : 0;
+          const realOff = vensters ? (vensters.subOutReal[key] ?? vensters.redCardReal[key] ?? vensters.reeelMatchEnd) : 90;
+          const windowedTegenGoals = vensters
+            ? tegenGoalsMinuten.filter(t => t >= realOn && t <= realOff).length
+            : tegenGoals; // fallback als events-data ontbreekt: oud (blanket) gedrag
+          for (let i = 0; i < windowedTegenGoals; i++) {
             events.push({ api_fixture_id: f.fixture.id, speler: naam, type: "tegendoelpunt", detail: posHint });
           }
         }
@@ -212,8 +302,12 @@ async function upsertFixture(supabase: any, f: any) {
     updated_at: new Date().toISOString(),
   };
 
-  const players = await apiFetch(`/fixtures/players?fixture=${id}`);
-  const events = buildEventsFromPlayers(players, f, thuis);
+  const [players, matchEvents] = await Promise.all([
+    apiFetch(`/fixtures/players?fixture=${id}`),
+    apiFetch(`/fixtures/events?fixture=${id}`),
+  ]);
+  const vensters = buildSpeelVensters(matchEvents, f.fixture?.status?.elapsed ?? 90, f.fixture?.status?.short ?? "");
+  const events = buildEventsFromPlayers(players, f, thuis, vensters);
 
   const { error: wErr } = await supabase
     .from("wk2026_wedstrijden")
