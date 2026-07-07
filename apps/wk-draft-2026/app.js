@@ -1120,6 +1120,21 @@ function getActiveSpeeldagDate() {
   return new Date(cestMs).toISOString().slice(0, 10);
 }
 
+// Geeft de spelerslijst van een deelnemer terug zoals die op een gegeven datum
+// daadwerkelijk actief was: een geruilde speler wordt vanaf zijn wissel-datum
+// vervangen door de invaller. Zonder dit blijven uitgewisselde spelers ten
+// onrechte staan én worden ingekomen wisselspelers nooit getoond.
+function actieveSpelersOpDatum(deelnemer, datum) {
+  const wisselMap = new Map((deelnemer.wissels || []).map(w => [w.uit, w]));
+  return (deelnemer.spelers || []).map(sp => {
+    const wissel = wisselMap.get(sp.naam);
+    if (wissel && datum >= wissel.vanaf) {
+      return { naam: wissel.in, land: wissel.land_in, positie: wissel.positie_in };
+    }
+    return sp;
+  });
+}
+
 function renderVandaag() {
   const el = document.getElementById("vandaagBlock");
   if (!el) return;
@@ -1177,7 +1192,7 @@ function renderVandaag() {
         const bijdragen = state.deelnemers
           .map(d => ({
             naam: d.naam,
-            spelers: (d.spelers || []).filter(sp => sp.land === w.thuis || sp.land === w.uit)
+            spelers: actieveSpelersOpDatum(d, w.datum).filter(sp => sp.land === w.thuis || sp.land === w.uit)
           }))
           .filter(x => x.spelers.length > 0);
         const spelerHtml = bijdragen.length
