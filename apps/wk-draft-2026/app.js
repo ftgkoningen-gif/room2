@@ -25,7 +25,8 @@ const FASEBONUS = {
   "1/4":  3,   // kwartfinale
   "1/2":  5,   // halve finale
   "F":    5,   // finale
-  "Winnaar": 5
+  "Winnaar": 5,
+  "bronze": 3  // troostfinale (3e/4e plaats) — bonus voor de WINNAAR van die wedstrijd zelf
 };
 
 const AWARD_BONUS = 10;
@@ -753,11 +754,15 @@ function spelerPunten(speler, opts = {}) {
     }
   }
 
-  // Fase-bonussen: alleen voor spelers die speelden in de WINNENDE KO-wedstrijd zelf
+  // Fase-bonussen: alleen voor spelers die speelden in de WINNENDE KO-wedstrijd zelf.
+  // Troostfinale ("bronze") is een uitzondering: die leidt niet naar een volgende
+  // fase, dus de bonus geldt voor het winnen van de troostfinale zelf.
   const land = speler.land;
   const KO_NEXT = { "1/16": "1/8", "1/8": "1/4", "1/4": "1/2", "1/2": "F", "F": "Winnaar" };
   for (const w of state.wedstrijden) {
-    if (!KO_NEXT[w.fase] || !w.uitslag || w.status !== "verwerkt" || !Array.isArray(w.events)) continue;
+    const isBronze = w.fase === "bronze";
+    if (!isBronze && !KO_NEXT[w.fase]) continue;
+    if (!w.uitslag || w.status !== "verwerkt" || !Array.isArray(w.events)) continue;
     if (opts.voor && w.datum >= opts.voor) continue;
     if (opts.vanaf && w.datum < opts.vanaf) continue;
     const gt = w.uitslag.thuis, gu = w.uitslag.uit;
@@ -768,7 +773,7 @@ function spelerPunten(speler, opts = {}) {
     if (winnaarLand !== land) continue;
     const speelde = w.events.some(e => naammatch(e.speler, speler.naam) && (e.type === "gespeeld45" || e.type === "ingevallen"));
     if (!speelde) continue;
-    pts += FASEBONUS[KO_NEXT[w.fase]] ?? 0;
+    pts += isBronze ? (FASEBONUS["bronze"] ?? 0) : (FASEBONUS[KO_NEXT[w.fase]] ?? 0);
   }
 
   // Award-bonussen
@@ -904,10 +909,14 @@ function spelerBreakdown(speler, opts = {}) {
   // Fase bonussen — zelfde regel als spelerPunten(): alleen wie zelf speelde
   // (gespeeld45 of ingevallen) IN DE WINNENDE KO-WEDSTRIJD ZELF verdient de bonus
   // voor de volgende fase. Louter meereizen met een team dat doorstoot is niet genoeg.
+  // Troostfinale ("bronze") is een uitzondering: die leidt niet naar een volgende
+  // fase, dus de bonus geldt voor het winnen van de troostfinale zelf.
   const fase = [];
   const KO_NEXT = { "1/16": "1/8", "1/8": "1/4", "1/4": "1/2", "1/2": "F", "F": "Winnaar" };
   for (const w of state.wedstrijden) {
-    if (!KO_NEXT[w.fase] || !w.uitslag || w.status !== "verwerkt" || !Array.isArray(w.events)) continue;
+    const isBronze = w.fase === "bronze";
+    if (!isBronze && !KO_NEXT[w.fase]) continue;
+    if (!w.uitslag || w.status !== "verwerkt" || !Array.isArray(w.events)) continue;
     if (opts.voor && w.datum >= opts.voor) continue;
     if (opts.vanaf && w.datum < opts.vanaf) continue;
     const gt = w.uitslag.thuis, gu = w.uitslag.uit;
@@ -918,7 +927,7 @@ function spelerBreakdown(speler, opts = {}) {
     if (winnaarLand !== speler.land) continue;
     const speelde = w.events.some(e => naammatch(e.speler, speler.naam) && (e.type === "gespeeld45" || e.type === "ingevallen"));
     if (!speelde) continue;
-    const volgendeFase = KO_NEXT[w.fase];
+    const volgendeFase = isBronze ? "bronze" : KO_NEXT[w.fase];
     if ((FASEBONUS[volgendeFase] ?? 0) !== 0) {
       fase.push({ label: faseLabel(volgendeFase), pts: FASEBONUS[volgendeFase] });
     }
@@ -952,7 +961,8 @@ function faseLabel(f) {
     "1/4":  "Kwartfinale",
     "1/2":  "Halve finale",
     "F":    "Finale",
-    "Winnaar": "Winnaar WK"
+    "Winnaar": "Winnaar WK",
+    "bronze": "Troostfinale"
   })[f] || f;
 }
 
@@ -2063,7 +2073,9 @@ function computeMatchContribs(w, lookup) {
 
     // Fase-bonus: winnaar van een KO-wedstrijd verdient bonus voor bereiken volgende fase.
     // Wordt alleen getoond in de match waar ze de fase bereikten (niet elke wedstrijd).
-    const KO_BONUS_FASES = ["1/16", "1/8", "1/4", "1/2", "F"];
+    // Troostfinale ("bronze") is een uitzondering: die leidt niet naar een volgende
+    // fase, dus de bonus geldt voor het winnen van de troostfinale zelf.
+    const KO_BONUS_FASES = ["1/16", "1/8", "1/4", "1/2", "F", "bronze"];
     if (KO_BONUS_FASES.includes(w.fase) && w.uitslag && (gespeeld45 || ingevallen)) {
       const NEXT_FASE = { "1/16": "1/8", "1/8": "1/4", "1/4": "1/2", "1/2": "F", "F": "Winnaar" };
       const gt = w.uitslag.thuis, gu = w.uitslag.uit;
@@ -2072,7 +2084,7 @@ function computeMatchContribs(w, lookup) {
       else if (gu > gt) winnaarLand = w.uit;
       else if (w.pens)  winnaarLand = w.pens.thuis > w.pens.uit ? w.thuis : w.uit;
       if (winnaarLand && info.land === winnaarLand) {
-        const nextFase = NEXT_FASE[w.fase];
+        const nextFase = w.fase === "bronze" ? "bronze" : NEXT_FASE[w.fase];
         const fasePts = nextFase ? (FASEBONUS[nextFase] ?? 0) : 0;
         if (fasePts !== 0) {
           lines.push({ label: `Fase-bonus ${nextFase}`, pts: fasePts });
