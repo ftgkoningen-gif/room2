@@ -120,12 +120,15 @@ function normSpeler(apiNaam: string): string {
 }
 
 function faseOf(round: string): string {
+  // "3rd Place Final" eindigt zelf ook op "Final" — moet vóór de generieke
+  // Final-check komen, anders wordt de troostfinale abusievelijk als de
+  // echte finale geclassificeerd.
+  if (/3rd Place/i.test(round)) return "bronze";
   if (/Final$/.test(round)) return "F";
   if (/Semi/.test(round)) return "1/2";
   if (/Quarter/.test(round)) return "1/4";
   if (/Round of 16/i.test(round)) return "1/8";
   if (/Round of 32/i.test(round)) return "1/16";
-  if (/3rd Place/i.test(round)) return "bronze";
   return "groep";
 }
 
