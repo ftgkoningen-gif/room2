@@ -1,5 +1,5 @@
 {
   "_info": "Topscorer en Beste Speler (FIFA Gouden Bal) worden na afloop van het toernooi vastgelegd. Elke deelnemer die deze speler in zijn team heeft krijgt +10.",
-  "topscorer": null,
-  "besteSpeler": null
+  "topscorer": { "naam": "Kylian Mbappé", "land": "Frankrijk" },
+  "besteSpeler": { "naam": "Rodri", "land": "Spanje" }
 }
