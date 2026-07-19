@@ -152,7 +152,12 @@ function buildSpeelVensters(eventsData: any, statusElapsed: number, statusShort:
   const redCardNom: Record<string, number> = {}, redCardReal: Record<string, number> = {};
   const goalsByTeamReal: Record<string, number[]> = {};
 
-  let reeelMatchEnd = statusElapsed || 90;
+  // Reële tijd = elapsed*1000 + extra (i.p.v. een simpele optelling). Bij een
+  // simpele elapsed+extra optelling vallen "45+1" (blessuretijd 1e helft) en
+  // "46+0" (start 2e helft) allebei op 46 — twee chronologisch verschillende
+  // momenten die dan onterecht als gelijk werden behandeld bij wisselmomenten
+  // vlak rond een blessuretijd-doelpunt.
+  let reeelMatchEnd = (statusElapsed || 90) * 1000;
   // Bij een strafschoppenreeks (status "PEN") speelt de wedstrijd zelf nooit door
   // ná de verlenging (elapsed 120) — alles daarna in de events-feed is de
   // shootout, die API-Football (verwarrend) ook als type "Goal" logt, zowel
@@ -161,7 +166,7 @@ function buildSpeelVensters(eventsData: any, statusElapsed: number, statusShort:
   const isPenaltyReeks = statusShort === "PEN";
 
   for (const e of events) {
-    const t = (e.time?.elapsed ?? 0) + (e.time?.extra ?? 0);
+    const t = (e.time?.elapsed ?? 0) * 1000 + (e.time?.extra ?? 0);
     const isShootoutKick = isPenaltyReeks && (e.time?.elapsed ?? 0) >= 120;
     if (!isShootoutKick && t > reeelMatchEnd) reeelMatchEnd = t;
 
@@ -226,36 +231,39 @@ function buildEventsFromPlayers(playersData: any, f: any, thuisNL: string, venst
       const apiPos = s.games?.position ?? "";
       const posHint = ({ G: "K", D: "V", M: "M", F: "A" } as any)[apiPos] ?? null;
 
+      const isSub = !!s.games?.substitute;
+      const key = `${teamId}|${p.player?.id}`;
+
       if (minuten >= 45) {
         events.push({ api_fixture_id: f.fixture.id, speler: naam, type: "gespeeld45", detail: posHint });
 
         // Nominale (excl. blessuretijd) speeltijd t.b.v. de 45-min-drempel voor "nul houden"
-        const isSub = !!s.games?.substitute;
-        const key = `${teamId}|${p.player?.id}`;
         const nomOn  = vensters ? (isSub ? (vensters.subInNom[key] ?? 0) : 0) : 0;
         const nomOff = vensters ? (vensters.subOutNom[key] ?? vensters.redCardNom[key] ?? vensters.nominaalMatchEnd) : 90;
         const nomMinuten = nomOff - nomOn;
         const magNulHouden = (posHint === "K" || posHint === "V" || posHint === "M") ? nomMinuten >= 45 : true;
 
-        if (tegenGoals === 0) {
-          if (magNulHouden) {
-            events.push({ api_fixture_id: f.fixture.id, speler: naam, type: "cleanSheet45", detail: posHint });
-          }
-        } else if (posHint === "K" || posHint === "V") {
-          // Tegendoelpunt telt alleen mee als de speler op dát moment (reëel, incl.
-          // blessuretijd) daadwerkelijk op het veld stond.
-          const realOn  = vensters ? (isSub ? (vensters.subInReal[key] ?? 0) : 0) : 0;
-          const realOff = vensters ? (vensters.subOutReal[key] ?? vensters.redCardReal[key] ?? vensters.reeelMatchEnd) : 90;
-          const windowedTegenGoals = vensters
-            ? tegenGoalsMinuten.filter(t => t >= realOn && t <= realOff).length
-            : tegenGoals; // fallback als events-data ontbreekt: oud (blanket) gedrag
-          for (let i = 0; i < windowedTegenGoals; i++) {
-            events.push({ api_fixture_id: f.fixture.id, speler: naam, type: "tegendoelpunt", detail: posHint });
-          }
+        if (tegenGoals === 0 && magNulHouden) {
+          events.push({ api_fixture_id: f.fixture.id, speler: naam, type: "cleanSheet45", detail: posHint });
         }
       } else if (minuten >= 1) {
         // Invaller <45 min: geen gespeeld-bonus, maar wel recht op poulewinst/gelijkspel
         events.push({ api_fixture_id: f.fixture.id, speler: naam, type: "ingevallen", detail: posHint });
+      }
+
+      // Tegendoelpunt geldt voor iedere K/V die daadwerkelijk minuten maakte (>=1),
+      // los van de 45-min-drempel — ook een invaller die vlak voor tijd inkomt en
+      // een tegengoal om de oren krijgt, verdient de min-punten. Alleen het
+      // exacte moment (reëel, incl. blessuretijd) op het veld staan telt.
+      if ((posHint === "K" || posHint === "V") && tegenGoals > 0) {
+        const realOn  = vensters ? (isSub ? (vensters.subInReal[key] ?? 0) : 0) : 0;
+        const realOff = vensters ? (vensters.subOutReal[key] ?? vensters.redCardReal[key] ?? vensters.reeelMatchEnd) : 90;
+        const windowedTegenGoals = vensters
+          ? tegenGoalsMinuten.filter(t => t >= realOn && t <= realOff).length
+          : tegenGoals; // fallback als events-data ontbreekt: oud (blanket) gedrag
+        for (let i = 0; i < windowedTegenGoals; i++) {
+          events.push({ api_fixture_id: f.fixture.id, speler: naam, type: "tegendoelpunt", detail: posHint });
+        }
       }
 
       const total = s.goals?.total ?? 0;
