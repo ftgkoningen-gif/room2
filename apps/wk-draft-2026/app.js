@@ -1112,7 +1112,46 @@ function renderOverzicht() {
   renderVandaag();
   renderRanglijst();
   renderWedstrijden("overzichtWedstrijdenList", "overzichtWedstrijdenEmpty");
+  renderAwards();
   renderCountdown();
+}
+
+function vindEigenaarVanSpeler(naam, land) {
+  for (const d of state.deelnemers) {
+    for (const sp of (d.spelers || [])) {
+      if (sp.naam === naam && sp.land === land) return d.naam;
+    }
+    for (const w of (d.wissels || [])) {
+      if (w.in === naam && w.land_in === land) return d.naam;
+    }
+  }
+  return null;
+}
+
+function renderAwards() {
+  const el = document.getElementById("awardsBlock");
+  if (!el) return;
+  const { topscorer, besteSpeler } = state.awards || {};
+  if (!topscorer && !besteSpeler) { el.innerHTML = `<p class="italic" style="color:var(--ink-mute)">Nog niet bekendgemaakt.</p>`; return; }
+
+  const rij = (label, award) => {
+    if (!award) return "";
+    const eigenaar = vindEigenaarVanSpeler(award.naam, award.land);
+    return `
+      <div class="awards-rij">
+        <span class="awards-rij__label">${escapeHtml(label)}</span>
+        <span class="awards-rij__vlag">${findVlag(award.land)}</span>
+        <span class="awards-rij__naam">${escapeHtml(award.naam)}</span>
+        ${eigenaar ? `<span class="awards-rij__eigenaar" data-goto-team="${escapeHtml(eigenaar)}" tabindex="0" role="button">— ${escapeHtml(eigenaar)}</span>` : ''}
+        <span class="awards-rij__pts mono">+10</span>
+      </div>`;
+  };
+
+  el.innerHTML = `
+    <div class="awards-blok">
+      ${rij("Topscorer WK", topscorer)}
+      ${rij("Beste speler WK", besteSpeler)}
+    </div>`;
 }
 
 function formatNlTijd(datum) {
@@ -1231,49 +1270,12 @@ function renderVandaag() {
   `;
 }
 
-function uitgeschakeldeLandenVoorTeller() {
-  const { landenPerFase } = state.fases;
-  const inKnockout = new Set();
-  for (const namen of Object.values(landenPerFase)) {
-    for (const n of namen) inKnockout.add(n);
-  }
-  const uit = new Set();
-  if (inKnockout.size > 0) {
-    state.landen.forEach(l => { if (!inKnockout.has(l.naam)) uit.add(l.naam); });
-  }
-  // KO-verliezers op basis van uitslag (ongeacht verwerkingsstatus)
-  const KO_FASES = ["1/16", "1/8", "1/4", "1/2", "F"];
-  for (const w of state.wedstrijden) {
-    if (!KO_FASES.includes(w.fase) || !w.uitslag) continue;
-    const gt = w.uitslag.thuis, gu = w.uitslag.uit;
-    let verliezer = null;
-    if (gt > gu)      verliezer = w.uit;
-    else if (gu > gt) verliezer = w.thuis;
-    else if (w.pens)  verliezer = w.pens.thuis > w.pens.uit ? w.uit : w.thuis;
-    if (verliezer) uit.add(verliezer);
-  }
-  return uit;
-}
-
-function actieveSpelersCount(deelnemer, uitSet) {
-  const geswitchd = new Set((deelnemer.wissels || []).map(w => w.uit));
-  let count = 0;
-  for (const sp of (deelnemer.spelers || [])) {
-    if (!geswitchd.has(sp.naam) && !uitSet.has(sp.land)) count++;
-  }
-  for (const wissel of (deelnemer.wissels || [])) {
-    if (!uitSet.has(wissel.land_in)) count++;
-  }
-  return count;
-}
-
 function renderRanglijst() {
   const el = document.getElementById("ranglijstBlock");
   if (!el) return;
   if (!state.deelnemers.length) { el.innerHTML = ""; return; }
-  const uitSet = uitgeschakeldeLandenVoorTeller();
   const ranked = [...state.deelnemers]
-    .map(d => ({ ...d, _pts: deelnemerPunten(d), _actief: actieveSpelersCount(d, uitSet) }))
+    .map(d => ({ ...d, _pts: deelnemerPunten(d) }))
     .sort((a, b) => b._pts - a._pts);
   const top = ranked[0]?._pts ?? 0;
   el.innerHTML = `<ol class="ranglijst">` +
@@ -1283,7 +1285,6 @@ function renderRanglijst() {
         <span class="ranglijst__rank">${i + 1}</span>
         <span class="ranglijst__naam" data-goto-team="${escapeHtml(d.naam)}" tabindex="0" role="button">${escapeHtml(d.naam)}</span>
         <span class="ranglijst__pts mono">${d._pts}</span>
-        <span class="ranglijst__actief mono" title="Spelers van landen die nog in het toernooi zitten">${d._actief}/11</span>
         <span class="ranglijst__achter mono">${achter === 0 ? "—" : achter}</span>
       </li>`;
     }).join("") + `</ol>`;
@@ -1656,7 +1657,6 @@ function renderTeams() {
       a.land.localeCompare(b.land, "nl") || (posOrder[a.positie] ?? 9) - (posOrder[b.positie] ?? 9)
     );
 
-    const uitgeschakeld = buildUitgeschakeldSet();
     const playerRows = alleSpelers.map(sp => {
       const vlag = findVlag(sp.land);
       const code = findCode(sp.land);
@@ -1665,14 +1665,13 @@ function renderTeams() {
       const ptsStr = spPts === 0 ? "0" : (spPts > 0 ? `+${spPts}` : `${spPts}`);
       const isUit = !!sp._wisselVoor;
       const isIn  = !!sp._wisselVanaf;
-      const isEliminated = !isUit && uitgeschakeld.has(sp.land);
       const wisselBadge = isUit
         ? `<span class="player-line__wissel-badge player-line__wissel-badge--uit">↓ uit</span>`
         : isIn
         ? `<span class="player-line__wissel-badge player-line__wissel-badge--in">↑ in</span>`
         : '';
       return `
-        <li class="player-line${isUit ? ' player-line--wissel-uit' : isIn ? ' player-line--wissel-in' : ''}${isEliminated ? ' player-line--uitgeschakeld' : ''}" data-speler="${escapeHtml(sp.naam)}" data-land="${escapeHtml(sp.land)}" tabindex="0" role="button">
+        <li class="player-line${isUit ? ' player-line--wissel-uit' : isIn ? ' player-line--wissel-in' : ''}" data-speler="${escapeHtml(sp.naam)}" data-land="${escapeHtml(sp.land)}" tabindex="0" role="button">
           <span class="player-line__flag">${vlag}</span>
           <span class="player-line__pos player-line__pos--${sp.positie}" title="${escapeHtml(POS_LABEL[sp.positie] || sp.positie)}">${sp.positie}</span>
           <span class="player-line__name">${escapeHtml(sp.naam)}${wisselBadge}</span>
@@ -2305,8 +2304,6 @@ function openTeamModal(naam) {
     a.land.localeCompare(b.land, "nl") || (posOrder[a.positie] ?? 9) - (posOrder[b.positie] ?? 9)
   );
 
-  const uitgeschakeld = buildUitgeschakeldSet();
-
   const spelerRows = alleSpelers.map(sp => {
     const vlag = findVlag(sp.land);
     const code = findCode(sp.land);
@@ -2315,14 +2312,13 @@ function openTeamModal(naam) {
     const ptsStr = spPts === 0 ? "0" : (spPts > 0 ? `+${spPts}` : `${spPts}`);
     const isUit = !!sp._wisselVoor;
     const isIn  = !!sp._wisselVanaf;
-    const isEliminated = !isUit && uitgeschakeld.has(sp.land);
     const wisselBadge = isUit
       ? `<span class="player-line__wissel-badge player-line__wissel-badge--uit">↓ uit</span>`
       : isIn
       ? `<span class="player-line__wissel-badge player-line__wissel-badge--in">↑ in</span>`
       : '';
     return `
-      <li class="player-line${isUit ? ' player-line--wissel-uit' : isIn ? ' player-line--wissel-in' : ''}${isEliminated ? ' player-line--uitgeschakeld' : ''}" data-speler="${escapeHtml(sp.naam)}" data-land="${escapeHtml(sp.land)}" tabindex="0" role="button">
+      <li class="player-line${isUit ? ' player-line--wissel-uit' : isIn ? ' player-line--wissel-in' : ''}" data-speler="${escapeHtml(sp.naam)}" data-land="${escapeHtml(sp.land)}" tabindex="0" role="button">
         <span class="player-line__flag">${vlag}</span>
         <span class="player-line__pos player-line__pos--${sp.positie}" title="${escapeHtml(POS_LABEL[sp.positie] || sp.positie)}">${sp.positie}</span>
         <span class="player-line__name">${escapeHtml(sp.naam)}${wisselBadge}</span>

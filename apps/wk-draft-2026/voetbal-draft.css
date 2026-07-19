@@ -268,6 +268,43 @@ code {
 }
 .overzicht__h3:first-of-type { margin-top: 8px; }
 
+.awards-blok {
+  border: 1px solid var(--rule);
+  background: var(--paper-card);
+}
+.awards-rij {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--rule);
+}
+.awards-rij:last-child { border-bottom: none; }
+.awards-rij__label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  min-width: 130px;
+}
+.awards-rij__vlag { font-size: 20px; line-height: 1; }
+.awards-rij__naam {
+  font-weight: 600;
+  color: var(--ink);
+  flex: 1;
+}
+.awards-rij__eigenaar {
+  font-size: 0.85rem;
+  color: var(--ink-mute);
+  cursor: pointer;
+}
+.awards-rij__eigenaar:hover { color: var(--pitch); }
+.awards-rij__pts {
+  font-weight: 700;
+  color: var(--pitch);
+}
+
 .overzicht__stats {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -1209,14 +1246,6 @@ code {
   color: var(--pitch);
 }
 
-/* Uitgeschakeld land */
-.player-line--uitgeschakeld {
-  opacity: 0.45;
-}
-.player-line--uitgeschakeld .player-line__name {
-  text-decoration: line-through;
-  text-decoration-color: var(--ink-mute);
-}
 .player-line__wissel-badge {
   display: inline-block;
   font-family: var(--font-mono);
@@ -2777,7 +2806,7 @@ a:focus-visible {
 }
 .ranglijst__rij {
   display: grid;
-  grid-template-columns: 28px 1fr auto auto auto;
+  grid-template-columns: 28px 1fr auto auto;
   gap: 4px 12px;
   align-items: center;
   padding: 9px 14px;
@@ -2806,12 +2835,6 @@ a:focus-visible {
   font-size: 0.82rem;
   font-weight: 700;
   color: var(--pitch);
-}
-.ranglijst__actief {
-  font-size: 0.75rem;
-  color: var(--ink-mute);
-  text-align: right;
-  white-space: nowrap;
 }
 .ranglijst__achter {
   font-size: 0.75rem;
