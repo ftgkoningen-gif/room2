@@ -155,13 +155,25 @@ function bestPerSupermarket(offers: Offer[]): Offer[] {
 // --- Albert Heijn API ---
 
 async function getAhToken(): Promise<string> {
-  const res = await fetch("https://api.ah.nl/mobile-auth/v1/auth/token/anonymous", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ clientId: "appie" }),
-  });
-  if (!res.ok) throw new Error(`AH token failed: ${res.status}`);
-  return (await res.json()).access_token;
+  // Retry met backoff: een losse hapering hier gooide voorheen alle AH-producten
+  // van die week weg (elk product faalt individueel op een leeg token, stil).
+  let lastErr: unknown;
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    try {
+      const res = await fetch("https://api.ah.nl/mobile-auth/v1/auth/token/anonymous", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ clientId: "appie" }),
+        signal: AbortSignal.timeout(10000),
+      });
+      if (!res.ok) throw new Error(`AH token failed: ${res.status}`);
+      return (await res.json()).access_token;
+    } catch (err) {
+      lastErr = err;
+      if (attempt < 3) await delay(1000 * attempt);
+    }
+  }
+  throw lastErr instanceof Error ? lastErr : new Error(String(lastErr));
 }
 
 async function searchAh(query: string, token: string): Promise<Offer[]> {
@@ -378,44 +390,76 @@ async function searchVomar(query: string): Promise<Offer[]> {
   });
 }
 
-// --- Aldi categorie API ---
+// --- Aldi (Next.js productpagina met ingebedde Algolia-resultaten) ---
+// De oude webservice.aldi.nl JSON-API bestaat niet meer (retourneert nu 424 voor
+// elke categorie). Aldi rendert productlijsten nu server-side in een Next.js
+// __NEXT_DATA__ blok op de categoriepagina zelf, met de volledige Algolia-hits
+// (hitsPerPage 1000) erin — dus geen aparte Algolia-credentials nodig.
 
 async function searchAldi(category: string): Promise<Offer[]> {
-  const res = await fetch(`https://webservice.aldi.nl/api/v1/products/${category}.json`, {
+  const res = await fetch(`https://www.aldi.nl/producten/${category}.html`, {
     headers: {
       "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
-      "Accept": "application/json",
+      "Accept": "text/html",
     },
     signal: AbortSignal.timeout(15000),
   });
   if (!res.ok) throw new Error(`Aldi fetch failed: ${res.status}`);
-  const data = await res.json();
+  const html = await res.text();
 
-  const offers: Offer[] = [];
-  for (const group of (data.articleGroups || [])) {
-    for (const a of (group.articles || [])) {
-      if (!a.price || a.showPrice === false) continue;
-      const price = parseFloat(a.price);
-      if (isNaN(price) || price <= 0) continue;
+  const match = html.match(/<script id="__NEXT_DATA__"[^>]*>([\s\S]*?)<\/script>/);
+  if (!match) throw new Error("Aldi: __NEXT_DATA__ niet gevonden (paginastructuur gewijzigd?)");
 
-      const oldPrice = a.oldPrice ? parseFloat(a.oldPrice) : null;
-      const isOnSale = oldPrice !== null && oldPrice > price;
-      const discountLabel = isOnSale ? (a.priceReduction || "Aanbieding") : null;
-
-      offers.push({
-        productName: a.productName || a.title || "",
-        supermarket: "Aldi",
-        currentPrice: oldPrice && isOnSale ? oldPrice : price,
-        originalPrice: isOnSale ? oldPrice : null,
-        effectivePrice: price,
-        discountLabel,
-        discountPeriod: null,
-        isOnSale,
-        productUrl: a.url ? `https://www.aldi.nl${a.url}` : "https://www.aldi.nl/sortiment.html",
-      });
-    }
+  let hits: any[];
+  try {
+    const nextData = JSON.parse(match[1]);
+    const pageProps = nextData.props?.pageProps;
+    const indexName = pageProps?.algoliaConfig?.indexName;
+    hits = pageProps?.algoliaState?.initialResults?.[indexName]?.results?.[0]?.hits || [];
+  } catch (err) {
+    throw new Error(`Aldi: JSON parse mislukt (${err instanceof Error ? err.message : String(err)})`);
   }
-  return offers;
+
+  const { from, to } = getOfferDateRange();
+
+  return hits
+    .filter((h: any) => h.isAvailable !== false && h.currentPrice?.priceValue > 0)
+    .map((h: any) => {
+      const regularPrice = h.currentPrice.priceValue;
+
+      // Actieve aanbieding = promo-periode overlapt met de huidige aanbiedingsweek
+      const activePromo = (h.promotionPrices || []).find((p: any) =>
+        p.validFromLocalDate && p.validUntilLocalDate &&
+        p.validFromLocalDate <= to && p.validUntilLocalDate >= from
+      );
+
+      const isOnSale = !!activePromo;
+      const effectivePrice = isOnSale ? activePromo.priceValue : regularPrice;
+      const originalPrice = isOnSale ? (activePromo.strikePrice?.strikePriceValue ?? regularPrice) : null;
+      const discountLabel = isOnSale ? (activePromo.priceTagLabels?.promoText1 || "Aanbieding") : null;
+      const discountPeriod = isOnSale
+        ? `${formatDate(activePromo.validFromLocalDate)} t/m ${formatDate(activePromo.validUntilLocalDate)}`
+        : null;
+
+      const baseName = h.brandName && h.name ? `${h.brandName} ${h.name}` : (h.name || h.brandName || "");
+      const productName = h.salesUnit && !baseName.toLowerCase().includes(h.salesUnit.toLowerCase().replace(/\s/g, ""))
+        ? `${baseName} ${h.salesUnit}`
+        : baseName;
+
+      return {
+        productName,
+        supermarket: "Aldi",
+        currentPrice: originalPrice ?? regularPrice,
+        originalPrice,
+        effectivePrice,
+        discountLabel,
+        discountPeriod,
+        isOnSale,
+        productUrl: h.productSlug ? `https://www.aldi.nl/product/${h.productSlug}.html` : "https://www.aldi.nl/sortiment.html",
+        weightGrams: null,
+        pricePerKg: null,
+      };
+    });
 }
 
 // --- Holland & Barrett (HTML scrape) ---
@@ -720,6 +764,23 @@ async function runPriceCheck(opts: { supermarkets: Set<Supermarket>; sendEmail: 
     if (best.length > 0) {
       const cheapest = best.reduce((a, b) => a.effectivePrice < b.effectivePrice ? a : b);
       console.log(`  → Goedkoopst: ${cheapest.supermarket} €${cheapest.effectivePrice.toFixed(2)}/stuk`);
+    }
+  }
+
+  // Signaleer supermarkten die dit run helemaal niets opleverden — dit is hoe de
+  // Aldi-breuk (dode API) en losse AH-token-haperingen wekenlang onopgemerkt bleven.
+  const offersPerStore = new Map<Supermarket, number>();
+  for (const s of opts.supermarkets) offersPerStore.set(s, 0);
+  for (const result of results) {
+    for (const offer of result.offers) {
+      const s = (Object.entries(STORE_NAMES).find(([, name]) => name === offer.supermarket)?.[0]) as Supermarket | undefined;
+      if (s) offersPerStore.set(s, (offersPerStore.get(s) || 0) + 1);
+    }
+  }
+  for (const [s, count] of offersPerStore) {
+    const productsForStore = relevant.filter((p) => (p as any)[s]).length;
+    if (productsForStore > 0 && count === 0) {
+      console.error(`⚠️  ${STORE_NAMES[s]}: 0 resultaten van ${productsForStore} geconfigureerde producten — mogelijk een kapotte scraper of blokkade.`);
     }
   }
 
